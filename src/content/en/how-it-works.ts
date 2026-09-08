@@ -2,9 +2,9 @@ import type { HowItWorksContent } from '../types';
 
 export const howItWorks: HowItWorksContent = {
   meta: {
-    title: 'How it works',
+    title: 'How it works: from identity to public lookup',
     description:
-      'Step by step: how an identity is issued and signed, how it is applied to the label, how chain events are recorded, and how public verification explains each possible result signal by signal.',
+      'Step by step: how an identity is issued and signed, applied to the label, recorded as chain events, and explained by public verification, signal by signal.',
   },
 
   hero: {

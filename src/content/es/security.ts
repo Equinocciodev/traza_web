@@ -2,9 +2,9 @@ import type { SecurityContent } from '../types';
 
 export const security: SecurityContent = {
   meta: {
-    title: 'Seguridad y confianza',
+    title: 'Seguridad y confianza: qué se comprueba y qué no',
     description:
-      'Principios de seguridad y confianza de Traza: una firma por unidad, verificación por señales separadas, datos mínimos y transparencia explícita sobre los límites de lo que una comprobación digital puede demostrar.',
+      'Una firma por unidad, verificación por señales separadas, datos mínimos y transparencia sobre los límites de lo que una comprobación digital demuestra.',
   },
 
   hero: {

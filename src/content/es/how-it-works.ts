@@ -2,9 +2,9 @@ import type { HowItWorksContent } from '../types';
 
 export const howItWorks: HowItWorksContent = {
   meta: {
-    title: 'Cómo funciona',
+    title: 'Cómo funciona: de la identidad a la consulta',
     description:
-      'Paso a paso: emisión de la identidad, etiquetado, eventos de cadena y verificación pública por señales separadas, con sus posibles resultados explicados.',
+      'Paso a paso: emisión de la identidad, etiquetado, eventos de la cadena y verificación pública por señales separadas, con cada resultado y sus límites.',
   },
 
   hero: {

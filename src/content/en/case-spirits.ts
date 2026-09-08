@@ -2,9 +2,9 @@ import type { CaseSpiritsContent } from '../types';
 
 export const caseSpirits: CaseSpiritsContent = {
   meta: {
-    title: 'Use case: Spirits',
+    title: 'Use case: spirits and alcoholic beverages',
     description:
-      'Pilot proposal for a spirits regulator: signed unit-level identity, web-based public verification and field inspection from the outset. A proposal only, with no official implementation claimed.',
+      'Pilot proposal for a spirits regulator: signed unit-level identity, web-based public verification, and field inspection. No official implementation claimed.',
   },
 
   hero: {

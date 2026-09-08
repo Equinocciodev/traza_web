@@ -59,7 +59,7 @@ const {
 
 const content = getContent(locale);
 const { common } = content;
-const fullTitle = routeKey === 'home' ? `${common.meta.siteName} — ${common.brand.tagline}` : common.meta.titleTemplate.replace('%s', title);
+const fullTitle = routeKey === 'home' ? common.meta.homeTitle : common.meta.titleTemplate.replace('%s', title);
 const siteUrl = env.siteUrl;
 const canonicalPath = routeKey === 'notFound' ? ROUTES[locale].home : ROUTES[locale][routeKey];
 const canonical = new URL(withBase(canonicalPath), siteUrl).toString();
@@ -80,15 +80,26 @@ const organization = {
   url: siteUrl,
   slogan: common.brand.tagline,
   description: common.meta.defaultDescription,
+  // `logo` debe ser el logotipo en sí (cuadrado, ≥112 px), no la tarjeta social 1200×630:
+  // esa se declara aparte como `image`, que es la que usan las previsualizaciones.
   logo: {
     '@type': 'ImageObject',
     '@id': `${siteUrl}/#logo`,
+    url: new URL(withBase('/icon-512.png'), siteUrl).toString(),
+    contentUrl: new URL(withBase('/icon-512.png'), siteUrl).toString(),
+    width: 512,
+    height: 512,
+    caption: common.meta.siteName,
+  },
+  image: {
+    '@type': 'ImageObject',
+    '@id': `${siteUrl}/#social-image`,
     url: new URL(withBase('/og/default.png'), siteUrl).toString(),
+    contentUrl: new URL(withBase('/og/default.png'), siteUrl).toString(),
     width: 1200,
     height: 630,
     caption: common.meta.siteName,
   },
-  image: { '@id': `${siteUrl}/#logo` },
   sameAs: SAME_AS,
   ...(env.contactEmail
     ? {

@@ -2,9 +2,9 @@ import type { CompanyContent } from '../types';
 
 export const company: CompanyContent = {
   meta: {
-    title: 'Company',
+    title: 'Company: mission, principles and how to reach us',
     description:
-      'Traza Technology, C.A. is a private company and multisector platform for unit-level digital identity, traceability and verification. Read the mission, the product principles and how to reach the team.',
+      'Traza Technology, C.A., a private company and multisector platform for unit-level identity, traceability and verification. Mission, principles, contact.',
   },
 
   hero: {

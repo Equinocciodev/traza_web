@@ -2,9 +2,9 @@ import type { PrivacyContent } from '../types';
 
 export const privacy: PrivacyContent = {
   meta: {
-    title: 'Privacy notice',
+    title: 'Privacy notice: cookies, data and your options',
     description:
-      'Privacy notice for traza.technology: what we measure with Google Analytics, which cookies are used, how we handle contact-form messages, and how you can opt out. Controller: Traza Technology, C.A.',
+      'What we measure with Google Analytics, which cookies are set, how we handle contact-form messages, and how to opt out. Controller: Traza Technology, C.A.',
   },
 
   title: 'Privacy notice',

@@ -2,9 +2,9 @@ import type { NotFoundContent } from '../types';
 
 export const notFound: NotFoundContent = {
   meta: {
-    title: 'Page not found',
+    title: 'Page not found: return home or verify a product',
     description:
-      'The requested page does not exist or has moved. Return to the home page to read about the platform, or verify a product by entering the code printed on its label.',
+      'The requested page does not exist or has moved. Go back to the home page to read about the platform, or verify a product using the code on its own label.',
   },
   code: '404',
   title: 'This page does not exist',

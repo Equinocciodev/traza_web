@@ -123,6 +123,8 @@ export interface FooterLink {
   key?: RouteKey;
   href?: string;
   external?: boolean;
+  /** `rel` extra para enlaces externos (por ejemplo `me` en un perfil propio). */
+  rel?: string;
 }
 
 export interface FooterColumn {
@@ -166,6 +168,9 @@ export interface CommonContent {
     /** Plantilla de título, con %s como marcador: "%s · traza". */
     titleTemplate: string;
     defaultDescription: string;
+    /** Título de la portada. Se mantiene entre 50 y 60 caracteres: por debajo desaprovecha
+     *  el ancho del resultado de búsqueda y por encima los buscadores lo recortan. */
+    homeTitle: string;
     ogImageAlt: string;
   };
   skipLink: string;

@@ -2,9 +2,9 @@ import type { SecurityContent } from '../types';
 
 export const security: SecurityContent = {
   meta: {
-    title: 'Security and trust',
+    title: 'Security and trust: what is checked and what is not',
     description:
-      'Traza’s security and trust principles: one signature per unit, verification by separate signals, minimal data, and explicit transparency about the limits of what a digital check can prove.',
+      'One signature per unit, verification by separate signals, minimal data, and transparency about the limits of what a digital check proves about a product.',
   },
 
   hero: {

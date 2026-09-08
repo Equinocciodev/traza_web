@@ -2,7 +2,7 @@ import type { PlatformContent } from '../types';
 
 export const platform: PlatformContent = {
   meta: {
-    title: 'Plataforma',
+    title: 'Plataforma de identidad, trazabilidad y control',
     description:
       'Capacidades de la plataforma Traza: identidad unitaria, registro de eventos de cadena, verificación pública, control institucional y reglas por tenant.',
   },

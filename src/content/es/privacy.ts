@@ -2,9 +2,9 @@ import type { PrivacyContent } from '../types';
 
 export const privacy: PrivacyContent = {
   meta: {
-    title: 'Aviso de privacidad',
+    title: 'Aviso de privacidad: cookies, datos y contacto',
     description:
-      'Aviso de privacidad de traza.technology: qué medimos con Google Analytics, qué cookies se usan, cómo tratamos los mensajes del formulario de contacto y cómo puede oponerse. Responsable: Traza Technology, C.A.',
+      'Qué medimos con Google Analytics, qué cookies se instalan, cómo tratamos los mensajes del formulario y cómo oponerse. Responsable: Traza Technology, C.A.',
   },
 
   title: 'Aviso de privacidad',

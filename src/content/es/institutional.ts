@@ -6,9 +6,9 @@ import type { InstitutionalContent } from '../institutional.types';
  */
 export const institutional: InstitutionalContent = {
   meta: {
-    title: 'Vista institucional',
+    title: 'Vista institucional: alertas, casos e inspección',
     description:
-      'Vista institucional: cómo ve una entidad de control las alertas de riesgo, los casos, las inspecciones de campo y la cronología de auditoría dentro de un piloto.',
+      'Cómo ve una entidad de control las alertas de riesgo, los casos con su cronología, las inspecciones de campo y la cronología de auditoría del piloto fiscal.',
   },
 
   hero: {

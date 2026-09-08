@@ -98,13 +98,18 @@ const PAGE_KEYS = [
  * avise cuando el propietario los corrija (ver docs/08-informe-qa.md). Formato: `locale:página`.
  */
 /**
- * Rango objetivo de la meta description: 150–220 caracteres.
- * Por debajo de 150 el fragmento desaprovecha el espacio disponible; por encima de 220
- * los buscadores lo recortan. La lista de defectos conocidos quedó vacía: si una página
- * vuelve a salirse del rango, corrija el texto en lugar de añadirla aquí.
+ * Rango objetivo de la meta description: 150–160 caracteres.
+ * Por debajo de 150 el fragmento desaprovecha el espacio del resultado de búsqueda;
+ * por encima de 160 los buscadores lo recortan (y los auditores lo marcan como largo).
+ * La lista de defectos conocidos está vacía: si una página se sale del rango, corrija
+ * el texto en lugar de añadirla aquí.
+ *
+ * El <title> se comprueba aparte: título de página + ' · Traza®' debe caer en 50–60.
  */
 const DESCRIPTION_MIN = 150;
-const DESCRIPTION_MAX = 220;
+const DESCRIPTION_MAX = 160;
+const TITLE_MIN = 50;
+const TITLE_MAX = 60;
 const KNOWN_DESCRIPTION_LENGTH_DEFECTS = new Set<string>([]);
 
 describe('paridad ES ↔ EN', () => {
@@ -144,11 +149,23 @@ describe('metadatos de página', () => {
   for (const locale of LOCALES) {
     const dict = locale === 'es' ? es : en;
 
+    it(`[${locale}] el título renderizado cae en ${TITLE_MIN}–${TITLE_MAX} caracteres`, () => {
+      const rendered = (k: (typeof PAGE_KEYS)[number]) =>
+        k === 'home' ? dict.common.meta.homeTitle : dict.common.meta.titleTemplate.replace('%s', (dict[k] as PageWithMeta).meta.title);
+      const outOfRange = PAGE_KEYS
+        .map((k) => [k, rendered(k).length] as const)
+        .filter(([, n]) => n < TITLE_MIN || n > TITLE_MAX)
+        .map(([k, n]) => `${locale}:${k} (${n})`);
+      expect(outOfRange).toEqual([]);
+    });
+
     it(`[${locale}] títulos no vacíos, únicos y sin sufijo de marca`, () => {
       const titles = PAGE_KEYS.map((k) => (dict[k] as PageWithMeta).meta.title);
       for (const t of titles) {
         expect(t.trim().length).toBeGreaterThan(0);
-        expect(t).not.toMatch(/traza/i);
+        // La marca la añade `titleTemplate`; el título de página no debe repetirla.
+        // Se compara como palabra: «trazabilidad» es vocabulario del producto, no la marca.
+        expect(t).not.toMatch(/\btraza\b|traza®/i);
       }
       expect(new Set(titles).size).toBe(titles.length);
     });

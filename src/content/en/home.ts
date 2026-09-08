@@ -4,7 +4,7 @@ export const home: HomeContent = {
   meta: {
     title: 'Digital identity for real products',
     description:
-      'Traza gives each unit a signed digital identity, records its journey along the chain and lets anyone check it from a browser, with nothing to install and no account to create, in a result explained signal by signal.',
+      'Traza gives each unit a signed digital identity, records its journey along the chain, and lets anyone check it from a browser — no account, no install.',
   },
 
   hero: {

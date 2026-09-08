@@ -6,9 +6,9 @@ import type { SolutionsContent, SectorPageContent } from '../types';
 
 export const solutions: SolutionsContent = {
   meta: {
-    title: 'Soluciones',
+    title: 'Soluciones para gobierno, industria y ciudadanos',
     description:
-      'Soluciones de identidad unitaria, trazabilidad y verificación pública para gobiernos y reguladores, para la industria y para los ciudadanos, todas sobre una misma capa tecnológica y con las reglas de cada programa.',
+      'Identidad unitaria, trazabilidad y verificación pública para gobierno, industria y ciudadanos, sobre una capa común y con las reglas de cada programa.',
   },
 
   hero: {
@@ -100,9 +100,9 @@ export const solutions: SolutionsContent = {
 
 export const solutionsGovernment: SectorPageContent = {
   meta: {
-    title: 'Gobierno y reguladores',
+    title: 'Gobierno y reguladores: control por unidad',
     description:
-      'Cómo Traza apoya a reguladores y agencias de control: identidad unitaria por producto, inspección de campo integrada, registro auditable de cada evento y despliegues co-brand por país o por programa.',
+      'Identidad unitaria por producto, inspección de campo integrada, registro auditable de cada evento y despliegues co-brand por país o por programa fiscal.',
   },
   key: 'government',
 
@@ -273,9 +273,9 @@ export const solutionsGovernment: SectorPageContent = {
 
 export const solutionsIndustry: SectorPageContent = {
   meta: {
-    title: 'Industria',
+    title: 'Industria: identidad unitaria y marca protegida',
     description:
-      'Identidad unitaria, trazabilidad y protección de marca para fabricantes, importadores y distribuidores, con integración a los sistemas de gestión que la empresa ya tiene en funcionamiento.',
+      'Identidad unitaria, trazabilidad y protección de marca para fabricantes, importadores y distribuidores, integradas con los sistemas que ya usa la planta.',
   },
   key: 'industry',
 
@@ -446,7 +446,7 @@ export const solutionsIndustry: SectorPageContent = {
 
 export const solutionsCitizens: SectorPageContent = {
   meta: {
-    title: 'Ciudadanos',
+    title: 'Ciudadanos: verificar un producto al comprarlo',
     description:
       'Verificar un producto en el punto de venta desde el navegador, sin instalar nada ni crear una cuenta, con resultados claros y reporte de discrepancias.',
   },

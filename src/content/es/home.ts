@@ -4,7 +4,7 @@ export const home: HomeContent = {
   meta: {
     title: 'Identidad digital para productos reales',
     description:
-      'Traza da a cada unidad una identidad digital firmada, registra su recorrido por la cadena y permite comprobarla desde el navegador, sin instalar nada, con un resultado explicado señal por señal.',
+      'Traza da a cada unidad una identidad firmada, registra su recorrido por la cadena y permite comprobarla desde el navegador, sin cuenta y señal por señal.',
   },
 
   hero: {

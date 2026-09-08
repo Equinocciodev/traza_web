@@ -9,10 +9,11 @@ export const common: CommonContent = {
   },
 
   meta: {
-    siteName: 'traza',
-    titleTemplate: '%s · traza',
+    siteName: 'Traza®',
+    titleTemplate: '%s · Traza®',
     defaultDescription:
-      'Plataforma de identidad digital unitaria, trazabilidad y verificación pública para productos reales: un identificador firmado por unidad, el registro auditable de su recorrido y una comprobación desde el navegador.',
+      'Plataforma de identidad digital unitaria, trazabilidad y verificación pública: un identificador firmado por unidad y el registro auditable de su recorrido.',
+    homeTitle: 'Traza — Identidad digital verificable para productos reales',
     ogImageAlt: 'traza® — Identidad digital para productos reales.',
   },
 
@@ -74,7 +75,7 @@ export const common: CommonContent = {
         links: [
           { label: 'Empresa y contacto', key: 'company' },
           { label: 'Aviso de privacidad', key: 'privacy' },
-          { label: 'Instagram', href: 'https://www.instagram.com/traza.technology/', external: true },
+          { label: 'Instagram', href: 'https://www.instagram.com/traza.technology/', external: true, rel: 'me' },
         ],
       },
     ],

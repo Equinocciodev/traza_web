@@ -6,9 +6,9 @@ import type { InstitutionalContent } from '../institutional.types';
  */
 export const institutional: InstitutionalContent = {
   meta: {
-    title: 'Institutional view',
+    title: 'Institutional view: alerts, cases and inspections',
     description:
-      'Institutional view: how a control entity sees risk alerts, cases with their timeline, field inspections and the full audit trail within a pilot, with permissions for each role.',
+      'How a control entity sees risk alerts, cases with their own timeline, field inspections and the pilot’s full audit trail, with permissions for each role.',
   },
 
   hero: {

@@ -35,7 +35,9 @@ const switchHref = route(other, routeKey === 'notFound' ? 'home' : routeKey);
                   <a
                     class="site-footer__link"
                     href={link.key ? route(locale, link.key) : link.href}
-                    {...(link.external ? { target: '_blank', rel: 'noopener noreferrer' } : {})}
+                    {...(link.external
+                      ? { target: '_blank', rel: ['noopener', 'noreferrer', link.rel].filter(Boolean).join(' ') }
+                      : {})}
                   >
                     {link.label}
                     {link.external && <span class="visually-hidden"> ({common.a11y.newWindow})</span>}

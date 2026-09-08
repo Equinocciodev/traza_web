@@ -6,9 +6,9 @@ import type { VerifyContent } from '../verify.types';
  */
 export const verify: VerifyContent = {
   meta: {
-    title: 'Verify a product',
+    title: 'Verify a product with the code on its label',
     description:
-      'Public verification of a product: scan or type the unit code and see what was checked, how much confidence each signal gives and what the recommended next step is.',
+      'Scan or type the unit code and see what was checked, how much confidence each signal gives, and what the recommended next step actually is for the buyer.',
   },
 
   hero: {

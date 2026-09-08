@@ -6,9 +6,9 @@ import type { JourneyContent } from '../journey.types';
  */
 export const journey: JourneyContent = {
   meta: {
-    title: 'Product journey',
+    title: 'Product journey: six stages, event by event',
     description:
-      'Follow a unit from the factory or customs through to final verification: six stages, events recorded with actor, place and date, and the story that is built along the way.',
+      'Follow a unit from the factory or customs through to final verification: six stages with actor, place and date, and the whole story built stage by stage.',
   },
 
   hero: {

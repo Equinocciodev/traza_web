@@ -2,9 +2,9 @@ import type { CompanyContent } from '../types';
 
 export const company: CompanyContent = {
   meta: {
-    title: 'Empresa',
+    title: 'Empresa: misión, principios y contacto del equipo',
     description:
-      'Traza Technology, C.A. es una empresa privada y plataforma multisector de identidad digital unitaria, trazabilidad y verificación. Conozca la misión, los principios del producto y cómo contactar al equipo.',
+      'Traza Technology, C.A., empresa privada y plataforma multisector de identidad unitaria, trazabilidad y verificación. Misión, principios y contacto del equipo.',
   },
 
   hero: {

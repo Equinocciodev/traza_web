@@ -6,9 +6,9 @@ import type { SolutionsContent, SectorPageContent } from '../types';
 
 export const solutions: SolutionsContent = {
   meta: {
-    title: 'Solutions',
+    title: 'Solutions for government, industry and citizens',
     description:
-      'Identity, traceability and public verification solutions for governments and regulators, for industry and for citizens, all built on one shared technology layer with the rules of each programme.',
+      'Unit-level identity, traceability and public verification for government, for industry and for citizens, on one shared layer with each programme’s rules.',
   },
 
   hero: {
@@ -100,7 +100,7 @@ export const solutions: SolutionsContent = {
 
 export const solutionsGovernment: SectorPageContent = {
   meta: {
-    title: 'Government and regulators',
+    title: 'Government and regulators: unit-level control',
     description:
       'How Traza supports regulators and control agencies with unit-level identity, field inspection, an auditable registry and co-brand deployments by country.',
   },
@@ -273,9 +273,9 @@ export const solutionsGovernment: SectorPageContent = {
 
 export const solutionsIndustry: SectorPageContent = {
   meta: {
-    title: 'Industry',
+    title: 'Industry: unit-level identity and brand protection',
     description:
-      'Unit-level identity, traceability and brand protection for manufacturers, importers and distributors, integrated with the management systems the company already has in place.',
+      'Unit-level identity, traceability and brand protection for manufacturers, importers and distributors, integrated with the systems already running today.',
   },
   key: 'industry',
 
@@ -446,7 +446,7 @@ export const solutionsIndustry: SectorPageContent = {
 
 export const solutionsCitizens: SectorPageContent = {
   meta: {
-    title: 'Citizens',
+    title: 'Citizens: verify a product before you buy it',
     description:
       'Verify a product at the point of sale from the browser, with nothing to install and no account to create, with clear results and discrepancy reporting.',
   },

@@ -20,7 +20,7 @@ const imageSrcset = [384, 512, 768]
   data-ui={JSON.stringify(ui)} aria-labelledby={`${id}-heading`}>
   <div class="story__visual" aria-hidden="true">
     <img class="story__bottle" src={imageUrl} srcset={imageSrcset} sizes="(max-width: 47.99em) 470px, min(52vw, 690px)"
-      alt="" width="1024" height="1536" loading="lazy" decoding="async" />
+      alt={ui.imageAlt} width="1024" height="1536" loading="lazy" decoding="async" />
   </div>
   <div class="story__inner">
     <!-- Exclusively an informative relation, anchored by measurement to the object and step data. -->

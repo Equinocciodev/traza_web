@@ -9,10 +9,11 @@ export const common: CommonContent = {
   },
 
   meta: {
-    siteName: 'traza',
-    titleTemplate: '%s · traza',
+    siteName: 'Traza®',
+    titleTemplate: '%s · Traza®',
     defaultDescription:
-      'Traza is a platform for unit-level digital identity, traceability and public verification of real products: a signed identifier per unit, an auditable record of its journey, and a check anyone can run from a browser.',
+      'Platform for unit-level digital identity, traceability and public verification: a signed identifier per unit and an auditable record of its whole journey.',
+    homeTitle: 'Traza — Verifiable digital identity for real products',
     ogImageAlt: 'traza® — Digital identity for real products.',
   },
 
@@ -74,7 +75,7 @@ export const common: CommonContent = {
         links: [
           { label: 'Company and contact', key: 'company' },
           { label: 'Privacy notice', key: 'privacy' },
-          { label: 'Instagram', href: 'https://www.instagram.com/traza.technology/', external: true },
+          { label: 'Instagram', href: 'https://www.instagram.com/traza.technology/', external: true, rel: 'me' },
         ],
       },
     ],

@@ -2,7 +2,7 @@ import type { CaseSpiritsContent } from '../types';
 
 export const caseSpirits: CaseSpiritsContent = {
   meta: {
-    title: 'Caso de uso: Licores',
+    title: 'Caso de uso: licores y bebidas alcohólicas',
     description:
       'Propuesta de piloto para un regulador de licores: identidad unitaria firmada, verificación pública web e inspección de campo. Sin implementación oficial.',
   },

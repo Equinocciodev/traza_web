@@ -6,9 +6,9 @@ import type { JourneyContent } from '../journey.types';
  */
 export const journey: JourneyContent = {
   meta: {
-    title: 'Recorrido del producto',
+    title: 'Recorrido del producto: seis etapas registradas',
     description:
-      'Siga una unidad desde la fábrica o la aduana hasta la verificación final: seis etapas, eventos con actor, lugar y fecha, y la historia que se construye por el camino.',
+      'Siga una unidad desde la fábrica o la aduana hasta la verificación: seis etapas con actor, lugar y fecha, y la historia que se construye por el camino.',
   },
 
   hero: {
