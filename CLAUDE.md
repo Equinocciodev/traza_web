@@ -25,8 +25,8 @@ a escribir «cada actor de la cadena reporta un evento», estás describiendo la
 ```bash
 npm run dev          # servidor de desarrollo en :4321
 npm run check        # astro check — tipos y plantillas (debe quedar en 0 errores)
-npm test             # Vitest: 198 pruebas (motor, API, fixtures, i18n, paridad ES/EN, guardarraíles)
-npm run build        # build estático en dist/ (30 páginas)
+npm test             # Vitest: 200 pruebas (motor, API, fixtures, i18n, paridad ES/EN, guardarraíles)
+npm run build        # build estático en dist/ (36 páginas)
 npm run test:e2e     # Playwright sobre astro preview
 npm run verify       # check + test + build + e2e
 npm run og           # regenera la imagen OG y todo el juego de iconos
@@ -66,8 +66,9 @@ Añadir texto = editar `src/content/`. Añadir una página = plantilla en `src/t
 1. **Paridad ES ↔ EN** (`tests/unit/content-parity.test.ts`): las dos estructuras deben ser
    idénticas — mismas claves, mismos tipos, mismos identificadores. Si añades una clave en español,
    añádela en inglés en el mismo sitio.
-2. **Meta descriptions: 150–220 caracteres**, únicas por página, en los dos idiomas. Fuera de rango
-   el test falla; corrige el texto, no el test.
+2. **Longitudes de metadatos** (`content-parity`): descripción de 150–160 caracteres y `<title>`
+   renderizado (título de página + ` · Traza®`) de 50–60, únicos por página y en los dos idiomas.
+   Fuera de rango el test falla; corrige el texto, no el test.
 3. **Guardarraíles de contenido** (`tests/unit/guardrails.test.ts`), que recorren *todo* el contenido,
    los fixtures y la configuración:
    - vetado el vocabulario de demostración: `demo`, `demostración`, `simulado`, `ficticio`
@@ -86,10 +87,7 @@ Añadir texto = editar `src/content/`. Añadir una página = plantilla en `src/t
    las islas necesitan en runtime se aplican por CSSOM.
 5. **Códigos de unidad**: formato `TRZ-XXXX-XXXX-XXXX`. Los del registro usan el bloque `7F2K`
    (`TRZ-7F2K-4K7Q-92FA`…). No reintroduzcas el bloque `DEMO`.
-6. **Longitudes de metadatos**: el `<title>` renderizado (título de página + ` · Traza®`) cae en
-   50–60 caracteres y la descripción en 150–160, en las 18 páginas y los dos idiomas. Los dos
-   informes de auditoría que llegaron se contradecían; 150–160 satisface a ambos.
-7. **Navegación**: cinco entradas de primer nivel más el CTA. Añadir una página significa
+6. **Navegación**: cinco entradas de primer nivel más el CTA. Añadir una página significa
    colgarla de `Soluciones` o de `Tecnología`, no crear una sexta entrada — y darla de alta en
    `src/i18n/index.ts`, en el pie y en `PAGE_KEYS` de las pruebas.
 
