@@ -66,7 +66,13 @@ describe('términos vetados', () => {
   });
 
   it('"cliente"/"customer"/"client" solo dentro de frases de no-afirmación (nunca como afirmación de clientes)', () => {
-    const found = hits(ALL, /\bclientes?\b|\bcustomers?\b|\bclients?\b/i, (e) => NON_CLAIM.test(e.text) || NON_CLAIM_LISTS.test(e.path));
+    // «cliente de correo» / «mail client» es una aplicación, no una cartera de clientes.
+    const MAIL_CLIENT = /cliente de correo|mail client/i;
+    const found = hits(
+      ALL,
+      /\bclientes?\b|\bcustomers?\b|\bclients?\b/i,
+      (e) => NON_CLAIM.test(e.text) || NON_CLAIM_LISTS.test(e.path) || MAIL_CLIENT.test(e.text),
+    );
     expect(found).toEqual([]);
   });
 

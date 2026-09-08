@@ -17,6 +17,7 @@ import {
   PUBLIC_FIREBASE_MEASUREMENT_ID,
   PUBLIC_DEFAULT_TENANT,
   PUBLIC_CONTACT_EMAIL,
+  PUBLIC_CONTACT_EMAIL_EN,
   PUBLIC_SHOW_COBRAND_EXAMPLE,
 } from 'astro:env/client';
 import { isTenantId, type TenantId } from './tenants';
@@ -29,8 +30,18 @@ export const env = {
   analyticsEndpoint: PUBLIC_ANALYTICS_ENDPOINT,
   defaultTenant: (isTenantId(PUBLIC_DEFAULT_TENANT) ? PUBLIC_DEFAULT_TENANT : 'traza') as TenantId,
   contactEmail: PUBLIC_CONTACT_EMAIL,
+  contactEmailEn: PUBLIC_CONTACT_EMAIL_EN,
   showCobrandExample: PUBLIC_SHOW_COBRAND_EXAMPLE,
 } as const;
+
+/**
+ * Correo de contacto del idioma pedido. El buzón en inglés es opcional: si no está
+ * configurado, se responde desde el mismo de siempre.
+ */
+export function contactEmailFor(locale: 'es' | 'en'): string {
+  if (locale === 'en' && env.contactEmailEn) return env.contactEmailEn;
+  return env.contactEmail;
+}
 
 /**
  * Configuración web de Firebase (valores públicos). Se considera utilizable solo si están

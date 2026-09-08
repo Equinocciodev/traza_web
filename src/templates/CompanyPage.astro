@@ -10,7 +10,7 @@ import Icon from '@/components/ui/Icon.astro';
 import SectionHeader from '@/components/ui/SectionHeader.astro';
 import Wordmark from '@/components/ui/Wordmark.astro';
 import ContactForm from '@/components/site/ContactForm.astro';
-import { env } from '@/config/env';
+import { contactEmailFor } from '@/config/env';
 import { getContent } from '@/content';
 import type { Locale } from '@/i18n';
 
@@ -19,7 +19,7 @@ interface Props {
 }
 const { locale } = Astro.props;
 const { company, common } = getContent(locale);
-const contactEmail = env.contactEmail.trim();
+const contactEmail = contactEmailFor(locale).trim();
 ---
 
 <Base locale={locale} routeKey="company" title={company.meta.title} description={company.meta.description} schemaType="AboutPage">

@@ -1,5 +1,6 @@
 # Cabeceras de ejemplo para el demo de Traza® (formato `_headers` de Netlify / Cloudflare Pages).
-# Equivalentes para Vercel (vercel.json), nginx y S3+CloudFront en docs/06-despliegue.md.
+# El equivalente para otros proveedores (vercel.json, nginx, S3+CloudFront) se deriva de la
+# misma lista de cabeceras: los nombres y valores son idénticos, solo cambia el formato.
 # No fija proveedor ni dominio. Verificadas en QA con cabeceras reales (tests/e2e/csp.spec.ts).
 #
 # CSP estricta compatible con el build real: sin scripts inline ejecutables, CSS externo, fuentes propias.

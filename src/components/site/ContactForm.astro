@@ -1,16 +1,22 @@
 ---
 /**
- * Formulario de contacto (isla). Compone el mensaje y lo entrega al cliente de correo del visitante.
+ * Formulario de contacto (isla).
+ *
+ * No hay servidor al que enviar: el sitio es estático. Al validar, el formulario compone un
+ * mensaje y abre el cliente de correo del visitante con todo relleno; enviarlo es su último
+ * paso, y por eso el panel de éxito lo dice así en lugar de dar por hecho el envío. Si el
+ * cliente de correo no se abre, el panel muestra la dirección para escribir a mano.
+ *
  * - Progressive enhancement: el HTML incluye atributos nativos (required, type=email, minlength…);
  *   el script añade `novalidate`, validación accesible con resumen de errores enfocable,
- *   `aria-invalid` + `aria-describedby` por campo, y estados enviando / éxito / error / sin conexión.
+ *   `aria-invalid` + `aria-describedby` por campo, y el panel de resultado.
  * - Sin captcha, sin scripts inline. Todo texto visible viene del diccionario.
- * - Para probar el estado de error: incluir "[error]" en el mensaje.
  */
 import Button from '@/components/ui/Button.astro';
 import Callout from '@/components/ui/Callout.astro';
 import Icon from '@/components/ui/Icon.astro';
 import { getContent } from '@/content';
+import { contactEmailFor } from '@/config/env';
 import type { Locale } from '@/i18n';
 
 interface Props {
@@ -20,14 +26,16 @@ interface Props {
 const { locale, id = 'contact' } = Astro.props;
 const { company, common } = getContent(locale);
 const f = company.contact.form;
+/** Buzón del idioma de la página: quien escribe en inglés recibe respuesta del buzón en inglés. */
+const to = contactEmailFor(locale);
 const fid = (name: string) => `${id}-${name}`;
 ---
 
-<div class="contact" data-contact>
+<div class="contact" data-contact data-contact-email={to} data-mail-subject={f.mailSubject}>
   <div class="contact__panel" data-status="success" tabindex="-1" hidden>
     <Callout tone="success" title={f.success.title} role="status">
       <p>{f.success.body}</p>
-      <p class="contact__ticket"><span class="meta-tag mono" data-contact-ticket></span></p>
+      <p class="contact__ticket"><a class="mono" data-contact-mailto href="#" hidden></a></p>
     </Callout>
   </div>
   <div class="contact__panel" data-status="error" tabindex="-1" hidden>
@@ -67,6 +75,10 @@ const fid = (name: string) => `${id}-${name}`;
     data-msg-too-long={common.form.tooLong}
     data-label-submit={f.submit}
     data-label-sending={common.form.sending}
+    data-label-name={f.name}
+    data-label-email={f.email}
+    data-label-organization={f.organization}
+    data-label-sector={f.sector}
   >
     <div class="form-summary" data-summary role="alert" tabindex="-1" hidden>
       <div class="form-summary__head">
@@ -201,7 +213,7 @@ const fid = (name: string) => `${id}-${name}`;
 </div>
 
 <script>
-  import { getApi, ApiError, isBrowserOffline } from '@/lib/api';
+  import { isBrowserOffline } from '@/lib/api';
   import { track } from '@/lib/analytics';
 
   type Field = HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement;
@@ -224,7 +236,7 @@ const fid = (name: string) => `${id}-${name}`;
       offline: root.querySelector<HTMLElement>('[data-status="offline"]'),
       recovered: root.querySelector<HTMLElement>('[data-status="recovered"]'),
     };
-    const ticketEl = root.querySelector<HTMLElement>('[data-contact-ticket]');
+    const mailtoEl = root.querySelector<HTMLAnchorElement>('[data-contact-mailto]');
     const messages = {
       required: form.dataset.msgRequired ?? '',
       invalidEmail: form.dataset.msgInvalidEmail ?? '',
@@ -358,23 +370,35 @@ const fid = (name: string) => `${id}-${name}`;
       }
       const data = new FormData(form);
       const read = (key: string) => String(data.get(key) ?? '').trim();
+      const to = root.dataset.contactEmail ?? '';
+      if (!to) {
+        // Sin buzón configurado no hay nada que abrir: se avisa en lugar de fingir un envío.
+        showPanel('error');
+        return;
+      }
       setBusy(true);
       try {
-        const receipt = await getApi().submitContact({
-          name: read('name'),
-          email: read('email'),
-          organization: read('organization') || undefined,
-          sector: read('sector') || undefined,
-          message: read('message'),
-        });
-        if (ticketEl) ticketEl.textContent = receipt.ticket;
+        const subject = (root.dataset.mailSubject ?? 'Contacto').replace('{name}', read('name'));
+        const body = [
+          `${form.dataset.labelName ?? 'Nombre'}: ${read('name')}`,
+          `${form.dataset.labelEmail ?? 'Correo'}: ${read('email')}`,
+          `${form.dataset.labelOrganization ?? 'Organización'}: ${read('organization') || '—'}`,
+          `${form.dataset.labelSector ?? 'Sector'}: ${read('sector') || '—'}`,
+          '',
+          read('message'),
+        ].join('\n');
+        const href = `mailto:${to}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+        if (mailtoEl) {
+          mailtoEl.setAttribute('href', href);
+          mailtoEl.textContent = to;
+          mailtoEl.hidden = false;
+        }
         form.hidden = true;
         showPanel('success');
-        track('contact_submitted', { outcome: 'success' });
-      } catch (error) {
-        const kind = error instanceof ApiError ? error.kind : 'server';
-        showPanel(kind === 'offline' ? 'offline' : 'error');
-        track('contact_submitted', { outcome: kind });
+        // Abrir el cliente de correo después de pintar el panel: si el navegador lo bloquea,
+        // el enlace del panel sigue siendo un camino válido.
+        window.location.href = href;
+        track('contact_submitted', { outcome: 'composed' });
       } finally {
         setBusy(false);
       }

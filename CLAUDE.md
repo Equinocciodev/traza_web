@@ -124,9 +124,13 @@ ajuste de Pages.
   revisa los anchos declarados en `sizes`.
 - **`alt=""` en la botella del relato es correcto**: el contenedor es `aria-hidden` y la descripción
   la aporta un párrafo `story__sr-only`.
-- Los documentos de `docs/` describen el proyecto en su etapa de demostración y no se han
-  reescrito: trátalos como historia, no como especificación vigente. Las especificaciones
-  vigentes del producto viven fuera de este repositorio, en `~/TRAZA`.
+- **`docs/` ya no se publica.** Es documentación interna de la etapa de demostración y este
+  repositorio es público: está en disco pero excluida por `.gitignore`, con copia en
+  `~/TRAZA/web-docs`. Trátala como historia, no como especificación vigente. Las
+  especificaciones vigentes del producto viven en `~/TRAZA`. No la vuelvas a añadir al índice
+  de git ni la enlaces desde el README.
+  Nota: sigue estando en el historial de git de los commits anteriores; retirarla de ahí
+  exigiría reescribir el historial y un push forzado.
 - **El QR de la etiqueta del hero es real.** `public/images/v2/hero-products.webp` lleva
   compuesto el QR de `HTTPS://T.EXAMPLE/V/7F2K4K7Q92FA` y decodifica en las tres variantes de
   ancho. Si reemplazas la fotografía, vuelve a componerlo y vuelve a comprobar que decodifica.

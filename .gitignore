@@ -23,8 +23,12 @@ playwright/.cache/
 # Lighthouse
 .lighthouse/
 
-# Capturas generadas por Playwright (`npm run screenshots`)
-docs/capturas/
+# Documentación interna: briefs, informes de QA, handoffs de auditoría y la matriz de
+# afirmaciones. Es un repositorio público y esos documentos describen el proyecto en su
+# etapa de demostración: se mantienen en disco y fuera de GitHub.
+# Copia de seguridad en ~/TRAZA/web-docs (los archivos sin seguimiento no sobreviven a
+# un `git clean -xdf`).
+docs/
 
 # Editores
 .idea/

@@ -24,7 +24,7 @@ import Header from '@/components/site/Header.astro';
 import HeaderV2 from '@/components/site/HeaderV2.astro';
 import Footer from '@/components/site/Footer.astro';
 import { getContent } from '@/content';
-import { env } from '@/config/env';
+import { env, contactEmailFor } from '@/config/env';
 import { withBase, LOCALES, LOCALE_LABELS, ROUTES, type Locale, type RouteKey } from '@/i18n';
 import type { TenantId } from '@/config/tenants';
 
@@ -101,15 +101,17 @@ const organization = {
     caption: common.meta.siteName,
   },
   sameAs: SAME_AS,
-  ...(env.contactEmail
+  // El buzón depende del idioma de la página: el JSON-LD declara el que corresponde a esta,
+  // y `contactPoint` deja constancia del idioma en que se atiende.
+  ...(contactEmailFor(locale)
     ? {
-        email: env.contactEmail,
+        email: contactEmailFor(locale),
         contactPoint: [
           {
             '@type': 'ContactPoint',
             contactType: 'sales',
-            email: env.contactEmail,
-            availableLanguage: ['es', 'en'],
+            email: contactEmailFor(locale),
+            availableLanguage: [LOCALE_LABELS[locale].htmlLang],
           },
         ],
       }

@@ -35,7 +35,7 @@ Abre `http://127.0.0.1:4351`. Solo funciona en la computadora que lo ejecuta; no
 ```bash
 # Node ≥ 22.12 y npm ≥ 10.8.2
 npm ci
-cp .env.example .env      # opcional; ver variables en docs/06-despliegue.md
+cp .env.example .env      # opcional; cada variable está documentada en el propio archivo
 npm run dev               # http://localhost:4321
 ```
 
@@ -50,7 +50,7 @@ npm run dev               # http://localhost:4321
 | `npm run preview` | Sirve `dist/` |
 | `npm run test:e2e` | Playwright (proyectos `desktop`, `mobile`, `a11y`, `screenshots`) sobre `astro preview` |
 | `npm run test:a11y` | Solo el barrido de accesibilidad (axe-core + comprobaciones de teclado, foco, reflow, zoom, reduced motion) |
-| `npm run screenshots` | Capturas responsive en `docs/capturas/` |
+| `npm run screenshots` | Capturas responsive en `docs/capturas/` (local, sin seguimiento) |
 | `npm run lighthouse -- --base=http://127.0.0.1:4321 --out=.lighthouse/run` | Lighthouse móvil y escritorio sobre un servidor en marcha |
 | `npm run og` | Regenera la imagen Open Graph y todo el juego de iconos (favicon, apple-touch, manifiesto) |
 | `node scripts/responsive-images.mjs` | Regenera las variantes de ancho de las imágenes del hero y del relato |
@@ -77,27 +77,17 @@ src/
 tests/unit/              Vitest · tests/e2e/  Playwright (flujos, a11y, CSP, privacidad, capturas)
 scripts/                 lighthouse.mjs, og-image.mjs, serve-static.mjs
 public/                  favicon, manifest, og/, _headers (ejemplo de cabeceras y CSP), nojs.css
-docs/                    Evidencia, decisiones, matriz fuente→afirmación, supuestos, inventario, QA, a11y, motion, despliegue, handoff, capturas
+docs/                    Documentación interna, en local y fuera del repositorio (.gitignore)
 ```
 
-## Documentación
+## Documentación interna
 
-| Documento | Contenido |
-|---|---|
-| `docs/00-brief-equipo.md` | Brief compartido del equipo: producto, fuentes, conceptos superados, guardarraíles, sistema visual, convenciones |
-| `docs/01-hito-evidencia-y-plan.md` | Hito 1: inventario de fuentes, hechos, conflictos, supuestos, arquitectura, stack, sitemap, tokens, motion, plan, riesgos |
-| `docs/02-decisiones-arquitectura-diseno.md` | Decisiones de arquitectura y diseño con alternativas descartadas |
-| `docs/03-matriz-fuente-afirmacion.md` | Matriz fuente → afirmación: cada afirmación del sitio con su origen y su tratamiento |
-| `docs/04-supuestos-contradicciones.md` | Registro de supuestos y contradicciones resueltas |
-| `docs/05-inventario-componentes-estados.md` | Inventario de componentes y de estados de las tres demos |
-| `docs/06-despliegue.md` | Despliegue, variables de entorno, CSP y cabeceras, endpoints futuros |
-| `docs/07-fixtures.md` | Fixtures: unidades, escenarios, alertas, casos, cronología |
-| `docs/08-informe-qa.md` | Informe de QA con los resultados reales de check, build, unit y e2e |
-| `docs/09-accesibilidad-rendimiento.md` | Auditoría de accesibilidad (axe, teclado, reflow, zoom, reduced motion) y rendimiento (Lighthouse, presupuesto de peso) |
-| `docs/10-motion.md` | Sistema de motion e inventario de animaciones |
-| `docs/11-informe-equipo.md` | Equipo real: número y roles de especialistas que trabajaron y qué produjo cada uno |
-| `docs/12-handoff-auditoria.md` | Handoff de auditoría: qué revisar, dónde y cómo |
-| `docs/capturas/` | Capturas de escritorio y móvil |
+La documentación de trabajo del proyecto —briefs, decisiones, matriz fuente→afirmación,
+informes de QA y accesibilidad, handoff de auditoría— **no se publica en este repositorio**.
+Describe el proyecto en su etapa de demostración y este repositorio es público.
+
+Vive en `docs/` en local, excluida por `.gitignore`, con copia en `~/TRAZA/web-docs`.
+Las especificaciones vigentes del producto están en `~/TRAZA`.
 
 ## Guardarraíles de contenido (resumen)
 

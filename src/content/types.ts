@@ -464,6 +464,8 @@ export interface CompanyContent {
       sectorOptions: string[];
       message: string;
       consent: string;
+      /** Asunto del correo que compone el formulario. `{name}` se sustituye por quien escribe. */
+      mailSubject: string;
       submit: string;
       success: { title: string; body: string };
       error: { title: string; body: string };
