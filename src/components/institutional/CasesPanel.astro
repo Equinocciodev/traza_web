@@ -1,0 +1,648 @@
+---
+/**
+ * Sección de casos (lista + detalle) e inspecciones de campo del piloto (tabla corta).
+ * La lista y la tabla se renderizan en servidor; la isla clona `<template data-tpl="case-detail">`
+ * y las filas prototipo (`data-proto`) para casos e inspecciones nuevos.
+ */
+import Icon from '@/components/ui/Icon.astro';
+import Button from '@/components/ui/Button.astro';
+import StatusPill from '@/components/ui/StatusPill.astro';
+import PermissionDenied from './PermissionDenied.astro';
+import type { Locale } from '@/i18n';
+import type { InstitutionalContent } from '@/content/institutional.types';
+import { CASES, INSPECTIONS, PERSON_BY_ID, type InstitutionalCase, type FieldInspection } from '@/fixtures/institutional';
+import { CASE_STATUS_PILL, INSPECTION_STATUS_PILL } from './pills';
+import { fmtDateTime, fmtDate } from './format';
+
+interface Props {
+  locale: Locale;
+  content: InstitutionalContent;
+}
+const { locale, content: t } = Astro.props;
+const { labels } = t;
+
+const cases = [...CASES].sort((a, b) => (a.openedAt < b.openedAt ? 1 : -1));
+const inspections = [...INSPECTIONS].sort((a, b) => (a.at < b.at ? 1 : -1));
+const personName = (id: string) => PERSON_BY_ID.get(id)?.name ?? id;
+
+/** Fila prototipo (oculta) con el mismo markup que las reales; la isla la clona para casos nuevos. */
+const protoCase: InstitutionalCase = { id: 'CASO-0000-0000', title: { es: '—', en: '—' }, status: 'open', alertIds: [], inspectorId: 'insp-salcedo', openedAt: '2026-01-01T00:00:00Z', actions: [] };
+const protoInspection: FieldInspection = { id: 'INS-0000-000', caseId: '', status: 'scheduled', site: '—', region: '—', at: '2026-01-01T00:00:00Z', inspectorId: 'insp-salcedo' };
+const rows: { c: InstitutionalCase; proto: boolean }[] = [...cases.map((c) => ({ c, proto: false })), { c: protoCase, proto: true }];
+const irows: { i: FieldInspection; proto: boolean }[] = [...inspections.map((i) => ({ i, proto: false })), { i: protoInspection, proto: true }];
+---
+
+<section class="cases section--tight" id={t.cases.id} aria-labelledby="inst-cases-title" data-section="cases">
+  <div class="cases__header">
+    <h2 id="inst-cases-title">{t.cases.title}</h2>
+    <p class="lede cases__intro">{t.cases.intro}</p>
+  </div>
+
+  <div class="panel" data-panel="cases">
+    <div class="panel__list" data-list-col>
+      <h3 class="cases__listtitle" id="inst-case-list-title">{t.cases.listTitle}</h3>
+      <div class="skeleton" data-skeleton aria-hidden="true">
+        <span class="skeleton__bar"></span>
+        <span class="skeleton__bar"></span>
+      </div>
+      <ul class="clist" data-testid="case-list" aria-labelledby="inst-case-list-title" data-loadable>
+        {rows.map(({ c, proto }) => (
+          <li class="crow" data-case-id={c.id} data-status={c.status} data-inspector={c.inspectorId} data-proto={proto ? '' : undefined} hidden={proto}>
+            <button type="button" class="crow__btn" data-case-open={c.id}>
+              <span class="crow__top">
+                <span class="crow__id mono" data-slot="id">{c.id}</span>
+                <span class="crow__pill" data-status-pill>
+                  <StatusPill tone={CASE_STATUS_PILL[c.status].tone} icon={CASE_STATUS_PILL[c.status].icon} size="sm">{labels.caseStatus[c.status]}</StatusPill>
+                </span>
+              </span>
+              <span class="crow__title" data-slot="title">{c.title[locale]}</span>
+              <span class="crow__meta">
+                <span class="crow__inspector">
+                  <Icon name="user" size={14} />
+                  <span data-slot="inspector">{personName(c.inspectorId)}</span>
+                </span>
+                <span class="crow__alerts">
+                  <Icon name="alert" size={14} />
+                  <span data-slot="alerts">{c.alertIds.join(', ') || '—'}</span>
+                </span>
+                <time class="crow__date mono" datetime={c.openedAt} data-slot="opened">{fmtDate(c.openedAt, locale)}</time>
+              </span>
+            </button>
+          </li>
+        ))}
+      </ul>
+    </div>
+
+    <div class="panel__detail" data-detail-col>
+      <div class="placeholder" data-case-placeholder>
+        <span class="placeholder__icon" aria-hidden="true"><Icon name="document" size={22} /></span>
+        <p>{t.cases.selectPrompt}</p>
+      </div>
+      <PermissionDenied content={t.permissions} body={t.permissions.body} backLabel={t.cases.detail.back} />
+      <div class="detail-host" data-case-detail-host></div>
+    </div>
+  </div>
+
+  <div class="inspections" id={t.inspections.id} aria-labelledby="inst-inspections-title" role="region">
+    <h3 id="inst-inspections-title" class="inspections__title">{t.inspections.title}</h3>
+    <p class="inspections__intro">{t.inspections.intro}</p>
+    <div class="table-wrap" data-loadable>
+      <table class="itable" data-testid="inspection-list">
+        <thead>
+          <tr>
+            <th scope="col">{t.inspections.columns.id}</th>
+            <th scope="col">{t.inspections.columns.site}</th>
+            <th scope="col">{t.inspections.columns.date}</th>
+            <th scope="col">{t.inspections.columns.inspector}</th>
+            <th scope="col">{t.inspections.columns.status}</th>
+            <th scope="col">{t.inspections.columns.result}</th>
+            <th scope="col">{t.inspections.columns.caseRef}</th>
+          </tr>
+        </thead>
+        <tbody>
+          {irows.map(({ i, proto }) => (
+            <tr data-inspection-id={i.id} data-inspector={i.inspectorId} data-case={i.caseId} data-proto={proto ? '' : undefined} hidden={proto}>
+              <td data-label={t.inspections.columns.id} class="mono" data-slot="id">{i.id}</td>
+              <td data-label={t.inspections.columns.site} data-slot="site">{i.site} · {i.region}</td>
+              <td data-label={t.inspections.columns.date} class="mono" data-slot="date">{fmtDateTime(i.at, locale)}</td>
+              <td data-label={t.inspections.columns.inspector} data-slot="inspector">{personName(i.inspectorId)}</td>
+              <td data-label={t.inspections.columns.status} data-status-pill>
+                <StatusPill tone={INSPECTION_STATUS_PILL[i.status].tone} icon={INSPECTION_STATUS_PILL[i.status].icon} size="sm">{labels.inspectionStatus[i.status]}</StatusPill>
+              </td>
+              <td data-label={t.inspections.columns.result} data-slot="result">{i.result ? i.result[locale] : t.inspections.noResult}</td>
+              <td data-label={t.inspections.columns.caseRef} class="mono" data-slot="case">{i.caseId || '—'}</td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- Plantillas del detalle de caso -->
+  <template data-tpl="case-detail">
+    <article class="detail" data-testid="case-detail" tabindex="-1" aria-labelledby="inst-case-detail-title">
+      <div class="detail__toolbar">
+        <button type="button" class="detail__back" data-action="back">
+          <span class="detail__back-icon" aria-hidden="true"><Icon name="arrow-right" size={16} /></span>
+          <span>{t.cases.detail.back}</span>
+        </button>
+        <span class="detail__kicker">{t.cases.columns.id}</span>
+        <span class="detail__id mono" data-slot="id"></span>
+      </div>
+      <header class="detail__head">
+        <div class="detail__pills" data-slot="pills"></div>
+        <h3 class="detail__title" id="inst-case-detail-title" data-slot="title"></h3>
+      </header>
+      <dl class="meta">
+        <div class="meta__item"><dt>{t.cases.detail.inspector}</dt><dd data-slot="inspector"></dd></div>
+        <div class="meta__item"><dt>{t.cases.detail.opened}</dt><dd class="mono" data-slot="opened"></dd></div>
+      </dl>
+      <section class="detail__section">
+        <h4 id="inst-case-alerts">{t.cases.detail.linkedAlerts}</h4>
+        <ul class="linked" data-slot="alerts"></ul>
+      </section>
+      <section class="detail__section">
+        <h4 id="inst-case-timeline">{t.cases.detail.timeline}</h4>
+        <ol class="timeline" data-slot="timeline"></ol>
+      </section>
+      <section class="detail__section">
+        <h4 id="inst-case-outcome">{t.cases.detail.outcome}</h4>
+        <p data-slot="outcome"></p>
+      </section>
+      <section class="detail__section detail__actions">
+        <h4 id="inst-case-actions">{t.cases.detail.actions}</h4>
+        <div class="cluster">
+          <Button variant="primary" size="sm" icon="check" iconPosition="start" data-action="close-case">{t.cases.detail.closeCase}</Button>
+        </div>
+        <p class="detail__hint" data-slot="hint" role="status"></p>
+      </section>
+    </article>
+  </template>
+
+  <template data-tpl="linked-alert">
+    <li class="linked__item">
+      <button type="button" class="linked__btn" data-alert-open="">
+        <span class="linked__pill" data-slot="pill"></span>
+        <span class="linked__type" data-slot="type"></span>
+        <span class="linked__id mono" data-slot="id"></span>
+        <span class="linked__cta">
+          <span>{t.cases.detail.openAlert}</span>
+          <Icon name="arrow-right" size={14} />
+        </span>
+      </button>
+    </li>
+  </template>
+
+  <template data-tpl="timeline-item">
+    <li class="tl">
+      <time class="tl__time mono" data-slot="time"></time>
+      <span class="tl__actor" data-slot="actor"></span>
+      <p class="tl__desc" data-slot="desc"></p>
+    </li>
+  </template>
+</section>
+
+<style>
+  .cases__header {
+    max-width: 62ch;
+    margin-bottom: var(--space-6);
+  }
+  .cases__header h2 {
+    font-size: var(--text-2xl);
+  }
+  .cases__intro {
+    font-size: var(--text-base);
+  }
+  .panel {
+    display: grid;
+    gap: var(--space-6);
+    align-items: start;
+  }
+  @media (min-width: 64em) {
+    .panel {
+      grid-template-columns: minmax(0, 5fr) minmax(0, 6fr);
+    }
+    .panel__detail {
+      position: sticky;
+      top: 5.25rem;
+      max-height: calc(100dvh - 6rem);
+      overflow-y: auto;
+      overscroll-behavior: contain;
+      padding: 4px;
+      margin: -4px;
+    }
+  }
+  .panel__list,
+  .panel__detail {
+    min-width: 0;
+  }
+  .cases__listtitle {
+    margin-bottom: var(--space-3);
+    font-size: var(--text-lg);
+  }
+
+  .skeleton {
+    display: none;
+    gap: var(--space-2);
+  }
+  :global(.inst[data-load='loading']) .skeleton {
+    display: grid;
+  }
+  .skeleton__bar {
+    display: block;
+    height: 5.5rem;
+    border-radius: var(--radius-md);
+    background: var(--color-neutral-100);
+    animation: skeleton-pulse 1.2s var(--ease-standard) infinite alternate;
+  }
+  .skeleton__bar:nth-child(2) {
+    animation-delay: 120ms;
+  }
+  @keyframes skeleton-pulse {
+    from {
+      opacity: 0.55;
+    }
+    to {
+      opacity: 1;
+    }
+  }
+
+  /* ---- Filas de casos ---- */
+  .clist {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: grid;
+    gap: var(--space-2);
+  }
+  .crow__btn {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-2);
+    width: 100%;
+    min-height: var(--tap-min);
+    padding: var(--space-3) var(--space-4);
+    border: var(--border-width) solid var(--color-border);
+    border-left: 4px solid var(--color-navy-700);
+    border-radius: var(--radius-md);
+    background: var(--color-surface);
+    color: var(--color-text);
+    text-align: left;
+    transition:
+      border-color var(--dur-fast) var(--ease-standard),
+      background-color var(--dur-fast) var(--ease-standard);
+  }
+  .crow[data-status='closed'] .crow__btn {
+    border-left-color: var(--color-border-strong);
+    background: var(--color-bg-subtle);
+  }
+  .crow__btn:hover {
+    background: var(--color-bg-subtle);
+    border-color: var(--color-border-strong);
+  }
+  .crow__btn[aria-current='true'] {
+    background: var(--color-cobalt-50);
+    border-color: var(--color-cobalt-600);
+    box-shadow: inset 0 0 0 1px var(--color-cobalt-600);
+  }
+  .crow__top {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--space-2);
+  }
+  .crow__id {
+    font-size: var(--text-sm);
+    font-weight: var(--weight-medium);
+    color: var(--color-navy-800);
+  }
+  .crow__title {
+    font-weight: var(--weight-semibold);
+    color: var(--color-heading);
+    font-size: var(--text-sm);
+    line-height: var(--leading-snug);
+  }
+  .crow__meta {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: var(--space-2) var(--space-4);
+    font-size: var(--text-xs);
+    color: var(--color-text-secondary);
+  }
+  .crow__inspector,
+  .crow__alerts {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.25rem;
+  }
+
+  .placeholder {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: var(--space-2);
+    padding: var(--space-6);
+    border: var(--border-width) dashed var(--color-border-strong);
+    border-radius: var(--radius-lg);
+    background: var(--color-bg-subtle);
+    color: var(--color-text-secondary);
+  }
+  .placeholder__icon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 2.75rem;
+    height: 2.75rem;
+    border-radius: var(--radius-md);
+    background: var(--color-neutral-bg);
+    color: var(--color-neutral-text);
+  }
+  .placeholder p {
+    margin: var(--space-2) 0 0;
+    font-size: var(--text-sm);
+  }
+
+  /* ---- Detalle de caso ---- */
+  .detail {
+    padding: var(--space-6);
+    border: var(--border-width) solid var(--color-border);
+    border-top: 4px solid var(--color-navy-900);
+    border-radius: var(--radius-lg);
+    background: var(--color-surface);
+    box-shadow: var(--shadow-sm);
+  }
+  .detail:focus-visible {
+    outline-offset: -3px;
+  }
+  .detail__toolbar {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: var(--space-3);
+    margin-bottom: var(--space-4);
+  }
+  .detail__back {
+    display: none;
+    align-items: center;
+    gap: var(--space-2);
+    min-height: var(--tap-min);
+    padding: 0.5rem 0.75rem;
+    border: var(--border-width) solid var(--color-border-strong);
+    border-radius: var(--radius-md);
+    background: var(--color-surface);
+    color: var(--color-link);
+    font-size: var(--text-sm);
+    font-weight: var(--weight-medium);
+  }
+  .detail__back-icon {
+    display: inline-flex;
+    transform: rotate(180deg);
+  }
+  @media (max-width: 63.99em) {
+    .detail__toolbar {
+      display: grid;
+      grid-template-columns: 1fr auto;
+      align-items: center;
+    }
+    .detail__back {
+      display: inline-flex;
+      grid-column: 1 / -1;
+      justify-self: start;
+    }
+    .detail__id {
+      margin-left: 0;
+      justify-self: end;
+    }
+  }
+  .detail__kicker {
+    font-family: var(--font-mono);
+    font-size: var(--text-xs);
+    letter-spacing: var(--tracking-wide);
+    text-transform: uppercase;
+    color: var(--color-text-secondary);
+  }
+  .detail__id {
+    margin-left: auto;
+    font-size: var(--text-sm);
+    color: var(--color-navy-800);
+  }
+  .detail__head {
+    margin-bottom: var(--space-5);
+  }
+  .detail__pills {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-2);
+    margin-bottom: var(--space-3);
+  }
+  .detail__title {
+    margin-bottom: 0;
+    font-size: var(--text-xl);
+  }
+  .meta {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 12rem), 1fr));
+    gap: var(--space-3) var(--space-4);
+    margin: 0 0 var(--space-5);
+    padding: var(--space-4);
+    border-radius: var(--radius-md);
+    background: var(--color-bg-subtle);
+  }
+  .meta dt {
+    font-family: var(--font-mono);
+    font-size: var(--text-xs);
+    letter-spacing: var(--tracking-wide);
+    text-transform: uppercase;
+    color: var(--color-text-secondary);
+  }
+  .meta dd {
+    margin: 0.125rem 0 0;
+    font-size: var(--text-sm);
+    overflow-wrap: anywhere;
+  }
+  .detail__section {
+    padding-top: var(--space-4);
+    border-top: var(--border-width) solid var(--color-border);
+  }
+  .detail__section + .detail__section {
+    margin-top: var(--space-4);
+  }
+  .detail__section h4 {
+    margin-bottom: var(--space-2);
+    font-size: var(--text-base);
+  }
+  .detail__section p {
+    font-size: var(--text-sm);
+    line-height: var(--leading-relaxed);
+  }
+  .detail__hint {
+    min-height: 1.5em;
+    margin: var(--space-3) 0 0;
+    color: var(--color-text-secondary);
+  }
+  .detail__hint:empty {
+    display: none;
+  }
+
+  .linked {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: grid;
+    gap: var(--space-2);
+  }
+  .linked__btn {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: var(--space-2) var(--space-3);
+    width: 100%;
+    min-height: var(--tap-min);
+    padding: var(--space-2) var(--space-3);
+    border: var(--border-width) solid var(--color-border);
+    border-radius: var(--radius-md);
+    background: var(--color-surface);
+    color: var(--color-text);
+    font-size: var(--text-sm);
+    text-align: left;
+  }
+  .linked__btn:hover {
+    border-color: var(--color-cobalt-600);
+    background: var(--color-cobalt-50);
+  }
+  .linked__type {
+    font-weight: var(--weight-medium);
+    color: var(--color-heading);
+  }
+  .linked__id {
+    color: var(--color-text-secondary);
+    font-size: var(--text-xs);
+  }
+  .linked__cta {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.25rem;
+    margin-left: auto;
+    color: var(--color-link);
+    font-weight: var(--weight-medium);
+  }
+
+  .timeline {
+    list-style: none;
+    margin: 0;
+    padding: 0 0 0 var(--space-4);
+    border-left: 2px solid var(--color-cobalt-100);
+    display: grid;
+    gap: var(--space-3);
+  }
+  .tl {
+    position: relative;
+    display: grid;
+    gap: 0.125rem;
+    font-size: var(--text-sm);
+  }
+  .tl::before {
+    content: '';
+    position: absolute;
+    left: calc(-1 * var(--space-4) - 6px);
+    top: 0.45em;
+    width: 10px;
+    height: 10px;
+    border-radius: 2px;
+    background: var(--color-cobalt-600);
+  }
+  .tl__time {
+    font-size: var(--text-xs);
+    color: var(--color-text-secondary);
+  }
+  .tl__actor {
+    font-weight: var(--weight-medium);
+    color: var(--color-heading);
+  }
+  .tl__desc {
+    margin: 0;
+    color: var(--color-text);
+  }
+
+  /* ---- Inspecciones ---- */
+  .inspections {
+    margin-top: var(--space-10);
+  }
+  .inspections__title {
+    font-size: var(--text-lg);
+    margin-bottom: var(--space-2);
+  }
+  .inspections__intro {
+    color: var(--color-text-secondary);
+    font-size: var(--text-sm);
+    margin-bottom: var(--space-4);
+  }
+  .table-wrap {
+    overflow-x: auto;
+    border: var(--border-width) solid var(--color-border);
+    border-radius: var(--radius-md);
+    background: var(--color-surface);
+  }
+  .itable {
+    min-width: 40rem;
+    font-size: var(--text-sm);
+  }
+  .itable th {
+    font-family: var(--font-mono);
+    font-size: var(--text-xs);
+    letter-spacing: var(--tracking-wide);
+    text-transform: uppercase;
+    background: var(--color-bg-subtle);
+    white-space: nowrap;
+  }
+  .itable td {
+    vertical-align: middle;
+  }
+  .itable td.mono {
+    white-space: nowrap;
+  }
+  .itable tbody tr:last-child td {
+    border-bottom: 0;
+  }
+  @media (max-width: 40em) {
+    .table-wrap {
+      overflow: visible;
+      border: 0;
+      background: transparent;
+    }
+    .itable {
+      min-width: 0;
+    }
+    .itable thead {
+      position: absolute;
+      width: 1px;
+      height: 1px;
+      overflow: hidden;
+      clip: rect(0, 0, 0, 0);
+    }
+    .itable tr {
+      display: grid;
+      gap: var(--space-1);
+      margin-bottom: var(--space-3);
+      padding: var(--space-3) var(--space-4);
+      border: var(--border-width) solid var(--color-border);
+      border-radius: var(--radius-md);
+      background: var(--color-surface);
+    }
+    .itable td {
+      display: grid;
+      grid-template-columns: 7rem 1fr;
+      gap: var(--space-2);
+      padding: 0.125rem 0;
+      border: 0;
+    }
+    .itable td::before {
+      content: attr(data-label);
+      font-family: var(--font-mono);
+      font-size: var(--text-xs);
+      letter-spacing: var(--tracking-wide);
+      text-transform: uppercase;
+      color: var(--color-text-secondary);
+    }
+  }
+  @media (max-width: 22.5em) {
+    .itable td {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  /* ---- Móvil: lista o detalle ---- */
+  @media (max-width: 63.99em) {
+    :global(.inst.is-enhanced) .panel__detail {
+      display: none;
+    }
+    :global(.inst.is-enhanced) .panel.is-detail-open .panel__detail {
+      display: block;
+    }
+    :global(.inst.is-enhanced) .panel.is-detail-open .panel__list {
+      display: none;
+    }
+  }
+</style>

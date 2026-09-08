@@ -1,0 +1,166 @@
+---
+/**
+ * Layout base: metadatos SEO/OG/hreflang, fuentes autoalojadas, estilos globales, skip link,
+ * cabecera, pie e indicador de demostración. Sin scripts inline (compatible con CSP estricta);
+ * el único bloque inline es el JSON-LD (bloque de datos, no ejecutable).
+ */
+import '@fontsource/space-grotesk/latin-600.css';
+import '@fontsource/space-grotesk/latin-700.css';
+import '@fontsource/roboto/latin-400.css';
+import '@fontsource/roboto/latin-500.css';
+import '@fontsource/roboto/latin-600.css';
+import '@fontsource/roboto/latin-700.css';
+import '@fontsource/roboto-mono/latin-400.css';
+import '@fontsource/roboto-mono/latin-500.css';
+// Only the provisional wordmark retains its original geometric letterforms.
+import '@fontsource/poppins/latin-700.css';
+import headingFont from '@fontsource/space-grotesk/files/space-grotesk-latin-700-normal.woff2?url';
+import bodyFont from '@fontsource/roboto/files/roboto-latin-400-normal.woff2?url';
+import '@/styles/tokens.css';
+import '@/styles/base.css';
+import '@/styles/motion.css';
+
+import Header from '@/components/site/Header.astro';
+import HeaderV2 from '@/components/site/HeaderV2.astro';
+import Footer from '@/components/site/Footer.astro';
+import DemoBadge from '@/components/ui/DemoBadge.astro';
+import { getContent } from '@/content';
+import { env } from '@/config/env';
+import { withBase, LOCALES, LOCALE_LABELS, ROUTES, type Locale, type RouteKey } from '@/i18n';
+import type { TenantId } from '@/config/tenants';
+
+interface Props {
+  locale: Locale;
+  routeKey: RouteKey;
+  title: string;
+  description: string;
+  /** Ruta absoluta de la imagen OG (por defecto la genérica). */
+  ogImage?: string;
+  noindex?: boolean;
+  tenant?: TenantId;
+  bodyClass?: string;
+  /** V2 editorial header and in-hero disclosure; other routes retain the v1 shell. */
+  homeV2?: boolean;
+  /** Tipo de página para JSON-LD (WebPage por defecto). */
+  schemaType?: 'WebPage' | 'AboutPage' | 'ContactPage';
+}
+
+const {
+  locale,
+  routeKey,
+  title,
+  description,
+  ogImage = withBase('/og/default.png'),
+  noindex = false,
+  tenant,
+  bodyClass,
+  homeV2 = false,
+  schemaType = 'WebPage',
+} = Astro.props;
+
+const content = getContent(locale);
+const { common } = content;
+const fullTitle = routeKey === 'home' ? `${common.meta.siteName} — ${common.brand.tagline}` : common.meta.titleTemplate.replace('%s', title);
+const siteUrl = env.siteUrl;
+const canonicalPath = routeKey === 'notFound' ? ROUTES[locale].home : ROUTES[locale][routeKey];
+const canonical = new URL(withBase(canonicalPath), siteUrl).toString();
+const ogImageUrl = new URL(ogImage, siteUrl).toString();
+const alternates = LOCALES.map((l) => ({ locale: l, href: new URL(withBase(ROUTES[l][routeKey === 'notFound' ? 'home' : routeKey]), siteUrl).toString() }));
+
+const jsonLd = {
+  '@context': 'https://schema.org',
+  '@graph': [
+    {
+      '@type': 'Organization',
+      '@id': `${siteUrl}/#organization`,
+      name: common.meta.siteName,
+      url: siteUrl,
+      slogan: common.brand.tagline,
+    },
+    {
+      '@type': 'WebSite',
+      '@id': `${siteUrl}/#website`,
+      url: siteUrl,
+      name: common.meta.siteName,
+      inLanguage: LOCALE_LABELS[locale].htmlLang,
+      publisher: { '@id': `${siteUrl}/#organization` },
+    },
+    {
+      '@type': schemaType,
+      url: canonical,
+      name: fullTitle,
+      description,
+      inLanguage: LOCALE_LABELS[locale].htmlLang,
+      isPartOf: { '@id': `${siteUrl}/#website` },
+    },
+  ],
+};
+---
+
+<!doctype html>
+<html lang={LOCALE_LABELS[locale].htmlLang} dir="ltr">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="preload" href={headingFont} as="font" type="font/woff2" crossorigin />
+    <link rel="preload" href={bodyFont} as="font" type="font/woff2" crossorigin />
+    <title>{fullTitle}</title>
+    <meta name="description" content={description} />
+    <link rel="canonical" href={canonical} />
+    {alternates.map((alt) => <link rel="alternate" hreflang={LOCALE_LABELS[alt.locale].htmlLang} href={alt.href} />)}
+    <link rel="alternate" hreflang="x-default" href={alternates[0]?.href} />
+    {noindex && <meta name="robots" content="noindex, nofollow" />}
+    <meta name="theme-color" content="#0b1f3f" />
+    <meta name="color-scheme" content="light" />
+    <link rel="icon" href={withBase('/favicon.svg')} type="image/svg+xml" />
+    <link rel="apple-touch-icon" href={withBase('/apple-touch-icon.png')} />
+    <link rel="manifest" href={withBase('/site.webmanifest')} />
+
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content={common.meta.siteName} />
+    <meta property="og:title" content={fullTitle} />
+    <meta property="og:description" content={description} />
+    <meta property="og:url" content={canonical} />
+    <meta property="og:image" content={ogImageUrl} />
+    <meta property="og:image:alt" content={common.meta.ogImageAlt} />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:locale" content={LOCALE_LABELS[locale].ogLocale} />
+    {LOCALES.filter((l) => l !== locale).map((l) => <meta property="og:locale:alternate" content={LOCALE_LABELS[l].ogLocale} />)}
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={fullTitle} />
+    <meta name="twitter:description" content={description} />
+    <meta name="twitter:image" content={ogImageUrl} />
+    <link rel="sitemap" href={withBase('/sitemap-index.xml')} />
+    <script type="application/ld+json" is:inline set:html={JSON.stringify(jsonLd)} />
+  </head>
+  <body class:list={[bodyClass]} data-tenant={tenant && tenant !== 'traza' ? tenant : undefined}>
+    <a class="skip-link" href="#main">{common.skipLink}</a>
+    {!homeV2 && <DemoBadge content={common.demoBadge} variant="strip" />}
+    {homeV2 ? <HeaderV2 locale={locale} common={common} /> : <Header locale={locale} routeKey={routeKey} common={common} />}
+    <main id="main" tabindex="-1">
+      <slot />
+    </main>
+    <Footer locale={locale} routeKey={routeKey} common={common} />
+    {!homeV2 && <DemoBadge content={common.demoBadge} variant="floating" />}
+  </body>
+</html>
+
+<script>
+  import { initMotion } from '@/lib/motion';
+  import { track } from '@/lib/analytics';
+  initMotion();
+  track('page_view');
+</script>
+
+<style is:global>
+  body {
+    display: flex;
+    flex-direction: column;
+    min-height: 100dvh;
+  }
+  main {
+    flex: 1 0 auto;
+    outline: none;
+  }
+</style>

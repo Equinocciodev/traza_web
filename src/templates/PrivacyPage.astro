@@ -1,0 +1,143 @@
+---
+/**
+ * Aviso de privacidad provisional: documento de lectura en columna estrecha con índice de secciones.
+ */
+import Base from '@/layouts/Base.astro';
+import Callout from '@/components/ui/Callout.astro';
+import QrMotif from '@/components/ui/QrMotif.astro';
+import { getContent } from '@/content';
+import type { Locale } from '@/i18n';
+
+interface Props {
+  locale: Locale;
+}
+const { locale } = Astro.props;
+const { privacy } = getContent(locale);
+const sectionId = (index: number) => `privacy-section-${index + 1}`;
+---
+
+<Base locale={locale} routeKey="privacy" title={privacy.meta.title} description={privacy.meta.description}>
+  <article class="privacy">
+    <header class="privacy__head on-dark">
+      <div class="privacy__motif" aria-hidden="true"><QrMotif /></div>
+      <div class="container container--narrow privacy__head-inner">
+        <p class="eyebrow">{privacy.meta.title}</p>
+        <h1 class="privacy__title">{privacy.title}</h1>
+        <p class="privacy__updated mono">
+          <span>{privacy.updatedLabel}:</span> <span>{privacy.updated}</span>
+        </p>
+      </div>
+    </header>
+
+    <div class="container container--narrow privacy__body section">
+      <Callout tone="info" class="privacy__provisional">{privacy.provisionalNote}</Callout>
+      <p class="lede privacy__intro">{privacy.intro}</p>
+
+      <nav class="privacy__toc" aria-label={privacy.meta.title}>
+        <p class="privacy__toc-title mono">{privacy.meta.title}</p>
+        <ol class="privacy__toc-list">
+          {
+            privacy.sections.map((section, index) => (
+              <li>
+                <a href={`#${sectionId(index)}`}>{section.title}</a>
+              </li>
+            ))
+          }
+        </ol>
+      </nav>
+
+      <div class="prose privacy__sections">
+        {
+          privacy.sections.map((section, index) => (
+            <section aria-labelledby={sectionId(index)} data-reveal>
+              <h2 id={sectionId(index)}>{section.title}</h2>
+              {section.paragraphs.map((paragraph) => (
+                <p>{paragraph}</p>
+              ))}
+            </section>
+          ))
+        }
+      </div>
+    </div>
+  </article>
+</Base>
+
+<style>
+  .privacy__head {
+    position: relative;
+    overflow: hidden;
+    isolation: isolate;
+    padding-block: clamp(2.5rem, 6vw, 4.5rem);
+    background: var(--color-navy-900);
+  }
+  .privacy__motif {
+    position: absolute;
+    z-index: -1;
+    top: -3rem;
+    right: -4rem;
+    width: 16rem;
+    height: 16rem;
+    color: var(--color-white);
+    pointer-events: none;
+  }
+  .privacy__title {
+    font-size: var(--text-3xl);
+    color: var(--color-white);
+    margin-bottom: var(--space-4);
+  }
+  .privacy__updated {
+    margin: 0;
+    font-size: var(--text-sm);
+    color: rgba(255, 255, 255, 0.78);
+  }
+  .privacy__body {
+    display: grid;
+    gap: var(--space-8);
+  }
+  .privacy__intro {
+    max-width: none;
+    margin: 0;
+  }
+  .privacy__toc {
+    padding: var(--space-5) var(--space-6);
+    border: var(--border-width) solid var(--color-border);
+    border-radius: var(--radius-lg);
+    background: var(--color-bg-subtle);
+  }
+  .privacy__toc-title {
+    margin: 0 0 var(--space-3);
+    font-size: var(--text-xs);
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--color-text-secondary);
+  }
+  .privacy__toc-list {
+    margin: 0;
+    padding-left: 1.25em;
+    columns: 1;
+  }
+  .privacy__toc-list li {
+    padding: 0.25rem 0;
+    break-inside: avoid;
+  }
+  .privacy__toc-list a {
+    display: inline-block;
+    min-height: 1.75rem;
+  }
+  @media (min-width: 40em) {
+    .privacy__toc-list {
+      columns: 2;
+      column-gap: var(--space-8);
+    }
+  }
+  .privacy__sections > section + section {
+    margin-top: var(--space-10);
+  }
+  .privacy__sections h2 {
+    margin-top: 0;
+    scroll-margin-top: 6rem;
+  }
+  .privacy__sections p {
+    color: var(--color-text-secondary);
+  }
+</style>

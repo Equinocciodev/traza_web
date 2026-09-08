@@ -1,0 +1,30 @@
+---
+/**
+ * Plantillas clonables de pastillas de estado para la isla institucional.
+ * Cada `<template data-pill="grupo:valor">` contiene una StatusPill ya rotulada (icono + texto).
+ * La isla las clona para no construir markup con cadenas y para heredar los estilos scoped.
+ */
+import StatusPill from '@/components/ui/StatusPill.astro';
+import type { InstitutionalLabels } from '@/content/institutional.types';
+import { SEVERITY_PILL, ALERT_STATUS_PILL, CASE_STATUS_PILL, INSPECTION_STATUS_PILL, VERDICT_PILL, OUTCOME_PILL, pillKey, type PillSpec } from './pills';
+
+interface Props {
+  labels: InstitutionalLabels;
+}
+const { labels } = Astro.props;
+
+const entries: { key: string; spec: PillSpec; label: string }[] = [
+  ...Object.entries(SEVERITY_PILL).map(([k, spec]) => ({ key: pillKey('severity', k), spec, label: labels.severity[k as keyof typeof labels.severity] })),
+  ...Object.entries(ALERT_STATUS_PILL).map(([k, spec]) => ({ key: pillKey('alert', k), spec, label: labels.alertStatus[k as keyof typeof labels.alertStatus] })),
+  ...Object.entries(CASE_STATUS_PILL).map(([k, spec]) => ({ key: pillKey('case', k), spec, label: labels.caseStatus[k as keyof typeof labels.caseStatus] })),
+  ...Object.entries(INSPECTION_STATUS_PILL).map(([k, spec]) => ({ key: pillKey('inspection', k), spec, label: labels.inspectionStatus[k as keyof typeof labels.inspectionStatus] })),
+  ...Object.entries(VERDICT_PILL).map(([k, spec]) => ({ key: pillKey('verdict', k), spec, label: labels.verdict[k as keyof typeof labels.verdict] })),
+  ...Object.entries(OUTCOME_PILL).map(([k, spec]) => ({ key: pillKey('outcome', k), spec, label: labels.outcome[k as keyof typeof labels.outcome] })),
+];
+---
+
+{entries.map((e) => (
+  <template data-pill={e.key}>
+    <StatusPill tone={e.spec.tone} icon={e.spec.icon} size="sm">{e.label}</StatusPill>
+  </template>
+))}

@@ -1,0 +1,161 @@
+---
+/**
+ * Seguridad y confianza: principios, arquitectura objetivo, por qué nunca decimos "auténtico",
+ * privacidad, lo que no afirmamos, reporte responsable y cierre.
+ */
+import Base from '@/layouts/Base.astro';
+import PageHero from '@/components/ui/PageHero.astro';
+import Callout from '@/components/ui/Callout.astro';
+import CheckList from '@/components/ui/CheckList.astro';
+import CtaBand from '@/components/ui/CtaBand.astro';
+import FeatureGrid from '@/components/ui/FeatureGrid.astro';
+import Icon from '@/components/ui/Icon.astro';
+import SectionHeader from '@/components/ui/SectionHeader.astro';
+import { getContent } from '@/content';
+import type { Locale } from '@/i18n';
+
+interface Props {
+  locale: Locale;
+}
+const { locale } = Astro.props;
+const { security } = getContent(locale);
+---
+
+<Base locale={locale} routeKey="security" title={security.meta.title} description={security.meta.description}>
+  <PageHero eyebrow={security.hero.eyebrow} title={security.hero.title} subtitle={security.hero.subtitle} icon="shield-check" />
+
+  <section class="section" aria-labelledby="principles-title" data-reveal>
+    <div class="container">
+      <SectionHeader title={security.principles.title} intro={security.principles.intro} id="principles-title" />
+      <FeatureGrid items={security.principles.items} columns={3} />
+    </div>
+  </section>
+
+  <section class="section section--subtle" aria-labelledby="target-title" data-reveal>
+    <div class="container">
+      <SectionHeader title={security.target.title} intro={security.target.intro} id="target-title" />
+      <FeatureGrid items={security.target.items} columns={3} numbered />
+      <div class="section__note">
+        <Callout tone="info">{security.target.note}</Callout>
+      </div>
+    </div>
+  </section>
+
+  <section class="section honesty on-dark" aria-labelledby="honesty-title" data-reveal>
+    <div class="container honesty__inner">
+      <SectionHeader title={security.verificationHonesty.title} intro={security.verificationHonesty.body} id="honesty-title" class="honesty__header" />
+      <div class="honesty__list">
+        <CheckList items={security.verificationHonesty.bullets} icon="info" />
+      </div>
+    </div>
+  </section>
+
+  <section class="section" aria-labelledby="privacy-title" data-reveal>
+    <div class="container privacy">
+      <SectionHeader title={security.privacy.title} intro={security.privacy.body} id="privacy-title" class="privacy__header" />
+      <div class="privacy__list">
+        <CheckList items={security.privacy.bullets} tone="muted" icon="lock" />
+      </div>
+    </div>
+  </section>
+
+  <section class="section section--subtle" aria-labelledby="transparency-title" data-reveal>
+    <div class="container transparency">
+      <SectionHeader title={security.transparency.title} intro={security.transparency.intro} id="transparency-title" class="transparency__header" />
+      <div class="transparency__list">
+        <CheckList items={security.transparency.items} marker="square" />
+      </div>
+    </div>
+  </section>
+
+  <section class="section" aria-labelledby="disclosure-title" data-reveal>
+    <div class="container disclosure">
+      <div class="disclosure__panel">
+        <span class="disclosure__icon" aria-hidden="true"><Icon name="shield" size={24} /></span>
+        <div class="disclosure__text">
+          <h2 id="disclosure-title" class="disclosure__title">{security.disclosure.title}</h2>
+          <p>{security.disclosure.body}</p>
+          <Callout tone="neutral">{security.disclosure.note}</Callout>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <CtaBand locale={locale} title={security.cta.title} body={security.cta.body} primaryCta={security.cta.primaryCta} secondaryCta={security.cta.secondaryCta} />
+</Base>
+
+<style>
+  .section__note {
+    max-width: 62ch;
+    margin-top: var(--space-8);
+  }
+  .honesty {
+    background: var(--color-navy-900);
+  }
+  .honesty__inner,
+  .privacy,
+  .transparency {
+    display: grid;
+    gap: var(--space-8);
+    align-items: start;
+  }
+  @media (min-width: 60em) {
+    .honesty__inner,
+    .privacy,
+    .transparency {
+      grid-template-columns: minmax(0, 5fr) minmax(0, 7fr);
+      gap: var(--space-16);
+    }
+  }
+  .honesty :global(.honesty__header),
+  .privacy :global(.privacy__header),
+  .transparency :global(.transparency__header) {
+    margin-bottom: 0;
+  }
+  .honesty__list {
+    padding: var(--space-6);
+    border: var(--border-width) solid rgba(255, 255, 255, 0.16);
+    border-radius: var(--radius-lg);
+    background: rgba(255, 255, 255, 0.05);
+  }
+  .privacy__list,
+  .transparency__list {
+    padding: var(--space-6);
+    border: var(--border-width) solid var(--color-border);
+    border-radius: var(--radius-lg);
+    background: var(--color-surface);
+  }
+  .disclosure__panel {
+    display: grid;
+    grid-template-columns: auto minmax(0, 1fr);
+    gap: var(--space-5);
+    max-width: 52rem;
+    padding: var(--space-6);
+    border: var(--border-width) solid var(--color-border);
+    border-radius: var(--radius-lg);
+    background: var(--color-surface);
+  }
+  .disclosure__icon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 3rem;
+    height: 3rem;
+    border-radius: var(--radius-md);
+    background: var(--color-navy-900);
+    color: var(--color-cyan-300);
+  }
+  .disclosure__title {
+    font-size: var(--text-2xl);
+    margin-bottom: var(--space-3);
+  }
+  .disclosure__text > p {
+    margin-bottom: var(--space-4);
+    color: var(--color-text-secondary);
+  }
+  @media (max-width: 30em) {
+    .disclosure__panel {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>

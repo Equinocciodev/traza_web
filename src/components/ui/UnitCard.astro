@@ -1,0 +1,127 @@
+---
+/**
+ * Tarjeta de unidad simulada: código en mono, campos de la historia de la unidad y estado.
+ * Todo el contenido llega del diccionario (datos ficticios). Sin JavaScript.
+ */
+import Icon from './Icon.astro';
+import StatusPill from './StatusPill.astro';
+
+interface Props {
+  caption: string;
+  code: string;
+  fields: { label: string; value: string }[];
+  statusLabel?: string;
+  statusTone?: 'success' | 'warning' | 'danger' | 'info' | 'neutral';
+  /** Etiqueta discreta (chip) que se muestra en la cabecera; por defecto la propia `caption`. */
+  tag?: string;
+  class?: string;
+}
+const { caption, code, fields, statusLabel, statusTone = 'success', tag, class: className } = Astro.props;
+---
+
+<figure class:list={['unit-card', className]}>
+  <figcaption class="unit-card__head">
+    <span class="demo-tag">{tag ?? caption}</span>
+    <span class="unit-card__qr" aria-hidden="true"><Icon name="qr" size={22} /></span>
+  </figcaption>
+  <p class="unit-card__code mono">{code}</p>
+  <dl class="unit-card__fields">
+    {
+      fields.map((field) => (
+        <div class="unit-card__row">
+          <dt>{field.label}</dt>
+          <dd>{field.value}</dd>
+        </div>
+      ))
+    }
+  </dl>
+  {
+    statusLabel && (
+      <div class="unit-card__status">
+        <StatusPill tone={statusTone} class="unit-card__pill">
+          {statusLabel}
+        </StatusPill>
+      </div>
+    )
+  }
+</figure>
+
+<style>
+  .unit-card {
+    --uc-fg: var(--color-neutral-900);
+    --uc-muted: var(--color-neutral-600);
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-4);
+    margin: 0;
+    padding: var(--space-5);
+    width: 100%;
+    max-width: 30rem;
+    border: var(--border-width) solid var(--color-neutral-200);
+    border-radius: var(--radius-lg);
+    background: var(--color-white);
+    color: var(--uc-fg);
+    box-shadow: var(--shadow-md);
+  }
+  .unit-card__head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--space-3);
+  }
+  .unit-card__head .demo-tag {
+    color: var(--uc-muted);
+    background: var(--color-neutral-50);
+    border-color: var(--color-neutral-300);
+  }
+  .unit-card__qr {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 2.25rem;
+    height: 2.25rem;
+    border-radius: var(--radius-sm);
+    background: var(--color-navy-900);
+    color: var(--color-white);
+  }
+  .unit-card__code {
+    margin: 0;
+    font-size: var(--text-xl);
+    font-weight: var(--weight-medium);
+    letter-spacing: 0.04em;
+    color: var(--color-navy-900);
+    overflow-wrap: anywhere;
+  }
+  .unit-card__fields {
+    display: grid;
+    gap: var(--space-3);
+    margin: 0;
+    padding-top: var(--space-4);
+    border-top: var(--border-width) solid var(--color-neutral-200);
+  }
+  .unit-card__row {
+    display: grid;
+    gap: 0.125rem;
+  }
+  .unit-card__row dt {
+    font-size: var(--text-xs);
+    font-family: var(--font-mono);
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    color: var(--uc-muted);
+  }
+  .unit-card__row dd {
+    margin: 0;
+    font-size: var(--text-sm);
+    font-weight: var(--weight-medium);
+    color: var(--uc-fg);
+    overflow-wrap: anywhere;
+  }
+  .unit-card__status {
+    display: flex;
+    padding-top: var(--space-2);
+  }
+  .unit-card__status :global(.unit-card__pill) {
+    white-space: normal;
+  }
+</style>

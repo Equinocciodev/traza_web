@@ -1,0 +1,42 @@
+---
+/**
+ * Rejilla de características (icono, título, texto) sobre tarjetas con borde.
+ * `columns` fija el mínimo por columna (2/3/4 → utilidades de base.css).
+ */
+import Card from './Card.astro';
+import type { Feature } from '@/content/types';
+
+interface Props {
+  items: Feature[];
+  columns?: 2 | 3 | 4;
+  headingLevel?: 3 | 4;
+  tone?: 'default' | 'subtle' | 'outline';
+  class?: string;
+  /** Muestra un índice "01, 02…" en mono junto al icono. */
+  numbered?: boolean;
+}
+const { items, columns = 3, headingLevel = 3, tone = 'default', class: className, numbered = false } = Astro.props;
+---
+
+<ul class:list={['feature-grid', 'grid', `grid--${columns}`, className]} data-reveal data-reveal-stagger>
+  {
+    items.map((item, index) => (
+      <li class="feature-grid__item">
+        <Card title={item.title} icon={item.icon} headingLevel={headingLevel} tone={tone} tag={numbered ? String(index + 1).padStart(2, '0') : undefined}>
+          <p>{item.body}</p>
+        </Card>
+      </li>
+    ))
+  }
+</ul>
+
+<style>
+  .feature-grid {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+  .feature-grid__item {
+    min-width: 0;
+  }
+</style>

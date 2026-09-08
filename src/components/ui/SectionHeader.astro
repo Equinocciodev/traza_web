@@ -1,0 +1,40 @@
+---
+/**
+ * Encabezado de sección: eyebrow (mono), título y entradilla. `level` controla la etiqueta del título.
+ */
+interface Props {
+  eyebrow?: string;
+  title: string;
+  intro?: string;
+  level?: 2 | 3;
+  align?: 'start' | 'center';
+  class?: string;
+  id?: string;
+}
+const { eyebrow, title, intro, level = 2, align = 'start', class: className, id } = Astro.props;
+const Heading = level === 3 ? 'h3' : 'h2';
+---
+
+<div class:list={['section-header', `section-header--${align}`, className]}>
+  {eyebrow && <p class="eyebrow">{eyebrow}</p>}
+  <Heading id={id}>{title}</Heading>
+  {intro && <p class="lede">{intro}</p>}
+</div>
+
+<style>
+  .section-header {
+    max-width: 62ch;
+    margin-bottom: var(--space-10);
+  }
+  .section-header--center {
+    margin-inline: auto;
+    text-align: center;
+  }
+  .section-header--center .lede {
+    margin-inline: auto;
+  }
+  .section-header h2,
+  .section-header h3 {
+    margin-bottom: var(--space-3);
+  }
+</style>

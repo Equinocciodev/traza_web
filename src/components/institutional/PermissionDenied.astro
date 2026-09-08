@@ -1,0 +1,131 @@
+---
+/**
+ * Estado "Sin permisos para esta vista" (rol Observador). Icono + texto + botón de solicitud simulada.
+ * Se renderiza oculto en cada zona de detalle; la isla lo muestra según el rol.
+ * `backLabel` añade el botón "Volver a la lista" (solo móvil) cuando el panel vive dentro de lista + detalle.
+ */
+import Icon from '@/components/ui/Icon.astro';
+import Button from '@/components/ui/Button.astro';
+import type { InstitutionalContent } from '@/content/institutional.types';
+
+interface Props {
+  content: InstitutionalContent['permissions'];
+  /** Texto de la variante (detalle o auditoría). */
+  body: string;
+  backLabel?: string;
+  hidden?: boolean;
+  class?: string;
+}
+const { content, body, backLabel, hidden = true, class: className } = Astro.props;
+---
+
+<div class:list={['denied', className]} data-denied data-testid="permission-denied" tabindex="-1" hidden={hidden}>
+  {backLabel && (
+    <button type="button" class="denied__back" data-action="back">
+      <span class="denied__back-icon" aria-hidden="true"><Icon name="arrow-right" size={16} /></span>
+      <span>{backLabel}</span>
+    </button>
+  )}
+  <div class="denied__row">
+    <span class="denied__icon" aria-hidden="true"><Icon name="lock" size={22} /></span>
+    <div class="denied__content">
+      <p class="denied__title">{content.title}</p>
+      <p class="denied__body">{body}</p>
+      <div class="denied__actions">
+        <Button variant="secondary" size="sm" icon="key" iconPosition="start" data-action="request-access" data-testid="request-access">{content.request}</Button>
+      </div>
+      <p class="denied__requested" role="status" data-requested hidden>
+        <Icon name="check" size={16} />
+        <span>{content.requested}</span>
+      </p>
+    </div>
+  </div>
+</div>
+
+<style>
+  .denied {
+    padding: var(--space-6);
+    border: var(--border-width) dashed var(--color-border-strong);
+    border-radius: var(--radius-lg);
+    background: var(--color-bg-subtle);
+  }
+  .denied__row {
+    display: flex;
+    gap: var(--space-4);
+  }
+  .denied__back {
+    display: none;
+    align-items: center;
+    gap: var(--space-2);
+    min-height: var(--tap-min);
+    margin-bottom: var(--space-4);
+    padding: 0.5rem 0.75rem;
+    border: var(--border-width) solid var(--color-border-strong);
+    border-radius: var(--radius-md);
+    background: var(--color-surface);
+    color: var(--color-link);
+    font-size: var(--text-sm);
+    font-weight: var(--weight-medium);
+  }
+  .denied__back-icon {
+    display: inline-flex;
+    transform: rotate(180deg);
+  }
+  @media (max-width: 63.99em) {
+    .denied__back {
+      display: inline-flex;
+    }
+  }
+  .denied__icon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    width: 2.75rem;
+    height: 2.75rem;
+    border-radius: var(--radius-md);
+    background: var(--color-neutral-bg);
+    color: var(--color-neutral-text);
+  }
+  .denied__content {
+    min-width: 0;
+  }
+  .denied__title {
+    margin: 0 0 var(--space-2);
+    font-weight: var(--weight-semibold);
+    color: var(--color-heading);
+  }
+  .denied__body {
+    margin: 0 0 var(--space-4);
+    font-size: var(--text-sm);
+    color: var(--color-text-secondary);
+  }
+  .denied__actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-3);
+  }
+  .denied__requested {
+    display: flex;
+    gap: var(--space-2);
+    align-items: flex-start;
+    margin: var(--space-4) 0 0;
+    padding: var(--space-3) var(--space-4);
+    border-radius: var(--radius-md);
+    background: var(--color-success-bg);
+    color: var(--color-success-text);
+    font-size: var(--text-sm);
+  }
+  .denied__requested :global(svg) {
+    flex-shrink: 0;
+    margin-top: 0.2em;
+  }
+  @media (max-width: 30em) {
+    .denied {
+      padding: var(--space-4);
+    }
+    .denied__row {
+      flex-direction: column;
+    }
+  }
+</style>

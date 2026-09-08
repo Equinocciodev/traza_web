@@ -1,0 +1,77 @@
+---
+/**
+ * Pastilla de estado. Nunca comunica solo con color: incluye icono y texto.
+ * tone: success | warning | danger | info | neutral
+ */
+import Icon from './Icon.astro';
+import type { IconName } from '@/content/types';
+
+interface Props {
+  tone: 'success' | 'warning' | 'danger' | 'info' | 'neutral';
+  icon?: IconName;
+  class?: string;
+  size?: 'sm' | 'md';
+  [key: string]: unknown;
+}
+
+const ICONS: Record<Props['tone'], IconName> = {
+  success: 'check',
+  warning: 'warning',
+  danger: 'x',
+  info: 'info',
+  neutral: 'clock',
+};
+
+const { tone, icon, class: className, size = 'md', ...rest } = Astro.props;
+---
+
+<span class:list={['pill', `pill--${tone}`, `pill--${size}`, className]} {...rest}>
+  <Icon name={icon ?? ICONS[tone]} size={size === 'sm' ? 14 : 16} />
+  <span><slot /></span>
+</span>
+
+<style>
+  .pill {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.375rem;
+    padding: 0.25rem 0.625rem;
+    border: var(--border-width) solid var(--pill-border);
+    border-radius: var(--radius-full);
+    background: var(--pill-bg);
+    color: var(--pill-fg);
+    font-size: var(--text-sm);
+    font-weight: var(--weight-medium);
+    line-height: 1.3;
+    white-space: nowrap;
+  }
+  .pill--sm {
+    font-size: var(--text-xs);
+    padding: 0.125rem 0.5rem;
+  }
+  .pill--success {
+    --pill-bg: var(--color-success-bg);
+    --pill-fg: var(--color-success-text);
+    --pill-border: var(--color-success-border);
+  }
+  .pill--warning {
+    --pill-bg: var(--color-warning-bg);
+    --pill-fg: var(--color-warning-text);
+    --pill-border: var(--color-warning-border);
+  }
+  .pill--danger {
+    --pill-bg: var(--color-danger-bg);
+    --pill-fg: var(--color-danger-text);
+    --pill-border: var(--color-danger-border);
+  }
+  .pill--info {
+    --pill-bg: var(--color-info-bg);
+    --pill-fg: var(--color-info-text);
+    --pill-border: var(--color-info-border);
+  }
+  .pill--neutral {
+    --pill-bg: var(--color-neutral-bg);
+    --pill-fg: var(--color-neutral-text);
+    --pill-border: var(--color-neutral-border);
+  }
+</style>

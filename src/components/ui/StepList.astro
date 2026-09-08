@@ -1,0 +1,108 @@
+---
+/**
+ * Lista de pasos numerada con línea vertical: etiqueta (01, 02…), icono, título y texto.
+ */
+import Icon from './Icon.astro';
+import type { Step } from '@/content/types';
+
+interface Props {
+  steps: Step[];
+  class?: string;
+}
+const { steps, class: className } = Astro.props;
+---
+
+<ol class:list={['steps', className]} data-reveal data-reveal-stagger>
+  {
+    steps.map((step, index) => (
+      <li class="step">
+        <div class="step__marker" aria-hidden="true">
+          <span class="step__label mono">{step.label ?? String(index + 1).padStart(2, '0')}</span>
+        </div>
+        <div class="step__content">
+          <div class="step__head">
+            {step.icon && (
+              <span class="step__icon" aria-hidden="true">
+                <Icon name={step.icon} size={20} />
+              </span>
+            )}
+            <h3 class="step__title">{step.title}</h3>
+          </div>
+          <p class="step__body">{step.body}</p>
+        </div>
+      </li>
+    ))
+  }
+</ol>
+
+<style>
+  .steps {
+    --marker-size: 3rem;
+    position: relative;
+    display: grid;
+    gap: var(--space-8);
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+  .steps::before {
+    content: '';
+    position: absolute;
+    left: calc(var(--marker-size) / 2 - 1px);
+    top: var(--marker-size);
+    bottom: var(--marker-size);
+    width: 2px;
+    background: var(--color-cobalt-100);
+  }
+  .step {
+    position: relative;
+    display: grid;
+    grid-template-columns: var(--marker-size) minmax(0, 1fr);
+    gap: var(--space-5);
+    align-items: start;
+  }
+  .step__marker {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: var(--marker-size);
+    height: var(--marker-size);
+    border-radius: 50%;
+    background: var(--color-navy-900);
+    color: var(--color-white);
+    box-shadow: 0 0 0 4px var(--color-bg);
+  }
+  .step__label {
+    font-size: var(--text-sm);
+    font-weight: var(--weight-medium);
+    letter-spacing: 0.06em;
+  }
+  .step__content {
+    min-width: 0;
+    padding-top: 0.35rem;
+  }
+  .step__head {
+    display: flex;
+    align-items: center;
+    gap: var(--space-3);
+    margin-bottom: var(--space-2);
+  }
+  .step__icon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 2.25rem;
+    height: 2.25rem;
+    border-radius: var(--radius-md);
+    background: var(--color-cobalt-50);
+    color: var(--color-cobalt-600);
+    flex-shrink: 0;
+  }
+  .step__title {
+    margin: 0;
+  }
+  .step__body {
+    margin: 0;
+    color: var(--color-text-secondary);
+  }
+</style>

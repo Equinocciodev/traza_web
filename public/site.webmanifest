@@ -1,0 +1,8 @@
+{
+  "name": "traza — demostración conceptual",
+  "short_name": "traza",
+  "icons": [{ "src": "/apple-touch-icon.png", "sizes": "180x180", "type": "image/png" }],
+  "theme_color": "#0b1f3f",
+  "background_color": "#ffffff",
+  "display": "browser"
+}

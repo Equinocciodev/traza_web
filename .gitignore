@@ -1,0 +1,21 @@
+# Dependencias
+node_modules/
+
+# Build de Astro
+dist/
+.astro/
+
+# Entorno
+.env
+.env.*
+!.env.example
+
+# Resultados de pruebas
+test-results/
+playwright-report/
+blob-report/
+playwright/.cache/
+
+# Sistema
+.DS_Store
+*.log

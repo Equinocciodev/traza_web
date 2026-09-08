@@ -1,0 +1,604 @@
+---
+/**
+ * Formulario de contacto (isla). Simulado: usa getApi().submitContact(); nunca envía datos reales.
+ * - Progressive enhancement: el HTML incluye atributos nativos (required, type=email, minlength…);
+ *   el script añade `novalidate`, validación accesible con resumen de errores enfocable,
+ *   `aria-invalid` + `aria-describedby` por campo, y estados enviando / éxito / error / sin conexión.
+ * - Sin captcha, sin scripts inline. Todo texto visible viene del diccionario.
+ * - Para probar el error de servidor simulado: incluir "[error]" en el mensaje.
+ */
+import Button from '@/components/ui/Button.astro';
+import Callout from '@/components/ui/Callout.astro';
+import Icon from '@/components/ui/Icon.astro';
+import { getContent } from '@/content';
+import type { Locale } from '@/i18n';
+
+interface Props {
+  locale: Locale;
+  id?: string;
+}
+const { locale, id = 'contact' } = Astro.props;
+const { company, common } = getContent(locale);
+const f = company.contact.form;
+const fid = (name: string) => `${id}-${name}`;
+---
+
+<div class="contact" data-contact>
+  <div class="contact__panel" data-status="success" tabindex="-1" hidden>
+    <Callout tone="success" title={f.success.title} role="status">
+      <p>{f.success.body}</p>
+      <p class="contact__ticket"><span class="demo-tag mono" data-contact-ticket></span></p>
+    </Callout>
+  </div>
+  <div class="contact__panel" data-status="error" tabindex="-1" hidden>
+    <Callout tone="danger" title={f.error.title} role="alert">
+      <p>{f.error.body}</p>
+      <p class="contact__panel-actions">
+        <Button type="button" variant="secondary" size="sm" icon="refresh" iconPosition="start" data-retry>{common.states.retry}</Button>
+      </p>
+    </Callout>
+  </div>
+  <div class="contact__panel" data-status="offline" tabindex="-1" hidden>
+    <Callout tone="warning" title={common.states.offlineTitle} icon="offline" role="alert">
+      <p>{common.states.offlineBody}</p>
+      <p class="contact__panel-actions">
+        <Button type="button" variant="secondary" size="sm" icon="refresh" iconPosition="start" data-retry>{common.states.retry}</Button>
+      </p>
+    </Callout>
+  </div>
+  <div class="contact__panel" data-status="recovered" tabindex="-1" hidden>
+    <Callout tone="info" title={common.states.recoveredTitle} icon="globe" role="status">
+      <p>{common.states.recoveredBody}</p>
+      <p class="contact__panel-actions">
+        <Button type="button" variant="secondary" size="sm" icon="refresh" iconPosition="start" data-retry>{common.states.retry}</Button>
+      </p>
+    </Callout>
+  </div>
+
+  <form
+    class="contact-form"
+    method="post"
+    id={fid('form')}
+    data-contact-form
+    aria-describedby={fid('privacy')}
+    data-msg-required={common.form.required}
+    data-msg-invalid-email={common.form.invalidEmail}
+    data-msg-too-short={common.form.tooShort}
+    data-msg-too-long={common.form.tooLong}
+    data-label-submit={f.submit}
+    data-label-sending={common.form.sending}
+  >
+    <div class="form-summary" data-summary role="alert" tabindex="-1" hidden>
+      <div class="form-summary__head">
+        <Icon name="alert" size={20} />
+        <p class="form-summary__title">{common.form.errorSummaryTitle}</p>
+      </div>
+      <ul class="form-summary__list" data-summary-list></ul>
+    </div>
+
+    <div class="contact-form__grid">
+      <div class="field" data-field>
+        <label class="field__label" for={fid('name')}>{f.name}</label>
+        <input
+          class="field__input"
+          id={fid('name')}
+          name="name"
+          type="text"
+          autocomplete="name"
+          required
+          minlength="2"
+          maxlength="80"
+          aria-describedby={fid('name-error')}
+          data-validate
+          data-label={f.name}
+        />
+        <p class="field__error" id={fid('name-error')} data-error hidden>
+          <Icon name="alert" size={16} />
+          <span data-error-text></span>
+        </p>
+      </div>
+
+      <div class="field" data-field>
+        <label class="field__label" for={fid('email')}>{f.email}</label>
+        <input
+          class="field__input"
+          id={fid('email')}
+          name="email"
+          type="email"
+          autocomplete="email"
+          inputmode="email"
+          required
+          maxlength="120"
+          aria-describedby={fid('email-error')}
+          data-validate
+          data-label={f.email}
+        />
+        <p class="field__error" id={fid('email-error')} data-error hidden>
+          <Icon name="alert" size={16} />
+          <span data-error-text></span>
+        </p>
+      </div>
+
+      <div class="field" data-field>
+        <label class="field__label" for={fid('org')}>
+          {f.organization} <span class="field__optional">({common.form.optional})</span>
+        </label>
+        <input
+          class="field__input"
+          id={fid('org')}
+          name="organization"
+          type="text"
+          autocomplete="organization"
+          maxlength="120"
+          aria-describedby={fid('org-error')}
+          data-validate
+          data-label={f.organization}
+        />
+        <p class="field__error" id={fid('org-error')} data-error hidden>
+          <Icon name="alert" size={16} />
+          <span data-error-text></span>
+        </p>
+      </div>
+
+      <div class="field" data-field>
+        <label class="field__label" for={fid('sector')}>
+          {f.sector} <span class="field__optional">({common.form.optional})</span>
+        </label>
+        <div class="field__select-wrap">
+          <select class="field__input field__select" id={fid('sector')} name="sector" aria-describedby={fid('sector-error')} data-validate data-label={f.sector}>
+            <option value="">—</option>
+            {f.sectorOptions.map((option) => <option value={option}>{option}</option>)}
+          </select>
+          <span class="field__select-icon" aria-hidden="true"><Icon name="arrow-right" size={16} /></span>
+        </div>
+        <p class="field__error" id={fid('sector-error')} data-error hidden>
+          <Icon name="alert" size={16} />
+          <span data-error-text></span>
+        </p>
+      </div>
+
+      <div class="field field--full" data-field>
+        <label class="field__label" for={fid('message')}>{f.message}</label>
+        <textarea
+          class="field__input field__textarea"
+          id={fid('message')}
+          name="message"
+          rows="6"
+          required
+          minlength="20"
+          maxlength="2000"
+          aria-describedby={fid('message-error')}
+          data-validate
+          data-label={f.message}></textarea>
+        <p class="field__error" id={fid('message-error')} data-error hidden>
+          <Icon name="alert" size={16} />
+          <span data-error-text></span>
+        </p>
+      </div>
+
+      <div class="field field--full field--check" data-field>
+        <div class="field__check">
+          <input class="field__checkbox" id={fid('consent')} name="consent" type="checkbox" required aria-describedby={fid('consent-error')} data-validate data-label={f.consent} />
+          <label class="field__label field__label--check" for={fid('consent')}>{f.consent}</label>
+        </div>
+        <p class="field__error" id={fid('consent-error')} data-error hidden>
+          <Icon name="alert" size={16} />
+          <span data-error-text></span>
+        </p>
+      </div>
+    </div>
+
+    <p class="contact-form__privacy" id={fid('privacy')}>
+      <Icon name="lock" size={16} />
+      <span>{common.form.privacyNote}</span>
+    </p>
+
+    <div class="contact-form__actions">
+      <Button type="submit" icon="arrow-right" data-submit disabled>{f.submit}</Button>
+    </div>
+    <p data-contact-inactive>{common.form.noScript}</p>
+  </form>
+</div>
+
+<script>
+  import { getApi, ApiError, isBrowserOffline } from '@/lib/api';
+  import { track } from '@/lib/analytics';
+
+  type Field = HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement;
+
+  const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/;
+
+  function setupContact(root: HTMLElement): void {
+    const form = root.querySelector<HTMLFormElement>('[data-contact-form]');
+    if (!form) return;
+    form.noValidate = true;
+
+    const fields = Array.from(form.querySelectorAll<Field>('[data-validate]'));
+    const summary = form.querySelector<HTMLElement>('[data-summary]');
+    const summaryList = form.querySelector<HTMLUListElement>('[data-summary-list]');
+    const submitButton = form.querySelector<HTMLButtonElement>('[data-submit]');
+    const submitLabel = submitButton?.querySelector<HTMLElement>('.btn__label');
+    const panels = {
+      success: root.querySelector<HTMLElement>('[data-status="success"]'),
+      error: root.querySelector<HTMLElement>('[data-status="error"]'),
+      offline: root.querySelector<HTMLElement>('[data-status="offline"]'),
+      recovered: root.querySelector<HTMLElement>('[data-status="recovered"]'),
+    };
+    const ticketEl = root.querySelector<HTMLElement>('[data-contact-ticket]');
+    const messages = {
+      required: form.dataset.msgRequired ?? '',
+      invalidEmail: form.dataset.msgInvalidEmail ?? '',
+      tooShort: form.dataset.msgTooShort ?? '',
+      tooLong: form.dataset.msgTooLong ?? '',
+    };
+    let attempted = false;
+    let busy = false;
+
+    const errorElements = (field: Field) => {
+      const wrapper = field.closest<HTMLElement>('[data-field]');
+      const error = wrapper?.querySelector<HTMLElement>('[data-error]') ?? null;
+      const text = error?.querySelector<HTMLElement>('[data-error-text]') ?? null;
+      return { wrapper, error, text };
+    };
+
+    const validate = (field: Field): string | null => {
+      if (field instanceof HTMLInputElement && field.type === 'checkbox') {
+        return field.required && !field.checked ? messages.required : null;
+      }
+      const value = field.value.trim();
+      if (field.required && value.length === 0) return messages.required;
+      if (value.length === 0) return null;
+      if (field instanceof HTMLInputElement && field.type === 'email' && !EMAIL_RE.test(value)) return messages.invalidEmail;
+      const min = 'minLength' in field ? field.minLength : -1;
+      const max = 'maxLength' in field ? field.maxLength : -1;
+      if (min > 0 && value.length < min) return messages.tooShort;
+      if (max > 0 && value.length > max) return messages.tooLong;
+      return null;
+    };
+
+    const showFieldError = (field: Field, message: string | null) => {
+      const { wrapper, error, text } = errorElements(field);
+      if (message) {
+        field.setAttribute('aria-invalid', 'true');
+        wrapper?.classList.add('has-error');
+        if (text) text.textContent = message;
+        if (error) error.hidden = false;
+      } else {
+        field.removeAttribute('aria-invalid');
+        wrapper?.classList.remove('has-error');
+        if (text) text.textContent = '';
+        if (error) error.hidden = true;
+      }
+    };
+
+    const hideSummary = () => {
+      if (summary) summary.hidden = true;
+      if (summaryList) summaryList.replaceChildren();
+    };
+
+    const showSummary = (errors: { field: Field; message: string }[]) => {
+      if (!summary || !summaryList) return;
+      summaryList.replaceChildren(
+        ...errors.map(({ field, message }) => {
+          const li = document.createElement('li');
+          const a = document.createElement('a');
+          a.href = `#${field.id}`;
+          a.textContent = `${field.dataset.label ?? field.name}: ${message}`;
+          a.addEventListener('click', (event) => {
+            event.preventDefault();
+            field.focus();
+            field.scrollIntoView({ block: 'center' });
+          });
+          li.append(a);
+          return li;
+        }),
+      );
+      summary.hidden = false;
+      summary.focus();
+    };
+
+    const hidePanels = () => {
+      Object.values(panels).forEach((panel) => {
+        if (panel) panel.hidden = true;
+      });
+    };
+
+    const showPanel = (name: keyof typeof panels) => {
+      hidePanels();
+      const panel = panels[name];
+      if (!panel) return;
+      panel.hidden = false;
+      panel.focus();
+    };
+
+    const setBusy = (state: boolean) => {
+      busy = state;
+      form.setAttribute('aria-busy', String(state));
+      if (submitButton) {
+        submitButton.disabled = state;
+        submitButton.setAttribute('aria-disabled', String(state));
+      }
+      if (submitLabel) submitLabel.textContent = state ? form.dataset.labelSending ?? '' : form.dataset.labelSubmit ?? '';
+    };
+
+    const validateAll = (): { field: Field; message: string }[] => {
+      const errors: { field: Field; message: string }[] = [];
+      for (const field of fields) {
+        const message = validate(field);
+        showFieldError(field, message);
+        if (message) errors.push({ field, message });
+      }
+      return errors;
+    };
+
+    fields.forEach((field) => {
+      const revalidate = () => {
+        if (!attempted) return;
+        showFieldError(field, validate(field));
+        if (summary && !summary.hidden && validateAll().length === 0) hideSummary();
+      };
+      field.addEventListener('input', revalidate);
+      field.addEventListener('change', revalidate);
+      field.addEventListener('blur', revalidate);
+    });
+
+    const submit = async () => {
+      if (busy) return;
+      attempted = true;
+      hidePanels();
+      const errors = validateAll();
+      if (errors.length > 0) {
+        showSummary(errors);
+        return;
+      }
+      hideSummary();
+      if (isBrowserOffline()) {
+        showPanel('offline');
+        return;
+      }
+      const data = new FormData(form);
+      const read = (key: string) => String(data.get(key) ?? '').trim();
+      setBusy(true);
+      try {
+        const receipt = await getApi().submitContact({
+          name: read('name'),
+          email: read('email'),
+          organization: read('organization') || undefined,
+          sector: read('sector') || undefined,
+          message: read('message'),
+        });
+        if (ticketEl) ticketEl.textContent = receipt.ticket;
+        form.hidden = true;
+        showPanel('success');
+        track('contact_submitted', { outcome: 'success' });
+      } catch (error) {
+        const kind = error instanceof ApiError ? error.kind : 'server';
+        showPanel(kind === 'offline' ? 'offline' : 'error');
+        track('contact_submitted', { outcome: kind });
+      } finally {
+        setBusy(false);
+      }
+    };
+
+    form.addEventListener('submit', (event) => {
+      event.preventDefault();
+      void submit();
+    });
+
+    root.querySelectorAll<HTMLButtonElement>('[data-retry]').forEach((button) => {
+      button.addEventListener('click', () => {
+        hidePanels();
+        void submit();
+      });
+    });
+
+    // Al recuperar la conexión, el aviso "sin conexión" pasa a "conexión restablecida" con reintento.
+    window.addEventListener('online', () => {
+      if (panels.offline && !panels.offline.hidden) showPanel('recovered');
+    });
+    window.addEventListener('offline', () => {
+      if (panels.recovered && !panels.recovered.hidden) showPanel('offline');
+    });
+    // Solo habilitar el envío una vez instalado el manejador que evita el POST nativo.
+    if (submitButton) submitButton.disabled = false;
+    const inactive = root.querySelector<HTMLElement>('[data-contact-inactive]');
+    if (inactive) inactive.hidden = true;
+  }
+
+  document.querySelectorAll<HTMLElement>('[data-contact]').forEach(setupContact);
+</script>
+
+<style>
+  .contact {
+    display: grid;
+    gap: var(--space-5);
+  }
+  /* El atributo hidden debe ganar a los display propios */
+  .contact [hidden] {
+    display: none !important;
+  }
+  .contact__panel:focus {
+    outline: none;
+  }
+  .contact__panel:focus-visible {
+    outline: 3px solid var(--focus-ring);
+    outline-offset: 4px;
+    border-radius: var(--radius-md);
+  }
+  .contact__ticket {
+    margin-top: var(--space-2);
+  }
+  .contact__ticket .demo-tag:empty {
+    display: none;
+  }
+  .contact__panel-actions {
+    margin-top: var(--space-3);
+  }
+  .contact-form {
+    display: grid;
+    gap: var(--space-5);
+    padding: var(--space-6);
+    border: var(--border-width) solid var(--color-border);
+    border-radius: var(--radius-lg);
+    background: var(--color-surface);
+    box-shadow: var(--shadow-sm);
+  }
+  .contact-form[aria-busy='true'] {
+    cursor: progress;
+  }
+  .form-summary {
+    padding: var(--space-4) var(--space-5);
+    border: var(--border-width) solid var(--color-danger-border);
+    border-left-width: 4px;
+    border-radius: var(--radius-md);
+    background: var(--color-danger-bg);
+  }
+  .form-summary:focus {
+    outline: 3px solid var(--focus-ring);
+    outline-offset: 2px;
+  }
+  .form-summary__head {
+    display: flex;
+    align-items: center;
+    gap: var(--space-2);
+    color: var(--color-danger-text);
+  }
+  .form-summary__title {
+    margin: 0;
+    font-weight: var(--weight-semibold);
+  }
+  .form-summary__list {
+    margin: var(--space-2) 0 0;
+    padding-left: 1.75rem;
+    font-size: var(--text-sm);
+  }
+  /* Los enlaces del resumen los crea JavaScript (sin atributo de scope de Astro): la regla debe ser global.
+     Accesibilidad (WCAG 2.5.8): altura ≥ 24 px y separación entre sí. */
+  .form-summary__list :global(a) {
+    display: inline-block;
+    min-height: 1.5rem;
+    padding-block: var(--space-1);
+    line-height: 1.4;
+    color: var(--color-danger-text);
+    font-weight: var(--weight-medium);
+  }
+  .form-summary__list :global(li + li) {
+    margin-top: var(--space-1);
+  }
+  .contact-form__grid {
+    display: grid;
+    gap: var(--space-5);
+  }
+  @media (min-width: 40em) {
+    .contact-form__grid {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+    .field--full {
+      grid-column: 1 / -1;
+    }
+  }
+  .field {
+    display: grid;
+    gap: var(--space-2);
+    min-width: 0;
+  }
+  .field__label {
+    font-weight: var(--weight-medium);
+    color: var(--color-heading);
+  }
+  .field__optional {
+    font-weight: var(--weight-regular);
+    color: var(--color-text-secondary);
+    font-size: var(--text-sm);
+  }
+  .field__input {
+    width: 100%;
+    min-height: var(--tap-min);
+    padding: 0.625rem 0.875rem;
+    border: var(--border-width) solid var(--color-border-input); /* accesibilidad: contorno del campo ≥ 3:1 (WCAG 1.4.11) */
+    border-radius: var(--radius-md);
+    background: var(--color-white);
+    color: var(--color-text);
+    font-size: var(--text-base);
+    line-height: 1.4;
+    transition: border-color var(--dur-fast) var(--ease-standard);
+  }
+  .field__input:hover {
+    border-color: var(--color-neutral-600); /* más oscuro que el reposo (neutral-500), no más claro */
+  }
+  .field__input:focus-visible {
+    border-color: var(--color-cobalt-600);
+  }
+  .field__textarea {
+    resize: vertical;
+    min-height: 9rem;
+  }
+  .field__select-wrap {
+    position: relative;
+  }
+  .field__select {
+    appearance: none;
+    padding-right: 2.5rem;
+  }
+  .field__select-icon {
+    position: absolute;
+    top: 50%;
+    right: 0.875rem;
+    transform: translateY(-50%) rotate(90deg);
+    color: var(--color-text-secondary);
+    pointer-events: none;
+  }
+  .has-error .field__input {
+    border-color: var(--color-danger-solid);
+    box-shadow: inset 0 0 0 1px var(--color-danger-solid);
+  }
+  .field__error {
+    display: flex;
+    align-items: flex-start;
+    gap: var(--space-2);
+    margin: 0;
+    font-size: var(--text-sm);
+    font-weight: var(--weight-medium);
+    color: var(--color-danger-text);
+  }
+  .field__error :global(.icon) {
+    margin-top: 0.15em;
+  }
+  .field__check {
+    display: flex;
+    align-items: flex-start;
+    gap: var(--space-3);
+  }
+  .field__checkbox {
+    flex-shrink: 0;
+    width: 1.375rem;
+    height: 1.375rem;
+    margin: 0.2rem 0 0;
+    accent-color: var(--color-cobalt-600);
+  }
+  .field__label--check {
+    font-weight: var(--weight-regular);
+    font-size: var(--text-sm);
+    color: var(--color-text);
+    min-height: var(--tap-min);
+    display: flex;
+    align-items: center;
+  }
+  .contact-form__privacy {
+    display: flex;
+    align-items: flex-start;
+    gap: var(--space-2);
+    margin: 0;
+    font-size: var(--text-sm);
+    color: var(--color-text-secondary);
+  }
+  .contact-form__privacy :global(.icon) {
+    margin-top: 0.2em;
+    color: var(--color-cobalt-600);
+  }
+  .contact-form__actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-3);
+  }
+</style>

@@ -1,0 +1,570 @@
+---
+/**
+ * Isla de la DEMO C · Vista institucional.
+ * HTML renderizado en servidor (roles, KPIs, alertas, casos, inspecciones y cronología) sobre el que
+ * `institutional.ts` monta el comportamiento: rol de demostración, filtros, detalle, acciones simuladas
+ * en memoria y estados (carga, vacío, error, sin conexión, sin permisos).
+ */
+import Icon from '@/components/ui/Icon.astro';
+import Button from '@/components/ui/Button.astro';
+import Callout from '@/components/ui/Callout.astro';
+import AlertsPanel from './AlertsPanel.astro';
+import CasesPanel from './CasesPanel.astro';
+import AuditLog from './AuditLog.astro';
+import PillTemplates from './PillTemplates.astro';
+import { getContent } from '@/content';
+import { formatNumber, type Locale } from '@/i18n';
+import { TENANTS } from '@/config/tenants';
+import { ALERTS, ALERT_TYPES, KPIS, countAlertsByType } from '@/fixtures/institutional';
+
+interface Props {
+  locale: Locale;
+}
+const { locale } = Astro.props;
+const { institutional: t } = getContent(locale);
+
+const byType = countAlertsByType(ALERTS);
+const typeRows = ALERT_TYPES.map((type) => ({ type, count: byType[type] })).filter((r) => r.count > 0);
+const registryName = TENANTS.licores.registryName[locale];
+const islandData = JSON.stringify(t.island);
+const labelsData = JSON.stringify(t.labels);
+---
+
+<div
+  class="inst"
+  data-testid="institutional"
+  data-institutional
+  data-locale={locale}
+  data-role="analyst"
+  data-load="ready"
+  data-registry={registryName}
+  data-i18n={islandData}
+  data-labels={labelsData}
+>
+  <p class="visually-hidden" aria-live="polite" aria-atomic="true" data-live data-testid="inst-live"></p>
+
+  <!-- Barra de rol y contexto -->
+  <div class="inst__toolbar">
+    <div class="inst__toolbar-inner container">
+      <fieldset class="roles" data-testid="role-select">
+        <legend class="roles__legend">{t.roles.legend}</legend>
+        <div class="roles__options">
+          {t.roles.items.map((r) => (
+            <label class="roles__option">
+              <input class="roles__input" type="radio" name="demo-role" value={r.id} data-role={r.id} checked={r.id === 'analyst'} />
+              <span class="roles__body">
+                <Icon name={r.icon} size={18} />
+                <span>{r.label}</span>
+              </span>
+            </label>
+          ))}
+        </div>
+        <p class="roles__help">{t.roles.help}</p>
+        <div class="roles__current" aria-live="polite">
+          <span class="roles__current-label">{t.roles.currentLabel}:</span>
+          {t.roles.items.map((r) => (
+            <span class="roles__desc" data-role-desc={r.id} hidden={r.id !== 'analyst'}>
+              <strong>{r.label}.</strong> {r.description}
+            </span>
+          ))}
+        </div>
+      </fieldset>
+
+      <div class="inst__context">
+        <dl class="context">
+          <div class="context__item">
+            <dt>{t.context.tenantLabel}</dt>
+            <dd>{t.context.tenantValue}</dd>
+          </div>
+          <div class="context__item">
+            <dt>{t.context.registryLabel}</dt>
+            <dd>{registryName}</dd>
+          </div>
+          <div class="context__item">
+            <dt>{t.context.periodLabel}</dt>
+            <dd>{t.context.periodValue}</dd>
+          </div>
+        </dl>
+        <div class="demo-controls" data-js-only>
+          <p class="demo-controls__title">{t.demoControls.title}</p>
+          <Button variant="secondary" size="sm" icon="server" iconPosition="start" data-action="simulate-error">{t.demoControls.simulateError}</Button>
+          <p class="demo-controls__hint">{t.demoControls.simulateErrorHint}</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="container inst__main">
+    <!-- Estados globales -->
+    <div class="inst__status">
+      <div data-offline data-testid="inst-offline" hidden>
+        <Callout tone="warning" icon="offline" title={t.states.offlineTitle} role="status">
+          <p>{t.states.offlineBody}</p>
+        </Callout>
+      </div>
+      <div data-online hidden>
+        <Callout tone="success" icon="check" title={t.states.onlineTitle} role="status">
+          <p>{t.states.onlineBody}</p>
+        </Callout>
+      </div>
+      <div data-error data-testid="inst-error" hidden tabindex="-1">
+        <Callout tone="danger" icon="server" title={t.states.errorTitle} role="alert">
+          <p>{t.states.errorBody}</p>
+          <p class="inst__status-actions">
+            <Button variant="primary" size="sm" icon="refresh" iconPosition="start" data-action="retry">{t.states.retry}</Button>
+          </p>
+        </Callout>
+      </div>
+      <p class="inst__loading" data-loading-text hidden>
+        <Icon name="refresh" size={16} />
+        <span>{t.states.loading}</span>
+        <span class="inst__loading-hint">{t.states.loadingHint}</span>
+      </p>
+    </div>
+
+    <nav class="subnav" aria-label={t.nav.label}>
+      <ul class="subnav__list">
+        {t.nav.items.map((item) => (
+          <li><a class="subnav__link" href={`#${item.id}`}>{item.label}</a></li>
+        ))}
+      </ul>
+    </nav>
+
+    <!-- Resumen -->
+    <section class="summary section--tight" id={t.summary.id} aria-labelledby="inst-summary-title" data-section="summary">
+      <div class="summary__header">
+        <h2 id="inst-summary-title">{t.summary.title}</h2>
+        <p class="lede summary__intro">{t.summary.intro}</p>
+      </div>
+      <ul class="kpis" data-testid="kpis">
+        {t.summary.kpis.map((k) => (
+          <li class="kpi" data-kpi={k.key}>
+            <span class="kpi__icon" aria-hidden="true"><Icon name={k.icon} size={20} /></span>
+            <span class="kpi__label">{k.label}</span>
+            <span class="kpi__value" data-count={KPIS[k.key]} data-count-duration="1000" data-kpi-value={k.key}>{formatNumber(KPIS[k.key], locale)}</span>
+            <span class="demo-tag kpi__tag">{t.summary.simulatedTag}</span>
+            <span class="kpi__hint">{k.hint}</span>
+          </li>
+        ))}
+      </ul>
+
+      <div class="tally">
+        <h3 class="tally__title">{t.summary.byType.title}</h3>
+        <p class="tally__intro">{t.summary.byType.intro}</p>
+        <ul class="tally__list">
+          {typeRows.map((r) => (
+            <li class="tally__row">
+              <span class="tally__label">{t.labels.alertType[r.type]}</span>
+              <span class="tally__bar" aria-hidden="true">
+                {Array.from({ length: r.count }).map(() => (
+                  <span class="tally__sq"></span>
+                ))}
+              </span>
+              <span class="tally__count mono">
+                {r.count} <span class="visually-hidden">{t.summary.byType.countLabel}</span>
+              </span>
+            </li>
+          ))}
+        </ul>
+      </div>
+    </section>
+
+    <AlertsPanel locale={locale} content={t} />
+    <CasesPanel locale={locale} content={t} />
+    <AuditLog locale={locale} content={t} />
+  </div>
+
+  <div hidden data-templates>
+    <PillTemplates labels={t.labels} />
+  </div>
+</div>
+
+<script>
+  import { initInstitutional } from './institutional';
+  const root = document.querySelector<HTMLElement>('[data-institutional]');
+  if (root) initInstitutional(root);
+</script>
+
+<style>
+  .inst {
+    --inst-sticky: 5.25rem;
+  }
+  .inst :global([hidden]) {
+    display: none !important;
+  }
+  /* Botones compactos pero con área táctil ≥ 44 px dentro de la vista. */
+  .inst :global(.btn--sm) {
+    min-height: var(--tap-min);
+  }
+  .inst:not(.is-enhanced) :global([data-js-only]) {
+    display: none;
+  }
+
+  /* ---- Barra de rol ---- */
+  .inst__toolbar {
+    background: var(--color-bg-subtle);
+    border-block: var(--border-width) solid var(--color-border);
+  }
+  .inst__toolbar-inner {
+    display: grid;
+    gap: var(--space-6);
+    padding-block: var(--space-6);
+  }
+  @media (min-width: 64em) {
+    .inst__toolbar-inner {
+      grid-template-columns: minmax(0, 7fr) minmax(0, 5fr);
+      align-items: start;
+    }
+  }
+  .roles {
+    margin: 0;
+    padding: 0;
+    border: 0;
+    min-width: 0;
+  }
+  .roles__legend {
+    padding: 0;
+    margin-bottom: var(--space-3);
+    font-family: var(--font-mono);
+    font-size: var(--text-xs);
+    letter-spacing: var(--tracking-wide);
+    text-transform: uppercase;
+    color: var(--color-text-secondary);
+  }
+  .roles__options {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-2);
+  }
+  .roles__option {
+    position: relative;
+    display: inline-flex;
+  }
+  /* El radio cubre la etiqueta (invisible pero clicable): recibe el clic y el foco de forma nativa. */
+  .roles__input {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    margin: 0;
+    opacity: 0;
+    cursor: pointer;
+    z-index: 1;
+  }
+  .roles__body {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-2);
+    min-height: var(--tap-min);
+    padding: 0.5rem 1rem;
+    border: var(--border-width) solid var(--color-border-strong);
+    border-radius: var(--radius-md);
+    background: var(--color-surface);
+    color: var(--color-text);
+    font-size: var(--text-sm);
+    font-weight: var(--weight-medium);
+    cursor: pointer;
+    transition:
+      background-color var(--dur-fast) var(--ease-standard),
+      color var(--dur-fast) var(--ease-standard),
+      border-color var(--dur-fast) var(--ease-standard);
+  }
+  .roles__body:hover {
+    border-color: var(--color-cobalt-600);
+    color: var(--color-link);
+  }
+  .roles__input:checked + .roles__body {
+    background: var(--color-navy-900);
+    border-color: var(--color-navy-900);
+    color: var(--color-white);
+  }
+  .roles__input:focus-visible + .roles__body {
+    outline: 3px solid var(--focus-ring);
+    outline-offset: 2px;
+    box-shadow: 0 0 0 2px var(--focus-ring-offset);
+  }
+  .roles__help {
+    margin: var(--space-3) 0 var(--space-2);
+    font-size: var(--text-sm);
+    color: var(--color-text-secondary);
+    max-width: 62ch;
+  }
+  .roles__current {
+    font-size: var(--text-sm);
+    line-height: var(--leading-normal);
+    max-width: 62ch;
+  }
+  .roles__current-label {
+    font-family: var(--font-mono);
+    font-size: var(--text-xs);
+    letter-spacing: var(--tracking-wide);
+    text-transform: uppercase;
+    color: var(--color-text-secondary);
+    margin-right: var(--space-2);
+  }
+  .roles__desc strong {
+    color: var(--color-heading);
+  }
+
+  .inst__context {
+    display: grid;
+    gap: var(--space-4);
+  }
+  .context {
+    display: grid;
+    gap: var(--space-2);
+    margin: 0;
+    padding: var(--space-4);
+    border: var(--border-width) solid var(--color-border);
+    border-radius: var(--radius-md);
+    background: var(--color-surface);
+  }
+  .context__item {
+    display: grid;
+    grid-template-columns: minmax(7rem, 9rem) 1fr;
+    gap: var(--space-2);
+    font-size: var(--text-sm);
+  }
+  .context dt {
+    font-family: var(--font-mono);
+    font-size: var(--text-xs);
+    letter-spacing: var(--tracking-wide);
+    text-transform: uppercase;
+    color: var(--color-text-secondary);
+    padding-top: 0.15em;
+  }
+  .context dd {
+    margin: 0;
+    color: var(--color-heading);
+    font-weight: var(--weight-medium);
+  }
+  @media (max-width: 22.5em) {
+    .context__item {
+      grid-template-columns: 1fr;
+      gap: 0;
+    }
+  }
+  .demo-controls {
+    padding: var(--space-4);
+    border: var(--border-width) dashed var(--color-border-strong);
+    border-radius: var(--radius-md);
+  }
+  .demo-controls__title {
+    margin: 0 0 var(--space-2);
+    font-family: var(--font-mono);
+    font-size: var(--text-xs);
+    letter-spacing: var(--tracking-wide);
+    text-transform: uppercase;
+    color: var(--color-text-secondary);
+  }
+  .demo-controls__hint {
+    margin: var(--space-2) 0 0;
+    font-size: var(--text-xs);
+    color: var(--color-text-secondary);
+  }
+
+  /* ---- Estados globales ---- */
+  .inst__main {
+    padding-top: var(--space-6);
+  }
+  .inst__status {
+    display: grid;
+    gap: var(--space-3);
+  }
+  .inst__status:not(:empty) {
+    margin-bottom: var(--space-4);
+  }
+  .inst__status-actions {
+    margin-top: var(--space-3);
+  }
+  .inst__loading {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: var(--space-2);
+    margin: 0;
+    padding: var(--space-3) var(--space-4);
+    border-radius: var(--radius-md);
+    background: var(--color-info-bg);
+    color: var(--color-info-text);
+    font-size: var(--text-sm);
+  }
+  .inst__loading :global(svg) {
+    animation: inst-spin 1s linear infinite;
+  }
+  .inst__loading-hint {
+    color: var(--color-text-secondary);
+    font-size: var(--text-xs);
+  }
+  @keyframes inst-spin {
+    to {
+      transform: rotate(360deg);
+    }
+  }
+
+  /* ---- Sub-navegación ---- */
+  .subnav {
+    margin-bottom: var(--space-4);
+    border-bottom: var(--border-width) solid var(--color-border);
+  }
+  .subnav__list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-1);
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+  .subnav__link {
+    display: inline-flex;
+    align-items: center;
+    min-height: var(--tap-min);
+    padding: 0.5rem 0.75rem;
+    color: var(--color-text);
+    font-size: var(--text-sm);
+    font-weight: var(--weight-medium);
+    text-decoration: none;
+    border-bottom: 2px solid transparent;
+  }
+  .subnav__link:hover {
+    color: var(--color-link);
+    border-bottom-color: var(--color-cyan-400);
+  }
+
+  /* ---- Resumen ---- */
+  .summary__header {
+    max-width: 62ch;
+    margin-bottom: var(--space-6);
+  }
+  .summary__header h2 {
+    font-size: var(--text-2xl);
+  }
+  .summary__intro {
+    font-size: var(--text-base);
+  }
+  .kpis {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 13rem), 1fr));
+    gap: var(--space-4);
+    list-style: none;
+    margin: 0 0 var(--space-8);
+    padding: 0;
+  }
+  .kpi {
+    display: grid;
+    grid-template-columns: auto 1fr;
+    grid-template-areas:
+      'icon label'
+      'icon value'
+      'icon tag'
+      'icon hint';
+    column-gap: var(--space-3);
+    padding: var(--space-5);
+    border: var(--border-width) solid var(--color-border);
+    border-radius: var(--radius-lg);
+    background: var(--color-surface);
+    box-shadow: var(--shadow-sm);
+  }
+  .kpi__icon {
+    grid-area: icon;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 2.5rem;
+    height: 2.5rem;
+    border-radius: var(--radius-md);
+    background: var(--color-cobalt-50);
+    color: var(--color-cobalt-600);
+  }
+  .kpi__label {
+    grid-area: label;
+    font-size: var(--text-sm);
+    font-weight: var(--weight-medium);
+    color: var(--color-text-secondary);
+  }
+  .kpi__value {
+    grid-area: value;
+    font-size: var(--text-3xl);
+    font-weight: var(--weight-semibold);
+    line-height: var(--leading-tight);
+    letter-spacing: var(--tracking-tight);
+    color: var(--color-navy-900);
+    font-variant-numeric: tabular-nums;
+    min-height: 1.1em;
+  }
+  .kpi__tag {
+    grid-area: tag;
+    justify-self: start;
+    margin-top: var(--space-2);
+  }
+  .kpi__hint {
+    grid-area: hint;
+    margin-top: var(--space-2);
+    font-size: var(--text-xs);
+    color: var(--color-text-secondary);
+  }
+
+  .tally {
+    padding: var(--space-5);
+    border: var(--border-width) solid var(--color-border);
+    border-radius: var(--radius-lg);
+    background: var(--color-surface);
+  }
+  .tally__title {
+    margin-bottom: var(--space-1);
+    font-size: var(--text-lg);
+  }
+  .tally__intro {
+    margin-bottom: var(--space-4);
+    font-size: var(--text-sm);
+    color: var(--color-text-secondary);
+  }
+  .tally__list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: grid;
+    gap: var(--space-2);
+  }
+  .tally__row {
+    display: grid;
+    grid-template-columns: minmax(9rem, 14rem) 1fr auto;
+    align-items: center;
+    gap: var(--space-3);
+    font-size: var(--text-sm);
+  }
+  .tally__label {
+    color: var(--color-heading);
+    font-weight: var(--weight-medium);
+  }
+  .tally__bar {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.25rem;
+  }
+  .tally__sq {
+    width: 0.875rem;
+    height: 0.875rem;
+    border-radius: 2px;
+    background: var(--color-cobalt-600);
+  }
+  .tally__count {
+    color: var(--color-text-secondary);
+    min-width: 1.5rem;
+    text-align: right;
+  }
+  @media (max-width: 30em) {
+    .tally__row {
+      grid-template-columns: 1fr auto;
+    }
+    .tally__bar {
+      grid-column: 1 / -1;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .inst__loading :global(svg) {
+      animation: none;
+    }
+  }
+</style>

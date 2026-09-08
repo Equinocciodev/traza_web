@@ -1,0 +1,88 @@
+---
+/**
+ * Demo A · Verificación pública (ES/EN). Hero sin JavaScript + isla de verificación.
+ * El tenant se resuelve en cliente desde `?t=`; el HTML se renderiza con el tenant por defecto.
+ */
+import Base from '@/layouts/Base.astro';
+import Icon from '@/components/ui/Icon.astro';
+import QrMotif from '@/components/ui/QrMotif.astro';
+import VerifyApp from '@/components/verify/VerifyApp.astro';
+import { getContent } from '@/content';
+import type { Locale } from '@/i18n';
+
+interface Props {
+  locale: Locale;
+}
+const { locale } = Astro.props;
+const { verify } = getContent(locale);
+---
+
+<Base locale={locale} routeKey="verify" title={verify.meta.title} description={verify.meta.description} bodyClass="page-verify">
+  <section class="verify-hero on-dark section--tight">
+    <div class="verify-hero__motif" aria-hidden="true"><QrMotif /></div>
+    <div class="container verify-hero__inner">
+      <p class="eyebrow">{verify.hero.eyebrow}</p>
+      <h1>{verify.hero.title}</h1>
+      <p class="lede">{verify.hero.subtitle}</p>
+      <p class="verify-hero__meta">
+        <span class="verify-hero__mantra mono">{verify.hero.mantra}</span>
+        <span class="verify-hero__requirement">
+          <Icon name="phone" size={16} />
+          {verify.hero.requirement}
+        </span>
+      </p>
+    </div>
+  </section>
+
+  <section class="section section--subtle verify-section">
+    <div class="container container--wide">
+      <VerifyApp locale={locale} />
+    </div>
+  </section>
+</Base>
+
+<style>
+  .verify-hero {
+    position: relative;
+    overflow: hidden;
+    padding-block: clamp(2.5rem, 5vw, 4rem);
+    background: var(--color-navy-900);
+  }
+  .verify-hero__motif {
+    position: absolute;
+    right: -3rem;
+    top: -3rem;
+    width: 20rem;
+    height: 20rem;
+    color: var(--color-cyan-300);
+    pointer-events: none;
+  }
+  .verify-hero__inner {
+    position: relative;
+  }
+  .verify-hero h1 {
+    margin-bottom: var(--space-3);
+  }
+  .verify-hero__meta {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: var(--space-3) var(--space-6);
+    margin: var(--space-5) 0 0;
+    font-size: var(--text-sm);
+  }
+  .verify-hero__mantra {
+    color: var(--color-cyan-300);
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+  }
+  .verify-hero__requirement {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-2);
+    color: var(--color-text-secondary);
+  }
+  .verify-section {
+    padding-block: clamp(1.5rem, 3vw, 2.5rem) var(--section-padding);
+  }
+</style>

@@ -1,0 +1,165 @@
+---
+/**
+ * Plantilla de la demo B · Recorrido del producto (ES: /recorrido/, EN: /en/journey/).
+ * Hero ligero (sin JS), isla JourneyApp sobre HTML renderizado, explicación de la historia de la
+ * unidad y llamada a las otras demostraciones.
+ */
+import Base from '@/layouts/Base.astro';
+import Button from '@/components/ui/Button.astro';
+import Icon from '@/components/ui/Icon.astro';
+import QrMotif from '@/components/ui/QrMotif.astro';
+import SectionHeader from '@/components/ui/SectionHeader.astro';
+import Callout from '@/components/ui/Callout.astro';
+import JourneyApp from '@/components/journey/JourneyApp.astro';
+import { getContent } from '@/content';
+import { route, type Locale } from '@/i18n';
+import type { Cta } from '@/content/types';
+
+interface Props {
+  locale: Locale;
+}
+const { locale } = Astro.props;
+const { journey } = getContent(locale);
+const ctaHref = (cta: Cta) => (cta.key ? route(locale, cta.key) + (cta.suffix ?? '') : (cta.href ?? '#'));
+---
+
+<Base locale={locale} routeKey="journey" title={journey.meta.title} description={journey.meta.description}>
+  <section class="journey-hero section section--tight">
+    <div class="journey-hero__motif" aria-hidden="true"><QrMotif /></div>
+    <div class="container journey-hero__inner">
+      <p class="eyebrow">{journey.hero.eyebrow}</p>
+      <h1>{journey.hero.title}</h1>
+      <p class="lede">{journey.hero.subtitle}</p>
+      <p class="journey-hero__note">
+        <span class="demo-tag"><Icon name="info" size={14} />{journey.demo.simulatedNotice}</span>
+        <span>{journey.hero.note}</span>
+      </p>
+    </div>
+  </section>
+
+  <section class="section section--subtle journey-demo" aria-labelledby="journey-demo-title">
+    <div class="container container--wide">
+      <SectionHeader eyebrow={journey.demo.eyebrow} title={journey.demo.title} intro={journey.demo.intro} id="journey-demo-title" />
+      <JourneyApp locale={locale} />
+    </div>
+  </section>
+
+  <section class="section journey-explain" aria-labelledby="journey-explain-title">
+    <div class="container">
+      <SectionHeader eyebrow={journey.explain.eyebrow} title={journey.explain.title} intro={journey.explain.intro} id="journey-explain-title" />
+      <div class="journey-explain__grid" data-reveal data-reveal-stagger>
+        {
+          journey.explain.fields.map((field) => (
+            <article class="journey-field">
+              <span class="journey-field__icon" aria-hidden="true">
+                <Icon name={field.icon} size={22} />
+              </span>
+              <div>
+                <h3 class="journey-field__title">{field.label}</h3>
+                <p class="journey-field__body">{field.description}</p>
+              </div>
+            </article>
+          ))
+        }
+      </div>
+      <blockquote class="journey-quote">
+        <p>{journey.explain.quote}</p>
+      </blockquote>
+      <Callout tone="neutral">
+        <p>{journey.explain.note}</p>
+      </Callout>
+    </div>
+  </section>
+
+  <section class="section section--subtle journey-cta" aria-labelledby="journey-cta-title">
+    <div class="container container--narrow">
+      <h2 id="journey-cta-title">{journey.cta.title}</h2>
+      <p class="lede">{journey.cta.body}</p>
+      <div class="cluster journey-cta__actions">
+        <Button href={ctaHref(journey.cta.primaryCta)} icon="scan" iconPosition="start">{journey.cta.primaryCta.label}</Button>
+        <Button href={ctaHref(journey.cta.secondaryCta)} variant="secondary" icon="arrow-right">{journey.cta.secondaryCta.label}</Button>
+      </div>
+    </div>
+  </section>
+</Base>
+
+<style>
+  .journey-hero {
+    position: relative;
+    overflow: hidden;
+  }
+  .journey-hero__motif {
+    position: absolute;
+    right: -5rem;
+    top: -3rem;
+    width: 20rem;
+    height: 20rem;
+    color: var(--color-navy-900);
+    pointer-events: none;
+  }
+  .journey-hero__inner {
+    position: relative;
+    max-width: var(--container-max);
+  }
+  .journey-hero h1 {
+    max-width: 22ch;
+  }
+  .journey-hero__note {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: var(--space-2) var(--space-3);
+    margin-top: var(--space-5);
+    font-size: var(--text-sm);
+    color: var(--color-text-secondary);
+  }
+  .journey-explain__grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 24rem), 1fr));
+    gap: var(--space-6);
+    margin-bottom: var(--space-8);
+  }
+  .journey-field {
+    display: flex;
+    gap: var(--space-4);
+    padding: var(--space-5);
+    border: var(--border-width) solid var(--color-border);
+    border-radius: var(--radius-lg);
+    background: var(--color-surface);
+  }
+  .journey-field__icon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    width: 2.75rem;
+    height: 2.75rem;
+    border-radius: var(--radius-md);
+    background: var(--color-cobalt-50);
+    color: var(--color-cobalt-600);
+  }
+  .journey-field__title {
+    margin: 0 0 var(--space-2);
+    font-size: var(--text-lg);
+  }
+  .journey-field__body {
+    margin: 0;
+    color: var(--color-text-secondary);
+  }
+  .journey-quote {
+    margin: 0 0 var(--space-6);
+    padding: var(--space-4) var(--space-6);
+    border-left: 4px solid var(--color-cyan-400);
+    font-size: var(--text-xl);
+    font-weight: var(--weight-medium);
+    line-height: var(--leading-snug);
+    color: var(--color-heading);
+    text-wrap: balance;
+  }
+  .journey-quote p {
+    margin: 0;
+  }
+  .journey-cta__actions {
+    margin-top: var(--space-6);
+  }
+</style>

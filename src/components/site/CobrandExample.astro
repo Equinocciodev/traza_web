@@ -1,0 +1,113 @@
+---
+/**
+ * Panel de ejemplo de co-brand del tenant `licores` (propuesta de piloto — co-brand condicional).
+ * Solo se renderiza si `env.showCobrandExample` es true. Siempre acompañado del aviso de co-brand
+ * del tenant y del aviso común del sitio. Sin emblemas oficiales: lockup tipográfico.
+ */
+import Lockup from '@/components/ui/Lockup.astro';
+import Icon from '@/components/ui/Icon.astro';
+import { TENANTS, type TenantId } from '@/config/tenants';
+import { env } from '@/config/env';
+import { getContent } from '@/content';
+import type { Locale } from '@/i18n';
+
+interface Props {
+  locale: Locale;
+  tenant?: TenantId;
+  size?: 'md' | 'lg';
+  class?: string;
+}
+const { locale, tenant = 'licores', size = 'lg', class: className } = Astro.props;
+const t = TENANTS[tenant];
+const { common } = getContent(locale);
+const show = env.showCobrandExample && !!t.lockup;
+---
+
+{
+  show && (
+    <div class:list={['cobrand', className]} data-tenant={tenant}>
+      <div class="cobrand__head">
+        <span class="demo-tag">
+          <Icon name="document" size={14} />
+          {t.statusLabel[locale]}
+        </span>
+        <span class="cobrand__scope">{t.scope[locale]}</span>
+      </div>
+      <div class="cobrand__stage">
+        <Lockup tenant={t} locale={locale} size={size} showNotice />
+      </div>
+      <span class="cobrand__stripe" aria-hidden="true">
+        <i></i>
+        <i></i>
+        <i></i>
+        <i></i>
+      </span>
+      <p class="cobrand__notice">{common.cobrandNotice}</p>
+    </div>
+  )
+}
+
+<style>
+  .cobrand {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-4);
+    padding: var(--space-5);
+    border: var(--border-width) solid var(--color-border);
+    border-radius: var(--radius-lg);
+    background: var(--color-white);
+    color: var(--color-neutral-900);
+    box-shadow: var(--shadow-sm);
+  }
+  .cobrand__head {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--space-3);
+  }
+  .cobrand__scope {
+    font-size: var(--text-sm);
+    color: var(--color-neutral-600);
+  }
+  .cobrand__stage {
+    display: flex;
+    justify-content: center;
+    padding: var(--space-6) var(--space-4);
+    border: var(--border-width) dashed var(--color-neutral-300);
+    border-radius: var(--radius-md);
+    background: var(--color-neutral-50);
+  }
+  .cobrand__stage :global(.lockup) {
+    /* El lockup escala con el ancho para no desbordar a 320 px */
+    --lk-size: min(1.75rem, 6vw);
+    align-items: center;
+    text-align: center;
+  }
+  .cobrand__stripe {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 4px;
+    height: 4px;
+  }
+  .cobrand__stripe i {
+    display: block;
+    border-radius: 1px;
+    background: var(--tenant-accent);
+  }
+  .cobrand__stripe i:nth-child(2) {
+    background: var(--tenant-accent-2);
+  }
+  .cobrand__stripe i:nth-child(3) {
+    background: var(--tenant-accent-3);
+  }
+  .cobrand__stripe i:nth-child(4) {
+    background: var(--tenant-accent-4);
+  }
+  .cobrand__notice {
+    margin: 0;
+    font-size: var(--text-xs);
+    line-height: 1.5;
+    color: var(--color-neutral-600);
+  }
+</style>

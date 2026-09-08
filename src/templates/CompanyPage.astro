@@ -1,0 +1,194 @@
+---
+/**
+ * Empresa y contacto: misión, qué hacemos, principios, contacto (formulario simulado) y descargo.
+ */
+import Base from '@/layouts/Base.astro';
+import PageHero from '@/components/ui/PageHero.astro';
+import Callout from '@/components/ui/Callout.astro';
+import FeatureGrid from '@/components/ui/FeatureGrid.astro';
+import Icon from '@/components/ui/Icon.astro';
+import SectionHeader from '@/components/ui/SectionHeader.astro';
+import Wordmark from '@/components/ui/Wordmark.astro';
+import ContactForm from '@/components/site/ContactForm.astro';
+import { env } from '@/config/env';
+import { getContent } from '@/content';
+import type { Locale } from '@/i18n';
+
+interface Props {
+  locale: Locale;
+}
+const { locale } = Astro.props;
+const { company, common } = getContent(locale);
+const contactEmail = env.contactEmail.trim();
+---
+
+<Base locale={locale} routeKey="company" title={company.meta.title} description={company.meta.description} schemaType="AboutPage">
+  <PageHero eyebrow={company.hero.eyebrow} title={company.hero.title} subtitle={company.hero.subtitle} />
+
+  <section class="section" aria-labelledby="mission-title" data-reveal>
+    <div class="container mission">
+      <div class="mission__brand">
+        <Wordmark size="lg" alt={common.brand.wordmarkAlt} />
+        <p class="mission__tagline">{common.brand.tagline}</p>
+        <p class="mission__domain mono">{common.brand.domain}</p>
+      </div>
+      <div class="mission__text">
+        <h2 id="mission-title">{company.mission.title}</h2>
+        <div class="prose">
+          {company.mission.paragraphs.map((paragraph) => <p>{paragraph}</p>)}
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section section--subtle" aria-labelledby="whatwedo-title" data-reveal>
+    <div class="container">
+      <SectionHeader title={company.whatWeDo.title} id="whatwedo-title" />
+      <FeatureGrid items={company.whatWeDo.items} columns={3} />
+    </div>
+  </section>
+
+  <section class="section" aria-labelledby="principles-title" data-reveal>
+    <div class="container">
+      <SectionHeader title={company.principles.title} id="principles-title" />
+      <FeatureGrid items={company.principles.items} columns={4} tone="subtle" />
+    </div>
+  </section>
+
+  <section class="section section--subtle" aria-labelledby="contact-title" data-reveal>
+    <div class="container contact-section">
+      <div class="contact-section__intro">
+        <SectionHeader title={company.contact.title} intro={company.contact.intro} id="contact-title" class="contact-section__header" />
+        <div class="contact-section__channel">
+          <span class="contact-section__icon" aria-hidden="true"><Icon name="globe" size={20} /></span>
+          <div>
+            <p class="contact-section__label">{company.contact.emailLabel}</p>
+            {
+              contactEmail ? (
+                <p class="contact-section__email">
+                  <a href={`mailto:${contactEmail}`}>{contactEmail}</a>
+                </p>
+              ) : (
+                <p class="contact-section__fallback">{company.contact.emailFallback}</p>
+              )
+            }
+          </div>
+        </div>
+        <p class="contact-section__note">
+          <Icon name="clock" size={16} />
+          <span>{company.contact.responseNote}</span>
+        </p>
+      </div>
+      <div class="contact-section__form">
+        <ContactForm locale={locale} />
+      </div>
+    </div>
+  </section>
+
+  <div class="section section--tight">
+    <div class="container">
+      <Callout tone="neutral">{company.disclaimer}</Callout>
+    </div>
+  </div>
+</Base>
+
+<style>
+  .mission {
+    display: grid;
+    gap: var(--space-8);
+    align-items: start;
+  }
+  @media (min-width: 60em) {
+    .mission {
+      grid-template-columns: minmax(0, 4fr) minmax(0, 8fr);
+      gap: var(--space-16);
+    }
+  }
+  .mission__brand {
+    padding: var(--space-6);
+    border: var(--border-width) solid var(--color-border);
+    border-radius: var(--radius-lg);
+    background: var(--color-bg-subtle);
+  }
+  .mission__tagline {
+    margin: var(--space-4) 0 var(--space-1);
+    font-weight: var(--weight-medium);
+    color: var(--color-heading);
+  }
+  .mission__domain {
+    margin: 0;
+    font-size: var(--text-sm);
+    color: var(--color-link);
+  }
+  .mission__text h2 {
+    margin-bottom: var(--space-4);
+  }
+  .mission__text .prose {
+    max-width: 62ch;
+    color: var(--color-text-secondary);
+  }
+
+  .contact-section {
+    display: grid;
+    gap: var(--space-10);
+    align-items: start;
+  }
+  @media (min-width: 60em) {
+    .contact-section {
+      grid-template-columns: minmax(0, 5fr) minmax(0, 7fr);
+      gap: var(--space-16);
+    }
+  }
+  .contact-section :global(.contact-section__header) {
+    margin-bottom: var(--space-6);
+  }
+  .contact-section__channel {
+    display: grid;
+    grid-template-columns: 2.5rem minmax(0, 1fr);
+    gap: var(--space-3);
+    padding: var(--space-4) var(--space-5);
+    border: var(--border-width) solid var(--color-border);
+    border-radius: var(--radius-md);
+    background: var(--color-surface);
+  }
+  .contact-section__icon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 2.5rem;
+    height: 2.5rem;
+    border-radius: var(--radius-md);
+    background: var(--color-cobalt-50);
+    color: var(--color-cobalt-600);
+  }
+  .contact-section__label {
+    margin: 0 0 var(--space-1);
+    font-family: var(--font-mono);
+    font-size: var(--text-xs);
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--color-text-secondary);
+  }
+  .contact-section__email {
+    margin: 0;
+    font-weight: var(--weight-medium);
+    overflow-wrap: anywhere;
+  }
+  .contact-section__fallback {
+    margin: 0;
+    font-size: var(--text-sm);
+    color: var(--color-text-secondary);
+  }
+  .contact-section__note {
+    display: flex;
+    align-items: flex-start;
+    gap: var(--space-2);
+    margin: var(--space-4) 0 0;
+    font-size: var(--text-sm);
+    color: var(--color-text-secondary);
+  }
+  .contact-section__note :global(.icon) {
+    margin-top: 0.2em;
+    flex-shrink: 0;
+  }
+</style>

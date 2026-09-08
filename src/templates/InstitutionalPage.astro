@@ -1,0 +1,65 @@
+---
+/**
+ * DEMO C · Vista institucional (ES/EN). Banner permanente de demostración, cabecera compacta y la isla.
+ * Nada de lo que muestra afirma implementación ni relación institucional.
+ */
+import Base from '@/layouts/Base.astro';
+import Callout from '@/components/ui/Callout.astro';
+import Icon from '@/components/ui/Icon.astro';
+import InstitutionalApp from '@/components/institutional/InstitutionalApp.astro';
+import { getContent } from '@/content';
+import type { Locale } from '@/i18n';
+
+interface Props {
+  locale: Locale;
+}
+const { locale } = Astro.props;
+const { institutional: t, common } = getContent(locale);
+---
+
+<Base locale={locale} routeKey="institutional" title={t.meta.title} description={t.meta.description} bodyClass="page-institutional">
+  <div class="inst-banner" data-testid="institutional-banner">
+    <div class="container">
+      <Callout tone="info" icon="eye" title={t.banner.title} role="note">
+        <p>{t.banner.body}</p>
+        <p class="inst-banner__readonly">
+          <Icon name="lock" size={14} />
+          <span>{t.banner.readOnly}</span>
+        </p>
+      </Callout>
+    </div>
+  </div>
+
+  <header class="inst-hero" aria-label={common.a11y.demoRegion}>
+    <div class="container inst-hero__inner">
+      <p class="eyebrow">{t.hero.eyebrow}</p>
+      <h1>{t.hero.title}</h1>
+      <p class="lede">{t.hero.subtitle}</p>
+    </div>
+  </header>
+
+  <InstitutionalApp locale={locale} />
+</Base>
+
+<style>
+  .inst-banner {
+    padding-top: var(--space-4);
+  }
+  .inst-banner__readonly {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-2);
+    font-weight: var(--weight-medium);
+    color: var(--color-info-text);
+  }
+  .inst-hero__inner {
+    padding-block: var(--space-6) var(--space-5);
+  }
+  .inst-hero h1 {
+    font-size: var(--text-3xl);
+    margin-bottom: var(--space-3);
+  }
+  .inst-hero .lede {
+    font-size: var(--text-base);
+  }
+</style>

@@ -1,0 +1,186 @@
+---
+/**
+ * Hero de página sobre azul marino: eyebrow (mono), h1, entradilla y ornamento QR discreto.
+ * - Un solo h1 por página: este componente lo renderiza.
+ * - Slot por defecto: contenido extra bajo la entradilla (CTAs, avisos).
+ * - Slot `aside`: columna derecha (por ejemplo la tarjeta de unidad simulada del inicio).
+ * Sin JavaScript ni fondos pesados: el título es el candidato a LCP.
+ */
+import Icon from './Icon.astro';
+import QrMotif from './QrMotif.astro';
+import StatusPill from './StatusPill.astro';
+import type { IconName } from '@/content/types';
+
+interface Props {
+  eyebrow?: string;
+  title: string;
+  subtitle?: string;
+  /** Etiqueta corta visible junto al eyebrow (por ejemplo "Propuesta de piloto"). */
+  tag?: string;
+  tagTone?: 'info' | 'warning' | 'neutral' | 'success' | 'danger';
+  icon?: IconName;
+  size?: 'md' | 'lg';
+  class?: string;
+  id?: string;
+}
+
+const { eyebrow, title, subtitle, tag, tagTone = 'info', icon, size = 'md', class: className, id = 'page-title' } = Astro.props;
+const hasAside = Astro.slots.has('aside');
+const hasExtra = Astro.slots.has('default');
+---
+
+<section class:list={['hero', 'on-dark', `hero--${size}`, { 'hero--split': hasAside }, className]} aria-labelledby={id}>
+  <div class="hero__motif" aria-hidden="true"><QrMotif density="mid" /></div>
+  <div class="container hero__inner">
+    <div class="hero__copy">
+      {
+        (eyebrow || tag || icon) && (
+          <div class="hero__meta">
+            {icon && (
+              <span class="hero__icon" aria-hidden="true">
+                <Icon name={icon} size={22} />
+              </span>
+            )}
+            {eyebrow && <p class="eyebrow hero__eyebrow">{eyebrow}</p>}
+            {tag && (
+              <StatusPill tone={tagTone} icon="document" class="hero__tag">
+                {tag}
+              </StatusPill>
+            )}
+          </div>
+        )
+      }
+      <span class="hero__rule" aria-hidden="true"></span>
+      <h1 id={id} class="hero__title">{title}</h1>
+      {subtitle && <p class="lede hero__subtitle">{subtitle}</p>}
+      {
+        hasExtra && (
+          <div class="hero__extra">
+            <slot />
+          </div>
+        )
+      }
+    </div>
+    {
+      hasAside && (
+        <div class="hero__aside">
+          <slot name="aside" />
+        </div>
+      )
+    }
+  </div>
+</section>
+
+<style>
+  .hero {
+    position: relative;
+    overflow: hidden;
+    isolation: isolate;
+    background: var(--color-navy-900);
+    padding-block: clamp(3rem, 7vw, 5.5rem) clamp(3rem, 7vw, 5rem);
+  }
+  .hero--lg {
+    padding-block: clamp(3.5rem, 8vw, 6.5rem) clamp(3.5rem, 8vw, 6rem);
+  }
+  .hero__motif {
+    position: absolute;
+    z-index: -1;
+    top: -3rem;
+    right: -4rem;
+    width: clamp(14rem, 30vw, 24rem);
+    height: clamp(14rem, 30vw, 24rem);
+    color: var(--color-white);
+    pointer-events: none;
+  }
+  /* En pantallas estrechas el motivo se retira a la esquina inferior para no pisar el titular */
+  @media (max-width: 59.99em) {
+    .hero__motif {
+      top: auto;
+      bottom: -6rem;
+      right: -6rem;
+      width: 14rem;
+      height: 14rem;
+    }
+  }
+  .hero__inner {
+    display: grid;
+    gap: var(--space-10);
+    align-items: center;
+  }
+  @media (min-width: 60em) {
+    .hero--split .hero__inner {
+      grid-template-columns: minmax(0, 7fr) minmax(0, 5fr);
+      gap: var(--space-12);
+    }
+  }
+  .hero__copy {
+    max-width: 44rem;
+    min-width: 0;
+  }
+  .hero__meta {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: var(--space-3);
+    margin-bottom: var(--space-4);
+  }
+  .hero__meta .eyebrow {
+    margin-bottom: 0;
+  }
+  .hero__icon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 2.5rem;
+    height: 2.5rem;
+    border-radius: var(--radius-md);
+    background: rgba(25, 200, 255, 0.14);
+    color: var(--color-cyan-300);
+  }
+  .hero__rule {
+    display: block;
+    width: 3rem;
+    height: 3px;
+    margin-bottom: var(--space-5);
+    border-radius: 1px;
+    background: var(--color-cyan-400);
+    /* "El trazo que se completa": la regla se dibuja una vez al cargar. Solo CSS y solo transform
+       (no depende de JS, no toca el layout ni retrasa el LCP del titular); con reduced motion es estática. */
+    transform-origin: left center;
+    animation: hero-rule-draw var(--dur-slower) var(--ease-standard) both;
+  }
+  @keyframes hero-rule-draw {
+    from {
+      transform: scaleX(0);
+    }
+    to {
+      transform: none;
+    }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .hero__rule {
+      animation: none;
+    }
+  }
+  .hero__title {
+    margin-bottom: var(--space-5);
+    color: var(--color-white);
+  }
+  .hero--md .hero__title {
+    font-size: var(--text-3xl);
+  }
+  .hero__subtitle {
+    color: rgba(255, 255, 255, 0.82);
+    margin-bottom: 0;
+  }
+  .hero__extra {
+    margin-top: var(--space-8);
+  }
+  .hero__aside {
+    position: relative;
+    min-width: 0;
+  }
+  .hero__meta :global(.hero__tag) {
+    white-space: normal;
+  }
+</style>

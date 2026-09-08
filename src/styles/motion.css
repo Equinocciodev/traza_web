@@ -1,0 +1,172 @@
+/*
+  Motion — "El trazo que se completa" (ver docs/10-motion.md).
+  Reglas: solo transform/opacity (y stroke-dashoffset en SVG); nada se oculta sin JavaScript (la clase
+  reveal-pending la añade JS únicamente a elementos fuera del viewport inicial); reduced motion → estados
+  finales; `will-change` solo mientras dura la animación (clases is-animating / is-drawing).
+*/
+
+/* ---- Revelado de secciones y rejillas -------------------------------------------------------
+   Se ocultan los hijos directos, nunca el contenedor: los fondos de sección (subtle, navy) siguen
+   pintados y un scroll rápido no deja huecos. Estado final = sin clases = HTML del servidor. */
+[data-reveal].reveal-pending > * {
+  opacity: 0;
+  transform: translateY(var(--motion-distance));
+}
+
+[data-reveal].is-animating > * {
+  transition:
+    opacity var(--dur-slow) var(--ease-standard),
+    transform var(--dur-slow) var(--ease-standard);
+  transition-delay: var(--reveal-delay, 0ms);
+  will-change: opacity, transform;
+}
+
+/* Escalonado coherente para rejillas y listas: <ul data-reveal data-reveal-stagger>
+   60 ms por hijo directo; a partir del octavo todos comparten el último retardo (420 ms). */
+[data-reveal][data-reveal-stagger].is-animating > :nth-child(2) {
+  transition-delay: calc(var(--reveal-delay, 0ms) + 60ms);
+}
+[data-reveal][data-reveal-stagger].is-animating > :nth-child(3) {
+  transition-delay: calc(var(--reveal-delay, 0ms) + 120ms);
+}
+[data-reveal][data-reveal-stagger].is-animating > :nth-child(4) {
+  transition-delay: calc(var(--reveal-delay, 0ms) + 180ms);
+}
+[data-reveal][data-reveal-stagger].is-animating > :nth-child(5) {
+  transition-delay: calc(var(--reveal-delay, 0ms) + 240ms);
+}
+[data-reveal][data-reveal-stagger].is-animating > :nth-child(6) {
+  transition-delay: calc(var(--reveal-delay, 0ms) + 300ms);
+}
+[data-reveal][data-reveal-stagger].is-animating > :nth-child(7) {
+  transition-delay: calc(var(--reveal-delay, 0ms) + 360ms);
+}
+[data-reveal][data-reveal-stagger].is-animating > :nth-child(n + 8) {
+  transition-delay: calc(var(--reveal-delay, 0ms) + 420ms);
+}
+
+/* ---- Revelado de elementos que crea JS (resultado de verificación, tarjetas de evento, filas) ---- */
+@keyframes reveal-child {
+  from {
+    opacity: 0;
+    transform: translateY(var(--motion-distance));
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+.reveal-up {
+  animation: reveal-child var(--dur-base) var(--ease-standard) both;
+}
+
+/* ---- Haz de escaneo QR (demo A): una barra translúcida recorre el visor mientras dura el escaneo.
+   Solo transform; el brillo es estático (viaja con la capa compuesta, no se repinta). ---- */
+.scan-beam {
+  position: absolute;
+  left: 8%;
+  right: 8%;
+  top: 0;
+  height: 2px;
+  background: var(--color-cyan-400);
+  box-shadow: 0 0 12px 2px rgba(25, 200, 255, 0.55);
+  opacity: 0;
+  pointer-events: none;
+}
+
+.is-scanning .scan-beam {
+  opacity: 1;
+  will-change: transform;
+  animation: scan-sweep 1.4s var(--ease-standard) infinite alternate;
+}
+
+@keyframes scan-sweep {
+  from {
+    transform: translateY(0);
+  }
+  to {
+    transform: translateY(var(--scan-height, 200px));
+  }
+}
+
+/* ---- Pulso discreto del nodo activo de la cadena (demo B): dos ciclos, nunca constante ---- */
+.node-pulse {
+  animation: node-pulse 1.6s var(--ease-standard) 2;
+}
+
+@keyframes node-pulse {
+  0% {
+    transform: scale(1);
+    opacity: 0.8;
+  }
+  50% {
+    transform: scale(1.12);
+    opacity: 1;
+  }
+  100% {
+    transform: scale(1);
+    opacity: 0.8;
+  }
+}
+
+/* ---- Microinteracciones ≤ 150 ms ----------------------------------------------------------
+   Tarjetas enlazadas: elevación de 2 px. La sombra no se anima (repintaría toda la tarjeta): vive en
+   un pseudoelemento prepintado cuya opacidad es lo único que transiciona. */
+.lift {
+  position: relative;
+  transition: transform var(--dur-fast) var(--ease-standard);
+}
+
+.lift::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  box-shadow: var(--shadow-md);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity var(--dur-fast) var(--ease-standard);
+}
+
+.lift:hover,
+.lift:focus-within {
+  transform: translateY(-2px);
+}
+
+.lift:hover::after,
+.lift:focus-within::after {
+  opacity: 1;
+}
+
+/* ---- Estados finales garantizados ---- */
+@media print {
+  [data-reveal].reveal-pending > * {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  [data-reveal].reveal-pending > * {
+    opacity: 1;
+    transform: none;
+  }
+  [data-reveal].is-animating > * {
+    transition: none;
+    will-change: auto;
+  }
+  .is-scanning .scan-beam {
+    animation: none;
+    will-change: auto;
+    transform: translateY(calc(var(--scan-height, 200px) / 2));
+  }
+  .node-pulse,
+  .reveal-up {
+    animation: none;
+  }
+  .lift:hover,
+  .lift:focus-within {
+    transform: none;
+  }
+}

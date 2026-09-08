@@ -1,0 +1,41 @@
+---
+/**
+ * Motivo de cuadrados QR: ornamento SVG discreto (finder patterns + módulos dispersos).
+ * Decorativo (aria-hidden). Usa currentColor con opacidad baja: cambia `color` en el contenedor.
+ */
+interface Props {
+  class?: string;
+  /** Densidad de módulos: 'low' | 'mid' */
+  density?: 'low' | 'mid';
+}
+const { class: className, density = 'low' } = Astro.props;
+const modulesLow = [
+  [2, 9], [4, 11], [6, 9], [3, 14], [8, 12], [10, 2], [13, 4], [11, 8], [15, 10], [17, 6], [12, 14], [16, 15], [19, 12], [9, 17], [14, 18], [20, 17], [18, 2], [21, 4],
+];
+const modulesMid = [
+  ...modulesLow, [5, 5], [7, 16], [2, 19], [11, 11], [13, 1], [19, 9], [17, 19], [21, 20], [1, 6], [6, 20], [16, 3], [20, 7],
+];
+const modules = density === 'mid' ? modulesMid : modulesLow;
+---
+
+<svg class:list={['qr-motif', className]} viewBox="0 0 24 24" aria-hidden="true" focusable="false" preserveAspectRatio="xMidYMid slice">
+  <g fill="currentColor">
+    <path fill-rule="evenodd" d="M0 0h7v7H0zM1 1v5h5V1z" />
+    <rect x="2" y="2" width="3" height="3" />
+    <path fill-rule="evenodd" d="M17 0h7v7h-7zM18 1v5h5V1z" />
+    <rect x="19" y="2" width="3" height="3" />
+    <path fill-rule="evenodd" d="M0 17h7v7H0zM1 18v5h5v-5z" />
+    <rect x="2" y="19" width="3" height="3" />
+    {modules.map(([x, y]) => <rect x={x} y={y} width="1" height="1" />)}
+  </g>
+</svg>
+
+<style>
+  .qr-motif {
+    display: block;
+    width: 100%;
+    height: 100%;
+    opacity: 0.12;
+    fill: currentColor;
+  }
+</style>

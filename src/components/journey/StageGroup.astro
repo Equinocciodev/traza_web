@@ -1,0 +1,149 @@
+---
+/**
+ * Grupo de eventos de una etapa (cabecera + lista de tarjetas). Sin `stage` renderiza la plantilla
+ * vacía que la isla clona al cambiar de unidad.
+ */
+import EventCard from './EventCard.astro';
+import type { JourneyClientData, JourneyStageState } from '@/content/journey.types';
+import type { StageGroup } from './model';
+
+interface Props {
+  stage?: StageGroup;
+  state?: JourneyStageState;
+  data: JourneyClientData;
+}
+
+const { stage, state = 'pending', data } = Astro.props;
+const num = stage ? String(stage.index + 1).padStart(2, '0') : '';
+const hasEvents = !!stage && stage.events.length > 0;
+const emptyText = state === 'unrecorded' ? data.stageUnrecorded : data.stageEmpty;
+---
+
+<section
+  class="jr-stage"
+  data-jr-stage
+  data-testid="journey-stage"
+  data-stage={stage?.id}
+  data-index={stage?.index}
+  data-state={stage ? state : undefined}
+  aria-labelledby={stage ? `jr-stage-title-${stage.id}` : undefined}
+>
+  <header class="jr-stage__head">
+    <span class="jr-stage__num mono" data-jr-field="num" aria-hidden="true">{num}</span>
+    <h4 class="jr-stage__title" id={stage ? `jr-stage-title-${stage.id}` : undefined} data-jr-field="title">{stage?.label ?? ''}</h4>
+    <span class="jr-stage__state mono" data-jr-field="state">{stage ? data.stageStates[state] : ''}</span>
+  </header>
+  <ol class="jr-stage__list" data-jr-list hidden={stage ? !hasEvents : false}>
+    {stage?.events.map((event) => <EventCard event={event} data={data} />)}
+  </ol>
+  <p class="jr-stage__empty" data-jr-field="empty" hidden={stage ? hasEvents : true}>{stage ? emptyText : ''}</p>
+</section>
+
+<style>
+  .jr-stage {
+    position: relative;
+    padding-left: var(--space-8);
+  }
+  /* Guía vertical que une las etapas de la lista */
+  .jr-stage::before {
+    content: '';
+    position: absolute;
+    left: 0.6875rem;
+    top: 1.75rem;
+    bottom: -1.5rem;
+    border-left: 2px solid var(--color-neutral-200);
+  }
+  .jr-stage:last-child::before {
+    display: none;
+  }
+  .jr-stage[data-state='done']::before,
+  .jr-stage[data-state='active']::before {
+    border-left-color: var(--color-cobalt-600);
+  }
+  .jr-stage__head {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: var(--space-2) var(--space-3);
+    margin-bottom: var(--space-3);
+  }
+  .jr-stage__num {
+    position: absolute;
+    left: 0;
+    top: 0.15rem;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 1.5rem;
+    height: 1.5rem;
+    border-radius: 50%;
+    border: 2px solid var(--color-neutral-300);
+    background: var(--color-surface);
+    font-size: 0.6875rem;
+    font-weight: var(--weight-medium);
+    color: var(--color-text-secondary);
+  }
+  .jr-stage[data-state='done'] .jr-stage__num {
+    border-color: var(--color-cobalt-600);
+    color: var(--color-cobalt-700);
+    background: var(--color-cobalt-50);
+  }
+  .jr-stage[data-state='active'] .jr-stage__num {
+    border-color: var(--color-cobalt-600);
+    background: var(--color-cobalt-600);
+    color: var(--color-white);
+  }
+  .jr-stage[data-state='unrecorded'] .jr-stage__num {
+    border-style: dashed;
+    color: var(--color-neutral-500);
+  }
+  .jr-stage__title {
+    margin: 0;
+    font-size: var(--text-lg);
+    line-height: var(--leading-snug);
+  }
+  .jr-stage[data-state='pending'] .jr-stage__title,
+  .jr-stage[data-state='unrecorded'] .jr-stage__title {
+    color: var(--color-text-secondary);
+  }
+  .jr-stage__state {
+    display: inline-flex;
+    align-items: center;
+    padding: 0.125rem 0.5rem;
+    border-radius: var(--radius-sm);
+    border: var(--border-width) solid var(--color-neutral-border);
+    background: var(--color-neutral-bg);
+    color: var(--color-neutral-text);
+    font-size: var(--text-xs);
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+  }
+  .jr-stage[data-state='active'] .jr-stage__state {
+    border-color: var(--color-info-border);
+    background: var(--color-info-bg);
+    color: var(--color-info-text);
+  }
+  .jr-stage[data-state='done'] .jr-stage__state {
+    border-color: var(--color-cobalt-100);
+    background: var(--color-cobalt-50);
+    color: var(--color-cobalt-700);
+  }
+  .jr-stage[data-state='unrecorded'] .jr-stage__state {
+    border-style: dashed;
+  }
+  .jr-stage__list {
+    display: grid;
+    gap: var(--space-3);
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+  .jr-stage__empty {
+    margin: 0;
+    padding: var(--space-3) var(--space-4);
+    border: var(--border-width) dashed var(--color-border-strong);
+    border-radius: var(--radius-md);
+    font-size: var(--text-sm);
+    color: var(--color-text-secondary);
+  }
+</style>

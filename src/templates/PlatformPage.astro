@@ -1,0 +1,272 @@
+---
+/**
+ * Plataforma: capacidades, identidad de la unidad (con ejemplo simulado), arquitectura objetivo,
+ * modelo de verificación por señales, co-brand por tenant, integración y cierre.
+ */
+import Base from '@/layouts/Base.astro';
+import PageHero from '@/components/ui/PageHero.astro';
+import Callout from '@/components/ui/Callout.astro';
+import CheckList from '@/components/ui/CheckList.astro';
+import CtaBand from '@/components/ui/CtaBand.astro';
+import FeatureGrid from '@/components/ui/FeatureGrid.astro';
+import Icon from '@/components/ui/Icon.astro';
+import SectionHeader from '@/components/ui/SectionHeader.astro';
+import SignalList from '@/components/ui/SignalList.astro';
+import UnitCard from '@/components/ui/UnitCard.astro';
+import CobrandExample from '@/components/site/CobrandExample.astro';
+import { env } from '@/config/env';
+import { getContent } from '@/content';
+import type { Locale } from '@/i18n';
+
+interface Props {
+  locale: Locale;
+}
+const { locale } = Astro.props;
+const { platform } = getContent(locale);
+---
+
+<Base locale={locale} routeKey="platform" title={platform.meta.title} description={platform.meta.description}>
+  <PageHero eyebrow={platform.hero.eyebrow} title={platform.hero.title} subtitle={platform.hero.subtitle} />
+
+  <section class="section" aria-labelledby="capabilities-title" data-reveal>
+    <div class="container">
+      <SectionHeader title={platform.capabilities.title} intro={platform.capabilities.intro} id="capabilities-title" />
+      <FeatureGrid items={platform.capabilities.items} columns={3} />
+    </div>
+  </section>
+
+  <section class="section section--subtle" aria-labelledby="identity-title" data-reveal>
+    <div class="container identity">
+      <div class="identity__copy">
+        <SectionHeader title={platform.identity.title} intro={platform.identity.body} id="identity-title" class="identity__header" />
+        <dl class="identity__fields" data-reveal data-reveal-stagger>
+          {
+            platform.identity.fields.map((field) => (
+              <div class="identity__field">
+                <dt>
+                  <span class="identity__icon" aria-hidden="true">
+                    <Icon name={field.icon} size={20} />
+                  </span>
+                  <span>{field.label}</span>
+                </dt>
+                <dd>{field.description}</dd>
+              </div>
+            ))
+          }
+        </dl>
+      </div>
+      <div class="identity__example">
+        <UnitCard
+          caption={platform.identity.example.caption}
+          code={platform.identity.example.code}
+          fields={platform.identity.example.rows}
+          class="identity__card"
+        />
+      </div>
+    </div>
+  </section>
+
+  <section class="section" aria-labelledby="architecture-title" data-reveal>
+    <div class="container">
+      <SectionHeader title={platform.architecture.title} intro={platform.architecture.intro} id="architecture-title" />
+      <ol class="layers" data-reveal data-reveal-stagger>
+        {
+          platform.architecture.layers.map((layer, index) => (
+            <li class="layer">
+              <span class="layer__index mono" aria-hidden="true">{String(index + 1).padStart(2, '0')}</span>
+              <span class="layer__icon" aria-hidden="true">
+                <Icon name={layer.icon} size={22} />
+              </span>
+              <div class="layer__text">
+                <h3 class="layer__name">{layer.name}</h3>
+                <p class="layer__body">{layer.body}</p>
+              </div>
+            </li>
+          ))
+        }
+      </ol>
+      <div class="section__note">
+        <Callout tone="info">{platform.architecture.note}</Callout>
+      </div>
+    </div>
+  </section>
+
+  <section class="section section--subtle" aria-labelledby="verification-title" data-reveal>
+    <div class="container">
+      <SectionHeader title={platform.verificationModel.title} intro={platform.verificationModel.intro} id="verification-title" />
+      <SignalList signals={platform.verificationModel.signals} />
+      <div class="section__note">
+        <Callout tone="warning">{platform.verificationModel.caution}</Callout>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" aria-labelledby="tenancy-title" data-reveal>
+    <div class="container tenancy">
+      <div class="tenancy__copy">
+        <SectionHeader title={platform.tenancy.title} intro={platform.tenancy.body} id="tenancy-title" class="tenancy__header" />
+        <CheckList items={platform.tenancy.bullets} tone="muted" />
+      </div>
+      <div class="tenancy__aside">
+        <CobrandExample locale={locale} />
+        {env.showCobrandExample && <Callout tone="neutral">{platform.tenancy.exampleNote}</Callout>}
+      </div>
+    </div>
+  </section>
+
+  <section class="section section--subtle" aria-labelledby="integration-title" data-reveal>
+    <div class="container integration">
+      <SectionHeader title={platform.integration.title} intro={platform.integration.body} id="integration-title" class="integration__header" />
+      <div class="integration__list">
+        <CheckList items={platform.integration.bullets} tone="muted" columns={2} />
+        <Callout tone="info">{platform.integration.note}</Callout>
+      </div>
+    </div>
+  </section>
+
+  <CtaBand locale={locale} title={platform.cta.title} body={platform.cta.body} primaryCta={platform.cta.primaryCta} secondaryCta={platform.cta.secondaryCta} />
+</Base>
+
+<style>
+  .section__note {
+    max-width: 62ch;
+    margin-top: var(--space-8);
+  }
+
+  .identity {
+    display: grid;
+    gap: var(--space-10);
+    align-items: start;
+  }
+  @media (min-width: 60em) {
+    .identity {
+      grid-template-columns: minmax(0, 7fr) minmax(0, 5fr);
+      gap: var(--space-16);
+    }
+  }
+  .identity :global(.identity__header) {
+    margin-bottom: var(--space-6);
+  }
+  .identity__fields {
+    display: grid;
+    gap: var(--space-3);
+    margin: 0;
+  }
+  .identity__field {
+    --icon-size: 2.5rem;
+    padding: var(--space-3) 0;
+    border-bottom: var(--border-width) solid var(--color-border);
+  }
+  .identity__icon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    width: var(--icon-size);
+    height: var(--icon-size);
+    border-radius: var(--radius-md);
+    background: var(--color-cobalt-50);
+    color: var(--color-cobalt-600);
+  }
+  .identity__field dt {
+    display: flex;
+    align-items: center;
+    gap: var(--space-4);
+    font-weight: var(--weight-semibold);
+    color: var(--color-heading);
+  }
+  .identity__field dd {
+    margin: 0.125rem 0 0;
+    padding-left: calc(var(--icon-size) + var(--space-4));
+    font-size: var(--text-sm);
+    color: var(--color-text-secondary);
+  }
+  .identity__example {
+    display: flex;
+    justify-content: center;
+  }
+  .identity :global(.identity__card) {
+    box-shadow: var(--shadow-sm);
+  }
+
+  .layers {
+    display: grid;
+    gap: var(--space-3);
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    max-width: 52rem;
+  }
+  .layer {
+    display: grid;
+    grid-template-columns: auto 2.75rem minmax(0, 1fr);
+    align-items: start;
+    gap: var(--space-4);
+    padding: var(--space-4) var(--space-5);
+    border: var(--border-width) solid var(--color-border);
+    border-radius: var(--radius-md);
+    background: var(--color-surface);
+  }
+  .layer__index {
+    padding-top: 0.75rem;
+    font-size: var(--text-xs);
+    letter-spacing: 0.08em;
+    color: var(--color-text-secondary);
+  }
+  .layer__icon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 2.75rem;
+    height: 2.75rem;
+    border-radius: var(--radius-md);
+    background: var(--color-navy-900);
+    color: var(--color-cyan-300);
+  }
+  .layer__name {
+    margin: 0 0 var(--space-1);
+    font-size: var(--text-lg);
+  }
+  .layer__body {
+    margin: 0;
+    font-size: var(--text-sm);
+    color: var(--color-text-secondary);
+  }
+  @media (max-width: 30em) {
+    .layer {
+      grid-template-columns: 2.75rem minmax(0, 1fr);
+    }
+    .layer__index {
+      display: none;
+    }
+  }
+
+  .tenancy,
+  .integration {
+    display: grid;
+    gap: var(--space-10);
+    align-items: start;
+  }
+  @media (min-width: 60em) {
+    .tenancy {
+      grid-template-columns: minmax(0, 7fr) minmax(0, 5fr);
+      gap: var(--space-16);
+    }
+    .integration {
+      grid-template-columns: minmax(0, 5fr) minmax(0, 7fr);
+      gap: var(--space-16);
+    }
+  }
+  .tenancy :global(.tenancy__header),
+  .integration :global(.integration__header) {
+    margin-bottom: var(--space-6);
+  }
+  .tenancy__aside {
+    display: grid;
+    gap: var(--space-4);
+  }
+  .integration__list {
+    display: grid;
+    gap: var(--space-6);
+  }
+</style>

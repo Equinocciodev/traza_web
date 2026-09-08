@@ -1,0 +1,684 @@
+---
+/**
+ * Sección de alertas: filtros (aria-pressed), lista renderizada en servidor y panel de detalle.
+ * La isla (institutional.ts) filtra las filas, abre el detalle clonando `<template data-tpl="alert-detail">`
+ * y ejecuta acciones simuladas. Sin JavaScript la lista se lee completa.
+ */
+import Icon from '@/components/ui/Icon.astro';
+import Button from '@/components/ui/Button.astro';
+import StatusPill from '@/components/ui/StatusPill.astro';
+import PermissionDenied from './PermissionDenied.astro';
+import type { Locale } from '@/i18n';
+import type { InstitutionalContent } from '@/content/institutional.types';
+import { ALERTS, CASE_BY_ID, alertAssignedTo, SEVERITIES, ALERT_STATUSES } from '@/fixtures/institutional';
+import { SEVERITY_PILL, ALERT_STATUS_PILL } from './pills';
+import { fmtDateTime, fill } from './format';
+
+interface Props {
+  locale: Locale;
+  content: InstitutionalContent;
+}
+const { locale, content: t } = Astro.props;
+const { labels } = t;
+
+const sorted = [...ALERTS].sort((a, b) => (a.detectedAt < b.detectedAt ? 1 : -1));
+const total = sorted.length;
+---
+
+<section class="alerts section--tight" id={t.alerts.id} aria-labelledby="inst-alerts-title" data-section="alerts">
+  <div class="alerts__header">
+    <h2 id="inst-alerts-title">{t.alerts.title}</h2>
+    <p class="lede alerts__intro">{t.alerts.intro}</p>
+  </div>
+
+  <div class="panel" data-panel="alerts">
+    <div class="panel__list" data-list-col>
+      <div class="alerts__filters" data-js-only>
+        <div class="filter" role="group" aria-label={t.alerts.filters.severityLabel}>
+          <span class="filter__label">{t.alerts.filters.severityLabel}</span>
+          <div class="filter__buttons">
+            <button type="button" class="chip" data-filter-severity="all" aria-pressed="true">{t.alerts.filters.all}</button>
+            {SEVERITIES.map((s) => (
+              <button type="button" class="chip" data-filter-severity={s} aria-pressed="false">
+                <Icon name={SEVERITY_PILL[s].icon} size={14} />
+                <span>{labels.severity[s]}</span>
+              </button>
+            ))}
+          </div>
+        </div>
+        <div class="filter" role="group" aria-label={t.alerts.filters.statusLabel}>
+          <span class="filter__label">{t.alerts.filters.statusLabel}</span>
+          <div class="filter__buttons">
+            <button type="button" class="chip" data-filter-status="all" aria-pressed="true">{t.alerts.filters.all}</button>
+            {ALERT_STATUSES.map((s) => (
+              <button type="button" class="chip" data-filter-status={s} aria-pressed="false">
+                <Icon name={ALERT_STATUS_PILL[s].icon} size={14} />
+                <span>{labels.alertStatus[s]}</span>
+              </button>
+            ))}
+          </div>
+        </div>
+      </div>
+
+      <div class="alerts__listhead">
+        <h3 class="alerts__listtitle" id="inst-alert-list-title">{t.alerts.listTitle}</h3>
+        <p class="alerts__count mono" data-alert-count data-count-template={t.alerts.countTemplate}>{fill(t.alerts.countTemplate, { n: total })}</p>
+      </div>
+
+      <div class="skeleton" data-skeleton aria-hidden="true">
+        <span class="skeleton__bar"></span>
+        <span class="skeleton__bar"></span>
+        <span class="skeleton__bar"></span>
+        <span class="skeleton__bar"></span>
+      </div>
+
+      <ul class="alist" data-testid="alert-list" aria-labelledby="inst-alert-list-title" data-loadable>
+        {sorted.map((a) => {
+          const assigned = alertAssignedTo(a, (id) => CASE_BY_ID.get(id)) ?? '';
+          return (
+            <li
+              class="arow"
+              data-alert-id={a.id}
+              data-severity={a.severity}
+              data-status={a.status}
+              data-type={a.type}
+              data-assigned={assigned}
+              data-case={a.caseId ?? ''}
+            >
+              <button type="button" class="arow__btn" data-alert-open={a.id}>
+                <span class="arow__top">
+                  <span class="arow__pill">
+                    <StatusPill tone={SEVERITY_PILL[a.severity].tone} icon={SEVERITY_PILL[a.severity].icon} size="sm">{labels.severity[a.severity]}</StatusPill>
+                  </span>
+                  <span class="arow__type">{labels.alertType[a.type]}</span>
+                  <span class="arow__pill arow__status" data-status-pill>
+                    <StatusPill tone={ALERT_STATUS_PILL[a.status].tone} icon={ALERT_STATUS_PILL[a.status].icon} size="sm">{labels.alertStatus[a.status]}</StatusPill>
+                  </span>
+                </span>
+                <span class="arow__summary">{a.summary[locale]}</span>
+                <span class="arow__meta">
+                  <span class="arow__id mono">{a.id}</span>
+                  <span class="arow__unit mono">{a.unitCode}</span>
+                  <span class="arow__region">
+                    <Icon name="map-pin" size={14} />
+                    <span>{a.region}</span>
+                  </span>
+                  <time class="arow__date mono" datetime={a.detectedAt}>{fmtDateTime(a.detectedAt, locale)}</time>
+                </span>
+              </button>
+            </li>
+          );
+        })}
+      </ul>
+
+      <div class="empty" data-alert-empty data-testid="alert-empty" hidden>
+        <span class="empty__icon" aria-hidden="true"><Icon name="search" size={22} /></span>
+        <p class="empty__title">{t.alerts.empty.title}</p>
+        <p class="empty__body">{t.alerts.empty.body}</p>
+        <Button variant="secondary" size="sm" icon="refresh" iconPosition="start" data-action="clear-filters">{t.alerts.empty.clear}</Button>
+      </div>
+    </div>
+
+    <div class="panel__detail" data-detail-col>
+      <div class="placeholder" data-alert-placeholder>
+        <span class="placeholder__icon" aria-hidden="true"><Icon name="document" size={22} /></span>
+        <p>{t.alerts.selectPrompt}</p>
+      </div>
+      <PermissionDenied content={t.permissions} body={t.permissions.body} backLabel={t.alerts.detail.back} />
+      <div class="detail-host" data-alert-detail-host></div>
+    </div>
+  </div>
+
+  <!-- Plantillas del detalle de alerta (las clona la isla) -->
+  <template data-tpl="alert-detail">
+    <article class="detail" data-testid="alert-detail" tabindex="-1" aria-labelledby="inst-alert-detail-title">
+      <div class="detail__toolbar">
+        <button type="button" class="detail__back" data-action="back">
+          <span class="detail__back-icon" aria-hidden="true"><Icon name="arrow-right" size={16} /></span>
+          <span>{t.alerts.detail.back}</span>
+        </button>
+        <span class="detail__kicker">{t.alerts.detail.title}</span>
+        <span class="detail__id mono" data-slot="id"></span>
+      </div>
+      <header class="detail__head">
+        <div class="detail__pills" data-slot="pills"></div>
+        <h3 class="detail__title" id="inst-alert-detail-title" data-slot="title"></h3>
+        <p class="detail__summary" data-slot="summary"></p>
+      </header>
+      <dl class="meta">
+        <div class="meta__item"><dt>{t.alerts.detail.unit}</dt><dd class="mono" data-slot="unit"></dd></div>
+        <div class="meta__item"><dt>{t.alerts.detail.product}</dt><dd data-slot="product"></dd></div>
+        <div class="meta__item"><dt>{t.alerts.detail.region}</dt><dd data-slot="region"></dd></div>
+        <div class="meta__item"><dt>{t.alerts.detail.detected}</dt><dd class="mono" data-slot="date"></dd></div>
+        <div class="meta__item"><dt>{t.alerts.detail.linkedCase}</dt><dd data-slot="case"></dd></div>
+        <div class="meta__item"><dt>{t.alerts.detail.inspector}</dt><dd data-slot="inspector"></dd></div>
+      </dl>
+      <section class="detail__section">
+        <h4 id="inst-alert-explanation">{t.alerts.detail.explanation}</h4>
+        <p data-slot="explanation"></p>
+      </section>
+      <section class="detail__section">
+        <h4 id="inst-alert-evidence">{t.alerts.detail.evidence}</h4>
+        <p class="detail__muted">{t.alerts.detail.evidenceIntro}</p>
+        <div class="verdict">
+          <span class="verdict__pill" data-slot="verdict-pill"></span>
+          <span class="verdict__reason" data-slot="verdict-reason"></span>
+        </div>
+        <ul class="checks" data-slot="checks"></ul>
+        <p class="detail__note">
+          <Icon name="info" size={16} />
+          <span>{t.island.detail.verdictNote}</span>
+        </p>
+      </section>
+      <section class="detail__section">
+        <h4 id="inst-alert-signals">{t.alerts.detail.signals}</h4>
+        <ul class="signals" data-slot="signals"></ul>
+      </section>
+      <section class="detail__section detail__actions">
+        <h4 id="inst-alert-actions">{t.alerts.detail.actions}</h4>
+        <p class="detail__muted">{t.alerts.detail.actionsIntro}</p>
+        <div class="cluster" data-slot="actions">
+          <Button variant="primary" size="sm" icon="eye" iconPosition="start" data-action="acknowledge">{t.alerts.actions.acknowledge}</Button>
+          <Button variant="secondary" size="sm" icon="document" iconPosition="start" data-action="open-case">{t.alerts.actions.openCase}</Button>
+          <Button variant="secondary" size="sm" icon="map-pin" iconPosition="start" data-action="schedule-inspection">{t.alerts.actions.scheduleInspection}</Button>
+          <Button variant="ghost" size="sm" icon="arrow-right" data-action="view-case" hidden>{t.alerts.detail.viewCase}</Button>
+        </div>
+        <p class="detail__hint" data-slot="hint" role="status"></p>
+      </section>
+    </article>
+  </template>
+
+  <template data-tpl="check">
+    <li class="check">
+      <span class="check__name" data-slot="name"></span>
+      <span class="check__outcome" data-slot="outcome"></span>
+      <span class="check__detail" data-slot="detail"></span>
+    </li>
+  </template>
+
+  <template data-tpl="signal">
+    <li class="signal">
+      <span class="signal__kind" data-slot="kind"></span>
+      <span class="signal__pill" data-slot="pill"></span>
+      <span class="signal__text" data-slot="text"></span>
+    </li>
+  </template>
+</section>
+
+<style>
+  .alerts__header {
+    max-width: 62ch;
+    margin-bottom: var(--space-6);
+  }
+  .alerts__header h2 {
+    font-size: var(--text-2xl);
+  }
+  .alerts__intro {
+    font-size: var(--text-base);
+  }
+
+  /* ---- Lista + detalle ---- */
+  .panel {
+    display: grid;
+    gap: var(--space-6);
+    align-items: start;
+  }
+  @media (min-width: 64em) {
+    .panel {
+      grid-template-columns: minmax(0, 5fr) minmax(0, 6fr);
+    }
+    /* El detalle acompaña a la lista y se desplaza dentro de su propia región (foco: flechas). */
+    .panel__detail {
+      position: sticky;
+      top: 5.25rem;
+      max-height: calc(100dvh - 6rem);
+      overflow-y: auto;
+      overscroll-behavior: contain;
+      padding: 4px;
+      margin: -4px;
+    }
+  }
+  .panel__list,
+  .panel__detail {
+    min-width: 0;
+  }
+
+  /* ---- Filtros ---- */
+  .alerts__filters {
+    display: grid;
+    gap: var(--space-3);
+    margin-bottom: var(--space-4);
+  }
+  .filter__label {
+    display: block;
+    margin-bottom: var(--space-2);
+    font-family: var(--font-mono);
+    font-size: var(--text-xs);
+    letter-spacing: var(--tracking-wide);
+    text-transform: uppercase;
+    color: var(--color-text-secondary);
+  }
+  .filter__buttons {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-2);
+  }
+  .chip {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.375rem;
+    min-height: var(--tap-min);
+    padding: 0.5rem 0.875rem;
+    border: var(--border-width) solid var(--color-border-strong);
+    border-radius: var(--radius-full);
+    background: var(--color-surface);
+    color: var(--color-text);
+    font-size: var(--text-sm);
+    font-weight: var(--weight-medium);
+    line-height: 1.2;
+    transition:
+      background-color var(--dur-fast) var(--ease-standard),
+      color var(--dur-fast) var(--ease-standard),
+      border-color var(--dur-fast) var(--ease-standard);
+  }
+  .chip:hover {
+    border-color: var(--color-cobalt-600);
+    color: var(--color-link);
+  }
+  .chip[aria-pressed='true'] {
+    background: var(--color-navy-900);
+    border-color: var(--color-navy-900);
+    color: var(--color-white);
+  }
+
+  .alerts__listhead {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: var(--space-3);
+    margin-bottom: var(--space-3);
+  }
+  .alerts__listtitle {
+    margin: 0;
+    font-size: var(--text-lg);
+  }
+  .alerts__count {
+    margin: 0;
+    font-size: var(--text-sm);
+    color: var(--color-text-secondary);
+  }
+
+  /* ---- Filas ---- */
+  .alist {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: grid;
+    gap: var(--space-2);
+  }
+  .arow__btn {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-2);
+    width: 100%;
+    min-height: var(--tap-min);
+    padding: var(--space-3) var(--space-4);
+    border: var(--border-width) solid var(--color-border);
+    border-left: 4px solid var(--color-border-strong);
+    border-radius: var(--radius-md);
+    background: var(--color-surface);
+    color: var(--color-text);
+    text-align: left;
+    transition:
+      border-color var(--dur-fast) var(--ease-standard),
+      background-color var(--dur-fast) var(--ease-standard);
+  }
+  .arow[data-severity='critical'] .arow__btn {
+    border-left-color: var(--color-danger-solid);
+  }
+  .arow[data-severity='warning'] .arow__btn {
+    border-left-color: var(--color-warning-solid);
+  }
+  .arow[data-severity='info'] .arow__btn {
+    border-left-color: var(--color-info-solid);
+  }
+  .arow__btn:hover {
+    background: var(--color-bg-subtle);
+    border-color: var(--color-border-strong);
+  }
+  .arow__btn[aria-current='true'] {
+    background: var(--color-cobalt-50);
+    border-color: var(--color-cobalt-600);
+    box-shadow: inset 0 0 0 1px var(--color-cobalt-600);
+  }
+  .arow[data-status='closed'] .arow__btn {
+    background: var(--color-bg-subtle);
+  }
+  .arow[data-status='closed'] .arow__summary {
+    color: var(--color-text-secondary);
+  }
+  .arow__top {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: var(--space-2);
+  }
+  .arow__type {
+    font-weight: var(--weight-semibold);
+    color: var(--color-heading);
+    font-size: var(--text-sm);
+  }
+  .arow__status {
+    margin-left: auto;
+  }
+  .arow__summary {
+    font-size: var(--text-sm);
+    line-height: var(--leading-normal);
+  }
+  .arow__meta {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: var(--space-2) var(--space-4);
+    font-size: var(--text-xs);
+    color: var(--color-text-secondary);
+  }
+  .arow__id {
+    color: var(--color-text-secondary);
+  }
+  .arow__unit {
+    color: var(--color-navy-800);
+    font-weight: var(--weight-medium);
+  }
+  .arow__region {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.25rem;
+  }
+
+  /* ---- Skeleton (solo transform/opacity) ---- */
+  .skeleton {
+    display: none;
+    gap: var(--space-2);
+  }
+  :global(.inst[data-load='loading']) .skeleton {
+    display: grid;
+  }
+  :global(.inst[data-load='loading']) [data-loadable],
+  :global(.inst[data-load='error']) [data-loadable] {
+    display: none;
+  }
+  .skeleton__bar {
+    display: block;
+    height: 5.5rem;
+    border-radius: var(--radius-md);
+    background: var(--color-neutral-100);
+    animation: skeleton-pulse 1.2s var(--ease-standard) infinite alternate;
+  }
+  .skeleton__bar:nth-child(2) {
+    animation-delay: 120ms;
+  }
+  .skeleton__bar:nth-child(3) {
+    animation-delay: 240ms;
+  }
+  .skeleton__bar:nth-child(4) {
+    animation-delay: 360ms;
+  }
+  @keyframes skeleton-pulse {
+    from {
+      opacity: 0.55;
+    }
+    to {
+      opacity: 1;
+    }
+  }
+
+  /* ---- Vacío y marcador ---- */
+  .empty,
+  .placeholder {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: var(--space-2);
+    padding: var(--space-6);
+    border: var(--border-width) dashed var(--color-border-strong);
+    border-radius: var(--radius-lg);
+    background: var(--color-bg-subtle);
+    color: var(--color-text-secondary);
+  }
+  .empty__icon,
+  .placeholder__icon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 2.75rem;
+    height: 2.75rem;
+    border-radius: var(--radius-md);
+    background: var(--color-neutral-bg);
+    color: var(--color-neutral-text);
+  }
+  .empty__title {
+    margin: var(--space-2) 0 0;
+    font-weight: var(--weight-semibold);
+    color: var(--color-heading);
+  }
+  .empty__body {
+    margin: 0 0 var(--space-2);
+    font-size: var(--text-sm);
+  }
+  .placeholder p {
+    margin: var(--space-2) 0 0;
+    font-size: var(--text-sm);
+  }
+
+  /* ---- Detalle ---- */
+  .detail {
+    padding: var(--space-6);
+    border: var(--border-width) solid var(--color-border);
+    border-top: 4px solid var(--color-navy-900);
+    border-radius: var(--radius-lg);
+    background: var(--color-surface);
+    box-shadow: var(--shadow-sm);
+  }
+  .detail:focus-visible {
+    outline-offset: -3px;
+  }
+  .detail__toolbar {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: var(--space-3);
+    margin-bottom: var(--space-4);
+  }
+  .detail__back {
+    display: none;
+    align-items: center;
+    gap: var(--space-2);
+    min-height: var(--tap-min);
+    padding: 0.5rem 0.75rem;
+    border: var(--border-width) solid var(--color-border-strong);
+    border-radius: var(--radius-md);
+    background: var(--color-surface);
+    color: var(--color-link);
+    font-size: var(--text-sm);
+    font-weight: var(--weight-medium);
+  }
+  .detail__back-icon {
+    display: inline-flex;
+    transform: rotate(180deg);
+  }
+  @media (max-width: 63.99em) {
+    .detail__toolbar {
+      display: grid;
+      grid-template-columns: 1fr auto;
+      align-items: center;
+    }
+    .detail__back {
+      display: inline-flex;
+      grid-column: 1 / -1;
+      justify-self: start;
+    }
+    .detail__id {
+      margin-left: 0;
+      justify-self: end;
+    }
+  }
+  .detail__kicker {
+    font-family: var(--font-mono);
+    font-size: var(--text-xs);
+    letter-spacing: var(--tracking-wide);
+    text-transform: uppercase;
+    color: var(--color-text-secondary);
+  }
+  .detail__id {
+    margin-left: auto;
+    font-size: var(--text-sm);
+    color: var(--color-navy-800);
+  }
+  .detail__head {
+    margin-bottom: var(--space-5);
+  }
+  .detail__pills {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-2);
+    margin-bottom: var(--space-3);
+  }
+  .detail__title {
+    margin-bottom: var(--space-2);
+    font-size: var(--text-xl);
+  }
+  .detail__summary {
+    margin: 0;
+    color: var(--color-text-secondary);
+  }
+  .meta {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 12rem), 1fr));
+    gap: var(--space-3) var(--space-4);
+    margin: 0 0 var(--space-5);
+    padding: var(--space-4);
+    border-radius: var(--radius-md);
+    background: var(--color-bg-subtle);
+  }
+  .meta__item {
+    min-width: 0;
+  }
+  .meta dt {
+    font-family: var(--font-mono);
+    font-size: var(--text-xs);
+    letter-spacing: var(--tracking-wide);
+    text-transform: uppercase;
+    color: var(--color-text-secondary);
+  }
+  .meta dd {
+    margin: 0.125rem 0 0;
+    font-size: var(--text-sm);
+    overflow-wrap: anywhere;
+  }
+  .detail__section {
+    padding-top: var(--space-4);
+    border-top: var(--border-width) solid var(--color-border);
+  }
+  .detail__section + .detail__section {
+    margin-top: var(--space-4);
+  }
+  .detail__section h4 {
+    margin-bottom: var(--space-2);
+    font-size: var(--text-base);
+  }
+  .detail__section p {
+    font-size: var(--text-sm);
+    line-height: var(--leading-relaxed);
+  }
+  .detail__muted {
+    color: var(--color-text-secondary);
+  }
+  .verdict {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: var(--space-2) var(--space-3);
+    margin: var(--space-3) 0;
+  }
+  .verdict__reason {
+    font-size: var(--text-sm);
+    font-weight: var(--weight-medium);
+    color: var(--color-heading);
+  }
+  .checks,
+  .signals {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: grid;
+    gap: var(--space-2);
+  }
+  .check,
+  .signal {
+    display: grid;
+    grid-template-columns: minmax(8rem, 11rem) auto;
+    gap: var(--space-1) var(--space-3);
+    align-items: center;
+    padding: var(--space-2) var(--space-3);
+    border-radius: var(--radius-md);
+    background: var(--color-bg-subtle);
+    font-size: var(--text-sm);
+  }
+  .check__name,
+  .signal__kind {
+    font-weight: var(--weight-semibold);
+    color: var(--color-heading);
+  }
+  .check__detail,
+  .signal__text {
+    grid-column: 1 / -1;
+    color: var(--color-text-secondary);
+    overflow-wrap: anywhere;
+  }
+  @media (max-width: 30em) {
+    .check,
+    .signal {
+      grid-template-columns: 1fr;
+    }
+  }
+  .detail__note {
+    display: flex;
+    gap: var(--space-2);
+    align-items: flex-start;
+    margin: var(--space-3) 0 0;
+    padding: var(--space-3) var(--space-4);
+    border-radius: var(--radius-md);
+    background: var(--color-info-bg);
+    color: var(--color-info-text);
+    font-size: var(--text-sm);
+  }
+  .detail__note :global(svg) {
+    flex-shrink: 0;
+    margin-top: 0.2em;
+  }
+  .detail__hint {
+    min-height: 1.5em;
+    margin: var(--space-3) 0 0;
+    color: var(--color-text-secondary);
+  }
+  .detail__hint:empty {
+    display: none;
+  }
+  .detail__actions :global(.btn[disabled]) {
+    opacity: 0.55;
+  }
+
+  /* ---- Móvil: lista o detalle, nunca ambos ---- */
+  @media (max-width: 63.99em) {
+    :global(.inst.is-enhanced) .panel__detail {
+      display: none;
+    }
+    :global(.inst.is-enhanced) .panel.is-detail-open .panel__detail {
+      display: block;
+    }
+    :global(.inst.is-enhanced) .panel.is-detail-open .panel__list {
+      display: none;
+    }
+  }
+</style>

@@ -1,0 +1,124 @@
+---
+/**
+ * Página de sector (gobierno / industria / ciudadanos): retos, enfoque, flujo por pasos,
+ * resultados esperados (cualitativos), demostraciones relacionadas, descargo y cierre.
+ */
+import Base from '@/layouts/Base.astro';
+import PageHero from '@/components/ui/PageHero.astro';
+import Callout from '@/components/ui/Callout.astro';
+import CheckList from '@/components/ui/CheckList.astro';
+import CtaBand from '@/components/ui/CtaBand.astro';
+import FeatureGrid from '@/components/ui/FeatureGrid.astro';
+import SectionHeader from '@/components/ui/SectionHeader.astro';
+import StepList from '@/components/ui/StepList.astro';
+import DemoCardGrid from '@/components/site/DemoCardGrid.astro';
+import { getContent } from '@/content';
+import type { Locale, RouteKey } from '@/i18n';
+
+type SectorKey = 'government' | 'industry' | 'citizens';
+
+interface Props {
+  locale: Locale;
+  sector: SectorKey;
+}
+const { locale, sector } = Astro.props;
+const content = getContent(locale);
+const ROUTE_KEYS: Record<SectorKey, RouteKey> = {
+  government: 'solutionsGovernment',
+  industry: 'solutionsIndustry',
+  citizens: 'solutionsCitizens',
+};
+const page = {
+  government: content.solutionsGovernment,
+  industry: content.solutionsIndustry,
+  citizens: content.solutionsCitizens,
+}[sector];
+---
+
+<Base locale={locale} routeKey={ROUTE_KEYS[sector]} title={page.meta.title} description={page.meta.description}>
+  <PageHero eyebrow={page.hero.eyebrow} title={page.hero.title} subtitle={page.hero.subtitle} icon={page.hero.icon} />
+
+  <section class="section" aria-labelledby="challenges-title" data-reveal>
+    <div class="container">
+      <SectionHeader title={page.challenges.title} intro={page.challenges.intro} id="challenges-title" />
+      <FeatureGrid items={page.challenges.items} columns={4} tone="subtle" />
+    </div>
+  </section>
+
+  <section class="section section--subtle" aria-labelledby="approach-title" data-reveal>
+    <div class="container">
+      <SectionHeader title={page.approach.title} intro={page.approach.intro} id="approach-title" />
+      <FeatureGrid items={page.approach.items} columns={3} />
+    </div>
+  </section>
+
+  <section class="section" aria-labelledby="flow-title" data-reveal>
+    <div class="container flow">
+      <SectionHeader title={page.flow.title} intro={page.flow.intro} id="flow-title" class="flow__header" />
+      <div class="flow__steps">
+        <StepList steps={page.flow.steps} />
+      </div>
+    </div>
+  </section>
+
+  <section class="section section--subtle" aria-labelledby="outcomes-title" data-reveal>
+    <div class="container outcomes">
+      <SectionHeader title={page.outcomes.title} intro={page.outcomes.intro} id="outcomes-title" class="outcomes__header" />
+      <div class="outcomes__list">
+        <CheckList items={page.outcomes.items} />
+        <Callout tone="info">{page.outcomes.note}</Callout>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" aria-labelledby="demos-title" data-reveal>
+    <div class="container">
+      <SectionHeader title={page.demos.title} id="demos-title" />
+      <DemoCardGrid locale={locale} items={page.demos.items} />
+      <div class="section__note">
+        <Callout tone="neutral">{page.disclaimer}</Callout>
+      </div>
+    </div>
+  </section>
+
+  <CtaBand locale={locale} title={page.cta.title} body={page.cta.body} primaryCta={page.cta.primaryCta} secondaryCta={page.cta.secondaryCta} />
+</Base>
+
+<style>
+  .section__note {
+    max-width: 62ch;
+    margin-top: var(--space-8);
+  }
+  .flow,
+  .outcomes {
+    display: grid;
+    gap: var(--space-8);
+    align-items: start;
+  }
+  @media (min-width: 60em) {
+    .flow,
+    .outcomes {
+      grid-template-columns: minmax(0, 5fr) minmax(0, 7fr);
+      gap: var(--space-16);
+    }
+    .flow :global(.flow__header) {
+      position: sticky;
+      top: 6rem;
+    }
+  }
+  .flow :global(.flow__header),
+  .outcomes :global(.outcomes__header) {
+    margin-bottom: 0;
+  }
+  .flow__steps {
+    max-width: 44rem;
+  }
+  .outcomes__list {
+    display: grid;
+    gap: var(--space-6);
+    padding: var(--space-6);
+    border: var(--border-width) solid var(--color-border);
+    border-radius: var(--radius-lg);
+    background: var(--color-surface);
+  }
+</style>

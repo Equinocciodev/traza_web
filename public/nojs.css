@@ -1,0 +1,16 @@
+/*
+  Hoja solo para navegadores sin JavaScript (se enlaza desde <noscript> en Header.astro; compatible con
+  CSP `style-src 'self'`). En pantallas estrechas el menú se muestra expandido en columna y el botón de
+  menú, que sin script es inerte, se oculta. Con JavaScript esta hoja nunca se carga.
+*/
+@media (max-width: 71.99em) {
+  .site-header {
+    position: static !important;
+  }
+  .site-header__toggle {
+    display: none !important;
+  }
+  .site-nav {
+    display: flex !important;
+  }
+}

@@ -1,0 +1,84 @@
+---
+/**
+ * Sectores de ejemplo como chips. Los textos vienen del contenido; el icono se toma de la
+ * configuración de sectores cuando el nombre coincide (si no, un módulo QR neutro).
+ */
+import Icon from '@/components/ui/Icon.astro';
+import { SECTORS } from '@/config/sectors';
+import type { IconName } from '@/content/types';
+import type { Locale } from '@/i18n';
+
+interface Props {
+  locale: Locale;
+  sectors: string[];
+  class?: string;
+}
+const { locale, sectors, class: className } = Astro.props;
+
+function iconFor(name: string): IconName | undefined {
+  const match = SECTORS.find((sector) => sector.name[locale].toLowerCase() === name.toLowerCase());
+  return match?.icon;
+}
+---
+
+<ul class:list={['sector-chips', className]}>
+  {
+    sectors.map((sector) => {
+      const icon = iconFor(sector);
+      return (
+        <li class="sector-chip">
+          {icon ? (
+            <span class="sector-chip__icon" aria-hidden="true">
+              <Icon name={icon} size={18} />
+            </span>
+          ) : (
+            <span class="sector-chip__square" aria-hidden="true"></span>
+          )}
+          <span>{sector}</span>
+        </li>
+      );
+    })
+  }
+</ul>
+
+<style>
+  .sector-chips {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-3);
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+  .sector-chip {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-2);
+    min-height: 2.75rem;
+    padding: 0.5rem 0.875rem 0.5rem 0.625rem;
+    border: var(--border-width) solid var(--color-border);
+    border-radius: var(--radius-md);
+    background: var(--color-surface);
+    font-size: var(--text-sm);
+    font-weight: var(--weight-medium);
+    color: var(--color-heading);
+  }
+  .sector-chip__icon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 1.75rem;
+    height: 1.75rem;
+    border-radius: var(--radius-sm);
+    background: var(--color-cobalt-50);
+    color: var(--color-cobalt-600);
+  }
+  .sector-chip__square {
+    display: inline-block;
+    width: 0.625rem;
+    height: 0.625rem;
+    margin-inline: 0.5rem;
+    border-radius: 2px;
+    background: var(--color-cobalt-600);
+  }
+</style>

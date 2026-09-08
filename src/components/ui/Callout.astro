@@ -1,0 +1,83 @@
+---
+/**
+ * Aviso destacado: descargos, notas de "propuesta de piloto", advertencias. Siempre con icono y texto.
+ */
+import Icon from './Icon.astro';
+import type { IconName } from '@/content/types';
+
+interface Props {
+  tone?: 'info' | 'warning' | 'neutral' | 'success' | 'danger';
+  title?: string;
+  icon?: IconName;
+  class?: string;
+  role?: 'note' | 'status' | 'alert' | 'region';
+}
+const ICONS: Record<NonNullable<Props['tone']>, IconName> = { info: 'info', warning: 'warning', neutral: 'document', success: 'check', danger: 'alert' };
+const { tone = 'info', title, icon, class: className, role } = Astro.props;
+---
+
+<div class:list={['callout', `callout--${tone}`, className]} role={role}>
+  <span class="callout__icon" aria-hidden="true"><Icon name={icon ?? ICONS[tone]} size={20} /></span>
+  <div class="callout__content">
+    {title && <p class="callout__title">{title}</p>}
+    <div class="callout__body"><slot /></div>
+  </div>
+</div>
+
+<style>
+  .callout {
+    display: flex;
+    gap: var(--space-3);
+    padding: var(--space-4) var(--space-5);
+    border: var(--border-width) solid var(--co-border);
+    border-left-width: 4px;
+    border-radius: var(--radius-md);
+    background: var(--co-bg);
+    color: var(--color-text);
+  }
+  .callout--info {
+    --co-bg: var(--color-info-bg);
+    --co-border: var(--color-info-border);
+    --co-fg: var(--color-info-text);
+  }
+  .callout--warning {
+    --co-bg: var(--color-warning-bg);
+    --co-border: var(--color-warning-border);
+    --co-fg: var(--color-warning-text);
+  }
+  .callout--neutral {
+    --co-bg: var(--color-neutral-bg);
+    --co-border: var(--color-neutral-border);
+    --co-fg: var(--color-neutral-text);
+  }
+  .callout--success {
+    --co-bg: var(--color-success-bg);
+    --co-border: var(--color-success-border);
+    --co-fg: var(--color-success-text);
+  }
+  .callout--danger {
+    --co-bg: var(--color-danger-bg);
+    --co-border: var(--color-danger-border);
+    --co-fg: var(--color-danger-text);
+  }
+  .callout__icon {
+    color: var(--co-fg);
+    flex-shrink: 0;
+    padding-top: 0.1rem;
+  }
+  .callout__title {
+    margin: 0 0 var(--space-1);
+    font-weight: var(--weight-semibold);
+    color: var(--co-fg);
+  }
+  .callout__body {
+    font-size: var(--text-sm);
+    color: var(--color-neutral-800);
+  }
+  .callout__body :global(p) {
+    margin: 0;
+  }
+  .callout__body :global(p + p) {
+    margin-top: var(--space-2);
+  }
+</style>

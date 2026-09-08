@@ -1,0 +1,711 @@
+---
+/**
+ * JourneyApp — isla de la demo B · Recorrido del producto.
+ *
+ * Renderiza en servidor el recorrido completo de la unidad destacada (estado final: sin JavaScript se
+ * lee la lista completa de eventos, la historia de la unidad y el diagrama con la línea completa).
+ * El script de módulo (journey.ts) añade reproducción, controles, cambio de unidad y estados.
+ *
+ * Props: locale; unitCode (por defecto FEATURED_UNIT_CODE).
+ */
+import Button from '@/components/ui/Button.astro';
+import Icon from '@/components/ui/Icon.astro';
+import StatusPill from '@/components/ui/StatusPill.astro';
+import Callout from '@/components/ui/Callout.astro';
+import TraceLine from './TraceLine.astro';
+import StageGroup from './StageGroup.astro';
+import EventCard from './EventCard.astro';
+import { getContent } from '@/content';
+import { UNIT_BY_CODE, FEATURED_UNIT_CODE } from '@/fixtures/units';
+import type { ChainStage } from '@/fixtures/types';
+import { TENANTS } from '@/config/tenants';
+import type { Locale } from '@/i18n';
+import type { JourneyClientData } from '@/content/journey.types';
+import { buildJourney, buildStory, progressText, stageAnnouncement, stageState, summarize } from './model';
+import { EVENT_KINDS, KIND_ICONS } from './kinds';
+
+interface Props {
+  locale: Locale;
+  unitCode?: string;
+}
+
+const { locale, unitCode = FEATURED_UNIT_CODE } = Astro.props;
+const { journey } = getContent(locale);
+const { controls, states, story, legend, eventsSection, unitSelector, demo } = journey;
+
+const options = unitSelector.options.filter((o) => UNIT_BY_CODE.has(o.code));
+const clientData: JourneyClientData = {
+  ...journey.runtime,
+  locale,
+  stages: Object.fromEntries(journey.stages.map((n) => [n.id, n.label])) as Record<ChainStage, string>,
+  unitLabels: Object.fromEntries(options.map((o) => [o.code, o.label])),
+  playLabels: { play: controls.play, pause: controls.pause, replay: controls.replay },
+  tenantLabels: Object.fromEntries(Object.values(TENANTS).map((t) => [t.id, t.name[locale]])),
+};
+
+const unit = UNIT_BY_CODE.get(unitCode) ?? null;
+const model = buildJourney(unit, clientData);
+/* En servidor se muestra el estado final: la línea completa hasta la última etapa registrada. */
+const current = model.lastRecorded;
+const hasJourney = current >= 0;
+const summary = summarize(model, clientData);
+const storyEntries = buildStory(model, clientData);
+const statusText = hasJourney ? stageAnnouncement(model, current, clientData) : clientData.live.empty;
+const tenantName = unit ? TENANTS[unit.tenant].name[locale] : '';
+const pad = (n: number) => String(n).padStart(2, '0');
+---
+
+<div
+  class="jr"
+  data-journey
+  data-testid="journey"
+  data-locale={locale}
+  data-unit={unitCode}
+  data-stage-index={current}
+  data-view={hasJourney ? 'ready' : 'empty'}
+  data-i18n={JSON.stringify(clientData)}
+  role="region"
+  aria-label={demo.regionLabel}
+>
+  <noscript>
+    <p class="jr__noscript">{demo.noScript}</p>
+  </noscript>
+
+  <!-- Barra superior: selector de unidad, código, registro y estado del recorrido -->
+  <div class="jr__toolbar">
+    <div class="jr__unit">
+      <label class="jr__label" for="jr-unit-select">{unitSelector.label}</label>
+      <span class="jr__select-wrap">
+        <select id="jr-unit-select" class="jr__select" data-jr-unit data-testid="journey-unit-select" aria-describedby="jr-unit-help">
+          {options.map((o) => <option value={o.code} selected={o.code === unitCode}>{o.label}</option>)}
+        </select>
+      </span>
+      <p id="jr-unit-help" class="jr__help">{unitSelector.help}</p>
+    </div>
+    <dl class="jr__meta">
+      <div class="jr__meta-item">
+        <dt>{unitSelector.codeLabel}</dt>
+        <dd class="mono" data-jr-code data-testid="journey-code">{unitCode}</dd>
+      </div>
+      <div class="jr__meta-item">
+        <dt>{unitSelector.registryLabel}</dt>
+        <dd data-jr-tenant>{tenantName}</dd>
+      </div>
+      <div class="jr__meta-item jr__meta-item--summary">
+        <dt class="visually-hidden">{controls.progressLabel}</dt>
+        <dd data-jr-summary data-testid="journey-summary">
+          <span data-jr-summary-kind="complete" hidden={summary.kind !== 'complete'}>
+            <StatusPill tone="info" icon="check"><span data-jr-summary-text>{summary.kind === 'complete' ? summary.text : ''}</span></StatusPill>
+          </span>
+          <span data-jr-summary-kind="inProgress" hidden={summary.kind !== 'inProgress'}>
+            <StatusPill tone="neutral" icon="clock"><span data-jr-summary-text>{summary.kind === 'inProgress' ? summary.text : ''}</span></StatusPill>
+          </span>
+          <span data-jr-summary-kind="none" hidden={summary.kind !== 'none'}>
+            <StatusPill tone="warning" icon="warning"><span data-jr-summary-text>{summary.kind === 'none' ? summary.text : ''}</span></StatusPill>
+          </span>
+        </dd>
+      </div>
+    </dl>
+  </div>
+
+  <!-- Diagrama: línea de trazabilidad, progreso y estado en vivo -->
+  <div class="jr__diagram" data-jr-diagram>
+    <div class="jr__trace">
+      <TraceLine nodes={journey.stages} reach={model.lastRecorded} active={current} originIcon={model.originIcon} interactive />
+    </div>
+    <div class="jr__progress-row">
+      <div
+        class="jr__progress"
+        role="progressbar"
+        aria-label={controls.progressLabel}
+        aria-valuemin="0"
+        aria-valuemax={model.total}
+        aria-valuenow={Math.max(0, current + 1)}
+        aria-valuetext={progressText(current, model.total, clientData)}
+        data-jr-progress
+        data-testid="journey-progress"
+      >
+        <span class="jr__progress-bar" data-jr-progress-bar data-value={Math.max(0, current + 1)}></span>
+      </div>
+      <p class="jr__progress-text mono" data-jr-progress-text aria-hidden="true">{progressText(current, model.total, clientData)}</p>
+    </div>
+    <p class="jr__status" role="status" data-jr-status data-testid="journey-status">{statusText}</p>
+  </div>
+
+  <!-- Controles -->
+  <div class="jr__controls">
+    <div class="jr__buttons">
+      <Button variant="secondary" class="jr__btn" data-jr-restart data-testid="journey-restart">
+        <Icon name="refresh" size={18} class="jr__btn-ico" />
+        {controls.restart}
+      </Button>
+      <Button variant="secondary" class="jr__btn" data-jr-prev data-testid="journey-prev">
+        <Icon name="arrow-right" size={18} class="jr__btn-ico jr__btn-ico--flip" />
+        {controls.prev}
+      </Button>
+      <Button variant="primary" class="jr__btn jr__play" data-jr-play data-testid="journey-play" data-state="paused">
+        <svg class="jr__play-ico jr__play-ico--play" viewBox="0 0 24 24" width="18" height="18" aria-hidden="true" focusable="false">
+          <path d="M8 5l11 7-11 7z" fill="currentColor" />
+        </svg>
+        <svg class="jr__play-ico jr__play-ico--pause" viewBox="0 0 24 24" width="18" height="18" aria-hidden="true" focusable="false">
+          <path d="M7 5h4v14H7zM13 5h4v14h-4z" fill="currentColor" />
+        </svg>
+        <Icon name="refresh" size={18} class="jr__play-ico jr__play-ico--replay" />
+        <span data-jr-play-label>{controls.play}</span>
+      </Button>
+      <Button variant="secondary" class="jr__btn" data-jr-next data-testid="journey-next">
+        {controls.next}
+        <Icon name="arrow-right" size={18} class="jr__btn-ico" />
+      </Button>
+    </div>
+    <ol class="jr__steps" aria-label={controls.stepsLabel} data-jr-steps>
+      {
+        model.stages.map((s) => {
+          const state = stageState(s.index, current, model.lastRecorded);
+          return (
+            <li>
+              <button
+                type="button"
+                class="jr__step"
+                data-jr-step
+                data-testid="journey-step"
+                data-stage={s.id}
+                data-index={s.index}
+                data-state={state}
+                aria-current={s.index === current ? 'step' : undefined}
+                aria-disabled={state === 'unrecorded' ? 'true' : undefined}
+              >
+                <span class="jr__step-num mono" aria-hidden="true">{pad(s.index + 1)}</span>
+                <span class="jr__step-label">{s.label}</span>
+              </button>
+            </li>
+          );
+        })
+      }
+    </ol>
+    <p class="jr__hint">{demo.keyboardHint}</p>
+  </div>
+
+  <!-- Estados: cargando, vacío, error simulado -->
+  <div class="jr__panels">
+    <p class="jr__loading" data-jr-panel="loading" data-testid="journey-loading" hidden>
+      <Icon name="clock" size={18} />
+      <span>{states.loading}</span>
+    </p>
+    <div data-jr-panel="empty" data-testid="journey-empty" hidden={hasJourney}>
+      <Callout tone="warning" title={states.empty.title} role="status">
+        <p>{states.empty.body}</p>
+      </Callout>
+    </div>
+    <div data-jr-panel="error" data-testid="journey-error" hidden>
+      <Callout tone="danger" title={states.error.title} role="alert">
+        <p>{states.error.body}</p>
+        <p class="jr__retry">
+          <Button variant="secondary" icon="refresh" iconPosition="start" data-jr-retry data-testid="journey-retry">{states.error.retry}</Button>
+        </p>
+      </Callout>
+    </div>
+  </div>
+
+  <!-- Historia de la unidad + leyenda | eventos por etapa -->
+  <div class="jr__body" data-jr-content aria-busy="false">
+    <aside class="jr__aside">
+      <section class="jr__story" aria-labelledby="jr-story-title" data-testid="journey-story">
+        <div class="jr__story-head">
+          <h3 id="jr-story-title" class="jr__story-title">{story.title}</h3>
+          <span class="demo-tag">{story.simulatedTag}</span>
+        </div>
+        <dl class="jr__story-list">
+          {
+            story.fields.map((field) => {
+              const entry = storyEntries.find((e) => e.key === field.key);
+              return (
+                <div class="jr__story-item" data-jr-story={field.key}>
+                  <dt>
+                    <Icon name={field.icon} size={16} />
+                    <span>{field.label}</span>
+                  </dt>
+                  <dd>
+                    <span class="jr__story-primary" data-jr-field="primary">{entry?.primary ?? ''}</span>
+                    <span class="jr__story-secondary" data-jr-field="secondary">{entry?.secondary ?? ''}</span>
+                  </dd>
+                </div>
+              );
+            })
+          }
+        </dl>
+      </section>
+      <section class="jr__legend" aria-labelledby="jr-legend-title">
+        <h3 id="jr-legend-title" class="jr__legend-title">{legend.title}</h3>
+        <ul class="jr__legend-list">
+          {
+            legend.items.map((item) => (
+              <li>
+                <span class="jr__legend-swatch" data-state={item.state} aria-hidden="true" />
+                <span>{item.label}</span>
+              </li>
+            ))
+          }
+        </ul>
+      </section>
+      <p class="jr__simulate">
+        <Button variant="ghost" icon="server" iconPosition="start" data-jr-simulate data-testid="journey-error-sim">{controls.simulateError}</Button>
+      </p>
+    </aside>
+
+    <section class="jr__events" aria-labelledby="jr-events-title">
+      <div class="jr__events-head">
+        <h3 id="jr-events-title" class="jr__events-title">{eventsSection.title}</h3>
+        <p class="jr__events-intro">{eventsSection.intro}</p>
+      </div>
+      <div class="jr__stages" data-jr-stages hidden={!hasJourney}>
+        {model.stages.map((s) => <StageGroup stage={s} state={stageState(s.index, current, model.lastRecorded)} data={clientData} />)}
+      </div>
+    </section>
+  </div>
+
+  <!-- Plantillas que la isla clona al reconstruir el recorrido (mismo marcado que el render en servidor) -->
+  <template data-jr-tpl="stage"><StageGroup data={clientData} /></template>
+  <template data-jr-tpl="card"><EventCard data={clientData} /></template>
+  <template data-jr-tpl="icons">
+    {
+      EVENT_KINDS.map((kind) => (
+        <span data-kind={kind}>
+          <Icon name={KIND_ICONS[kind]} size={20} />
+        </span>
+      ))
+    }
+  </template>
+</div>
+
+<script>
+  import { initJourneys } from './journey';
+  initJourneys();
+</script>
+
+<style>
+  .jr {
+    display: grid;
+    gap: var(--space-6);
+  }
+  .jr > * {
+    min-width: 0;
+  }
+  .jr__noscript {
+    margin: 0;
+    padding: var(--space-3) var(--space-4);
+    border: var(--border-width) solid var(--color-info-border);
+    border-radius: var(--radius-md);
+    background: var(--color-info-bg);
+    color: var(--color-info-text);
+    font-size: var(--text-sm);
+  }
+
+  /* ---- Barra superior ---- */
+  .jr__toolbar {
+    display: grid;
+    gap: var(--space-4);
+    align-items: end;
+  }
+  @media (min-width: 64em) {
+    .jr__toolbar {
+      grid-template-columns: minmax(0, 1.2fr) minmax(0, 1fr);
+    }
+  }
+  .jr__label {
+    display: block;
+    margin-bottom: var(--space-2);
+    font-weight: var(--weight-semibold);
+    color: var(--color-heading);
+  }
+  .jr__select-wrap {
+    position: relative;
+    display: block;
+  }
+  /* Chevron dibujado con CSS (sin imágenes ni data: URIs, compatible con CSP estricta) */
+  .jr__select-wrap::after {
+    content: '';
+    position: absolute;
+    right: 1rem;
+    top: 50%;
+    width: 0.5rem;
+    height: 0.5rem;
+    border-right: 2px solid var(--color-neutral-700);
+    border-bottom: 2px solid var(--color-neutral-700);
+    transform: translateY(-70%) rotate(45deg);
+    pointer-events: none;
+  }
+  .jr__select {
+    width: 100%;
+    min-height: var(--tap-min);
+    padding: 0.5rem 2.5rem 0.5rem 0.75rem;
+    border: var(--border-width) solid var(--color-border-input); /* accesibilidad: contorno del campo ≥ 3:1 (WCAG 1.4.11) */
+    border-radius: var(--radius-md);
+    background-color: var(--color-surface);
+    appearance: none;
+    color: var(--color-text);
+    font-size: var(--text-base);
+    text-overflow: ellipsis;
+  }
+  .jr__help {
+    margin: var(--space-2) 0 0;
+    font-size: var(--text-sm);
+    color: var(--color-text-secondary);
+  }
+  .jr__meta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-3) var(--space-6);
+    margin: 0;
+  }
+  .jr__meta-item dt {
+    font-size: var(--text-xs);
+    letter-spacing: var(--tracking-wide);
+    text-transform: uppercase;
+    color: var(--color-text-secondary);
+  }
+  .jr__meta-item dd {
+    margin: 0;
+    color: var(--color-heading);
+    font-weight: var(--weight-medium);
+  }
+  .jr__meta-item--summary {
+    flex-basis: 100%;
+  }
+  .jr__meta-item--summary dd {
+    font-weight: var(--weight-regular);
+  }
+  /* El resumen puede ser largo: se permite el salto de línea de la pastilla (reflow a 320 px) */
+  .jr__meta-item--summary :global(.pill) {
+    white-space: normal;
+  }
+
+  /* ---- Diagrama ---- */
+  .jr__diagram {
+    padding: var(--space-6) var(--space-5) var(--space-5);
+    border: var(--border-width) solid var(--color-border);
+    border-radius: var(--radius-lg);
+    background: var(--color-surface);
+    box-shadow: var(--shadow-sm);
+  }
+  @media (min-width: 48em) {
+    .jr__diagram {
+      padding: var(--space-8) var(--space-8) var(--space-6);
+    }
+  }
+  .jr__trace {
+    max-width: 62rem;
+    margin-inline: auto;
+  }
+  @media (max-width: 47.99em) {
+    .jr__trace {
+      max-width: 22rem;
+    }
+  }
+  .jr__progress-row {
+    display: flex;
+    align-items: center;
+    gap: var(--space-4);
+    margin-top: var(--space-6);
+  }
+  .jr__progress {
+    flex: 1 1 auto;
+    height: 6px;
+    border-radius: var(--radius-sm);
+    background: var(--color-neutral-200);
+    overflow: hidden;
+  }
+  .jr__progress-bar {
+    display: block;
+    height: 100%;
+    width: 100%;
+    background: var(--color-cobalt-600);
+    transform-origin: left center;
+    transform: scaleX(0);
+    transition: transform var(--dur-slower) var(--ease-standard);
+  }
+  .jr__progress-bar[data-value='1'] {
+    transform: scaleX(calc(1 / 6));
+  }
+  .jr__progress-bar[data-value='2'] {
+    transform: scaleX(calc(2 / 6));
+  }
+  .jr__progress-bar[data-value='3'] {
+    transform: scaleX(calc(3 / 6));
+  }
+  .jr__progress-bar[data-value='4'] {
+    transform: scaleX(calc(4 / 6));
+  }
+  .jr__progress-bar[data-value='5'] {
+    transform: scaleX(calc(5 / 6));
+  }
+  .jr__progress-bar[data-value='6'] {
+    transform: scaleX(1);
+  }
+  .jr__progress-text {
+    margin: 0;
+    flex-shrink: 0;
+    font-size: var(--text-sm);
+    color: var(--color-text-secondary);
+  }
+  .jr__status {
+    margin: var(--space-3) 0 0;
+    min-height: 1.6em;
+    font-size: var(--text-sm);
+    color: var(--color-text);
+  }
+
+  /* ---- Controles ---- */
+  .jr__controls {
+    display: grid;
+    gap: var(--space-4);
+  }
+  .jr__buttons {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-3);
+  }
+  .jr__btn :global(.btn__label) {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-2);
+  }
+  /* Los iconos son componentes (otro ámbito de estilos): se seleccionan con :global */
+  .jr__btn :global(.jr__btn-ico--flip) {
+    transform: scaleX(-1);
+  }
+  .jr__play {
+    min-width: 11rem;
+  }
+  .jr__play :global(.jr__play-ico) {
+    display: none;
+  }
+  .jr__play[data-state='paused'] :global(.jr__play-ico--play),
+  .jr__play[data-state='playing'] :global(.jr__play-ico--pause),
+  .jr__play[data-state='ended'] :global(.jr__play-ico--replay) {
+    display: inline-block;
+  }
+  .jr__steps {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-2);
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+  .jr__step {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-2);
+    min-height: var(--tap-min);
+    padding: 0.5rem 0.875rem;
+    border: var(--border-width) solid var(--color-border-strong);
+    border-radius: var(--radius-md);
+    background: var(--color-surface);
+    color: var(--color-text);
+    font-size: var(--text-sm);
+    font-weight: var(--weight-medium);
+    line-height: 1.2;
+    text-align: left;
+    /* Solo el borde transiciona: texto y fondo cambian a la vez para no pasar por contrastes intermedios bajos */
+    transition: border-color var(--dur-fast) var(--ease-standard);
+  }
+  .jr__step:hover {
+    background: var(--color-cobalt-50);
+    color: var(--color-link);
+  }
+  .jr__step-num {
+    font-size: var(--text-xs);
+    color: var(--color-text-secondary);
+    /* Sin transición de color: un estado intermedio nunca debe quedar por debajo del contraste AA */
+    transition: none;
+  }
+  .jr__step[data-state='done'] {
+    border-color: var(--color-cobalt-100);
+    background: var(--color-cobalt-50);
+    color: var(--color-cobalt-700);
+  }
+  .jr__step[data-state='done'] .jr__step-num {
+    color: var(--color-cobalt-700);
+  }
+  .jr__step[aria-current='step'] {
+    border-color: var(--color-cobalt-600);
+    background: var(--color-cobalt-600);
+    color: var(--color-white);
+  }
+  /* El paso actual gana siempre, sea cual sea data-state (especificidad mayor) */
+  .jr__step.jr__step[aria-current='step'] .jr__step-num {
+    color: var(--color-white);
+  }
+  .jr__step[aria-disabled='true'] {
+    border-style: dashed;
+    background: var(--color-bg-subtle);
+    color: var(--color-text-secondary);
+    cursor: not-allowed;
+  }
+  .jr__hint {
+    margin: 0;
+    font-size: var(--text-xs);
+    color: var(--color-text-secondary);
+  }
+
+  /* ---- Estados ---- */
+  .jr__panels:empty {
+    display: none;
+  }
+  .jr__loading {
+    display: flex;
+    align-items: center;
+    gap: var(--space-2);
+    margin: 0;
+    padding: var(--space-3) var(--space-4);
+    border: var(--border-width) solid var(--color-border);
+    border-radius: var(--radius-md);
+    background: var(--color-bg-subtle);
+    color: var(--color-text-secondary);
+    font-size: var(--text-sm);
+  }
+  .jr__retry {
+    margin-top: var(--space-3);
+  }
+
+  /* ---- Cuerpo: historia + leyenda | eventos ---- */
+  .jr__body {
+    display: grid;
+    gap: var(--space-8);
+    transition: opacity var(--dur-base) var(--ease-standard);
+  }
+  .jr__body[aria-busy='true'] {
+    opacity: 0.55;
+  }
+  @media (min-width: 64em) {
+    .jr__body {
+      grid-template-columns: minmax(0, 1fr) 19rem;
+      align-items: start;
+    }
+    .jr__aside {
+      order: 2;
+      position: sticky;
+      top: 5.5rem;
+    }
+    .jr__events {
+      order: 1;
+    }
+  }
+  .jr__aside {
+    display: grid;
+    gap: var(--space-5);
+  }
+  .jr__story {
+    padding: var(--space-5);
+    border: var(--border-width) solid var(--color-border);
+    border-radius: var(--radius-lg);
+    background: var(--color-surface);
+  }
+  .jr__story-head {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--space-2);
+    margin-bottom: var(--space-4);
+  }
+  .jr__story-title,
+  .jr__legend-title,
+  .jr__events-title {
+    margin: 0;
+    font-size: var(--text-lg);
+  }
+  .jr__story-list {
+    display: grid;
+    gap: var(--space-4);
+    margin: 0;
+  }
+  .jr__story-item dt {
+    display: flex;
+    align-items: center;
+    gap: var(--space-2);
+    font-size: var(--text-xs);
+    letter-spacing: var(--tracking-wide);
+    text-transform: uppercase;
+    color: var(--color-text-secondary);
+  }
+  .jr__story-item dd {
+    margin: var(--space-1) 0 0;
+    display: grid;
+    gap: 0.125rem;
+  }
+  .jr__story-primary {
+    font-weight: var(--weight-medium);
+    color: var(--color-heading);
+    overflow-wrap: anywhere;
+  }
+  .jr__story-secondary {
+    font-size: var(--text-sm);
+    color: var(--color-text-secondary);
+    overflow-wrap: anywhere;
+  }
+  .jr__legend {
+    padding: var(--space-4) var(--space-5);
+    border: var(--border-width) dashed var(--color-border-strong);
+    border-radius: var(--radius-lg);
+  }
+  .jr__legend-title {
+    margin-bottom: var(--space-3);
+    font-size: var(--text-base);
+  }
+  .jr__legend-list {
+    display: grid;
+    gap: var(--space-2);
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    font-size: var(--text-sm);
+    color: var(--color-text);
+  }
+  .jr__legend-list li {
+    display: flex;
+    align-items: center;
+    gap: var(--space-3);
+  }
+  .jr__legend-swatch {
+    flex-shrink: 0;
+    width: 1.125rem;
+    height: 1.125rem;
+    border-radius: 50%;
+    border: 2px solid var(--color-neutral-300);
+    background: var(--color-surface);
+  }
+  .jr__legend-swatch[data-state='done'] {
+    border-color: var(--color-cobalt-600);
+    background: var(--color-cobalt-100);
+  }
+  .jr__legend-swatch[data-state='active'] {
+    border-color: var(--color-cobalt-600);
+    background: var(--color-cobalt-600);
+    box-shadow: 0 0 0 3px var(--color-cobalt-100);
+  }
+  .jr__legend-swatch[data-state='unrecorded'] {
+    border-style: dashed;
+    background: var(--color-bg-subtle);
+  }
+  .jr__simulate {
+    margin: 0;
+  }
+  .jr__events-head {
+    margin-bottom: var(--space-5);
+  }
+  .jr__events-intro {
+    margin: var(--space-2) 0 0;
+    font-size: var(--text-sm);
+    color: var(--color-text-secondary);
+  }
+  .jr__stages {
+    display: grid;
+    gap: var(--space-6);
+  }
+  /* Los atributos hidden deben ganar a cualquier display de componente */
+  .jr :global([hidden]) {
+    display: none !important;
+  }
+</style>

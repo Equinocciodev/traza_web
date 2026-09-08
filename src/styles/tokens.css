@@ -1,0 +1,217 @@
+/*
+  Tokens de diseño de Traza® — demo conceptual.
+
+  Origen (ver docs/01-hito-evidencia-y-plan.md §9):
+  - Descripciones verificadas [F]: azul marino y blanco como base institucional; acentos azul, rojo,
+    amarillo y verde (caso de uso licores); cobalto y cian eléctrico (marca corporativa en Instagram);
+    Space Grotesk para títulos, Roboto para texto y Roboto Mono para seriales (PDF Rev. B).
+  - Valores hexadecimales [I/P]: derivados de las descripciones; ajustar aquí al cotejar con el PDF.
+  Todos los pares texto/fondo semánticos cumplen contraste AA (≥ 4,5:1) sobre su fondo asignado.
+*/
+:root {
+  color-scheme: light;
+
+  /* ---- Marca: azul marino (base institucional) ---- */
+  --color-navy-950: #07152b;
+  --color-navy-900: #0b1f3f;
+  --color-navy-800: #10294f;
+  --color-navy-700: #14315f;
+  --color-navy-600: #1e4079;
+
+  /* ---- Marca: cobalto (acción) y cian eléctrico (acento; solo sobre fondos oscuros o decorativo) ---- */
+  --color-cobalt-700: #1a3fb0;
+  --color-cobalt-600: #1f4fd8;
+  --color-cobalt-500: #2f62f0;
+  --color-cobalt-100: #e3eafb;
+  --color-cobalt-50: #f1f5fe;
+  --color-cyan-500: #00b4eb;
+  --color-cyan-400: #19c8ff;
+  --color-cyan-300: #5edbff;
+  --color-cyan-100: #ddf6ff;
+
+  /* ---- Neutros fríos ---- */
+  --color-white: #ffffff;
+  --color-neutral-50: #f5f8fc;
+  --color-neutral-100: #edf2f8;
+  --color-neutral-200: #dce4ee;
+  --color-neutral-300: #c2cedd;
+  --color-neutral-400: #94a3b8;
+  --color-neutral-500: #64748b;
+  --color-neutral-600: #475569;
+  --color-neutral-700: #334155;
+  --color-neutral-800: #1e293b;
+  --color-neutral-900: #0f172a;
+
+  /* ---- Acentos del caso de uso licores (PDF): azul, rojo, amarillo, verde ---- */
+  --color-accent-blue: #1d4ed8;
+  --color-accent-red: #c81e1e;
+  --color-accent-yellow: #f5b700; /* decorativo o fondo con texto oscuro; nunca como texto sobre blanco */
+  --color-accent-green: #167a36;
+
+  /* ---- Semánticos (texto / fondo / borde) — todos AA sobre su fondo ---- */
+  --color-success-text: #146c3a;
+  --color-success-bg: #e6f4ec;
+  --color-success-border: #9fd3b4;
+  --color-success-solid: #1b8a3f;
+  --color-warning-text: #7a4b00;
+  --color-warning-bg: #fff4d6;
+  --color-warning-border: #f0cf7a;
+  --color-warning-solid: #f5b700;
+  --color-danger-text: #b42318;
+  --color-danger-bg: #fce8e6;
+  --color-danger-border: #f2aaa3;
+  --color-danger-solid: #c81e1e;
+  --color-info-text: #1a4fbf;
+  --color-info-bg: #e8effd;
+  --color-info-border: #a9bff3;
+  --color-info-solid: #1f4fd8;
+  --color-neutral-text: #475569;
+  --color-neutral-bg: #f1f5f9;
+  --color-neutral-border: #cbd5e1;
+
+  /* ---- Roles de superficie y texto ---- */
+  --color-bg: var(--color-white);
+  --color-bg-subtle: var(--color-neutral-50);
+  --color-bg-muted: var(--color-neutral-100);
+  --color-surface: var(--color-white);
+  --color-border: var(--color-neutral-200);
+  --color-border-strong: var(--color-neutral-300);
+  --color-border-input: var(--color-neutral-500); /* bordes de campos de formulario: ≥ 3:1 sobre blanco (WCAG 1.4.11); 4,76:1 */
+  --color-text: var(--color-neutral-900);
+  --color-text-secondary: var(--color-neutral-600);
+  --color-text-muted: var(--color-neutral-500); /* solo texto grande (≥ 18,66 px negrita o 24 px) */
+  --color-heading: var(--color-navy-900);
+  --color-link: var(--color-cobalt-600);
+  --color-link-hover: var(--color-cobalt-700);
+  --color-primary: var(--color-cobalt-600);
+  --color-primary-hover: var(--color-cobalt-700);
+  --color-on-primary: var(--color-white);
+  --color-brand-accent: var(--color-cyan-400);
+  --focus-ring: var(--color-cobalt-600);
+  --focus-ring-offset: var(--color-white);
+
+  /* ---- Tenant (co-brand). El tenant maestro usa la marca; otros tenants redefinen estas variables ---- */
+  --tenant-primary: var(--color-navy-900);
+  --tenant-accent: var(--color-cyan-400);
+  --tenant-accent-2: var(--color-cobalt-600);
+  --tenant-accent-3: var(--color-cobalt-500);
+  --tenant-accent-4: var(--color-cyan-300);
+
+  /* ---- Tipografía ---- */
+  --font-heading: 'Space Grotesk', 'Segoe UI', Arial, sans-serif;
+  --font-sans: 'Roboto', 'Segoe UI', 'Helvetica Neue', Arial, sans-serif;
+  --font-mono: 'Roboto Mono', 'SFMono-Regular', Menlo, Consolas, 'Liberation Mono', monospace;
+  --text-xs: 0.75rem;
+  --text-sm: 0.875rem;
+  --text-base: 1rem;
+  --text-md: 1.0625rem;
+  --text-lg: 1.125rem;
+  --text-xl: clamp(1.25rem, 1.1rem + 0.5vw, 1.5rem);
+  --text-2xl: clamp(1.5rem, 1.2rem + 1.2vw, 2rem);
+  --text-3xl: clamp(1.875rem, 1.4rem + 2vw, 2.75rem);
+  --text-4xl: clamp(2.25rem, 1.6rem + 3vw, 3.5rem);
+  --leading-tight: 1.1;
+  --leading-snug: 1.3;
+  --leading-normal: 1.5;
+  --leading-relaxed: 1.65;
+  --tracking-tight: -0.02em;
+  --tracking-wide: 0.08em;
+  --weight-regular: 400;
+  --weight-medium: 500;
+  --weight-semibold: 600;
+  --weight-bold: 700;
+
+  /* ---- Espaciado (base 4 px) ---- */
+  --space-1: 0.25rem;
+  --space-2: 0.5rem;
+  --space-3: 0.75rem;
+  --space-4: 1rem;
+  --space-5: 1.25rem;
+  --space-6: 1.5rem;
+  --space-8: 2rem;
+  --space-10: 2.5rem;
+  --space-12: 3rem;
+  --space-16: 4rem;
+  --space-20: 5rem;
+  --space-24: 6rem;
+  --section-padding: clamp(3rem, 6vw, 6rem);
+
+  /* ---- Contenedores ---- */
+  --container-max: 72rem;
+  --container-wide: 84rem;
+  --container-narrow: 46rem;
+  --container-padding: clamp(1rem, 4vw, 2rem);
+
+  /* ---- Radios, bordes y sombras ---- */
+  --radius-sm: 4px;
+  --radius-md: 8px;
+  --radius-lg: 12px;
+  --radius-xl: 16px;
+  --radius-full: 999px; /* solo para chips y pastillas de estado */
+  --border-width: 1px;
+  --shadow-sm: 0 1px 2px rgba(7, 21, 43, 0.06);
+  --shadow-md: 0 4px 12px rgba(7, 21, 43, 0.08);
+  --shadow-lg: 0 12px 32px rgba(7, 21, 43, 0.12);
+
+  /* ---- Motion ---- */
+  --dur-fast: 150ms;
+  --dur-base: 250ms;
+  --dur-slow: 400ms;
+  --dur-slower: 700ms;
+  --ease-standard: cubic-bezier(0.2, 0, 0, 1);
+  --ease-emphasized: cubic-bezier(0.3, 0, 0, 1);
+  --ease-out: cubic-bezier(0, 0, 0.2, 1);
+  --motion-distance: 12px;
+
+  /* ---- Capas ---- */
+  --z-header: 100;
+  --z-overlay: 200;
+  --z-toast: 300;
+
+  /* ---- Tamaños táctiles ---- */
+  --tap-min: 44px;
+}
+
+/* Superficies oscuras (hero, secciones institucionales, pie). Redefinen roles de texto y foco. */
+.on-dark,
+[data-surface='dark'] {
+  --color-bg: var(--color-navy-900);
+  --color-bg-subtle: var(--color-navy-800);
+  --color-bg-muted: var(--color-navy-700);
+  --color-surface: var(--color-navy-800);
+  --color-border: rgba(255, 255, 255, 0.14);
+  --color-border-strong: rgba(255, 255, 255, 0.28);
+  --color-border-input: rgba(255, 255, 255, 0.6);
+  --color-text: var(--color-white);
+  --color-text-secondary: rgba(255, 255, 255, 0.78);
+  --color-text-muted: rgba(255, 255, 255, 0.64);
+  --color-heading: var(--color-white);
+  --color-link: var(--color-cyan-300);
+  --color-link-hover: var(--color-cyan-100);
+  --color-primary: var(--color-cyan-400);
+  --color-primary-hover: var(--color-cyan-300);
+  --color-on-primary: var(--color-navy-950);
+  --focus-ring: var(--color-cyan-300);
+  --focus-ring-offset: var(--color-navy-900);
+  color: var(--color-text);
+  background-color: var(--color-bg);
+}
+
+/* Tenant de ejemplo: caso de uso licores (propuesta de piloto). Acentos azul, rojo, amarillo y verde. */
+[data-tenant='licores'] {
+  --tenant-primary: var(--color-navy-900);
+  --tenant-accent: var(--color-accent-blue);
+  --tenant-accent-2: var(--color-accent-red);
+  --tenant-accent-3: var(--color-accent-yellow);
+  --tenant-accent-4: var(--color-accent-green);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  :root {
+    --dur-fast: 0.01ms;
+    --dur-base: 0.01ms;
+    --dur-slow: 0.01ms;
+    --dur-slower: 0.01ms;
+    --motion-distance: 0px;
+  }
+}

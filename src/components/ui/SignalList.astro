@@ -1,0 +1,81 @@
+---
+/**
+ * Las cuatro señales de verificación (firma, registro, coincidencia, anomalías) como lista en rejilla.
+ */
+import Icon from './Icon.astro';
+import type { Signal, IconName } from '@/content/types';
+
+interface Props {
+  signals: Signal[];
+  class?: string;
+}
+const { signals, class: className } = Astro.props;
+const FALLBACK_ICON: Record<Signal['key'], IconName> = {
+  signature: 'signature',
+  registry: 'database',
+  match: 'compare',
+  anomalies: 'alert',
+};
+---
+
+<ul class:list={['signals', 'grid', 'grid--4', className]} data-reveal data-reveal-stagger>
+  {
+    signals.map((signal, index) => (
+      <li class="signal" data-signal={signal.key}>
+        <span class="signal__icon" aria-hidden="true">
+          <Icon name={signal.icon ?? FALLBACK_ICON[signal.key]} size={22} />
+        </span>
+        <span class="signal__index mono" aria-hidden="true">{String(index + 1).padStart(2, '0')}</span>
+        <h3 class="signal__title">{signal.title}</h3>
+        <p class="signal__body">{signal.body}</p>
+      </li>
+    ))
+  }
+</ul>
+
+<style>
+  .signals {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+  .signal {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-2);
+    padding: var(--space-5);
+    border: var(--border-width) solid var(--color-border);
+    border-top: 3px solid var(--color-cobalt-600);
+    border-radius: var(--radius-md);
+    background: var(--color-surface);
+  }
+  .signal__icon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 2.75rem;
+    height: 2.75rem;
+    margin-bottom: var(--space-2);
+    border-radius: var(--radius-md);
+    background: var(--color-cobalt-50);
+    color: var(--color-cobalt-600);
+  }
+  .signal__index {
+    position: absolute;
+    top: var(--space-4);
+    right: var(--space-5);
+    font-size: var(--text-xs);
+    letter-spacing: 0.08em;
+    color: var(--color-text-secondary);
+  }
+  .signal__title {
+    margin: 0;
+    font-size: var(--text-lg);
+  }
+  .signal__body {
+    margin: 0;
+    font-size: var(--text-sm);
+    color: var(--color-text-secondary);
+  }
+</style>

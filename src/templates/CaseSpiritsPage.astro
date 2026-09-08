@@ -1,0 +1,176 @@
+---
+/**
+ * Caso de uso: Licores (propuesta de piloto). Contexto, alcance, actores, arquitectura objetivo,
+ * inspección de campo, co-brand condicional, lo que el demo no afirma y cierre.
+ * El lockup del tenant `licores` solo aparece aquí (y en el tenant de ejemplo), rotulado como propuesta.
+ */
+import Base from '@/layouts/Base.astro';
+import PageHero from '@/components/ui/PageHero.astro';
+import Button from '@/components/ui/Button.astro';
+import Callout from '@/components/ui/Callout.astro';
+import Card from '@/components/ui/Card.astro';
+import CheckList from '@/components/ui/CheckList.astro';
+import CtaBand from '@/components/ui/CtaBand.astro';
+import FeatureGrid from '@/components/ui/FeatureGrid.astro';
+import SectionHeader from '@/components/ui/SectionHeader.astro';
+import CobrandExample from '@/components/site/CobrandExample.astro';
+import { ctaHref, ctaVariant } from '@/components/ui/cta';
+import { env } from '@/config/env';
+import { getContent } from '@/content';
+import type { Locale } from '@/i18n';
+
+interface Props {
+  locale: Locale;
+}
+const { locale } = Astro.props;
+const { caseSpirits } = getContent(locale);
+---
+
+<Base locale={locale} routeKey="caseSpirits" title={caseSpirits.meta.title} description={caseSpirits.meta.description}>
+  <PageHero eyebrow={caseSpirits.hero.eyebrow} tag={caseSpirits.hero.tag} title={caseSpirits.hero.title} subtitle={caseSpirits.hero.subtitle} icon="bottle">
+    <Callout tone="neutral" class="case-hero__disclaimer">{caseSpirits.hero.disclaimer}</Callout>
+  </PageHero>
+
+  <section class="section" aria-labelledby="context-title" data-reveal>
+    <div class="container context">
+      <SectionHeader title={caseSpirits.context.title} id="context-title" class="context__header" />
+      <div class="context__text prose">
+        {caseSpirits.context.paragraphs.map((paragraph) => <p>{paragraph}</p>)}
+      </div>
+    </div>
+  </section>
+
+  <section class="section section--subtle" aria-labelledby="scope-title" data-reveal>
+    <div class="container">
+      <SectionHeader title={caseSpirits.scope.title} intro={caseSpirits.scope.intro} id="scope-title" />
+      <FeatureGrid items={caseSpirits.scope.items} columns={3} />
+    </div>
+  </section>
+
+  <section class="section" aria-labelledby="actors-title" data-reveal>
+    <div class="container">
+      <SectionHeader title={caseSpirits.actors.title} intro={caseSpirits.actors.intro} id="actors-title" />
+      <ul class="actors grid grid--3" data-reveal data-reveal-stagger>
+        {
+          caseSpirits.actors.items.map((actor) => (
+            <li class="actors__item">
+              <Card title={actor.role} icon={actor.icon} tone="subtle">
+                <p>{actor.body}</p>
+              </Card>
+            </li>
+          ))
+        }
+      </ul>
+    </div>
+  </section>
+
+  <section class="section section--subtle" aria-labelledby="target-title" data-reveal>
+    <div class="container">
+      <SectionHeader title={caseSpirits.target.title} intro={caseSpirits.target.intro} id="target-title" />
+      <FeatureGrid items={caseSpirits.target.items} columns={3} numbered />
+      <div class="section__note">
+        <Callout tone="info">{caseSpirits.target.note}</Callout>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" aria-labelledby="inspection-title" data-reveal>
+    <div class="container inspection">
+      <SectionHeader title={caseSpirits.fieldInspection.title} intro={caseSpirits.fieldInspection.body} id="inspection-title" class="inspection__header" />
+      <div class="inspection__list">
+        <CheckList items={caseSpirits.fieldInspection.bullets} tone="muted" />
+      </div>
+    </div>
+  </section>
+
+  <section class="section section--subtle" aria-labelledby="cobrand-title" data-reveal>
+    <div class="container cobrand-section">
+      <div class="cobrand-section__copy">
+        <SectionHeader title={caseSpirits.cobrand.title} intro={caseSpirits.cobrand.body} id="cobrand-title" class="cobrand-section__header" />
+        {env.showCobrandExample && <Callout tone="neutral">{caseSpirits.cobrand.lockupNote}</Callout>}
+        <p class="cobrand-section__action">
+          <Button href={ctaHref(locale, caseSpirits.cobrand.cta)} variant={ctaVariant(caseSpirits.cobrand.cta, 'secondary')} icon="arrow-right">
+            {caseSpirits.cobrand.cta.label}
+          </Button>
+        </p>
+      </div>
+      <div class="cobrand-section__aside">
+        <CobrandExample locale={locale} />
+      </div>
+    </div>
+  </section>
+
+  <section class="section" aria-labelledby="nonclaims-title" data-reveal>
+    <div class="container nonclaims">
+      <SectionHeader title={caseSpirits.nonClaims.title} intro={caseSpirits.nonClaims.intro} id="nonclaims-title" class="nonclaims__header" />
+      <div class="nonclaims__list">
+        <CheckList items={caseSpirits.nonClaims.items} marker="square" />
+      </div>
+    </div>
+  </section>
+
+  <CtaBand locale={locale} title={caseSpirits.cta.title} body={caseSpirits.cta.body} primaryCta={caseSpirits.cta.primaryCta} secondaryCta={caseSpirits.cta.secondaryCta} />
+</Base>
+
+<style>
+  :global(.case-hero__disclaimer) {
+    max-width: 60ch;
+  }
+  .section__note {
+    max-width: 62ch;
+    margin-top: var(--space-8);
+  }
+  .context,
+  .inspection,
+  .nonclaims,
+  .cobrand-section {
+    display: grid;
+    gap: var(--space-8);
+    align-items: start;
+  }
+  @media (min-width: 60em) {
+    .context,
+    .inspection,
+    .nonclaims {
+      grid-template-columns: minmax(0, 5fr) minmax(0, 7fr);
+      gap: var(--space-16);
+    }
+    .cobrand-section {
+      grid-template-columns: minmax(0, 7fr) minmax(0, 5fr);
+      gap: var(--space-16);
+    }
+  }
+  .context :global(.context__header),
+  .inspection :global(.inspection__header),
+  .nonclaims :global(.nonclaims__header) {
+    margin-bottom: 0;
+  }
+  .cobrand-section :global(.cobrand-section__header) {
+    margin-bottom: var(--space-6);
+  }
+  .context__text {
+    max-width: 62ch;
+  }
+  .actors {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+  .actors__item {
+    min-width: 0;
+  }
+  .inspection__list,
+  .nonclaims__list {
+    padding: var(--space-6);
+    border: var(--border-width) solid var(--color-border);
+    border-radius: var(--radius-lg);
+    background: var(--color-surface);
+  }
+  .cobrand-section__copy {
+    display: grid;
+    gap: var(--space-6);
+  }
+  .cobrand-section__action {
+    margin: 0;
+  }
+</style>

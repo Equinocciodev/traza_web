@@ -1,0 +1,76 @@
+---
+/**
+ * Lockup co-brand tipográfico de un tenant, por ejemplo "SENIAT | TRAZA".
+ * Siempre acompañado del aviso de co-brand (propuesta de piloto). Sin emblemas oficiales.
+ */
+import type { Tenant } from '@/config/tenants';
+import type { Locale } from '@/i18n';
+
+interface Props {
+  tenant: Tenant;
+  locale: Locale;
+  size?: 'sm' | 'md' | 'lg';
+  showNotice?: boolean;
+  class?: string;
+}
+const { tenant, locale, size = 'md', showNotice = true, class: className } = Astro.props;
+const lockup = tenant.lockup;
+---
+
+{
+  lockup && (
+    <div class:list={['lockup', `lockup--${size}`, className]}>
+      <span class="lockup__mark" role="img" aria-label={lockup.alt[locale]}>
+        <span class="lockup__part lockup__part--a" aria-hidden="true">{lockup.parts[0]}</span>
+        <span class="lockup__divider" aria-hidden="true"></span>
+        <span class="lockup__part lockup__part--b" aria-hidden="true">{lockup.parts[1]}</span>
+      </span>
+      {showNotice && tenant.cobrandNotice && <p class="lockup__notice">{tenant.cobrandNotice[locale]}</p>}
+    </div>
+  )
+}
+
+<style>
+  .lockup {
+    display: inline-flex;
+    flex-direction: column;
+    gap: var(--space-2);
+    max-width: 100%;
+  }
+  .lockup__mark {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.6em;
+    font-family: var(--font-sans);
+    font-weight: var(--weight-bold);
+    letter-spacing: 0.02em;
+    font-size: var(--lk-size, 1.25rem);
+    color: var(--color-heading);
+    line-height: 1;
+  }
+  .lockup__part--b {
+    letter-spacing: 0.08em;
+  }
+  .lockup__divider {
+    width: 2px;
+    height: 1.1em;
+    background: var(--tenant-accent, var(--color-cyan-400));
+    border-radius: 1px;
+  }
+  .lockup__notice {
+    margin: 0;
+    font-size: var(--text-xs);
+    line-height: 1.4;
+    color: var(--color-text-secondary);
+    max-width: 36ch;
+  }
+  .lockup--sm {
+    --lk-size: 1rem;
+  }
+  .lockup--md {
+    --lk-size: 1.25rem;
+  }
+  .lockup--lg {
+    --lk-size: 1.75rem;
+  }
+</style>

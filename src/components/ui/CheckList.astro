@@ -1,0 +1,97 @@
+---
+/**
+ * Lista de puntos con icono (por defecto una marca de verificación). `icon="x"` para listas de
+ * "lo que no afirmamos"; `marker="square"` usa un módulo QR como viñeta neutra.
+ */
+import Icon from './Icon.astro';
+import type { IconName } from '@/content/types';
+
+interface Props {
+  items: string[];
+  icon?: IconName;
+  marker?: 'icon' | 'square';
+  tone?: 'default' | 'muted' | 'danger';
+  columns?: 1 | 2;
+  class?: string;
+}
+const { items, icon = 'check', marker = 'icon', tone = 'default', columns = 1, class: className } = Astro.props;
+---
+
+<ul class:list={['checklist', `checklist--${tone}`, `checklist--cols-${columns}`, className]}>
+  {
+    items.map((item) => (
+      <li class="checklist__item">
+        {marker === 'icon' ? (
+          <span class="checklist__icon" aria-hidden="true">
+            <Icon name={icon} size={16} strokeWidth={2.25} />
+          </span>
+        ) : (
+          <span class="checklist__square" aria-hidden="true"></span>
+        )}
+        <span class="checklist__text">{item}</span>
+      </li>
+    ))
+  }
+</ul>
+
+<style>
+  .checklist {
+    display: grid;
+    gap: var(--space-3);
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+  @media (min-width: 48em) {
+    .checklist--cols-2 {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      column-gap: var(--space-8);
+    }
+  }
+  .checklist__item {
+    display: flex;
+    align-items: flex-start;
+    gap: var(--space-3);
+    min-width: 0;
+  }
+  .checklist__icon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    width: 1.5rem;
+    height: 1.5rem;
+    margin-top: 0.1em;
+    border-radius: 50%;
+    background: var(--color-success-bg);
+    color: var(--color-success-text);
+  }
+  .checklist--muted .checklist__icon {
+    background: var(--color-cobalt-50);
+    color: var(--color-cobalt-600);
+  }
+  .checklist--danger .checklist__icon {
+    background: var(--color-danger-bg);
+    color: var(--color-danger-text);
+  }
+  :global(.on-dark) .checklist__icon {
+    background: rgba(25, 200, 255, 0.14);
+    color: var(--color-cyan-300);
+  }
+  .checklist__square {
+    display: inline-block;
+    flex-shrink: 0;
+    width: 0.625rem;
+    height: 0.625rem;
+    margin-top: 0.55em;
+    border-radius: 2px;
+    background: var(--color-cobalt-600);
+  }
+  :global(.on-dark) .checklist__square {
+    background: var(--color-cyan-400);
+  }
+  .checklist__text {
+    min-width: 0;
+    overflow-wrap: anywhere;
+  }
+</style>

@@ -1,0 +1,83 @@
+---
+/**
+ * Soluciones (resumen): tres audiencias, capa común, adaptabilidad multisector y cierre.
+ */
+import Base from '@/layouts/Base.astro';
+import PageHero from '@/components/ui/PageHero.astro';
+import Callout from '@/components/ui/Callout.astro';
+import CheckList from '@/components/ui/CheckList.astro';
+import CtaBand from '@/components/ui/CtaBand.astro';
+import SectionHeader from '@/components/ui/SectionHeader.astro';
+import AudienceGrid from '@/components/site/AudienceGrid.astro';
+import SectorChips from '@/components/site/SectorChips.astro';
+import { getContent } from '@/content';
+import type { Locale } from '@/i18n';
+
+interface Props {
+  locale: Locale;
+}
+const { locale } = Astro.props;
+const { solutions } = getContent(locale);
+---
+
+<Base locale={locale} routeKey="solutions" title={solutions.meta.title} description={solutions.meta.description}>
+  <PageHero eyebrow={solutions.hero.eyebrow} title={solutions.hero.title} subtitle={solutions.hero.subtitle} />
+
+  <section class="section" aria-label={solutions.hero.eyebrow} data-reveal>
+    <div class="container">
+      {/* Accesibilidad: las tarjetas siguen al h1 sin h2 intermedio → nivel 2 (evita saltos h1→h3) */}
+      <AudienceGrid locale={locale} items={solutions.cards} headingLevel={2} />
+    </div>
+  </section>
+
+  <section class="section section--subtle" aria-labelledby="shared-title" data-reveal>
+    <div class="container shared">
+      <SectionHeader title={solutions.sharedLayer.title} intro={solutions.sharedLayer.body} id="shared-title" class="shared__header" />
+      <div class="shared__list">
+        <CheckList items={solutions.sharedLayer.bullets} tone="muted" />
+      </div>
+    </div>
+  </section>
+
+  <section class="section" aria-labelledby="multisector-title" data-reveal>
+    <div class="container multisector">
+      <SectionHeader title={solutions.multisector.title} intro={solutions.multisector.body} id="multisector-title" class="multisector__header" />
+      <div class="multisector__list">
+        <SectorChips locale={locale} sectors={solutions.multisector.sectors} />
+        <Callout tone="info">{solutions.multisector.note}</Callout>
+      </div>
+    </div>
+  </section>
+
+  <CtaBand locale={locale} title={solutions.cta.title} body={solutions.cta.body} primaryCta={solutions.cta.primaryCta} secondaryCta={solutions.cta.secondaryCta} />
+</Base>
+
+<style>
+  .shared,
+  .multisector {
+    display: grid;
+    gap: var(--space-8);
+    align-items: start;
+  }
+  @media (min-width: 60em) {
+    .shared,
+    .multisector {
+      grid-template-columns: minmax(0, 5fr) minmax(0, 7fr);
+      gap: var(--space-16);
+    }
+  }
+  .shared :global(.shared__header),
+  .multisector :global(.multisector__header) {
+    margin-bottom: 0;
+  }
+  .shared__list {
+    padding: var(--space-6);
+    border: var(--border-width) solid var(--color-border);
+    border-radius: var(--radius-lg);
+    background: var(--color-surface);
+  }
+  .multisector__list {
+    display: grid;
+    gap: var(--space-6);
+  }
+</style>

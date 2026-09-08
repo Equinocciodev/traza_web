@@ -1,0 +1,127 @@
+---
+import type { Locale } from '@/i18n';
+import { getV2Narrative, NARRATIVE_DEMO_REFERENCE } from '@/content/v2-narrative';
+import Icon from '@/components/ui/Icon.astro';
+import './story-player.css';
+
+interface Props { locale: Locale; id?: string }
+const { locale, id = 'story-player' } = Astro.props;
+const { ui, stories } = getV2Narrative(locale);
+const imageUrl = `${import.meta.env.BASE_URL.replace(/\/$/, '')}/images/v2/story-bottle.webp`;
+---
+
+<section class="story-player" id={id} data-story-player data-locale={locale}
+  data-ui={JSON.stringify(ui)} aria-labelledby={`${id}-heading`}>
+  <div class="story__visual" aria-hidden="true">
+    <img class="story__bottle" src={imageUrl} alt="" width="1024" height="1536"
+      loading="lazy" decoding="async" />
+  </div>
+  <div class="story__inner">
+    <!-- Exclusively an informative relation, anchored by measurement to the object and step data. -->
+    <svg class="story__connection" data-story-connection aria-hidden="true" focusable="false" data-hidden="true">
+      <path data-story-connection-path pathLength="1" fill="none" />
+      <circle data-story-connection-start r="4" />
+      <circle data-story-connection-end r="4" />
+    </svg>
+    <span class="story__object-label" data-story-object-label hidden>{ui.conceptualObject}</span>
+    <h2 class="story__heading" id={`${id}-heading`} data-story-heading>{ui.heading}</h2>
+    <p class="story__sr-only">{ui.imageAlt}</p>
+    <div class="story__tabs" role="tablist" aria-label={ui.tabs}>
+      {stories.map((story, index) => (
+        <button class="story__tab" type="button" role="tab" id={`${id}-tab-${story.id}`}
+          aria-controls={`${id}-panel-${story.id}`} aria-selected={index === 0 ? 'true' : 'false'}
+          tabindex={index === 0 ? 0 : -1} data-story-tab={story.id} disabled>
+          {story.tab}
+        </button>
+      ))}
+    </div>
+
+    <noscript><p class="story__noscript">{ui.noScript}</p></noscript>
+
+    {stories.map((story) => (
+      <div class="story__panel" role="tabpanel" id={`${id}-panel-${story.id}`}
+        aria-labelledby={`${id}-tab-${story.id}`} data-story-panel={story.id} data-title={story.title} tabindex="0">
+        <div class="story__main">
+          <p class="story__introduction">{story.introduction}</p>
+          <nav class="story__chapters" aria-label={ui.chapters} data-chapter-count={story.chapters.length}>
+            <ol>
+              {story.chapters.map((chapter, index) => (
+                <li>
+                  <button type="button" class="story__chapter" data-story-chapter={chapter.id}
+                    aria-current={index === 0 ? 'step' : undefined} disabled>
+                    <span class="story__chapter-number" aria-hidden="true">{index + 1}</span>
+                    <span class="story__chapter-label">{chapter.label}</span>
+                  </button>
+                </li>
+              ))}
+            </ol>
+          </nav>
+
+          <div class="story__controls" data-story-controls-view>
+            <button type="button" class="story__play" data-story-play disabled aria-pressed="false">
+              <Icon name="arrow-right" size={20} />
+              <span data-story-play-label>{ui.play}</span>
+            </button>
+            <span class="story__rhythm">{ui.rhythm}</span>
+          </div>
+          <p class="story__reduced" data-story-reduced hidden>{ui.reduced}</p>
+
+          <div class="story__reader" data-story-reader>
+            <p class="story__proposal">{story.label}</p>
+            <div class="story__step-controls">
+              <button type="button" data-story-previous disabled><Icon name="arrow-right" class="story__back-icon" size={17} />{ui.previous}</button>
+              <button type="button" data-story-next disabled>{ui.next}<Icon name="arrow-right" size={17} /></button>
+              <button type="button" data-story-restart disabled><Icon name="refresh" size={17} />{ui.restart}</button>
+            </div>
+            <div class="story__steps">
+              {story.beats.map((beat, index) => (
+                <article class="story__step" data-story-step={beat.id} data-chapter={beat.chapter}
+                  data-duration={beat.durationMs} data-kind={beat.kind} aria-labelledby={`${id}-${beat.id}`}>
+                  <p class="story__step-position">{String(index + 1).padStart(2, '0')} / {String(story.beats.length).padStart(2, '0')}</p>
+                  <h3 id={`${id}-${beat.id}`} data-story-step-title>{beat.title}</h3>
+                  {story.id === 'product' && <p class="story__sr-only">{ui.relation}</p>}
+                  <p class="story__summary">{beat.summary}</p>
+                  {beat.rows.length > 0 && (
+                    <dl class:list={['story__state-rows', { 'story__state-rows--relations': beat.kind === 'relations' }]}>
+                      {beat.rows.map((row) => (<div><dt>{row.label}</dt><dd>{row.detail}</dd></div>))}
+                    </dl>
+                  )}
+                  <dl class="story__context">
+                    <div><dt>{ui.actor}</dt><dd>{beat.actor}</dd></div>
+                    <div><dt>{ui.change}</dt><dd>{beat.change}</dd></div>
+                  </dl>
+                  <p class="story__limit"><Icon name="info" size={18} /><span>{beat.limit}</span></p>
+                </article>
+              ))}
+            </div>
+          </div>
+        </div>
+
+        <details class="story__transcript" data-story-transcript open>
+          <summary>{ui.transcript}<Icon name="document" size={18} /></summary>
+          <div class="story__transcript-content">
+            <p class="story__proposal">{story.label}</p>
+            {story.id === 'product' && (
+              <p class="story__reference">{ui.record}: <span>{NARRATIVE_DEMO_REFERENCE.code}</span>. {ui.recordNote}</p>
+            )}
+            <ol>
+              {story.beats.map((beat) => (
+                <li>
+                  <h3>{beat.title}</h3>
+                  {beat.transcript.map((line) => <p>{line}</p>)}
+                </li>
+              ))}
+            </ol>
+          </div>
+        </details>
+      </div>
+    ))}
+    <p class="story__sr-only" role="status" aria-live="polite" aria-atomic="true" data-story-announcement></p>
+  </div>
+</section>
+
+<script>
+  import { initStoryPlayers } from './story-player';
+  initStoryPlayers();
+  document.addEventListener('astro:page-load', initStoryPlayers);
+</script>

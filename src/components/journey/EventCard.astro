@@ -1,0 +1,146 @@
+---
+/**
+ * Tarjeta de evento del recorrido. Sin `event` renderiza una plantilla vacía que la isla clona
+ * y rellena (los campos llevan `data-jr-field`), de modo que el marcado vive en un solo sitio.
+ */
+import Icon from '@/components/ui/Icon.astro';
+import type { UnitEvent } from '@/fixtures/types';
+import type { JourneyClientData } from '@/content/journey.types';
+import { KIND_ICONS, KIND_INCIDENT } from './kinds';
+import { formatEventTime } from './model';
+
+interface Props {
+  event?: UnitEvent;
+  data: JourneyClientData;
+}
+
+const { event, data } = Astro.props;
+const note = event?.note?.[data.locale];
+const incident = event ? KIND_INCIDENT.has(event.kind) : false;
+---
+
+<li
+  class="jr-card"
+  data-jr-card
+  data-testid="journey-card"
+  data-kind={event?.kind}
+  data-event-id={event?.id}
+  data-incident={incident ? '' : undefined}
+>
+  <span class="jr-card__icon" data-jr-icon aria-hidden="true">
+    {event && <Icon name={KIND_ICONS[event.kind]} size={20} />}
+  </span>
+  <div class="jr-card__body">
+    <p class="jr-card__kind" data-jr-field="kind">{event ? data.eventKinds[event.kind] : ''}</p>
+    <p class="jr-card__actor" data-jr-field="actor">{event?.actor ?? ''}</p>
+    <p class="jr-card__place" data-jr-field="place">{event ? `${event.place.site} · ${event.place.region}` : ''}</p>
+    <p class="jr-card__meta">
+      <time class="jr-card__time mono" data-jr-field="time" datetime={event?.at}>{event ? formatEventTime(event.at, data) : ''}</time>
+      <span class="jr-card__ref mono" data-jr-field="ref" hidden={!event?.ref}>
+        <span class="visually-hidden">{data.refLabel}: </span>
+        <span data-jr-field="ref-value">{event?.ref ?? ''}</span>
+      </span>
+    </p>
+    <p class="jr-card__note" data-jr-field="note" hidden={!note}>{note ?? ''}</p>
+  </div>
+</li>
+
+<style>
+  .jr-card {
+    display: flex;
+    gap: var(--space-3);
+    padding: var(--space-4);
+    border: var(--border-width) solid var(--color-border);
+    border-left-width: 4px;
+    border-left-color: var(--color-cobalt-600);
+    border-radius: var(--radius-md);
+    background: var(--color-surface);
+  }
+  .jr-card__icon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    width: 2.5rem;
+    height: 2.5rem;
+    border-radius: var(--radius-md);
+    background: var(--color-cobalt-50);
+    color: var(--color-cobalt-700);
+  }
+  .jr-card[data-incident] .jr-card__icon {
+    background: var(--color-warning-bg);
+    color: var(--color-warning-text);
+  }
+  .jr-card__body {
+    min-width: 0;
+    flex: 1 1 auto;
+  }
+  .jr-card__body p {
+    margin: 0;
+  }
+  .jr-card__kind {
+    font-weight: var(--weight-semibold);
+    color: var(--color-heading);
+    line-height: var(--leading-snug);
+  }
+  .jr-card__actor {
+    margin-top: var(--space-1);
+    font-size: var(--text-sm);
+    color: var(--color-text);
+  }
+  .jr-card__place {
+    font-size: var(--text-sm);
+    color: var(--color-text-secondary);
+  }
+  .jr-card__meta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-1) var(--space-3);
+    margin-top: var(--space-2);
+    font-size: var(--text-xs);
+    color: var(--color-text-secondary);
+  }
+  .jr-card__ref {
+    color: var(--color-navy-800);
+  }
+  .jr-card__note {
+    margin-top: var(--space-2);
+    font-size: var(--text-sm);
+    color: var(--color-text-secondary);
+  }
+
+  /* Revelado escalonado de las tarjetas de la etapa activa (solo opacity/transform; ver motion.css) */
+  .jr-card.reveal-up:nth-child(2) {
+    animation-delay: 70ms;
+  }
+  .jr-card.reveal-up:nth-child(3) {
+    animation-delay: 140ms;
+  }
+  .jr-card.reveal-up:nth-child(n + 4) {
+    animation-delay: 210ms;
+  }
+
+  /* Estados heredados del grupo de etapa: pendientes atenuadas (siempre legibles, ≥ AA) */
+  :global(.jr-stage[data-state='pending']) .jr-card,
+  :global(.jr-stage[data-state='unrecorded']) .jr-card {
+    border-left-color: var(--color-neutral-300);
+    border-style: dashed;
+    background: var(--color-bg-subtle);
+    opacity: 0.8;
+  }
+  :global(.jr-stage[data-state='pending']) .jr-card p,
+  :global(.jr-stage[data-state='pending']) .jr-card time {
+    color: var(--color-neutral-800);
+  }
+  :global(.jr-stage[data-state='pending']) .jr-card__icon {
+    background: var(--color-neutral-100);
+    color: var(--color-neutral-600);
+  }
+  :global(.jr-stage[data-state='done']) .jr-card {
+    border-left-color: var(--color-cobalt-100);
+  }
+  :global(.jr-stage[data-state='done']) .jr-card__icon {
+    background: var(--color-bg-subtle);
+    color: var(--color-cobalt-700);
+  }
+</style>

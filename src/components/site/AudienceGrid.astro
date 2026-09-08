@@ -1,0 +1,75 @@
+---
+/**
+ * Tarjetas de audiencia (gobierno, industria, ciudadanos). Toda la tarjeta enlaza al destino del CTA
+ * (el título es el enlace real); el texto del CTA se muestra como pie visual con flecha.
+ */
+import Card from '@/components/ui/Card.astro';
+import Icon from '@/components/ui/Icon.astro';
+import { ctaHref } from '@/components/ui/cta';
+import type { AudienceCard } from '@/content/types';
+import type { Locale } from '@/i18n';
+
+interface Props {
+  locale: Locale;
+  items: AudienceCard[];
+  /** Nivel del título de cada tarjeta: 2 cuando la rejilla sigue directamente al h1 (jerarquía sin saltos). */
+  headingLevel?: 2 | 3 | 4;
+  class?: string;
+}
+const { locale, items, headingLevel = 3, class: className } = Astro.props;
+---
+
+<ul class:list={['audience-grid', 'grid', 'grid--3', className]} data-reveal data-reveal-stagger>
+  {
+    items.map((item) => (
+      <li class="audience-grid__item" data-audience={item.key}>
+        <Card title={item.title} icon={item.icon} href={ctaHref(locale, item.cta)} headingLevel={headingLevel} class="audience-card">
+          <p>{item.body}</p>
+          <ul class="audience-card__bullets">
+            {item.bullets.map((bullet) => (
+              <li>{bullet}</li>
+            ))}
+          </ul>
+          <p class="audience-card__cta">
+            <span>{item.cta.label}</span>
+            <Icon name="arrow-right" size={18} />
+          </p>
+        </Card>
+      </li>
+    ))
+  }
+</ul>
+
+<style>
+  .audience-grid {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+  .audience-grid__item {
+    min-width: 0;
+  }
+  .audience-grid :global(.audience-card .card__body) {
+    display: flex;
+    flex-direction: column;
+    flex: 1 1 auto;
+    gap: var(--space-3);
+  }
+  .audience-grid :global(.audience-card .card__arrow) {
+    display: none;
+  }
+  .audience-grid :global(.audience-card__bullets) {
+    margin: 0;
+    padding-left: 1.1em;
+    font-size: var(--text-sm);
+  }
+  .audience-grid :global(.audience-card__cta) {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-2);
+    margin: auto 0 0;
+    padding-top: var(--space-2);
+    font-weight: var(--weight-semibold);
+    color: var(--color-link);
+  }
+</style>

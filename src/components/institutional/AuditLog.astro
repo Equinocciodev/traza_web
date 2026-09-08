@@ -1,0 +1,329 @@
+---
+/**
+ * Cronología de auditoría: tabla renderizada en servidor (de más reciente a más antigua) con filtro por rol
+ * del actor. La isla añade al principio las acciones ejecutadas en la demo clonando la fila prototipo.
+ * El Observador ve el estado "Sin permisos"; el Inspector solo sus propias acciones.
+ */
+import Icon from '@/components/ui/Icon.astro';
+import PermissionDenied from './PermissionDenied.astro';
+import type { Locale } from '@/i18n';
+import type { InstitutionalContent } from '@/content/institutional.types';
+import { AUDIT_LOG, PERSON_BY_ID, ACTOR_ROLES, type AuditEntry, type ActorRole } from '@/fixtures/institutional';
+import { fmtDateTime } from './format';
+
+interface Props {
+  locale: Locale;
+  content: InstitutionalContent;
+}
+const { locale, content: t } = Astro.props;
+const { labels } = t;
+
+const entries = [...AUDIT_LOG].sort((a, b) => (a.at < b.at ? 1 : -1));
+const filterRoles: ActorRole[] = ACTOR_ROLES.filter((r) => r !== 'observer');
+
+const proto: AuditEntry = { id: 'AUD-0000-0000', at: '2026-01-01T00:00:00Z', actorId: 'sys-rules', action: 'alert_created', object: '—', result: { es: '—', en: '—' }, description: { es: '—', en: '—' } };
+const rows: { e: AuditEntry; proto: boolean }[] = [...entries.map((e) => ({ e, proto: false })), { e: proto, proto: true }];
+const roleOf = (actorId: string): ActorRole => PERSON_BY_ID.get(actorId)?.role ?? 'system';
+const nameOf = (actorId: string): string => PERSON_BY_ID.get(actorId)?.name ?? actorId;
+---
+
+<section class="audit section--tight" id={t.audit.id} aria-labelledby="inst-audit-title" data-section="audit">
+  <div class="audit__header">
+    <h2 id="inst-audit-title">{t.audit.title}</h2>
+    <p class="lede audit__intro">{t.audit.intro}</p>
+  </div>
+
+  <PermissionDenied content={t.permissions} body={t.permissions.audit} class="audit__denied" />
+
+  <div class="audit__body" data-audit-body>
+    <div class="audit__tools" data-js-only>
+      <div class="filter" role="group" aria-label={t.audit.filterLabel}>
+        <span class="filter__label">{t.audit.filterLabel}</span>
+        <div class="filter__buttons">
+          <button type="button" class="chip" data-filter-role="all" aria-pressed="true">{t.audit.all}</button>
+          {filterRoles.map((r) => (
+            <button type="button" class="chip" data-filter-role={r} aria-pressed="false">{labels.actorRole[r]}</button>
+          ))}
+        </div>
+      </div>
+      <p class="audit__note" data-audit-inspector-note hidden>
+        <Icon name="info" size={16} />
+        <span>{t.audit.inspectorNote}</span>
+      </p>
+    </div>
+
+    <div class="skeleton" data-skeleton aria-hidden="true">
+      <span class="skeleton__bar"></span>
+      <span class="skeleton__bar"></span>
+      <span class="skeleton__bar"></span>
+    </div>
+
+    <div class="table-wrap" data-loadable>
+      <table class="atable" data-testid="audit-log">
+        <caption class="atable__caption">
+          <span>{t.audit.caption}</span>
+          <span class="mono atable__tz">{t.audit.timezoneNote}</span>
+        </caption>
+        <thead>
+          <tr>
+            <th scope="col">{t.audit.columns.at}</th>
+            <th scope="col">{t.audit.columns.actor}</th>
+            <th scope="col">{t.audit.columns.role}</th>
+            <th scope="col">{t.audit.columns.action}</th>
+            <th scope="col">{t.audit.columns.object}</th>
+            <th scope="col">{t.audit.columns.result}</th>
+          </tr>
+        </thead>
+        <tbody data-audit-rows>
+          {rows.map(({ e, proto }) => (
+            <tr data-audit-id={e.id} data-actor-role={roleOf(e.actorId)} data-actor={e.actorId} data-proto={proto ? '' : undefined} hidden={proto}>
+              <td data-label={t.audit.columns.at} class="mono atable__at" data-slot="at">{fmtDateTime(e.at, locale)}</td>
+              <td data-label={t.audit.columns.actor} data-slot="actor">{nameOf(e.actorId)}</td>
+              <td data-label={t.audit.columns.role}><span class="role-tag" data-slot="role">{labels.actorRole[roleOf(e.actorId)]}</span></td>
+              <td data-label={t.audit.columns.action}>
+                <span class="atable__action" data-slot="action">{labels.auditAction[e.action]}</span>
+                <span class="atable__desc" data-slot="desc">{e.description[locale]}</span>
+              </td>
+              <td data-label={t.audit.columns.object} class="mono" data-slot="object">{e.object}</td>
+              <td data-label={t.audit.columns.result} data-slot="result">{e.result[locale]}</td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+      <p class="audit__empty" data-audit-empty hidden>{t.audit.empty}</p>
+    </div>
+  </div>
+</section>
+
+<style>
+  .audit__header {
+    max-width: 62ch;
+    margin-bottom: var(--space-6);
+  }
+  .audit__header h2 {
+    font-size: var(--text-2xl);
+  }
+  .audit__intro {
+    font-size: var(--text-base);
+  }
+  .audit__tools {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: flex-end;
+    justify-content: space-between;
+    gap: var(--space-3);
+    margin-bottom: var(--space-4);
+  }
+  .filter__label {
+    display: block;
+    margin-bottom: var(--space-2);
+    font-family: var(--font-mono);
+    font-size: var(--text-xs);
+    letter-spacing: var(--tracking-wide);
+    text-transform: uppercase;
+    color: var(--color-text-secondary);
+  }
+  .filter__buttons {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-2);
+  }
+  .chip {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.375rem;
+    min-height: var(--tap-min);
+    padding: 0.5rem 0.875rem;
+    border: var(--border-width) solid var(--color-border-strong);
+    border-radius: var(--radius-full);
+    background: var(--color-surface);
+    color: var(--color-text);
+    font-size: var(--text-sm);
+    font-weight: var(--weight-medium);
+    line-height: 1.2;
+    transition:
+      background-color var(--dur-fast) var(--ease-standard),
+      color var(--dur-fast) var(--ease-standard),
+      border-color var(--dur-fast) var(--ease-standard);
+  }
+  .chip:hover {
+    border-color: var(--color-cobalt-600);
+    color: var(--color-link);
+  }
+  .chip[aria-pressed='true'] {
+    background: var(--color-navy-900);
+    border-color: var(--color-navy-900);
+    color: var(--color-white);
+  }
+  .audit__note {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-2);
+    margin: 0;
+    padding: var(--space-2) var(--space-3);
+    border-radius: var(--radius-md);
+    background: var(--color-info-bg);
+    color: var(--color-info-text);
+    font-size: var(--text-sm);
+  }
+
+  .skeleton {
+    display: none;
+    gap: var(--space-2);
+  }
+  :global(.inst[data-load='loading']) .skeleton {
+    display: grid;
+  }
+  .skeleton__bar {
+    display: block;
+    height: 3rem;
+    border-radius: var(--radius-md);
+    background: var(--color-neutral-100);
+    animation: skeleton-pulse 1.2s var(--ease-standard) infinite alternate;
+  }
+  .skeleton__bar:nth-child(2) {
+    animation-delay: 120ms;
+  }
+  .skeleton__bar:nth-child(3) {
+    animation-delay: 240ms;
+  }
+  @keyframes skeleton-pulse {
+    from {
+      opacity: 0.55;
+    }
+    to {
+      opacity: 1;
+    }
+  }
+
+  .table-wrap {
+    overflow-x: auto;
+    border: var(--border-width) solid var(--color-border);
+    border-radius: var(--radius-md);
+    background: var(--color-surface);
+  }
+  .atable {
+    min-width: 48rem;
+    font-size: var(--text-sm);
+  }
+  .atable__caption {
+    caption-side: top;
+    padding: var(--space-3) var(--space-4);
+    text-align: left;
+    font-size: var(--text-sm);
+    color: var(--color-text-secondary);
+    border-bottom: var(--border-width) solid var(--color-border);
+  }
+  .atable__tz {
+    display: inline-block;
+    margin-left: var(--space-3);
+    font-size: var(--text-xs);
+  }
+  .atable__at {
+    width: 11rem;
+  }
+  .atable th {
+    font-family: var(--font-mono);
+    font-size: var(--text-xs);
+    letter-spacing: var(--tracking-wide);
+    text-transform: uppercase;
+    background: var(--color-bg-subtle);
+    white-space: nowrap;
+  }
+  .atable__at,
+  .atable td.mono {
+    white-space: nowrap;
+    color: var(--color-navy-800);
+  }
+  .role-tag {
+    display: inline-block;
+    justify-self: start;
+    padding: 0.1rem 0.5rem;
+    border-radius: var(--radius-sm);
+    background: var(--color-neutral-bg);
+    color: var(--color-neutral-text);
+    font-family: var(--font-mono);
+    font-size: var(--text-xs);
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    white-space: nowrap;
+  }
+  .atable__action {
+    display: block;
+    font-weight: var(--weight-semibold);
+    color: var(--color-heading);
+  }
+  .atable__desc {
+    display: block;
+    color: var(--color-text-secondary);
+    font-size: var(--text-xs);
+    line-height: var(--leading-normal);
+  }
+  .atable tbody tr:last-child td {
+    border-bottom: 0;
+  }
+  .atable tr.is-new td {
+    background: var(--color-cobalt-50);
+  }
+  .audit__empty {
+    margin: 0;
+    padding: var(--space-4);
+    color: var(--color-text-secondary);
+    font-size: var(--text-sm);
+  }
+
+  @media (max-width: 40em) {
+    .table-wrap {
+      overflow: visible;
+      border: 0;
+      background: transparent;
+    }
+    .atable {
+      min-width: 0;
+    }
+    .atable__caption {
+      padding-inline: 0;
+      border-bottom: 0;
+    }
+    .atable thead {
+      position: absolute;
+      width: 1px;
+      height: 1px;
+      overflow: hidden;
+      clip: rect(0, 0, 0, 0);
+    }
+    .atable tr {
+      display: grid;
+      gap: var(--space-1);
+      margin-bottom: var(--space-3);
+      padding: var(--space-3) var(--space-4);
+      border: var(--border-width) solid var(--color-border);
+      border-radius: var(--radius-md);
+      background: var(--color-surface);
+    }
+    .atable td {
+      display: grid;
+      grid-template-columns: 6rem 1fr;
+      gap: var(--space-2);
+      padding: 0.125rem 0;
+      border: 0;
+    }
+    .atable td::before {
+      content: attr(data-label);
+      font-family: var(--font-mono);
+      font-size: var(--text-xs);
+      letter-spacing: var(--tracking-wide);
+      text-transform: uppercase;
+      color: var(--color-text-secondary);
+    }
+    .atable__at,
+    .atable td.mono {
+      white-space: normal;
+    }
+  }
+  @media (max-width: 22.5em) {
+    .atable td {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>

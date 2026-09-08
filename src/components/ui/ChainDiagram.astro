@@ -1,0 +1,207 @@
+---
+/**
+ * Diagrama estático de la cadena: seis nodos unidos por una línea de trazabilidad.
+ * Horizontal en escritorio, vertical en móvil. Sin JavaScript se ve completo (línea entera, nodos
+ * encendidos). Motion ("el trazo que se completa", src/lib/motion.ts → observeTraceLines):
+ * - `data-chain` marca el contenedor; la línea es un <line> SVG (`data-chain-line`, pathLength="1")
+ *   que se dibuja con stroke-dashoffset al entrar en el viewport, una sola vez.
+ * - Los nodos (`data-chain-node`) se "encienden" en orden: JS añade `chain--pending` (anillo y relleno
+ *   apagados) solo justo antes de animar y `is-lit` a cada nodo cuando la línea llega; el encendido es
+ *   una transición de opacidad de pseudoelementos (sin cambios de layout). Al terminar se retira todo.
+ */
+import Icon from './Icon.astro';
+import type { ChainNode } from '@/content/types';
+
+interface Props {
+  nodes: ChainNode[];
+  class?: string;
+}
+const { nodes, class: className } = Astro.props;
+---
+
+<div class:list={['chain', className]} data-chain>
+  <span class="chain__line" aria-hidden="true">
+    <svg class="chain__line-svg" focusable="false">
+      <line class="chain__line-h" x1="0" y1="1" x2="100%" y2="1" pathLength="1" data-chain-line data-length="1"></line>
+      <line class="chain__line-v" x1="1" y1="0" x2="1" y2="100%" pathLength="1" data-chain-line data-length="1"></line>
+    </svg>
+  </span>
+  <ol class="chain__list">
+    {
+      nodes.map((node, index) => (
+        <li class:list={['chain__item', { 'chain__item--final': index === nodes.length - 1 }]} data-node={node.id}>
+          <span class="chain__node" aria-hidden="true" data-chain-node>
+            <Icon name={node.icon} size={22} />
+          </span>
+          <div class="chain__text">
+            <span class="chain__index mono" aria-hidden="true">{String(index + 1).padStart(2, '0')}</span>
+            <h3 class="chain__label">{node.label}</h3>
+            <p class="chain__desc">{node.description}</p>
+          </div>
+        </li>
+      ))
+    }
+  </ol>
+</div>
+
+<style>
+  .chain {
+    --node-size: 3rem;
+    position: relative;
+  }
+  .chain__list {
+    position: relative;
+    z-index: 1;
+    display: grid;
+    gap: var(--space-6);
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+  .chain__line {
+    position: absolute;
+    z-index: 0;
+    color: var(--color-cobalt-100);
+    /* vertical (móvil) */
+    left: calc(var(--node-size) / 2 - 1px);
+    top: var(--node-size);
+    bottom: var(--node-size);
+    width: 2px;
+  }
+  /* La línea es un <line> SVG (sin viewBox: 1 unidad = 1 px) para poder dibujarla con stroke-dashoffset.
+     Sin JavaScript no lleva guiones: se ve completa. */
+  .chain__line-svg {
+    display: block;
+    width: 100%;
+    height: 100%;
+    overflow: visible;
+    fill: none;
+  }
+  .chain__line-svg line {
+    stroke: currentColor;
+    stroke-width: 2;
+  }
+  .chain__line-h {
+    display: none;
+  }
+  .chain__item {
+    display: grid;
+    grid-template-columns: var(--node-size) minmax(0, 1fr);
+    gap: var(--space-4);
+    align-items: start;
+  }
+  .chain__node {
+    position: relative;
+    isolation: isolate;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: var(--node-size);
+    height: var(--node-size);
+    border: 2px solid var(--color-cobalt-600);
+    border-radius: 50%;
+    background: var(--color-white);
+    color: var(--color-cobalt-600);
+    box-shadow: 0 0 0 4px var(--color-bg);
+    transition: color var(--dur-base) var(--ease-standard);
+  }
+  .chain__item--final .chain__node {
+    background: var(--color-cobalt-600);
+    color: var(--color-white);
+  }
+  /* Capas de "encendido" (motion): anillo cobalto que coincide con el borde y relleno del nodo final.
+     En el estado final tienen opacidad 1 (idénticas al borde/fondo base, no cambian nada); solo el
+     estado chain--pending que añade JS las apaga, y is-lit las enciende con una transición de opacidad. */
+  .chain__node::before,
+  .chain__node::after {
+    content: '';
+    position: absolute;
+    border-radius: 50%;
+    pointer-events: none;
+    transition: opacity var(--dur-base) var(--ease-standard);
+  }
+  .chain__node::after {
+    inset: -2px;
+    border: 2px solid var(--color-cobalt-600);
+  }
+  .chain__node::before {
+    inset: 0;
+    z-index: -1;
+    background: var(--color-cobalt-600);
+    opacity: 0;
+  }
+  .chain__item--final .chain__node::before {
+    opacity: 1;
+  }
+  .chain--pending .chain__node {
+    border-color: var(--color-neutral-300);
+    color: var(--color-neutral-400);
+  }
+  .chain--pending .chain__item--final .chain__node {
+    background: var(--color-white);
+  }
+  .chain--pending .chain__node:not(.is-lit)::before,
+  .chain--pending .chain__node:not(.is-lit)::after {
+    opacity: 0;
+  }
+  .chain--pending .chain__node.is-lit {
+    color: var(--color-cobalt-600);
+  }
+  .chain--pending .chain__item--final .chain__node.is-lit {
+    color: var(--color-white);
+  }
+  .chain__text {
+    min-width: 0;
+    padding-top: 0.15rem;
+  }
+  .chain__index {
+    display: block;
+    margin-bottom: var(--space-1);
+    font-size: var(--text-xs);
+    letter-spacing: 0.08em;
+    color: var(--color-text-secondary);
+  }
+  .chain__label {
+    margin: 0 0 var(--space-1);
+    font-size: var(--text-lg);
+  }
+  .chain__desc {
+    margin: 0;
+    font-size: var(--text-sm);
+    color: var(--color-text-secondary);
+  }
+
+  @media (min-width: 64em) {
+    .chain__list {
+      grid-template-columns: repeat(6, minmax(0, 1fr));
+      gap: var(--space-5);
+    }
+    .chain__line {
+      left: calc(100% / 12);
+      right: calc(100% / 12);
+      top: calc(var(--node-size) / 2 - 1px);
+      bottom: auto;
+      width: auto;
+      height: 2px;
+    }
+    .chain__line-h {
+      display: inline;
+    }
+    .chain__line-v {
+      display: none;
+    }
+    .chain__item {
+      grid-template-columns: 1fr;
+      align-content: start;
+      justify-items: center;
+      text-align: center;
+      gap: var(--space-3);
+    }
+    .chain__text {
+      padding-top: 0;
+    }
+    .chain__label {
+      font-size: var(--text-base);
+    }
+  }
+</style>

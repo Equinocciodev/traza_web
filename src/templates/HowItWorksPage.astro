@@ -1,0 +1,105 @@
+---
+/**
+ * Cómo funciona: cinco pasos, la cadena nodo a nodo, señales y resultados de la verificación,
+ * requisitos para verificar y cierre.
+ */
+import Base from '@/layouts/Base.astro';
+import PageHero from '@/components/ui/PageHero.astro';
+import Button from '@/components/ui/Button.astro';
+import Callout from '@/components/ui/Callout.astro';
+import ChainDiagram from '@/components/ui/ChainDiagram.astro';
+import CtaBand from '@/components/ui/CtaBand.astro';
+import FeatureGrid from '@/components/ui/FeatureGrid.astro';
+import OutcomeGrid from '@/components/ui/OutcomeGrid.astro';
+import SectionHeader from '@/components/ui/SectionHeader.astro';
+import SignalList from '@/components/ui/SignalList.astro';
+import StepList from '@/components/ui/StepList.astro';
+import { ctaHref, ctaVariant } from '@/components/ui/cta';
+import { getContent } from '@/content';
+import type { Locale } from '@/i18n';
+
+interface Props {
+  locale: Locale;
+}
+const { locale } = Astro.props;
+const { howItWorks } = getContent(locale);
+---
+
+<Base locale={locale} routeKey="howItWorks" title={howItWorks.meta.title} description={howItWorks.meta.description}>
+  <PageHero eyebrow={howItWorks.hero.eyebrow} title={howItWorks.hero.title} subtitle={howItWorks.hero.subtitle} />
+
+  <section class="section" aria-labelledby="steps-title" data-reveal>
+    <div class="container steps">
+      <SectionHeader title={howItWorks.steps.title} intro={howItWorks.steps.intro} id="steps-title" class="steps__header" />
+      <div class="steps__list">
+        <StepList steps={howItWorks.steps.items} />
+      </div>
+    </div>
+  </section>
+
+  <section class="section section--subtle" aria-labelledby="chain-title" data-reveal>
+    <div class="container">
+      <SectionHeader title={howItWorks.chain.title} intro={howItWorks.chain.intro} id="chain-title" />
+      <ChainDiagram nodes={howItWorks.chain.nodes} />
+      <p class="section__more">
+        <Button href={ctaHref(locale, howItWorks.chain.cta)} variant={ctaVariant(howItWorks.chain.cta, 'link')} icon="arrow-right">{howItWorks.chain.cta.label}</Button>
+      </p>
+    </div>
+  </section>
+
+  <section class="section" aria-labelledby="verification-title" data-reveal>
+    <div class="container">
+      <SectionHeader title={howItWorks.verification.title} intro={howItWorks.verification.intro} id="verification-title" />
+      <SignalList signals={howItWorks.verification.signals} />
+      <div class="verification__outcomes">
+        <OutcomeGrid outcomes={howItWorks.verification.outcomes} />
+      </div>
+      <div class="section__note">
+        <Callout tone="warning">{howItWorks.verification.caution}</Callout>
+      </div>
+    </div>
+  </section>
+
+  <section class="section section--subtle" aria-labelledby="requirements-title" data-reveal>
+    <div class="container">
+      <SectionHeader title={howItWorks.requirements.title} intro={howItWorks.requirements.intro} id="requirements-title" />
+      <FeatureGrid items={howItWorks.requirements.items} columns={4} />
+    </div>
+  </section>
+
+  <CtaBand locale={locale} title={howItWorks.cta.title} body={howItWorks.cta.body} primaryCta={howItWorks.cta.primaryCta} secondaryCta={howItWorks.cta.secondaryCta} />
+</Base>
+
+<style>
+  .section__more {
+    margin: var(--space-8) 0 0;
+  }
+  .section__note {
+    max-width: 62ch;
+    margin-top: var(--space-8);
+  }
+  .steps {
+    display: grid;
+    gap: var(--space-8);
+    align-items: start;
+  }
+  @media (min-width: 60em) {
+    .steps {
+      grid-template-columns: minmax(0, 5fr) minmax(0, 7fr);
+      gap: var(--space-16);
+    }
+    .steps :global(.steps__header) {
+      position: sticky;
+      top: 6rem;
+    }
+  }
+  .steps :global(.steps__header) {
+    margin-bottom: 0;
+  }
+  .steps__list {
+    max-width: 44rem;
+  }
+  .verification__outcomes {
+    margin-top: var(--space-8);
+  }
+</style>

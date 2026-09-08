@@ -1,0 +1,329 @@
+---
+/**
+ * TraceLine — diagrama SVG de la cadena: seis nodos unidos por una única línea de trazabilidad.
+ * Estático y sin JavaScript; reutilizable en cualquier página. Horizontal en ≥ 48em y vertical
+ * en móvil (dos <svg> con la misma información; CSS muestra solo uno).
+ *
+ * API
+ *   nodes        ChainNode[]  Seis nodos (id, label, icon), p. ej. `home.chain.nodes` o `journey.stages`.
+ *   reach        number       Índice (0–5) del último nodo alcanzado por la línea. Por defecto el último
+ *                             (línea completa). -1 = ningún nodo alcanzado.
+ *   active       number       Índice del nodo "encendido". Por defecto = reach.
+ *   originIcon   IconName     Icono del primer nodo (p. ej. 'customs' para unidades importadas).
+ *   orientation  'auto' | 'horizontal' | 'vertical'   Por defecto 'auto'.
+ *   label        string       Nombre accesible (role="img" + <title>). Si se omite, el diagrama es
+ *                             decorativo (aria-hidden) y la información debe existir como texto aparte.
+ *   class        string       Clase adicional del contenedor.
+ *   interactive  boolean      Añade los ganchos `data-trace-*` que usa la isla JourneyApp.
+ *   id           string       Id del <title> accesible (por defecto se deriva de `label`).
+ *
+ * Ejemplo (estático, línea completa, accesible):
+ *   <TraceLine nodes={home.chain.nodes} label="Cadena de seis etapas" />
+ * Ejemplo (unidad importada detenida en distribución):
+ *   <TraceLine nodes={journey.stages} reach={3} originIcon="customs" />
+ *
+ * Estados de nodo (atributo data-state): done | active | pending | unrecorded.
+ * Solo cambian fill/stroke/opacity y, en la isla, stroke-dashoffset y transform (pulso).
+ */
+import Icon from '@/components/ui/Icon.astro';
+import type { ChainNode, IconName } from '@/content/types';
+
+interface Props {
+  nodes: ChainNode[];
+  reach?: number;
+  active?: number;
+  originIcon?: IconName;
+  orientation?: 'auto' | 'horizontal' | 'vertical';
+  label?: string;
+  class?: string;
+  interactive?: boolean;
+  /** Id del <title> accesible (por defecto se deriva de `label`). */
+  id?: string;
+}
+
+const { nodes, orientation = 'auto', label, class: className, interactive = false, originIcon } = Astro.props;
+const count = nodes.length;
+const reach = Math.max(-1, Math.min(count - 1, Astro.props.reach ?? count - 1));
+const active = Math.max(-1, Math.min(count - 1, Astro.props.active ?? reach));
+
+type NodeState = 'done' | 'active' | 'pending' | 'unrecorded';
+function stateOf(i: number): NodeState {
+  if (i > reach) return 'unrecorded';
+  if (i === active) return 'active';
+  if (i < active) return 'done';
+  return 'pending';
+}
+
+const progress = count > 1 && reach >= 0 ? reach / (count - 1) : 0;
+
+/* Geometría horizontal */
+const H = { width: 130 * count, height: 124, cy: 48, r: 27, ring: 35, labelY: 100 };
+const hx = (i: number) => 65 + 130 * i;
+const hLength = hx(count - 1) - hx(0);
+
+/* Geometría vertical */
+const V = { width: 320, height: 44 + 72 * (count - 1) + 24, cx: 48, r: 27, ring: 35, labelX: 96 };
+const vy = (i: number) => 44 + 72 * i;
+const vLength = vy(count - 1) - vy(0);
+
+const slug = (label ?? '')
+  .toLowerCase()
+  .replace(/[^a-z0-9]+/g, '-')
+  .replace(/^-|-$/g, '')
+  .slice(0, 32);
+const titleId = label ? (Astro.props.id ?? `trace-title-${slug}`) : undefined;
+const showH = orientation !== 'vertical';
+const showV = orientation !== 'horizontal';
+---
+
+<div
+  class:list={['trace-line', `trace-line--${orientation}`, className]}
+  data-trace={interactive ? '' : undefined}
+  data-origin-icon={originIcon ?? nodes[0]?.icon}
+>
+  {
+    showH && (
+      <svg
+        class="trace-line__svg trace-line__svg--h"
+        viewBox={`0 0 ${H.width} ${H.height}`}
+        role={label ? 'img' : undefined}
+        aria-labelledby={label ? titleId : undefined}
+        aria-hidden={label ? undefined : 'true'}
+        focusable="false"
+        data-trace-svg="h"
+      >
+        {label && <title id={titleId}>{label}</title>}
+        <path class="trace-line__track" d={`M${hx(0)} ${H.cy} H${hx(count - 1)}`} />
+        <path
+          class="trace-line__progress"
+          d={`M${hx(0)} ${H.cy} H${hx(count - 1)}`}
+          stroke-dasharray={hLength}
+          stroke-dashoffset={hLength * (1 - progress)}
+          data-trace-path
+          data-length={hLength}
+        />
+        {nodes.map((node, i) => (
+          <g class="trace-node" data-trace-node data-stage={node.id} data-index={i} data-state={stateOf(i)} transform={`translate(${hx(i)} ${H.cy})`}>
+            <circle class="trace-node__ring" r={H.ring} data-trace-ring />
+            <circle class="trace-node__disc" r={H.r} />
+            <circle class="trace-node__lit" r={H.r} />
+            {i === 0 ? (
+              <g class="trace-node__icon" transform="translate(-12 -12)">
+                <g class="trace-node__origin" data-trace-origin="factory">
+                  <Icon name="factory" size={24} />
+                </g>
+                <g class="trace-node__origin" data-trace-origin="customs">
+                  <Icon name="customs" size={24} />
+                </g>
+              </g>
+            ) : (
+              <g class="trace-node__icon" transform="translate(-12 -12)">
+                <Icon name={node.icon} size={24} />
+              </g>
+            )}
+            {node.id === 'verification' && (
+              <g class="trace-node__finder" transform="translate(20 -40)">
+                <path fill-rule="evenodd" d="M0 0h14v14H0zM2 2v10h10V2z" />
+                <rect x="4" y="4" width="6" height="6" />
+                <rect x="17" y="6" width="2" height="2" />
+                <rect x="6" y="17" width="2" height="2" />
+              </g>
+            )}
+            <text class="trace-node__label" y={H.labelY - H.cy} text-anchor="middle">
+              {node.label}
+            </text>
+          </g>
+        ))}
+      </svg>
+    )
+  }
+  {
+    showV && (
+      <svg
+        class="trace-line__svg trace-line__svg--v"
+        viewBox={`0 0 ${V.width} ${V.height}`}
+        role={label && !showH ? 'img' : undefined}
+        aria-labelledby={label && !showH ? titleId : undefined}
+        aria-hidden={label && !showH ? undefined : 'true'}
+        focusable="false"
+        data-trace-svg="v"
+      >
+        {label && !showH && <title id={titleId}>{label}</title>}
+        <path class="trace-line__track" d={`M${V.cx} ${vy(0)} V${vy(count - 1)}`} />
+        <path
+          class="trace-line__progress"
+          d={`M${V.cx} ${vy(0)} V${vy(count - 1)}`}
+          stroke-dasharray={vLength}
+          stroke-dashoffset={vLength * (1 - progress)}
+          data-trace-path
+          data-length={vLength}
+        />
+        {nodes.map((node, i) => (
+          <g class="trace-node" data-trace-node data-stage={node.id} data-index={i} data-state={stateOf(i)} transform={`translate(${V.cx} ${vy(i)})`}>
+            <circle class="trace-node__ring" r={V.ring} data-trace-ring />
+            <circle class="trace-node__disc" r={V.r} />
+            <circle class="trace-node__lit" r={V.r} />
+            {i === 0 ? (
+              <g class="trace-node__icon" transform="translate(-12 -12)">
+                <g class="trace-node__origin" data-trace-origin="factory">
+                  <Icon name="factory" size={24} />
+                </g>
+                <g class="trace-node__origin" data-trace-origin="customs">
+                  <Icon name="customs" size={24} />
+                </g>
+              </g>
+            ) : (
+              <g class="trace-node__icon" transform="translate(-12 -12)">
+                <Icon name={node.icon} size={24} />
+              </g>
+            )}
+            {node.id === 'verification' && (
+              <g class="trace-node__finder" transform="translate(20 -40)">
+                <path fill-rule="evenodd" d="M0 0h14v14H0zM2 2v10h10V2z" />
+                <rect x="4" y="4" width="6" height="6" />
+                <rect x="17" y="6" width="2" height="2" />
+                <rect x="6" y="17" width="2" height="2" />
+              </g>
+            )}
+            <text class="trace-node__label trace-node__label--v" x={V.labelX - V.cx} y="5" text-anchor="start">
+              {node.label}
+            </text>
+          </g>
+        ))}
+      </svg>
+    )
+  }
+</div>
+
+<style>
+  .trace-line {
+    width: 100%;
+  }
+  .trace-line__svg {
+    display: block;
+    width: 100%;
+    height: auto;
+    overflow: visible;
+    fill: none;
+  }
+  /* Orientación automática: vertical en móvil, horizontal desde 48em */
+  .trace-line--auto .trace-line__svg--h {
+    display: none;
+  }
+  @media (min-width: 48em) {
+    .trace-line--auto .trace-line__svg--h {
+      display: block;
+    }
+    .trace-line--auto .trace-line__svg--v {
+      display: none;
+    }
+  }
+  .trace-line--vertical .trace-line__svg--v {
+    max-width: 22rem;
+  }
+
+  /* Línea */
+  .trace-line__track {
+    stroke: var(--color-neutral-200);
+    stroke-width: 3;
+  }
+  .trace-line__progress {
+    stroke: var(--color-cobalt-600);
+    stroke-width: 4;
+    stroke-linecap: round;
+  }
+
+  /* Nodos */
+  .trace-node__ring {
+    fill: var(--color-cobalt-100);
+    opacity: 0;
+    transform-box: fill-box;
+    transform-origin: center;
+  }
+  .trace-node[data-state='active'] .trace-node__ring {
+    opacity: 1;
+  }
+  .trace-node__disc {
+    fill: var(--color-surface);
+    stroke: var(--color-neutral-300);
+    stroke-width: 2;
+  }
+  .trace-node[data-state='unrecorded'] .trace-node__disc {
+    fill: var(--color-bg-subtle);
+    stroke-dasharray: 4 3;
+  }
+  .trace-node[data-state='done'] .trace-node__disc,
+  .trace-node[data-state='active'] .trace-node__disc {
+    stroke: var(--color-cobalt-600);
+  }
+  .trace-node__lit {
+    fill: var(--color-cobalt-600);
+    opacity: 0;
+    transition: opacity var(--dur-base) var(--ease-standard);
+  }
+  .trace-node[data-state='done'] .trace-node__lit {
+    opacity: 0.14;
+  }
+  .trace-node[data-state='active'] .trace-node__lit {
+    opacity: 1;
+  }
+  .trace-node__icon {
+    color: var(--color-neutral-500);
+  }
+  /* El reset global (`svg { height: auto }`) haría que el <svg> anidado ocupara todo el alto del
+     diagrama; el icono se fija a 24 unidades de usuario para quedar centrado en el disco. */
+  .trace-node__icon :global(.icon) {
+    display: inline;
+    width: 24px;
+    height: 24px;
+    overflow: visible;
+  }
+  .trace-node[data-state='unrecorded'] .trace-node__icon {
+    color: var(--color-neutral-400);
+  }
+  .trace-node[data-state='done'] .trace-node__icon {
+    color: var(--color-cobalt-700);
+  }
+  .trace-node[data-state='active'] .trace-node__icon {
+    color: var(--color-white);
+  }
+  /* Icono del origen: fábrica o aduana según la unidad */
+  .trace-node__origin[data-trace-origin='customs'] {
+    display: none;
+  }
+  .trace-line[data-origin-icon='customs'] .trace-node__origin[data-trace-origin='customs'] {
+    display: inline;
+  }
+  .trace-line[data-origin-icon='customs'] .trace-node__origin[data-trace-origin='factory'] {
+    display: none;
+  }
+  /* Motivo QR (finder pattern) discreto en el nodo de verificación */
+  .trace-node__finder {
+    fill: var(--color-neutral-300);
+    opacity: 0.9;
+  }
+  .trace-node[data-state='done'] .trace-node__finder,
+  .trace-node[data-state='active'] .trace-node__finder {
+    fill: var(--color-cobalt-600);
+    opacity: 0.55;
+  }
+  .trace-node__label {
+    fill: var(--color-text-secondary);
+    font-family: var(--font-sans);
+    font-size: 14px;
+    font-weight: var(--weight-medium);
+  }
+  .trace-node__label--v {
+    font-size: 15px;
+  }
+  .trace-node[data-state='done'] .trace-node__label,
+  .trace-node[data-state='active'] .trace-node__label {
+    fill: var(--color-heading);
+  }
+  .trace-node[data-state='active'] .trace-node__label {
+    font-weight: var(--weight-semibold);
+  }
+  .trace-node[data-state='unrecorded'] .trace-node__label {
+    fill: var(--color-neutral-500);
+  }
+</style>

@@ -1,0 +1,158 @@
+---
+/**
+ * Botón / enlace con aspecto de botón. Usa `href` para enlaces y omítelo para <button>.
+ * Variantes: primary (cobalto), secondary (borde), ghost (texto), link.
+ * Tamaño mínimo táctil 44 px.
+ */
+import Icon from './Icon.astro';
+import type { IconName } from '@/content/types';
+
+interface Props {
+  href?: string;
+  variant?: 'primary' | 'secondary' | 'ghost' | 'link';
+  size?: 'md' | 'lg' | 'sm';
+  type?: 'button' | 'submit' | 'reset';
+  icon?: IconName;
+  iconPosition?: 'start' | 'end';
+  class?: string;
+  disabled?: boolean;
+  external?: boolean;
+  [key: string]: unknown;
+}
+
+const {
+  href,
+  variant = 'primary',
+  size = 'md',
+  type = 'button',
+  icon,
+  iconPosition = 'end',
+  class: className,
+  disabled = false,
+  external = false,
+  ...rest
+} = Astro.props;
+
+const classes = ['btn', `btn--${variant}`, `btn--${size}`, className];
+const Tag = href ? 'a' : 'button';
+const attrs: Record<string, unknown> = href
+  ? { href, ...(external ? { target: '_blank', rel: 'noopener noreferrer' } : {}), ...(disabled ? { 'aria-disabled': 'true', tabindex: -1 } : {}) }
+  : { type, disabled };
+---
+
+<Tag class:list={classes} {...attrs} {...rest}>
+  {icon && iconPosition === 'start' && <Icon name={icon} size={18} class="btn__icon" />}
+  <span class="btn__label"><slot /></span>
+  {icon && iconPosition === 'end' && <Icon name={icon} size={18} class="btn__icon" />}
+</Tag>
+
+<style>
+  .btn {
+    --btn-bg: var(--color-primary);
+    --btn-fg: var(--color-on-primary);
+    --btn-border: var(--color-primary);
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: var(--space-2);
+    min-height: var(--tap-min);
+    padding: 0.625rem 1.25rem;
+    border: var(--border-width) solid var(--btn-border);
+    border-radius: var(--radius-md);
+    background: var(--btn-bg);
+    color: var(--btn-fg);
+    font-weight: var(--weight-semibold);
+    font-size: var(--text-base);
+    line-height: 1.2;
+    text-decoration: none;
+    text-align: center;
+    cursor: pointer;
+    transition:
+      background-color var(--dur-fast) var(--ease-standard),
+      color var(--dur-fast) var(--ease-standard),
+      border-color var(--dur-fast) var(--ease-standard),
+      transform var(--dur-fast) var(--ease-standard);
+  }
+  .btn:hover {
+    --btn-bg: var(--color-primary-hover);
+    --btn-border: var(--color-primary-hover);
+    color: var(--btn-fg);
+  }
+  .btn:active {
+    transform: translateY(1px);
+  }
+  .btn--lg {
+    padding: 0.875rem 1.5rem;
+    font-size: var(--text-lg);
+  }
+  .btn--sm {
+    min-height: var(--tap-min); /* target táctil ≥ 44 px también en la variante pequeña */
+    padding: 0.5rem 0.875rem;
+    font-size: var(--text-sm);
+  }
+  .btn--secondary {
+    --btn-bg: transparent;
+    --btn-fg: var(--color-link);
+    --btn-border: currentColor;
+  }
+  .btn--secondary:hover {
+    --btn-bg: var(--color-cobalt-50);
+    --btn-fg: var(--color-link-hover);
+  }
+  :global(.on-dark) .btn--secondary {
+    --btn-fg: var(--color-white);
+    --btn-border: rgba(255, 255, 255, 0.5);
+  }
+  :global(.on-dark) .btn--secondary:hover {
+    --btn-bg: rgba(255, 255, 255, 0.08);
+    --btn-fg: var(--color-white);
+    --btn-border: var(--color-white);
+  }
+  .btn--ghost {
+    --btn-bg: transparent;
+    --btn-fg: var(--color-link);
+    --btn-border: transparent;
+  }
+  .btn--ghost:hover {
+    --btn-bg: var(--color-cobalt-50);
+    --btn-fg: var(--color-link-hover);
+  }
+  :global(.on-dark) .btn--ghost:hover {
+    --btn-bg: rgba(255, 255, 255, 0.08);
+    --btn-fg: var(--color-white);
+  }
+  .btn--link {
+    --btn-bg: transparent;
+    --btn-fg: var(--color-link);
+    --btn-border: transparent;
+    padding-inline: 0.25rem;
+    text-decoration: underline;
+    text-underline-offset: 0.2em;
+  }
+  .btn--link:hover {
+    --btn-bg: transparent;
+    --btn-fg: var(--color-link-hover);
+  }
+  .btn[disabled],
+  .btn[aria-disabled='true'] {
+    opacity: 0.55;
+    cursor: not-allowed;
+    pointer-events: none;
+  }
+  /* El icono es un componente (Icon) con su propio ámbito de estilos: se selecciona con :global,
+     igual que hacen las islas; sin ello la regla no aplicaba en el HTML generado. Microinteracción ≤ 150 ms. */
+  .btn :global(.btn__icon) {
+    transition: transform var(--dur-fast) var(--ease-standard);
+  }
+  .btn:hover :global(.btn__icon),
+  .btn:focus-visible :global(.btn__icon) {
+    transform: translateX(2px);
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .btn:hover :global(.btn__icon),
+    .btn:focus-visible :global(.btn__icon),
+    .btn:active {
+      transform: none;
+    }
+  }
+</style>

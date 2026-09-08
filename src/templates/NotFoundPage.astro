@@ -1,0 +1,55 @@
+---
+/** Página 404 (ES/EN). */
+import Base from '@/layouts/Base.astro';
+import Button from '@/components/ui/Button.astro';
+import QrMotif from '@/components/ui/QrMotif.astro';
+import { getContent } from '@/content';
+import { route, type Locale } from '@/i18n';
+
+interface Props {
+  locale: Locale;
+}
+const { locale } = Astro.props;
+const { notFound } = getContent(locale);
+const ctaHref = (cta: { key?: import('@/i18n').RouteKey; href?: string; suffix?: string }) => (cta.key ? route(locale, cta.key) + (cta.suffix ?? '') : cta.href ?? '#');
+---
+
+<Base locale={locale} routeKey="notFound" title={notFound.meta.title} description={notFound.meta.description} noindex>
+  <section class="notfound section">
+    <div class="notfound__motif" aria-hidden="true"><QrMotif /></div>
+    <div class="container container--narrow notfound__inner">
+      <p class="eyebrow mono">{notFound.code}</p>
+      <h1>{notFound.title}</h1>
+      <p class="lede">{notFound.body}</p>
+      <div class="cluster">
+        <Button href={ctaHref(notFound.primaryCta)} icon="arrow-right">{notFound.primaryCta.label}</Button>
+        <Button href={ctaHref(notFound.secondaryCta)} variant="secondary">{notFound.secondaryCta.label}</Button>
+      </div>
+    </div>
+  </section>
+</Base>
+
+<style>
+  .notfound {
+    position: relative;
+    overflow: hidden;
+    min-height: 60vh;
+    display: flex;
+    align-items: center;
+  }
+  .notfound__motif {
+    position: absolute;
+    right: -4rem;
+    top: -2rem;
+    width: 22rem;
+    height: 22rem;
+    color: var(--color-navy-900);
+    pointer-events: none;
+  }
+  .notfound__inner {
+    position: relative;
+  }
+  .cluster {
+    margin-top: var(--space-6);
+  }
+</style>

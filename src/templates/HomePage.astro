@@ -1,0 +1,171 @@
+---
+import Base from '@/layouts/Base.astro';
+import Icon from '@/components/ui/Icon.astro';
+import StoryPlayer from '@/components/story/StoryPlayer.astro';
+import { V2_HOME } from '@/content/v2-home';
+import { FEATURED_UNIT_CODE, UNIT_BY_CODE } from '@/fixtures/units';
+import { route, withBase, type Locale } from '@/i18n';
+interface Props { locale: Locale }
+const { locale } = Astro.props;
+const t = V2_HOME[locale];
+const featured = UNIT_BY_CODE.get(FEATURED_UNIT_CODE);
+if (!featured) throw new Error('The V2 home record requires the existing featured verification fixture.');
+const recordHref = `${route(locale, 'verify')}?c=${encodeURIComponent(featured.code)}&t=${featured.tenant}`;
+---
+<Base locale={locale} routeKey="home" title={t.meta.title} description={t.meta.description} homeV2 bodyClass="home-v2">
+  <section class="hero-v2" aria-labelledby="home-title">
+    <div class="v2-shell hero-v2__inner">
+      <div class="hero-v2__copy">
+        <p class="hero-v2__badge"><Icon name="info" size={14} />{t.hero.badge}</p>
+        <h1 id="home-title">{t.hero.title.map((line) => <span>{line}<span class="hero-v2__period">.</span></span>)}</h1>
+        <p class="hero-v2__intro">{t.hero.intro}</p>
+        <div class="hero-v2__actions">
+          <a class="v2-action v2-action--primary" href="#historia">{t.hero.primaryAction}<Icon name="arrow-right" size={20} /></a>
+          <a class="v2-action v2-action--text" href={route(locale, 'verify')}>{t.hero.secondaryAction}<Icon name="arrow-right" size={20} /></a>
+        </div>
+      </div>
+      <figure class="hero-v2__products">
+        <img src={withBase('/images/v2/hero-products.webp')} width="1448" height="1086" alt={t.hero.imageAlt} fetchpriority="high" decoding="async" />
+        <figcaption class="visually-hidden">{t.hero.relationship}</figcaption>
+      </figure>
+      {/* Data relationship only: not a certification mark, decorative icon or replacement for a real image asset. */}
+      <svg class="hero-v2__connection" viewBox="0 0 460 140" fill="none" aria-hidden="true" focusable="false">
+        <path d="M4 135H26C52 135 54 100 80 100H336C368 100 368 80 368 62V38C368 17 383 6 402 6H456" stroke="#07152b" stroke-width="1.5" fill="none" />
+        <circle cx="4" cy="135" r="4" fill="#19c8ff" /><circle cx="456" cy="6" r="4" fill="#19c8ff" />
+      </svg>
+      <aside class="record-v2" aria-labelledby="record-title">
+        <p id="record-title" class="record-v2__title">{t.record.title}</p>
+        <p class="record-v2__code"><code>{featured.code}</code></p>
+        <dl class="record-v2__fields">
+          <div><dt>{t.record.productLabel}</dt><dd>{t.record.product}</dd></div>
+          <div><dt>{t.record.lotLabel}</dt><dd>{featured.origin.lot}</dd></div>
+          <div><dt>{t.record.eventLabel}</dt><dd>{t.record.event}</dd></div>
+        </dl>
+        <p class="record-v2__disclaimer">{t.record.disclaimer}</p>
+        <a class="v2-action v2-action--text record-v2__action" href={recordHref}>{t.record.action}<Icon name="arrow-right" size={22} /></a>
+      </aside>
+    </div>
+  </section>
+  <StoryPlayer locale={locale} id="historia" />
+  <section class="v2-section" aria-labelledby="demos-title">
+    <div class="v2-shell">
+      <div class="v2-section__intro"><p class="v2-eyebrow">{t.demos.eyebrow}</p><h2 id="demos-title">{t.demos.title}</h2><p>{t.demos.intro}</p></div>
+      <ol class="demo-rows">
+        {t.demos.items.map((demo, index) => <li>
+          <span class="demo-rows__number" aria-hidden="true">{String(index + 1).padStart(2, '0')}</span>
+          <div class="demo-rows__heading"><Icon name={demo.icon} size={24} /><h3>{demo.title}</h3></div>
+          <p>{demo.body}</p><a class="v2-action v2-action--text" href={route(locale, demo.key)}>{demo.action}<Icon name="arrow-right" size={20} /></a>
+        </li>)}
+      </ol>
+      <p class="v2-note">{t.demos.note}</p>
+    </div>
+  </section>
+  <section class="v2-section v2-section--subtle" aria-labelledby="scope-title">
+    <div class="v2-shell v2-split">
+      <div><p class="v2-eyebrow">{t.scope.eyebrow}</p><h2 id="scope-title">{t.scope.title}</h2></div>
+      <div class="v2-split__body">
+        <p>{t.scope.body}</p>
+        <ul class="scope-links">{t.scope.links.map((link) => <li><a href={route(locale, link.key)}>{link.label}<Icon name="arrow-right" size={20} /></a></li>)}</ul>
+        <p class="v2-note">{t.scope.note}</p>
+      </div>
+    </div>
+  </section>
+  <section class="v2-section" aria-labelledby="company-title">
+    <div class="v2-shell v2-split">
+      <div><p class="v2-eyebrow">{t.company.eyebrow}</p><h2 id="company-title">{t.company.title}</h2></div>
+      <div class="v2-split__body">
+        <p>{t.company.body}</p>
+        <div class="company-actions">
+          <a class="v2-action v2-action--primary" href={`${route(locale, 'company')}#contact-title`}>{t.company.contact}<Icon name="arrow-right" size={20} /></a>
+          <a class="v2-action v2-action--text" href={route(locale, 'company')}>{t.company.action}<Icon name="arrow-right" size={20} /></a>
+        </div>
+        <p class="v2-note">{t.company.note}</p>
+      </div>
+    </div>
+  </section>
+</Base>
+<style>
+  .v2-shell { width: min(90.2%, 81.25rem); margin-inline: auto; }
+  .hero-v2 { background: #fff; color: var(--color-navy-950); }
+  .hero-v2__inner { position: relative; min-height: clamp(53.7rem, 81.2vw, 68rem); padding-top: 1rem; }
+  .hero-v2__copy { position: relative; z-index: 2; }
+  .hero-v2__badge { display: inline-flex; align-items: center; gap: 0.5rem; margin: 0; padding: 0.35rem 0.7rem; border-radius: 5px; background: var(--color-cobalt-50); color: #445678; font-family: var(--font-mono); font-size: 0.75rem; line-height: 1.4; }
+  .hero-v2__badge :global(.icon) { color: var(--color-cobalt-600); }
+  .hero-v2 h1 { margin: 2rem 0 1rem; color: var(--color-navy-950); font-size: clamp(3.4rem, 5.67vw, 5rem); line-height: 1.12; letter-spacing: -0.045em; text-wrap: initial; overflow-wrap: normal; }
+  .hero-v2 h1 > span { display: block; }
+  .hero-v2__period { color: var(--color-cyan-400); }
+  .hero-v2__intro { max-width: 26.25rem; margin: 0; color: #4d5d7a; font-size: 1.25rem; line-height: 1.4; }
+  .hero-v2__actions { display: flex; align-items: center; flex-wrap: wrap; gap: 1.75rem; margin-top: 1.5rem; }
+  .v2-action { min-height: 44px; display: inline-flex; align-items: center; justify-content: center; gap: 1rem; font-size: 1rem; font-weight: 400; line-height: 1.35; text-decoration: none; }
+  .v2-action--primary { padding: 0.8rem 1.35rem; border: 1px solid var(--color-cobalt-600); border-radius: 5px; background: var(--color-cobalt-600); color: #fff; }
+  .v2-action--primary:hover { background: var(--color-cobalt-700); color: #fff; border-color: var(--color-cobalt-700); }
+  .v2-action--text { padding-block: 0.625rem; color: var(--color-cobalt-600); }
+  .v2-action--text:hover { text-decoration: underline; text-underline-offset: 0.3em; }
+  .hero-v2__actions .v2-action--text { border-bottom: 1px solid var(--color-cobalt-600); }
+  .hero-v2__products { position: absolute; z-index: 0; top: clamp(21.875rem, 33.1vw, 29.8rem); left: -2.3%; width: 70.2%; margin: 0; }
+  .hero-v2__products img { width: 100%; height: auto; }
+  .hero-v2__connection { position: absolute; z-index: 1; left: 16.2%; top: clamp(19.5rem, 29.5vw, 26.8rem); width: 48.5%; height: auto; overflow: visible; }
+  .record-v2 { position: absolute; z-index: 3; top: clamp(13.25rem, 20vw, 18rem); right: 0; width: 35.5%; min-height: 32.375rem; padding: 2.5rem 2rem 2rem; border: 1px solid #cdd6e5; border-radius: 7px; background: #fff; }
+  .record-v2__title { margin-bottom: 1.05rem; color: var(--color-navy-950); font-size: 1rem; line-height: 1.4; }
+  .record-v2__code { margin: 0; padding-bottom: 1.3rem; border-bottom: 2px solid #c8d1e1; line-height: 1.25; }
+  .record-v2__code code { font-family: var(--font-mono); font-size: clamp(1rem, 1.7vw, 1.25rem); font-weight: 500; letter-spacing: -0.01em; color: var(--color-navy-950); overflow-wrap: anywhere; }
+  .record-v2__fields { margin: 0; }
+  .record-v2__fields > div { display: grid; grid-template-columns: 35% minmax(0, 1fr); gap: 0.75rem; padding-block: 1.15rem; border-bottom: 1px solid #e1e7ef; font-size: 1rem; line-height: 1.45; }
+  .record-v2__fields dt { color: #4d5d7a; }
+  .record-v2__fields dd { margin: 0; color: var(--color-navy-950); overflow-wrap: anywhere; }
+  .record-v2__disclaimer { margin: 1.5rem 0 1rem; color: #4d5d7a; font-size: 1rem; line-height: 1.5; max-width: 27ch; }
+  .record-v2__action { justify-content: flex-start; text-align: left; }
+  .v2-section { padding-block: clamp(4rem, 7vw, 7rem); }
+  .v2-section--subtle { background: #f6f8fc; }
+  .v2-section__intro { max-width: 43rem; margin-bottom: 3rem; }
+  .v2-eyebrow { color: var(--color-cobalt-600); margin: 0 0 1rem; font-size: 0.875rem; font-weight: 500; letter-spacing: 0.015em; }
+  .v2-section h2 { color: var(--color-navy-950); max-width: 18ch; font-size: clamp(2rem, 3.6vw, 3.25rem); line-height: 1.13; letter-spacing: -0.035em; }
+  .v2-section__intro > p:last-child, .v2-split__body > p:first-child { color: #4d5d7a; font-size: 1.125rem; line-height: 1.7; }
+  .demo-rows { margin: 0; padding: 0; list-style: none; border-top: 1px solid var(--color-border-strong); }
+  .demo-rows > li { display: grid; grid-template-columns: 3rem minmax(13rem, 1fr) minmax(17rem, 1.35fr) minmax(11rem, 1fr); gap: 1.5rem; align-items: center; padding-block: 2rem; border-bottom: 1px solid var(--color-border-strong); }
+  .demo-rows__number { color: var(--color-text-secondary); font-family: var(--font-mono); font-size: 0.875rem; }
+  .demo-rows__heading { display: flex; align-items: center; gap: 1rem; color: var(--color-cobalt-600); }
+  .demo-rows h3 { margin: 0; font-size: 1.25rem; letter-spacing: -0.02em; }
+  .demo-rows li > p { margin: 0; color: #4d5d7a; font-size: 1rem; line-height: 1.6; }
+  .demo-rows .v2-action { justify-content: space-between; text-align: left; }
+  .v2-note { max-width: 65ch; margin: 1.75rem 0 0; font-size: 0.9375rem; color: #4d5d7a; line-height: 1.6; }
+  .v2-split { display: grid; grid-template-columns: 1fr 1.1fr; gap: clamp(3rem, 9vw, 8rem); }
+  .scope-links { margin: 2rem 0; padding: 0; list-style: none; }
+  .scope-links li { border-top: 1px solid var(--color-border-strong); }
+  .scope-links li:last-child { border-bottom: 1px solid var(--color-border-strong); }
+  .scope-links a { display: flex; align-items: center; justify-content: space-between; min-height: 3.75rem; padding-block: 0.75rem; gap: 1rem; color: var(--color-navy-950); text-decoration: none; }
+  .scope-links a:hover { color: var(--color-cobalt-600); }
+  .company-actions { display: flex; gap: 1.5rem; align-items: center; flex-wrap: wrap; margin-top: 2rem; }
+  @media (min-width: 80em) {
+    .hero-v2__intro { max-width: 30rem; font-size: 1.375rem; }
+    .hero-v2__actions { margin-top: 1.75rem; }
+    .record-v2 { padding: 3rem 2.5rem 2.5rem; }
+    .record-v2__fields > div { padding-block: 1.5rem; font-size: 1rem; }
+  }
+  @media (max-width: 59.99em) {
+    .v2-shell { width: calc(100% - 2.5rem); }
+    .hero-v2__inner { min-height: 0; display: grid; grid-template-columns: minmax(0, 1fr); padding-top: 1rem; padding-bottom: 3rem; }
+    .hero-v2 h1 { font-size: clamp(2.4rem, 6.5vw, 3.6rem); margin-top: 1.75rem; line-height: 1.12; }
+    .hero-v2__intro { max-width: 32rem; font-size: 1.125rem; }
+    .hero-v2__actions { gap: 1rem 1.5rem; }
+    .hero-v2__products { position: relative; left: auto; top: auto; width: min(100%, 40rem); margin: 1.5rem auto 0; }
+    .hero-v2__connection { display: none; }
+    .record-v2 { position: relative; top: auto; right: auto; width: 100%; max-width: 40rem; min-height: 0; margin: 0 auto; padding: 1.75rem; }
+    .record-v2__code code { font-size: clamp(1rem, 4.6vw, 1.125rem); }
+    .record-v2__fields > div { font-size: 1rem; grid-template-columns: 35% minmax(0, 1fr); }
+    .record-v2__disclaimer { max-width: none; }
+    .demo-rows > li { grid-template-columns: 2.5rem minmax(0, 1fr); gap: 1rem; }
+    .demo-rows li > p, .demo-rows li > a { grid-column: 2; }
+    .demo-rows .v2-action { justify-content: flex-start; }
+    .v2-split { grid-template-columns: 1fr; gap: 1.5rem; }
+    .v2-section h2 { max-width: 22ch; }
+  }
+  @media (max-width: 25em) {
+    .hero-v2 h1 { font-size: 2.35rem; letter-spacing: -0.045em; }
+    .hero-v2__badge { font-size: 0.6875rem; padding-inline: 0.45rem; gap: 0.375rem; }
+    .record-v2 { padding: 1.4rem 1.25rem; }
+    .record-v2__fields > div { grid-template-columns: 1fr; gap: 0.35rem; padding-block: 0.875rem; }
+    .demo-rows__heading { gap: 0.75rem; }
+    .demo-rows h3 { font-size: 1.1875rem; }
+  }
+</style>
