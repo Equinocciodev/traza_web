@@ -55,7 +55,7 @@ export const platform: PlatformContent = {
   identity: {
     title: 'La identidad de una unidad',
     body:
-      'Una identidad Traza es un registro breve, firmado por su emisor, que responde a cuatro preguntas sobre la unidad. No guarda datos personales ni tributarios: guarda lo necesario para reconocer el producto y seguir su recorrido.',
+      'Una identidad Traza es un registro breve y firmado que responde a cuatro preguntas sobre la unidad. No contiene datos personales. Sí identifica a la empresa emisora, incluido su identificador tributario: la responsabilidad de quien pone el producto en el mercado es pública por diseño.',
     fields: [
       {
         label: 'Fabricante / importador',
@@ -68,14 +68,14 @@ export const platform: PlatformContent = {
         icon: 'box',
       },
       {
-        label: 'Origen / lote',
-        description: 'Lugar de procedencia y lote de producción o importación al que pertenece.',
-        icon: 'map-pin',
+        label: 'Lote y vencimiento',
+        description: 'El lote de producción o importación y la fecha de vencimiento, para comparar con lo impreso en el envase.',
+        icon: 'label',
       },
       {
-        label: 'Movimientos / destino',
-        description: 'La secuencia de eventos registrados y el destino previsto según el último de ellos.',
-        icon: 'truck',
+        label: 'Estado del identificador',
+        description: 'Si está emitido, activado, en revisión o anulado, y desde cuándo se consulta.',
+        icon: 'shield-check',
       },
     ],
     example: {
@@ -84,9 +84,9 @@ export const platform: PlatformContent = {
       rows: [
         { label: 'Fabricante / importador', value: 'Cafetalera Monte Azul' },
         { label: 'Producto / presentación', value: 'Café Monte Azul · tueste medio · bolsa 500 g' },
-        { label: 'Origen / lote', value: 'Beneficio Monte Azul · COS-MA-26-07' },
-        { label: 'Movimientos / destino', value: 'Origen → etiquetado → transporte → distribución → comercio · Mercado San Marcelo' },
-        { label: 'Estado en el registro', value: 'Firma emitida · registro activo' },
+        { label: 'Lote y vencimiento', value: 'COS-MA-26-07 · consumir antes de 09/2027' },
+        { label: 'Estado del identificador', value: 'Activado · con consultas registradas' },
+        { label: 'Comprobaciones', value: 'Firma válida · registro activo · datos coincidentes · sin alertas' },
       ],
     },
   },
@@ -94,31 +94,31 @@ export const platform: PlatformContent = {
   architecture: {
     title: 'Arquitectura objetivo',
     intro:
-      'La plataforma se organiza en capas que pueden desplegarse juntas o integrarse con sistemas existentes. Lo que sigue es la arquitectura hacia la que se diseña, no una descripción de un sistema en producción.',
+      'El principio de diseño es separar tres planos que se comunican por eventos y nunca por consultas cruzadas: así una generación masiva de identificadores no compite jamás con la consulta de una persona frente a un anaquel. Lo que sigue es la arquitectura hacia la que se diseña.',
     layers: [
       {
-        name: 'Emisión de identidades',
-        body: 'El emisor genera identificadores y los firma con sus propias claves. Para el caso de uso de licores se propone ECDSA P-256.',
+        name: 'Plano de emisión',
+        body: 'Deriva y firma los identificadores por orden. Las claves se custodian en un módulo de seguridad de hardware, con derivación por emisión: administrar una clave y usarla son permisos distintos.',
         icon: 'key',
       },
       {
-        name: 'Registro de eventos',
-        body: 'Un registro ordenado y auditable de los eventos de cada unidad, con quién los reportó y cuándo.',
-        icon: 'database',
-      },
-      {
-        name: 'Verificación pública',
-        body: 'Un servicio web que evalúa firma, estado, coincidencia y anomalías, y devuelve un resultado explicado y sensible al tenant.',
+        name: 'Plano de verificación',
+        body: 'El camino caliente: resuelve la consulta pública, evalúa firma, registro, coincidencia y señales, y devuelve un resultado explicado. Debe seguir respondiendo aunque la emisión esté en mantenimiento.',
         icon: 'globe',
       },
       {
-        name: 'Control y reportes',
-        body: 'Vistas institucionales para consultar el registro, seguir discrepancias y coordinar inspecciones de campo.',
-        icon: 'chart',
+        name: 'Plano analítico y de auditoría',
+        body: 'Append-only: cada emisión, descarga, activación y cambio de estado queda registrado. Sin UPDATE ni DELETE — revocar es un evento nuevo, no una corrección del anterior.',
+        icon: 'database',
+      },
+      {
+        name: 'Espejo de solo lectura',
+        body: 'La institución que gobierna un despliegue recibe una copia de solo lectura para auditar sin depender del operador. Es el patrón de repositorio primario y secundario del sistema europeo de tabaco.',
+        icon: 'eye',
       },
       {
         name: 'Integración',
-        body: 'Interfaces para recibir eventos desde sistemas existentes y exportar información hacia ellos.',
+        body: 'Interfaces para emitir y activar desde los sistemas de gestión existentes, y para exportar información hacia ellos.',
         icon: 'plug',
       },
     ],

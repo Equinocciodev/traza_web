@@ -55,7 +55,7 @@ export const platform: PlatformContent = {
   identity: {
     title: 'The identity of a unit',
     body:
-      'A Traza identity is a brief record, signed by its issuer, that answers four questions about the unit. It stores no personal or tax data: it stores what is needed to recognize the product and follow its journey.',
+      'A Traza identity is a brief, signed record that answers four questions about the unit. It contains no personal data. It does identify the issuing company, including its tax identifier: the responsibility of whoever places the product on the market is public by design.',
     fields: [
       {
         label: 'Manufacturer / importer',
@@ -68,14 +68,14 @@ export const platform: PlatformContent = {
         icon: 'box',
       },
       {
-        label: 'Origin / lot',
-        description: 'Place of origin and the production or import lot it belongs to.',
-        icon: 'map-pin',
+        label: 'Lot and expiry',
+        description: 'The production or import lot and the expiry date, to compare against what is printed on the container.',
+        icon: 'label',
       },
       {
-        label: 'Movements / destination',
-        description: 'The sequence of recorded events and the intended destination according to the latest one.',
-        icon: 'truck',
+        label: 'Identifier status',
+        description: 'Whether it is issued, activated, under review or voided, and since when it has been looked up.',
+        icon: 'shield-check',
       },
     ],
     example: {
@@ -84,9 +84,9 @@ export const platform: PlatformContent = {
       rows: [
         { label: 'Manufacturer / importer', value: 'Cafetalera Monte Azul' },
         { label: 'Product / presentation', value: 'Café Monte Azul · medium roast · 500 g bag' },
-        { label: 'Origin / lot', value: 'Beneficio Monte Azul · COS-MA-26-07' },
-        { label: 'Movements / destination', value: 'Origin → labeling → transport → distribution → retail · Mercado San Marcelo' },
-        { label: 'Registry status', value: 'Signature issued · active in registry' },
+        { label: 'Lot and expiry', value: 'COS-MA-26-07 · best before 09/2027' },
+        { label: 'Identifier status', value: 'Activated · lookups recorded' },
+        { label: 'Checks', value: 'Valid signature · active record · matching data · no alerts' },
       ],
     },
   },
@@ -94,31 +94,31 @@ export const platform: PlatformContent = {
   architecture: {
     title: 'Target architecture',
     intro:
-      'The platform is organized in layers that can be deployed together or integrated with existing systems. What follows is the architecture it is designed toward, not a description of a system in production.',
+      'The design principle is to separate three planes that talk to each other through events and never through cross queries: that way a bulk generation of identifiers never competes with one person’s lookup in front of a shelf. What follows is the architecture the platform is designed toward.',
     layers: [
       {
-        name: 'Identity issuance',
-        body: 'The issuer generates identifiers and signs them with its own keys. For the spirits use case, ECDSA P-256 is proposed.',
+        name: 'Issuance plane',
+        body: 'Derives and signs identifiers per order. Keys are held in a hardware security module, derived per issuance: administering a key and using it are separate permissions.',
         icon: 'key',
       },
       {
-        name: 'Event registry',
-        body: 'An ordered, auditable registry of each unit’s events, with who reported them and when.',
-        icon: 'database',
-      },
-      {
-        name: 'Public verification',
-        body: 'A web service that evaluates signature, status, data match and anomalies, and returns an explained, tenant-aware result.',
+        name: 'Verification plane',
+        body: 'The hot path: it resolves the public lookup, evaluates signature, registry, data match and signals, and returns an explained result. It must keep answering even while issuance is under maintenance.',
         icon: 'globe',
       },
       {
-        name: 'Control and reporting',
-        body: 'Institutional views to consult the registry, follow discrepancies and coordinate field inspections.',
-        icon: 'chart',
+        name: 'Analytics and audit plane',
+        body: 'Append-only: every issuance, download, activation and status change is recorded. No UPDATE, no DELETE — revoking is a new event, not a correction of the previous one.',
+        icon: 'database',
+      },
+      {
+        name: 'Read-only mirror',
+        body: 'The institution governing a deployment receives a read-only copy so it can audit without depending on the operator. It is the primary/secondary repository pattern of the European tobacco system.',
+        icon: 'eye',
       },
       {
         name: 'Integration',
-        body: 'Interfaces to receive events from existing systems and export information back to them.',
+        body: 'Interfaces to issue and activate from existing management systems, and to export information back to them.',
         icon: 'plug',
       },
     ],

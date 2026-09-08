@@ -11,7 +11,7 @@ export const home: HomeContent = {
     eyebrow: 'Para industria y organismos públicos',
     title: 'Identidad digital para productos reales',
     subtitle:
-      'Traza asigna a cada unidad una identidad digital firmada, registra sus movimientos a lo largo de la cadena y permite verificarla desde cualquier navegador, sin instalar nada ni crear una cuenta.',
+      'Traza asigna a cada unidad una identidad digital firmada, registra su ciclo de vida —emisión, activación y cada consulta— y permite comprobarla desde cualquier navegador, sin instalar nada ni crear una cuenta.',
     mantra: 'Escanea. Verifica. Confía.',
     primaryCta: { label: 'Verificar un producto', key: 'verify', variant: 'primary' },
     secondaryCta: { label: 'Hablar con el equipo', key: 'company', suffix: '#contact-title', variant: 'secondary' },
@@ -21,10 +21,10 @@ export const home: HomeContent = {
       fields: [
         { label: 'Fabricante / importador', value: 'Destilería Cerro Alto' },
         { label: 'Producto / presentación', value: 'Ron Añejo Cerro Alto 7 años · botella 750 ml' },
-        { label: 'Origen / lote', value: 'Planta Valle Sereno · LOTE-VS-26-012' },
-        { label: 'Último movimiento', value: 'Recepción en comercio · Licorería El Faro' },
+        { label: 'Lote / vencimiento', value: 'LOTE-VS-26-012 · vence 03/2031' },
+        { label: 'Estado del identificador', value: 'Activado · con consultas registradas' },
       ],
-      statusLabel: 'Firma emitida · registro activo',
+      statusLabel: 'Verificado · firma y registro coinciden',
     },
   },
 
@@ -43,7 +43,7 @@ export const home: HomeContent = {
       {
         id: 'labeling',
         label: 'Etiquetado',
-        description: 'El código firmado se imprime en la etiqueta o el precinto de cada unidad.',
+        description: 'El código firmado se imprime en la etiqueta de cada unidad.',
         icon: 'label',
       },
       {
@@ -81,12 +81,12 @@ export const home: HomeContent = {
     items: [
       {
         title: 'Identidad digital unitaria',
-        body: 'Cada unidad —no solo cada lote— recibe un identificador único, firmado por quien la pone en el mercado.',
+        body: 'Cada unidad —no solo cada lote— recibe un identificador único, derivado y firmado en el momento de la emisión.',
         icon: 'fingerprint',
       },
       {
         title: 'Trazabilidad',
-        body: 'Los eventos de la cadena se registran en orden y con contexto: quién los reporta, cuándo y dónde.',
+        body: 'Emisión, activación y consultas quedan en un registro append-only, en orden y con contexto: quién, cuándo y con qué resultado.',
         icon: 'link',
       },
       {
@@ -106,7 +106,7 @@ export const home: HomeContent = {
     eyebrow: 'La historia de la unidad',
     title: 'Más que un código: una historia que se puede comprobar',
     body:
-      'Cada identidad reúne los datos que importan para reconocer una unidad y seguir su camino. Son pocos, claros y verificables: quién la produjo o importó, qué es, de dónde viene y por dónde ha pasado.',
+      'Cada identidad reúne los datos que importan para reconocer una unidad: quién la produjo o importó, qué es, de qué lote viene, cuándo vence y en qué estado está su identificador. Pocos, claros y comparables con el envase.',
     quote: 'Traza no solo identifica productos. Construye su historia verificable.',
     fields: [
       {

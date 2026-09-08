@@ -11,7 +11,7 @@ export const home: HomeContent = {
     eyebrow: 'For industry and public institutions',
     title: 'Digital identity for real products',
     subtitle:
-      'Traza assigns each unit a signed digital identity, records its movements along the chain and lets anyone verify it from any browser, with nothing to install and no account to create.',
+      'Traza assigns each unit a signed digital identity, records its lifecycle — issuance, activation and every lookup — and lets anyone check it from any browser, with nothing to install and no account to create.',
     mantra: 'Scan. Verify. Trust.',
     primaryCta: { label: 'Verify a product', key: 'verify', variant: 'primary' },
     secondaryCta: { label: 'Talk to the team', key: 'company', suffix: '#contact-title', variant: 'secondary' },
@@ -21,10 +21,10 @@ export const home: HomeContent = {
       fields: [
         { label: 'Manufacturer / importer', value: 'Destilería Cerro Alto' },
         { label: 'Product / presentation', value: 'Ron Añejo Cerro Alto 7 años · 750 ml bottle' },
-        { label: 'Origin / lot', value: 'Planta Valle Sereno · LOTE-VS-26-012' },
-        { label: 'Last movement', value: 'Received at retail · Licorería El Faro' },
+        { label: 'Lot / expiry', value: 'LOTE-VS-26-012 · expires 03/2031' },
+        { label: 'Identifier status', value: 'Activated · lookups recorded' },
       ],
-      statusLabel: 'Signature issued · active in registry',
+      statusLabel: 'Verified · signature and registry agree',
     },
   },
 
@@ -81,12 +81,12 @@ export const home: HomeContent = {
     items: [
       {
         title: 'Unit-level digital identity',
-        body: 'Each unit — not just each lot — receives a unique identifier, signed by whoever places it on the market.',
+        body: 'Each unit — not just each lot — receives a unique identifier, derived and signed at the moment of issuance.',
         icon: 'fingerprint',
       },
       {
         title: 'Traceability',
-        body: 'Chain events are recorded in order and with context: who reports them, when and where.',
+        body: 'Issuance, activation and lookups go into an append-only registry, in order and with context: who, when, and with what result.',
         icon: 'link',
       },
       {
@@ -106,7 +106,7 @@ export const home: HomeContent = {
     eyebrow: 'The story of the unit',
     title: 'More than a code: a story that can be checked',
     body:
-      'Each identity brings together the data that matters to recognize a unit and follow its path. The fields are few, clear and verifiable: who produced or imported it, what it is, where it comes from and where it has been.',
+      'Each identity brings together the data that matters to recognize a unit: who produced or imported it, what it is, which lot it came from, when it expires, and the state of its identifier. Few, clear, and comparable with the container.',
     quote: 'Traza does more than identify products. It builds their verifiable history.',
     fields: [
       {
