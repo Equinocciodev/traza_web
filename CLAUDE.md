@@ -14,6 +14,12 @@ página llevaba el rótulo "Demostración conceptual — datos simulados"; se el
 `tests/unit/guardrails.test.ts` impide que ese vocabulario vuelva a entrar. Si necesitas describir
 datos de ejemplo, di "ejemplo", nunca "demo", "simulado" ni "ficticio".
 
+**El registro es de ciclo de vida, no logístico.** La decisión D9 de las especificaciones retiró
+del alcance la trazabilidad de venta: la plataforma no registra transporte ni distribución. Las
+seis etapas (`CHAIN_STAGES`) son `issuance · labeling · activation · lookup · signals · closure`,
+y las tres vistas —inicio, «cómo funciona» y `/recorrido/`— deben usar ese mismo orden. Si vuelves
+a escribir «cada actor de la cadena reporta un evento», estás describiendo la fase 3.
+
 ## Comandos
 
 ```bash
@@ -37,6 +43,9 @@ un `.astro`.
 src/content/types.ts            Contrato de contenido (interfaces). Cambiar aquí obliga a cambiar ES y EN.
 src/content/es/*.ts             Diccionario español, una clave por página
 src/content/en/*.ts             Diccionario inglés, estructura idéntica (la paridad es un test)
+src/content/{es,en}/code-spec.ts · integration.ts · rationale.ts
+                                Las tres páginas de referencia: comparten `ReferencePageContent`
+                                y una sola plantilla (`src/templates/ReferencePage.astro`)
 src/content/v2-home.ts          Copy de la portada v2 (ES y EN en el mismo módulo)
 src/content/v2-narrative.ts     Copy del relato interactivo de la portada
 src/fixtures/                   Datos del registro: unidades, eventos, escenarios, vista institucional
@@ -77,6 +86,12 @@ Añadir texto = editar `src/content/`. Añadir una página = plantilla en `src/t
    las islas necesitan en runtime se aplican por CSSOM.
 5. **Códigos de unidad**: formato `TRZ-XXXX-XXXX-XXXX`. Los del registro usan el bloque `7F2K`
    (`TRZ-7F2K-4K7Q-92FA`…). No reintroduzcas el bloque `DEMO`.
+6. **Longitudes de metadatos**: el `<title>` renderizado (título de página + ` · Traza®`) cae en
+   50–60 caracteres y la descripción en 150–160, en las 18 páginas y los dos idiomas. Los dos
+   informes de auditoría que llegaron se contradecían; 150–160 satisface a ambos.
+7. **Navegación**: cinco entradas de primer nivel más el CTA. Añadir una página significa
+   colgarla de `Soluciones` o de `Tecnología`, no crear una sexta entrada — y darla de alta en
+   `src/i18n/index.ts`, en el pie y en `PAGE_KEYS` de las pruebas.
 
 ## Entorno y despliegue
 
@@ -112,4 +127,11 @@ ajuste de Pages.
 - **`alt=""` en la botella del relato es correcto**: el contenedor es `aria-hidden` y la descripción
   la aporta un párrafo `story__sr-only`.
 - Los documentos de `docs/` describen el proyecto en su etapa de demostración y no se han
-  reescrito: trátalos como historia, no como especificación vigente.
+  reescrito: trátalos como historia, no como especificación vigente. Las especificaciones
+  vigentes del producto viven fuera de este repositorio, en `~/TRAZA`.
+- **El QR de la etiqueta del hero es real.** `public/images/v2/hero-products.webp` lleva
+  compuesto el QR de `HTTPS://T.EXAMPLE/V/7F2K4K7Q92FA` y decodifica en las tres variantes de
+  ancho. Si reemplazas la fotografía, vuelve a componerlo y vuelve a comprobar que decodifica.
+- **La analítica está cableada pero inerte.** El proveedor `firebase` solo se activa si existen
+  las variables de Actions (`PUBLIC_ANALYTICS_PROVIDER` y las siete `PUBLIC_FIREBASE_*`). Sin
+  ellas no se descarga el SDK ni se instala ninguna cookie.
