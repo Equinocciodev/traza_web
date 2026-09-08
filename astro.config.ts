@@ -49,7 +49,16 @@ export default defineConfig({
       PUBLIC_SITE_URL: envField.string({ context: 'client', access: 'public', default: 'https://traza.technology' }),
       PUBLIC_API_MODE: envField.enum({ context: 'client', access: 'public', values: ['mock', 'remote'], default: 'mock' }),
       PUBLIC_API_BASE_URL: envField.string({ context: 'client', access: 'public', default: '' }),
-      PUBLIC_ANALYTICS_PROVIDER: envField.enum({ context: 'client', access: 'public', values: ['none', 'console', 'beacon'], default: 'none' }),
+      PUBLIC_ANALYTICS_PROVIDER: envField.enum({ context: 'client', access: 'public', values: ['none', 'console', 'beacon', 'firebase'], default: 'none' }),
+      // Configuración web de Firebase. Son valores públicos por diseño (viajan en el cliente);
+      // el control de acceso se hace restringiendo la clave por dominio en Google Cloud.
+      PUBLIC_FIREBASE_API_KEY: envField.string({ context: 'client', access: 'public', default: '' }),
+      PUBLIC_FIREBASE_AUTH_DOMAIN: envField.string({ context: 'client', access: 'public', default: '' }),
+      PUBLIC_FIREBASE_PROJECT_ID: envField.string({ context: 'client', access: 'public', default: '' }),
+      PUBLIC_FIREBASE_STORAGE_BUCKET: envField.string({ context: 'client', access: 'public', default: '' }),
+      PUBLIC_FIREBASE_MESSAGING_SENDER_ID: envField.string({ context: 'client', access: 'public', default: '' }),
+      PUBLIC_FIREBASE_APP_ID: envField.string({ context: 'client', access: 'public', default: '' }),
+      PUBLIC_FIREBASE_MEASUREMENT_ID: envField.string({ context: 'client', access: 'public', default: '' }),
       PUBLIC_ANALYTICS_ENDPOINT: envField.string({ context: 'client', access: 'public', default: '' }),
       PUBLIC_DEFAULT_TENANT: envField.string({ context: 'client', access: 'public', default: 'traza' }),
       PUBLIC_CONTACT_EMAIL: envField.string({ context: 'client', access: 'public', default: '' }),

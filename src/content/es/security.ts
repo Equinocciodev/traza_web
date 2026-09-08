@@ -98,11 +98,11 @@ export const security: SecurityContent = {
     body:
       'La plataforma se diseña para que verificar no cueste datos personales. Este sitio aplica el mismo criterio.',
     bullets: [
-      'Sin cookies por defecto. Este sitio no instala cookies ni rastreadores de terceros.',
+      'Sin cookies publicitarias ni rastreadores de terceros. Las únicas cookies del sitio son las de medición de audiencia, descritas en el aviso de privacidad.',
       'Sin datos personales en la verificación pública: consultar un código no exige identificarse.',
       'Reportes de discrepancia con datos mínimos y opcionales; quien reporta decide qué comparte.',
       'Las identidades de las unidades no contienen datos personales ni tributarios.',
-      'Analítica sin cookies, opcional y desactivada por defecto.',
+      'Medición de audiencia agregada, sin identificar a las personas y respetando «Do Not Track».',
     ],
   },
 

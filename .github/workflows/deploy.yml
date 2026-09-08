@@ -43,6 +43,19 @@ jobs:
           PUBLIC_BASE_PATH: ${{ steps.pages.outputs.base_path }}
           # Correo público de contacto: alimenta la página de empresa y el JSON-LD de Organization.
           PUBLIC_CONTACT_EMAIL: contacto@traza.technology
+          # Analítica. Los valores de Firebase son públicos por diseño (viajan en el bundle del
+          # cliente), pero se leen de las *variables* de Actions en vez de fijarse aquí: así la
+          # configuración se cambia sin tocar el repositorio y el historial no la arrastra.
+          # Defínalas en Settings → Secrets and variables → Actions → Variables.
+          # Sin ellas, `firebaseConfigured` es falso y la analítica simplemente no se activa.
+          PUBLIC_ANALYTICS_PROVIDER: ${{ vars.PUBLIC_ANALYTICS_PROVIDER || 'none' }}
+          PUBLIC_FIREBASE_API_KEY: ${{ vars.PUBLIC_FIREBASE_API_KEY }}
+          PUBLIC_FIREBASE_AUTH_DOMAIN: ${{ vars.PUBLIC_FIREBASE_AUTH_DOMAIN }}
+          PUBLIC_FIREBASE_PROJECT_ID: ${{ vars.PUBLIC_FIREBASE_PROJECT_ID }}
+          PUBLIC_FIREBASE_STORAGE_BUCKET: ${{ vars.PUBLIC_FIREBASE_STORAGE_BUCKET }}
+          PUBLIC_FIREBASE_MESSAGING_SENDER_ID: ${{ vars.PUBLIC_FIREBASE_MESSAGING_SENDER_ID }}
+          PUBLIC_FIREBASE_APP_ID: ${{ vars.PUBLIC_FIREBASE_APP_ID }}
+          PUBLIC_FIREBASE_MEASUREMENT_ID: ${{ vars.PUBLIC_FIREBASE_MEASUREMENT_ID }}
         run: |
           export PUBLIC_SITE_URL="${ORIGIN/#http:/https:}"
           echo "site=$PUBLIC_SITE_URL base=$PUBLIC_BASE_PATH"

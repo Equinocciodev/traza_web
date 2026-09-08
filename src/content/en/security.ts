@@ -98,11 +98,11 @@ export const security: SecurityContent = {
     body:
       'The platform is designed so that verifying costs no personal data. This site applies the same standard.',
     bullets: [
-      'No cookies by default. This site does not set cookies or third-party trackers.',
+      'No advertising cookies and no third-party trackers. The site’s only cookies are for audience measurement, described in the privacy notice.',
       'No personal data in public verification: looking up a code does not require identifying yourself.',
       'Discrepancy reports with minimal, optional data; whoever reports decides what to share.',
       'Unit identities contain no personal or tax data.',
-      'Cookieless analytics, optional and disabled by default.',
+      'Aggregated audience measurement that does not identify people and honours “Do Not Track”.',
     ],
   },
 

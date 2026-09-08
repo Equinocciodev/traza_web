@@ -8,6 +8,13 @@ import {
   PUBLIC_API_BASE_URL,
   PUBLIC_ANALYTICS_PROVIDER,
   PUBLIC_ANALYTICS_ENDPOINT,
+  PUBLIC_FIREBASE_API_KEY,
+  PUBLIC_FIREBASE_AUTH_DOMAIN,
+  PUBLIC_FIREBASE_PROJECT_ID,
+  PUBLIC_FIREBASE_STORAGE_BUCKET,
+  PUBLIC_FIREBASE_MESSAGING_SENDER_ID,
+  PUBLIC_FIREBASE_APP_ID,
+  PUBLIC_FIREBASE_MEASUREMENT_ID,
   PUBLIC_DEFAULT_TENANT,
   PUBLIC_CONTACT_EMAIL,
   PUBLIC_SHOW_COBRAND_EXAMPLE,
@@ -24,6 +31,23 @@ export const env = {
   contactEmail: PUBLIC_CONTACT_EMAIL,
   showCobrandExample: PUBLIC_SHOW_COBRAND_EXAMPLE,
 } as const;
+
+/**
+ * Configuración web de Firebase (valores públicos). Se considera utilizable solo si están
+ * presentes la clave, el appId y el measurementId: sin ellos `getAnalytics()` no puede medir.
+ */
+export const firebaseConfig = {
+  apiKey: PUBLIC_FIREBASE_API_KEY,
+  authDomain: PUBLIC_FIREBASE_AUTH_DOMAIN,
+  projectId: PUBLIC_FIREBASE_PROJECT_ID,
+  storageBucket: PUBLIC_FIREBASE_STORAGE_BUCKET,
+  messagingSenderId: PUBLIC_FIREBASE_MESSAGING_SENDER_ID,
+  appId: PUBLIC_FIREBASE_APP_ID,
+  measurementId: PUBLIC_FIREBASE_MEASUREMENT_ID,
+} as const;
+
+export const firebaseConfigured =
+  Boolean(firebaseConfig.apiKey) && Boolean(firebaseConfig.appId) && Boolean(firebaseConfig.measurementId);
 
 /**
  * Endpoints futuros (documentados, no consumidos en modo mock).

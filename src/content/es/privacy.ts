@@ -4,7 +4,7 @@ export const privacy: PrivacyContent = {
   meta: {
     title: 'Aviso de privacidad',
     description:
-      'Aviso de privacidad de traza.technology: sin cookies ni rastreadores, sin recursos de terceros, formularios que no almacenan datos y analítica sin cookies desactivada por defecto. Responsable: Traza Technology, C.A.',
+      'Aviso de privacidad de traza.technology: qué medimos con Google Analytics, qué cookies se usan, cómo tratamos los mensajes del formulario de contacto y cómo puede oponerse. Responsable: Traza Technology, C.A.',
   },
 
   title: 'Aviso de privacidad',
@@ -13,7 +13,7 @@ export const privacy: PrivacyContent = {
   provisionalNote:
     'Este aviso se refiere a este sitio, traza.technology, cuyo responsable es Traza Technology, C.A. Cada despliegue de la plataforma gobernado por una institución o una empresa cuenta con su propio aviso, adaptado a su jurisdicción.',
   intro:
-    'Este sitio está diseñado para no recoger datos personales: no usa cookies, no incorpora rastreadores y no carga recursos de terceros. A continuación explicamos cada punto.',
+    'Este sitio no le pide datos personales para consultarlo y no crea perfiles publicitarios. Usa una herramienta de medición de audiencia —Google Analytics— que sí instala cookies; a continuación explicamos exactamente qué se recoge y cómo evitarlo.',
 
   sections: [
     {
@@ -26,8 +26,9 @@ export const privacy: PrivacyContent = {
     {
       title: 'Cookies y rastreadores',
       paragraphs: [
-        'Este sitio no instala cookies, ni propias ni de terceros. Tampoco incorpora píxeles de seguimiento, mapas de calor ni herramientas de publicidad.',
-        'El navegador puede conservar preferencias locales —por ejemplo, el idioma elegido— en su propio almacenamiento. Esa información no sale del dispositivo y puede borrarse desde el navegador en cualquier momento.',
+        'Este sitio usa Google Analytics 4 para medir audiencia. Esa herramienta instala en su navegador cookies propias del dominio —`_ga` y `_ga_<identificador>`— que sirven para distinguir visitas y sesiones. No instalamos píxeles publicitarios, mapas de calor ni cookies de terceros con fines de publicidad.',
+        'Puede impedirlo bloqueando las cookies de este sitio en su navegador, usando el complemento de inhabilitación de Google Analytics o activando «Do Not Track»: respetamos esa señal y, con ella activada, no se envía ninguna medición.',
+        'El navegador puede conservar además preferencias locales —por ejemplo, el idioma elegido— en su propio almacenamiento. Esa información no sale del dispositivo y puede borrarse desde el navegador en cualquier momento.',
       ],
     },
     {
@@ -38,10 +39,11 @@ export const privacy: PrivacyContent = {
       ],
     },
     {
-      title: 'Analítica sin cookies',
+      title: 'Medición de audiencia',
       paragraphs: [
-        'El sitio incluye una interfaz de analítica que no usa cookies ni identifica a las personas. Está desactivada por defecto.',
-        'Si se activara, solo registraría eventos anónimos y agregados —como la vista de una página o el uso de una herramienta— sin direcciones IP completas, identificadores de dispositivo ni perfiles de usuario. Cualquier activación se reflejaría en este aviso.',
+        'Medimos el uso del sitio con Google Analytics 4, del proveedor Google. Registra eventos agregados —vistas de página, cambio de idioma, uso de la verificación— junto con datos técnicos habituales: país aproximado y ciudad derivados de la dirección IP, tipo de dispositivo, navegador, idioma y página de origen.',
+        'No le pedimos ni enviamos su nombre, su correo ni ningún identificador suyo, y no usamos estos datos para publicidad personalizada ni los cruzamos con otras fuentes. La finalidad es entender qué contenidos resultan útiles y cómo mejorar el sitio.',
+        'Google actúa como encargado del tratamiento y puede tratar los datos en servidores fuera de su país. Puede consultar sus condiciones en policies.google.com/technologies/partner-sites. Si prefiere no ser medido, vea el apartado de cookies.',
       ],
     },
     {
@@ -54,7 +56,7 @@ export const privacy: PrivacyContent = {
     {
       title: 'Enlaces y servicios de terceros',
       paragraphs: [
-        'Este sitio no carga recursos de terceros: las fuentes tipográficas y los recursos gráficos se sirven desde el propio sitio.',
+        'Las fuentes tipográficas y los recursos gráficos se sirven desde el propio sitio. El único servicio de terceros que interviene es Google Analytics, descrito más arriba.',
         'El pie incluye un enlace a nuestro perfil de Instagram. Al seguirlo, las prácticas de privacidad de esa plataforma son responsabilidad de su titular; este sitio no carga nada de ella.',
       ],
     },

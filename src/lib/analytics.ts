@@ -1,15 +1,18 @@
 /**
- * Interfaz de analítica SIN cookies.
+ * Interfaz de analítica.
  *
  * - Proveedor `none` (por defecto): no hace nada.
  * - `console`: registra en consola (solo desarrollo).
  * - `beacon`: envía un POST anónimo (navigator.sendBeacon) a PUBLIC_ANALYTICS_ENDPOINT con
- *   { event, props, path, locale, ts }. Sin identificadores de usuario, sin cookies, sin almacenamiento,
- *   y respeta la señal Do Not Track del navegador.
+ *   { event, props, path, locale, ts }. Sin identificadores de usuario, sin cookies, sin almacenamiento.
+ * - `firebase`: Google Analytics 4 mediante el SDK de Firebase empaquetado. **Este proveedor sí
+ *   usa cookies** (`_ga`, `_ga_<id>`) y envía datos a Google; el aviso de privacidad lo declara.
  *
+ * Todos respetan la señal Do Not Track del navegador.
  * Nunca pasar datos personales ni códigos completos como propiedades.
  */
 import { env } from '@/config/env';
+import { firebaseAnalyticsEnabled, trackFirebase } from '@/lib/analytics-firebase';
 
 export type AnalyticsEvent =
   | 'page_view'
@@ -44,6 +47,11 @@ export function track(event: AnalyticsEvent, props: AnalyticsProps = {}): void {
   };
   if (env.analyticsProvider === 'console') {
     console.debug('[analytics]', payload);
+    return;
+  }
+  if (firebaseAnalyticsEnabled()) {
+    // GA4 espera nombres de evento en snake_case, que es el formato de AnalyticsEvent.
+    trackFirebase(event, { ...props, page_path: payload.path, page_locale: payload.locale });
     return;
   }
   if (env.analyticsProvider === 'beacon' && env.analyticsEndpoint && 'sendBeacon' in navigator) {

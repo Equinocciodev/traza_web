@@ -4,7 +4,7 @@ export const privacy: PrivacyContent = {
   meta: {
     title: 'Privacy notice',
     description:
-      'Privacy notice for traza.technology: no cookies or trackers, no third-party resources, forms that store no data, and cookieless analytics disabled by default. Controller: Traza Technology, C.A.',
+      'Privacy notice for traza.technology: what we measure with Google Analytics, which cookies are used, how we handle contact-form messages, and how you can opt out. Controller: Traza Technology, C.A.',
   },
 
   title: 'Privacy notice',
@@ -13,7 +13,7 @@ export const privacy: PrivacyContent = {
   provisionalNote:
     'This notice covers this site, traza.technology, for which Traza Technology, C.A. is the controller. Each deployment of the platform governed by an institution or a company has its own notice, adapted to its jurisdiction.',
   intro:
-    'This site is designed not to collect personal data: it uses no cookies, embeds no trackers and loads no third-party resources. Each point is explained below.',
+    'This site does not ask you for personal data in order to browse it, and it builds no advertising profiles. It does use an audience-measurement tool — Google Analytics — which sets cookies; below we explain exactly what is collected and how to avoid it.',
 
   sections: [
     {
@@ -26,8 +26,9 @@ export const privacy: PrivacyContent = {
     {
       title: 'Cookies and trackers',
       paragraphs: [
-        'This site sets no cookies, neither its own nor third-party ones. It embeds no tracking pixels, heat maps or advertising tools.',
-        'The browser may keep local preferences — for example, the chosen language — in its own storage. That information never leaves the device and can be deleted from the browser at any time.',
+        'This site uses Google Analytics 4 to measure audience. That tool sets first-party cookies on your browser — `_ga` and `_ga_<identifier>` — used to distinguish visits and sessions. We embed no advertising pixels, heat maps or third-party advertising cookies.',
+        'You can prevent this by blocking cookies for this site in your browser, by using Google’s Analytics opt-out add-on, or by enabling “Do Not Track”: we honour that signal, and with it enabled no measurement is sent.',
+        'The browser may also keep local preferences — for example, the chosen language — in its own storage. That information never leaves the device and can be deleted from the browser at any time.',
       ],
     },
     {
@@ -38,10 +39,11 @@ export const privacy: PrivacyContent = {
       ],
     },
     {
-      title: 'Cookieless analytics',
+      title: 'Audience measurement',
       paragraphs: [
-        'The site includes an analytics interface that uses no cookies and does not identify people. It is disabled by default.',
-        'If it were enabled, it would record only anonymous, aggregated events — such as a page view or the use of a tool — without full IP addresses, device identifiers or user profiles. Any activation would be reflected in this notice.',
+        'We measure use of the site with Google Analytics 4, provided by Google. It records aggregated events — page views, language switches, use of verification — together with the usual technical data: approximate country and city derived from the IP address, device type, browser, language and referring page.',
+        'We neither ask for nor send your name, your email or any identifier of yours, and we do not use this data for personalised advertising or combine it with other sources. The purpose is to understand which content is useful and how to improve the site.',
+        'Google acts as data processor and may process the data on servers outside your country. Its terms are available at policies.google.com/technologies/partner-sites. If you would rather not be measured, see the cookies section.',
       ],
     },
     {
@@ -54,7 +56,7 @@ export const privacy: PrivacyContent = {
     {
       title: 'Third-party links and services',
       paragraphs: [
-        'This site loads no third-party resources: fonts and graphic assets are served from the site itself.',
+        'Fonts and graphic assets are served from the site itself. The only third-party service involved is Google Analytics, described above.',
         'The footer includes a link to our Instagram profile. If you follow it, that platform’s privacy practices are the responsibility of its owner; this site loads nothing from it.',
       ],
     },
