@@ -1,32 +1,29 @@
 import type { JourneyContent } from '../journey.types';
 
 /**
- * Demo B · Recorrido del producto (ES).
- * Todo lo que se muestra es simulado: unidades, organizaciones, lugares, lotes y fechas son ficticios.
+ * Recorrido del producto (ES).
  * La nomenclatura de las seis etapas coincide con `home.chain.nodes`.
  */
 export const journey: JourneyContent = {
   meta: {
     title: 'Recorrido del producto',
     description:
-      'Siga una unidad simulada desde la fábrica o la aduana hasta la verificación final: seis etapas, eventos con actor, lugar y fecha, y la historia que se construye por el camino. Demostración conceptual.',
+      'Siga una unidad desde la fábrica o la aduana hasta la verificación final: seis etapas, eventos con actor, lugar y fecha, y la historia que se construye por el camino.',
   },
 
   hero: {
-    eyebrow: 'Demo B · Recorrido del producto',
+    eyebrow: 'Recorrido del producto',
     title: 'De la fábrica a la verificación, paso a paso',
     subtitle:
-      'Cada unidad suma eventos a medida que avanza por la cadena: quién los registra, dónde y cuándo. Esta demostración reconstruye ese recorrido con datos simulados y lo reproduce etapa por etapa.',
-    note: 'Demostración conceptual con datos simulados: unidades, organizaciones, lugares, lotes y fechas son ficticios.',
+      'Cada unidad suma eventos a medida que avanza por la cadena: quién los registra, dónde y cuándo. Esta página reconstruye ese recorrido y lo reproduce etapa por etapa.',
   },
 
-  demo: {
-    eyebrow: 'Demostración interactiva',
+  explorer: {
+    eyebrow: 'Recorrido interactivo',
     title: 'El trazo que se completa',
     intro:
-      'Elija una unidad y reproduzca su recorrido. La línea avanza por las etapas registradas y cada tarjeta muestra el evento tal como consta en el registro simulado. Algunas unidades no llegan al final: la línea se detiene en la última etapa registrada.',
-    regionLabel: 'Recorrido interactivo de una unidad simulada',
-    simulatedNotice: 'Datos simulados',
+      'Elija una unidad y reproduzca su recorrido. La línea avanza por las etapas registradas y cada tarjeta muestra el evento tal como consta en el registro. Algunas unidades no llegan al final: la línea se detiene en la última etapa registrada.',
+    regionLabel: 'Recorrido interactivo de una unidad',
     keyboardHint: 'Con el foco en la lista de etapas, use las flechas para avanzar o retroceder; Inicio y Fin saltan a los extremos.',
     noScript: 'Los controles de reproducción requieren JavaScript. La lista completa de eventos de la unidad de ejemplo se muestra a continuación.',
   },
@@ -76,12 +73,12 @@ export const journey: JourneyContent = {
     codeLabel: 'Código',
     registryLabel: 'Registro',
     options: [
-      { code: 'TRZ-DEMO-4K7Q-92FA', label: 'Ron nacional · recorrido completo con verificación pública' },
-      { code: 'TRZ-DEMO-3N6D-09ZB', label: 'Whisky importado · con reporte de discrepancia e inspección' },
-      { code: 'TRZ-DEMO-8L1F-63HW', label: 'Whisky importado · detenido en distribución (en curso)' },
-      { code: 'TRZ-DEMO-5R9C-77MQ', label: 'Ron nacional · lote revocado por el emisor' },
-      { code: 'TRZ-DEMO-6C2A-84MZ', label: 'Café · registro de demostración de Traza (otro sector)' },
-      { code: 'TRZ-DEMO-2B8X-40NE', label: 'Unidad sin recorrido registrado' },
+      { code: 'TRZ-7F2K-4K7Q-92FA', label: 'Ron nacional · recorrido completo con verificación pública' },
+      { code: 'TRZ-7F2K-3N6D-09ZB', label: 'Whisky importado · con reporte de discrepancia e inspección' },
+      { code: 'TRZ-7F2K-8L1F-63HW', label: 'Whisky importado · detenido en distribución (en curso)' },
+      { code: 'TRZ-7F2K-5R9C-77MQ', label: 'Ron nacional · lote revocado por el emisor' },
+      { code: 'TRZ-7F2K-6C2A-84MZ', label: 'Café · registro de Traza (otro sector)' },
+      { code: 'TRZ-7F2K-2B8X-40NE', label: 'Unidad sin recorrido registrado' },
     ],
   },
 
@@ -109,12 +106,11 @@ export const journey: JourneyContent = {
 
   eventsSection: {
     title: 'Eventos registrados',
-    intro: 'Agrupados por etapa, en el orden en que constan en el registro simulado. Las etapas futuras se muestran atenuadas, nunca ocultas.',
+    intro: 'Agrupados por etapa, en el orden en que constan en el registro. Las etapas futuras se muestran atenuadas, nunca ocultas.',
   },
 
   story: {
     title: 'Historia de la unidad',
-    simulatedTag: 'Datos simulados',
     fields: [
       { key: 'issuer', label: 'Fabricante / importador', icon: 'factory' },
       { key: 'product', label: 'Producto / presentación', icon: 'box' },
@@ -127,11 +123,11 @@ export const journey: JourneyContent = {
     loading: 'Reconstruyendo el recorrido…',
     empty: {
       title: 'Sin recorrido registrado',
-      body: 'La unidad seleccionada no tiene eventos en el registro simulado. Ocurre, por ejemplo, cuando el identificador no fue emitido por una clave conocida o su firma no corresponde al contenido del código: sin eventos, no hay recorrido que reconstruir. La verificación pública explica por separado qué se comprobó y cuál es el siguiente paso.',
+      body: 'La unidad seleccionada no tiene eventos en el registro. Ocurre, por ejemplo, cuando el identificador no fue emitido por una clave conocida o su firma no corresponde al contenido del código: sin eventos, no hay recorrido que reconstruir. La verificación pública explica por separado qué se comprobó y cuál es el siguiente paso.',
     },
     error: {
       title: 'No pudimos consultar el registro',
-      body: 'Es un error simulado para mostrar cómo se comporta la demostración cuando el registro no responde. No es un problema de su parte: reintente para reconstruir el recorrido.',
+      body: 'El registro no respondió a la consulta. No es un problema de su parte: reintente para reconstruir el recorrido.',
       retry: 'Reintentar',
     },
   },
@@ -168,7 +164,7 @@ export const journey: JourneyContent = {
         icon: 'truck',
       },
     ],
-    note: 'Ningún evento de esta demostración proviene de un sistema real. En un despliegue, los eventos se registrarían desde los sistemas de gestión de cada actor de la cadena y las reglas de cada tenant.',
+    note: 'Los eventos se registran desde los sistemas de gestión de cada actor de la cadena, según las reglas de cada tenant.',
   },
 
   cta: {
@@ -223,7 +219,7 @@ export const journey: JourneyContent = {
       loaded: 'Recorrido reconstruido: {unit}.',
       loading: 'Reconstruyendo el recorrido…',
       empty: 'Sin recorrido registrado para esta unidad.',
-      error: 'No se pudo consultar el registro (error simulado). Puede reintentar.',
+      error: 'No se pudo consultar el registro. Puede reintentar.',
       unrecorded: 'No hay registro de la etapa {stage} para esta unidad.',
       restarted: 'Recorrido reiniciado en {stage}.',
     },

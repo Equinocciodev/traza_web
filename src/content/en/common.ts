@@ -12,15 +12,8 @@ export const common: CommonContent = {
     siteName: 'traza',
     titleTemplate: '%s · traza',
     defaultDescription:
-      'Traza is a platform for unit-level digital identity, traceability and public verification of real products. Conceptual demonstration with simulated data.',
-    ogImageAlt: 'traza® — Digital identity for real products. Conceptual demonstration with simulated data.',
-  },
-
-  demoBadge: {
-    long: 'Conceptual demonstration — simulated data',
-    short: 'Demo · simulated data',
-    explain:
-      'This site is a conceptual demonstration. The codes, units, events, results and organizations it shows are simulated; none of them correspond to a real implementation or imply a relationship with any institution.',
+      'Traza is a platform for unit-level digital identity, traceability and public verification of real products: a signed identifier per unit, an auditable record of its journey, and a check anyone can run from a browser.',
+    ogImageAlt: 'traza® — Digital identity for real products.',
   },
 
   skipLink: 'Skip to main content',
@@ -59,7 +52,7 @@ export const common: CommonContent = {
   footer: {
     columns: [
       {
-        title: 'Demos',
+        title: 'The platform at work',
         links: [
           { label: 'Public verification', key: 'verify' },
           { label: 'Product journey', key: 'journey' },
@@ -81,12 +74,13 @@ export const common: CommonContent = {
         links: [
           { label: 'Company and contact', key: 'company' },
           { label: 'Privacy notice', key: 'privacy' },
+          { label: 'Instagram', href: 'https://www.instagram.com/traza.technology/', external: true },
         ],
       },
     ],
     legal: '© 2026 traza. All rights reserved.',
     disclaimer:
-      'Conceptual demonstration with simulated data. This site does not claim any relationship with governments, regulators, clients or certifications. The spirits use case is presented as a pilot proposal; nothing shown here constitutes an official implementation.',
+      'This site does not claim any relationship with governments, regulators or certifications. The spirits use case is presented as a pilot proposal; it does not constitute an official implementation.',
     privacyLabel: 'Privacy',
     contactLabel: 'Contact',
     languageLabel: 'Language',
@@ -101,7 +95,7 @@ export const common: CommonContent = {
     close: 'Close',
     back: 'Back',
     breadcrumbs: 'Breadcrumb',
-    demoRegion: 'Interactive demonstration with simulated data',
+    toolRegion: 'Interactive tool',
   },
 
   states: {
@@ -127,13 +121,13 @@ export const common: CommonContent = {
     submit: 'Send',
     sending: 'Sending…',
     sentTitle: 'Message received',
-    sentBody: 'Thank you. In this demo the submission is simulated: no data has been transmitted or stored.',
+    sentBody: 'Thank you for writing. We will reply within business days.',
     errorTitle: 'Could not send',
     errorBody: 'A problem occurred while processing the form. Check the highlighted fields and try again.',
     optional: 'optional',
     privacyNote:
-      'This form is simulated: it does not send data to any server or store it. It only shows how the flow would work.',
+      'Your details are used only to reply to you. They are not stored on this site and are not shared with third parties.',
     errorSummaryTitle: 'Check the following fields',
-    noScript: 'Simulated submission requires JavaScript. Until it is available, the button is disabled and your data is not sent.',
+    noScript: 'Submitting the form requires JavaScript. Until it is available, please write to us directly at the contact address.',
   },
 };

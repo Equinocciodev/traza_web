@@ -4,7 +4,7 @@ export const caseSpirits: CaseSpiritsContent = {
   meta: {
     title: 'Use case: Spirits',
     description:
-      'Pilot proposal for a spirits regulator: signed unit-level identity, web-based public verification and field inspection. No official implementation.',
+      'Pilot proposal for a spirits regulator: signed unit-level identity, web-based public verification and field inspection from the outset. A proposal only, with no official implementation claimed.',
   },
 
   hero: {
@@ -132,7 +132,7 @@ export const caseSpirits: CaseSpiritsContent = {
         icon: 'flag',
       },
     ],
-    note: 'Proposed target architecture; not implemented or audited in this demo. The verification shown in the demos is simulated with sample data and does not use real cryptography.',
+    note: 'Target architecture for the proposal: not implemented yet. Its development and audit form part of the scope that would be agreed with the institution.',
   },
 
   fieldInspection: {
@@ -150,30 +150,30 @@ export const caseSpirits: CaseSpiritsContent = {
   cobrand: {
     title: 'Conditional co-brand',
     body:
-      'The proposal envisions public verification showing the regulator’s brand alongside Traza’s. In this demo, that lockup appears only within this use case and the sample tenant, as an illustration of how a co-brand deployment would look.',
+      'The proposal envisions public verification showing the regulator’s brand alongside Traza’s. That lockup appears only within this use case and its sample tenant, as an illustration of how a co-brand deployment would look.',
     lockupNote:
       'The “SENIAT | TRAZA” lockup is an example of a conditional co-brand included in the pilot proposal. It is shown in typographic form, without any official emblem, and its use depends on the institution’s approval. It does not imply an official relationship, endorsement or approval.',
     cta: { label: 'See verification with the sample tenant', key: 'verify', suffix: '?t=licores', variant: 'secondary' },
   },
 
   nonClaims: {
-    title: 'What this demo does not claim',
+    title: 'What this proposal does not claim',
     intro:
-      'To avoid confusion, we put in writing what this page and its associated demos do not say.',
+      'To avoid confusion, we put in writing what this page does not say.',
     items: [
       'It does not claim that an official implementation or a working system exists.',
       'It does not claim a contractual, commercial or institutional relationship with SENIAT or any other agency; SENIAT is mentioned only as the recipient of a pilot proposal.',
-      'It does not present pilot figures: quantities, timelines, costs or results. Every numeric value visible in the demos is simulated.',
-      'It does not claim production-grade security: the architecture described is a target and the demos do not use real cryptography.',
+      'It does not present pilot figures: quantities, timelines, costs or results.',
+      'It does not claim production-grade security: the architecture described is a target whose implementation is audited in each deployment.',
       'It does not offer legal or regulatory conclusions; the proposal does not replace the regulatory analysis that may be required.',
       'It does not authorize the use of any institution’s brand or emblem; the lockup shown is a conditional example.',
     ],
   },
 
   cta: {
-    title: 'See the use case in the demos',
+    title: 'See the use case in the platform',
     body:
-      'Public verification with the sample tenant, the journey of a bottle and the institutional view show how the pilot would look, always with simulated data.',
+      'Public verification with the sample tenant, the journey of a bottle and the institutional view show how the pilot would look.',
     primaryCta: { label: 'Verify with the sample tenant', key: 'verify', suffix: '?t=licores', variant: 'primary' },
     secondaryCta: { label: 'Open the institutional view', key: 'institutional', variant: 'secondary' },
   },

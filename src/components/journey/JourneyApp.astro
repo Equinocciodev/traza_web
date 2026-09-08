@@ -1,6 +1,6 @@
 ---
 /**
- * JourneyApp — isla de la demo B · Recorrido del producto.
+ * JourneyApp — isla del recorrido del producto.
  *
  * Renderiza en servidor el recorrido completo de la unidad destacada (estado final: sin JavaScript se
  * lee la lista completa de eventos, la historia de la unidad y el diagrama con la línea completa).
@@ -31,7 +31,7 @@ interface Props {
 
 const { locale, unitCode = FEATURED_UNIT_CODE } = Astro.props;
 const { journey } = getContent(locale);
-const { controls, states, story, legend, eventsSection, unitSelector, demo } = journey;
+const { controls, states, story, legend, eventsSection, unitSelector, explorer } = journey;
 
 const options = unitSelector.options.filter((o) => UNIT_BY_CODE.has(o.code));
 const clientData: JourneyClientData = {
@@ -65,10 +65,10 @@ const pad = (n: number) => String(n).padStart(2, '0');
   data-view={hasJourney ? 'ready' : 'empty'}
   data-i18n={JSON.stringify(clientData)}
   role="region"
-  aria-label={demo.regionLabel}
+  aria-label={explorer.regionLabel}
 >
   <noscript>
-    <p class="jr__noscript">{demo.noScript}</p>
+    <p class="jr__noscript">{explorer.noScript}</p>
   </noscript>
 
   <!-- Barra superior: selector de unidad, código, registro y estado del recorrido -->
@@ -183,10 +183,10 @@ const pad = (n: number) => String(n).padStart(2, '0');
         })
       }
     </ol>
-    <p class="jr__hint">{demo.keyboardHint}</p>
+    <p class="jr__hint">{explorer.keyboardHint}</p>
   </div>
 
-  <!-- Estados: cargando, vacío, error simulado -->
+  <!-- Estados: cargando, vacío, error -->
   <div class="jr__panels">
     <p class="jr__loading" data-jr-panel="loading" data-testid="journey-loading" hidden>
       <Icon name="clock" size={18} />
@@ -213,7 +213,6 @@ const pad = (n: number) => String(n).padStart(2, '0');
       <section class="jr__story" aria-labelledby="jr-story-title" data-testid="journey-story">
         <div class="jr__story-head">
           <h3 id="jr-story-title" class="jr__story-title">{story.title}</h3>
-          <span class="demo-tag">{story.simulatedTag}</span>
         </div>
         <dl class="jr__story-list">
           {

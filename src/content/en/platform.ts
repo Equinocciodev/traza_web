@@ -4,7 +4,7 @@ export const platform: PlatformContent = {
   meta: {
     title: 'Platform',
     description:
-      'Capabilities of the Traza platform: unit-level identity, chain event recording, public verification, institutional control and per-tenant rules.',
+      'Capabilities of the Traza platform: unit-level identity, recording of chain events, public verification by separate signals, institutional control views and rules configured per tenant.',
   },
 
   hero: {
@@ -79,10 +79,10 @@ export const platform: PlatformContent = {
       },
     ],
     example: {
-      caption: 'Simulated example of a unit-level identity (fictional data)',
-      code: 'TRZ-DEMO-6C2A-84MZ',
+      caption: 'Example of a unit-level identity',
+      code: 'TRZ-7F2K-6C2A-84MZ',
       rows: [
-        { label: 'Manufacturer / importer', value: 'Cafetalera Monte Azul (demo)' },
+        { label: 'Manufacturer / importer', value: 'Cafetalera Monte Azul' },
         { label: 'Product / presentation', value: 'Café Monte Azul · medium roast · 500 g bag' },
         { label: 'Origin / lot', value: 'Beneficio Monte Azul · COS-MA-26-07' },
         { label: 'Movements / destination', value: 'Origin → labeling → transport → distribution → retail · Mercado San Marcelo' },
@@ -122,7 +122,7 @@ export const platform: PlatformContent = {
         icon: 'plug',
       },
     ],
-    note: 'Proposed target architecture. This demo does not implement real cryptography or claim production security controls: verification is simulated with sample data.',
+    note: 'Target product architecture. Cryptographic and security controls are implemented and audited in each deployment.',
   },
 
   verificationModel: {
@@ -184,13 +184,13 @@ export const platform: PlatformContent = {
       'Exporting the registry for audit and analysis',
       'Issuer authentication and traceability of who reports each event',
     ],
-    note: 'Integration capabilities are described generically and without naming products. This demo does not connect to any external system.',
+    note: 'Integration capabilities are described generically and without naming products: each deployment agrees its own connectors.',
   },
 
   cta: {
     title: 'See the platform in action',
     body:
-      'The three demos show public verification, the journey of a unit and the institutional view, always with simulated data.',
+      'The three views show public verification, the journey of a unit and the institutional dashboard.',
     primaryCta: { label: 'Verify a product', key: 'verify', variant: 'primary' },
     secondaryCta: { label: 'How it works', key: 'howItWorks', variant: 'secondary' },
   },

@@ -140,7 +140,7 @@ test.describe('navegación manual', () => {
 
 test.describe('cambio de unidad', () => {
   test('una unidad en curso detiene la línea en su última etapa y deshabilita las etapas sin registro', async ({ page }) => {
-    const code = 'TRZ-DEMO-8L1F-63HW';
+    const code = 'TRZ-7F2K-8L1F-63HW';
     const last = lastRecorded(code);
     expect(last).toBeGreaterThan(0);
     expect(last).toBeLessThan(TOTAL - 1);
@@ -171,7 +171,7 @@ test.describe('cambio de unidad', () => {
   });
 
   test('la unidad sin recorrido muestra el estado vacío y deshabilita los controles', async ({ page }) => {
-    const code = 'TRZ-DEMO-2B8X-40NE';
+    const code = 'TRZ-7F2K-2B8X-40NE';
     expect(lastRecorded(code)).toBe(-1);
     await open(page, '/recorrido/');
     await page.getByTestId('journey-unit-select').selectOption(code);
@@ -250,7 +250,7 @@ test.describe('estados', () => {
     expect(html).toContain('data-stage-index="5"');
     expect(html).toContain('data-view="ready"');
     for (const stage of es.stages) expect(html).toContain(stage.label);
-    expect(html).toContain(es.demo.noScript);
+    expect(html).toContain(es.explorer.noScript);
   });
 });
 
@@ -263,7 +263,7 @@ test.describe('inglés', () => {
     await expect(play(page)).toHaveAttribute('data-state', 'ended', { timeout: 15_000 });
     await expect(page.getByTestId('journey-status')).toHaveText(en.runtime.live.ended.replace('{stage}', en.stages[TOTAL - 1]!.label));
     await expect(play(page)).toHaveText(en.controls.replay);
-    await page.getByTestId('journey-unit-select').selectOption('TRZ-DEMO-2B8X-40NE');
+    await page.getByTestId('journey-unit-select').selectOption('TRZ-7F2K-2B8X-40NE');
     await expect(page.getByTestId('journey-empty')).toBeVisible({ timeout: 5_000 });
     await expect(page.getByTestId('journey-empty')).toContainText(en.states.empty.title);
     expect(console.stop()).toEqual([]);

@@ -1,5 +1,5 @@
 /**
- * Reporte de discrepancia: validación accesible, envío simulado (getApi().submitReport),
+ * Reporte de discrepancia: validación accesible, envío vía getApi().submitReport,
  * estados enviando / enviado / error (offline, servidor, tiempo de espera) con reintento.
  */
 import type { TransportErrorKind, VerifyClientStrings } from '@/content/verify.types';

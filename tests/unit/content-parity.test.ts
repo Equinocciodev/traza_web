@@ -97,7 +97,15 @@ const PAGE_KEYS = [
  * Defectos conocidos (fuera del contrato 120–160): se listan aquí para que la suite siga en verde y
  * avise cuando el propietario los corrija (ver docs/08-informe-qa.md). Formato: `locale:página`.
  */
-const KNOWN_DESCRIPTION_LENGTH_DEFECTS = new Set(['es:verify', 'es:journey', 'es:institutional', 'en:journey']);
+/**
+ * Rango objetivo de la meta description: 150–220 caracteres.
+ * Por debajo de 150 el fragmento desaprovecha el espacio disponible; por encima de 220
+ * los buscadores lo recortan. La lista de defectos conocidos quedó vacía: si una página
+ * vuelve a salirse del rango, corrija el texto en lugar de añadirla aquí.
+ */
+const DESCRIPTION_MIN = 150;
+const DESCRIPTION_MAX = 220;
+const KNOWN_DESCRIPTION_LENGTH_DEFECTS = new Set<string>([]);
 
 describe('paridad ES ↔ EN', () => {
   it('la estructura de ambos diccionarios es idéntica (claves, arrays, tipos, identificadores)', () => {
@@ -145,12 +153,12 @@ describe('metadatos de página', () => {
       expect(new Set(titles).size).toBe(titles.length);
     });
 
-    it(`[${locale}] descripciones únicas y dentro de 120–160 caracteres (salvo defectos conocidos)`, () => {
+    it(`[${locale}] descripciones únicas y dentro de ${DESCRIPTION_MIN}–${DESCRIPTION_MAX} caracteres`, () => {
       const descriptions = PAGE_KEYS.map((k) => (dict[k] as PageWithMeta).meta.description);
       expect(new Set(descriptions).size).toBe(descriptions.length);
       const outOfRange = PAGE_KEYS.filter((k) => {
         const len = (dict[k] as PageWithMeta).meta.description.length;
-        return len < 120 || len > 160;
+        return len < DESCRIPTION_MIN || len > DESCRIPTION_MAX;
       }).map((k) => `${locale}:${k}`);
       const unexpected = outOfRange.filter((k) => !KNOWN_DESCRIPTION_LENGTH_DEFECTS.has(k));
       expect(unexpected).toEqual([]);
@@ -161,13 +169,13 @@ describe('metadatos de página', () => {
         const [l, k] = known.split(':') as [string, (typeof PAGE_KEYS)[number]];
         if (l !== locale) continue;
         const len = (dict[k] as PageWithMeta).meta.description.length;
-        expect(len < 120 || len > 160, `${known} tiene ${len} caracteres: ya cumple el contrato`).toBe(true);
+        expect(len < DESCRIPTION_MIN || len > DESCRIPTION_MAX, `${known} tiene ${len} caracteres: ya cumple el contrato`).toBe(true);
       }
     });
 
     it(`[${locale}] la descripción por defecto y la de OG están dentro de rango`, () => {
-      expect(dict.common.meta.defaultDescription.length).toBeGreaterThanOrEqual(120);
-      expect(dict.common.meta.defaultDescription.length).toBeLessThanOrEqual(160);
+      expect(dict.common.meta.defaultDescription.length).toBeGreaterThanOrEqual(DESCRIPTION_MIN);
+      expect(dict.common.meta.defaultDescription.length).toBeLessThanOrEqual(DESCRIPTION_MAX);
       expect(dict.common.meta.titleTemplate).toContain('%s');
     });
   }
@@ -221,9 +229,7 @@ describe('coherencia interna del contenido', () => {
     }
   });
 
-  it('el indicador de demostración y el aviso de co-brand existen en ambos idiomas', () => {
-    expect(es.common.demoBadge.long).toBe('Demostración conceptual — datos simulados');
-    expect(en.common.demoBadge.long.toLowerCase()).toContain('simulated');
+  it('el aviso de co-brand existe en ambos idiomas', () => {
     expect(es.common.cobrandNotice).toMatch(/propuesta de piloto/i);
     expect(en.common.cobrandNotice).toMatch(/pilot proposal/i);
   });

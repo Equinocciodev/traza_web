@@ -48,13 +48,12 @@ test.describe('metadatos y estructura de cada página', () => {
       await expect(page.locator('meta[property="og:url"]')).toHaveAttribute('content', `${SITE_URL}${p.path}`);
       await expect(page.locator('meta[property="og:locale"]')).toHaveAttribute('content', LOCALE_LABELS[p.locale].ogLocale);
 
-      // Estructura: un solo h1, landmark principal, indicador de demostración persistente.
+      // Estructura: un solo h1 y landmark principal. Ninguna página lleva rótulo de demostración.
       await expect(page.locator('h1')).toHaveCount(1);
       await expect(page.locator('main#main')).toHaveCount(1);
-      const badge = content(p.locale).common.demoBadge;
-      await expect(page.locator('aside.demo-strip')).toHaveAttribute('aria-label', badge.long);
+      await expect(page.locator('aside.demo-strip, .demo-badge')).toHaveCount(0);
       const text = await visibleText(page);
-      expect(text.includes(badge.long) || text.includes(badge.short)).toBe(true);
+      expect(text).not.toMatch(/demostraci[oó]n conceptual|conceptual demonstration|datos simulados|simulated data/i);
 
       // Sin scripts inline ejecutables (CSP estricta): solo bloques de datos.
       const inlineScripts = await page.$$eval('script:not([src])', (nodes) => nodes.map((n) => n.getAttribute('type') ?? 'text/javascript'));

@@ -4,7 +4,7 @@ export const home: HomeContent = {
   meta: {
     title: 'Identidad digital para productos reales',
     description:
-      'Traza da a cada unidad una identidad digital firmada, registra su recorrido y permite verificarla desde el navegador. Demo conceptual con datos simulados.',
+      'Traza da a cada unidad una identidad digital firmada, registra su recorrido por la cadena y permite comprobarla desde el navegador, sin instalar nada, con un resultado explicado señal por señal.',
   },
 
   hero: {
@@ -14,12 +14,12 @@ export const home: HomeContent = {
       'Traza asigna a cada unidad una identidad digital firmada, registra sus movimientos a lo largo de la cadena y permite verificarla desde cualquier navegador, sin instalar nada ni crear una cuenta.',
     mantra: 'Escanea. Verifica. Confía.',
     primaryCta: { label: 'Verificar un producto', key: 'verify', variant: 'primary' },
-    secondaryCta: { label: 'Solicitar una demostración', key: 'company', suffix: '#contact-title', variant: 'secondary' },
+    secondaryCta: { label: 'Hablar con el equipo', key: 'company', suffix: '#contact-title', variant: 'secondary' },
     unitPreview: {
-      caption: 'Unidad simulada · datos ficticios',
-      code: 'TRZ-DEMO-4K7Q-92FA',
+      caption: 'Identidad de una unidad',
+      code: 'TRZ-7F2K-4K7Q-92FA',
       fields: [
-        { label: 'Fabricante / importador', value: 'Destilería Cerro Alto (demo)' },
+        { label: 'Fabricante / importador', value: 'Destilería Cerro Alto' },
         { label: 'Producto / presentación', value: 'Ron Añejo Cerro Alto 7 años · botella 750 ml' },
         { label: 'Origen / lote', value: 'Planta Valle Sereno · LOTE-VS-26-012' },
         { label: 'Último movimiento', value: 'Recepción en comercio · Licorería El Faro' },
@@ -176,23 +176,23 @@ export const home: HomeContent = {
     ],
   },
 
-  demos: {
-    eyebrow: 'Demostraciones',
+  perspectives: {
+    eyebrow: 'La plataforma en uso',
     title: 'Tres formas de verlo en funcionamiento',
     intro:
-      'Cada demostración muestra una parte de la plataforma desde el punto de vista de quien la usa: el público, quien sigue una unidad y la institución que controla.',
+      'Cada vista muestra una parte de la plataforma desde el punto de vista de quien la usa: el público, quien sigue una unidad y la institución que controla.',
     items: [
       {
         key: 'verify',
-        tag: 'Demo A',
+        tag: 'Para el público',
         title: 'Verificación pública',
-        body: 'Escanee o escriba un código de ejemplo y lea un resultado explicado por señales: firma, registro, coincidencia y anomalías.',
+        body: 'Escanee o escriba el código de una unidad y lea un resultado explicado por señales: firma, registro, coincidencia y anomalías.',
         cta: { label: 'Verificar un producto', key: 'verify', variant: 'primary' },
         icon: 'scan',
       },
       {
         key: 'journey',
-        tag: 'Demo B',
+        tag: 'Para la cadena',
         title: 'Recorrido del producto',
         body: 'Siga una unidad desde la fábrica o la aduana hasta el comercio, evento por evento, y vea cómo se construye su historia.',
         cta: { label: 'Ver el recorrido', key: 'journey', variant: 'secondary' },
@@ -200,14 +200,14 @@ export const home: HomeContent = {
       },
       {
         key: 'institutional',
-        tag: 'Demo C',
+        tag: 'Para el control',
         title: 'Vista institucional',
         body: 'Consulte el registro como lo haría un regulador o una empresa: unidades, anomalías, discrepancias e inspección de campo.',
         cta: { label: 'Abrir la vista institucional', key: 'institutional', variant: 'secondary' },
         icon: 'chart',
       },
     ],
-    note: 'Las tres demostraciones usan datos simulados. Ningún código, unidad, evento u organización que aparece en ellas es real.',
+    note: 'Las tres vistas trabajan sobre el mismo registro: lo que cambia es qué puede ver y hacer cada rol.',
   },
 
   useCase: {

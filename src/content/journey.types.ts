@@ -1,5 +1,5 @@
 /**
- * Contenido de la demo B · Recorrido del producto.
+ * Contenido del recorrido del producto.
  * Propietario: especialista del recorrido.
  *
  * Todo texto visible de la página y de la isla vive aquí (ES/EN). La isla recibe en tiempo de
@@ -94,14 +94,13 @@ export interface JourneyClientData extends JourneyRuntimeStrings {
 
 export interface JourneyContent {
   meta: PageMeta;
-  hero: { eyebrow: string; title: string; subtitle: string; note: string };
-  demo: {
+  hero: { eyebrow: string; title: string; subtitle: string };
+  explorer: {
     eyebrow: string;
     title: string;
     intro: string;
     /** Nombre accesible de la región interactiva. */
     regionLabel: string;
-    simulatedNotice: string;
     keyboardHint: string;
     /** Aviso para navegadores sin JavaScript (dentro de <noscript>). */
     noScript: string;
@@ -128,7 +127,7 @@ export interface JourneyContent {
   };
   legend: { title: string; items: { state: JourneyStageState; label: string }[] };
   eventsSection: { title: string; intro: string };
-  story: { title: string; simulatedTag: string; fields: JourneyStoryField[] };
+  story: { title: string; fields: JourneyStoryField[] };
   states: {
     loading: string;
     empty: { title: string; body: string };

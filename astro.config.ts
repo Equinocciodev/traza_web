@@ -12,7 +12,7 @@ import sitemap from '@astrojs/sitemap';
  * - i18n: español en la raíz, inglés bajo /en/.
  * - Sin scripts inline: el HTML resultante es compatible con una CSP estricta (ver docs/06-despliegue.md).
  */
-const site = process.env.PUBLIC_SITE_URL || 'https://traza-demo.example';
+const site = process.env.PUBLIC_SITE_URL || 'https://traza.technology';
 const base = process.env.PUBLIC_BASE_PATH || '/';
 
 export default defineConfig({
@@ -46,7 +46,7 @@ export default defineConfig({
   ],
   env: {
     schema: {
-      PUBLIC_SITE_URL: envField.string({ context: 'client', access: 'public', default: 'https://traza-demo.example' }),
+      PUBLIC_SITE_URL: envField.string({ context: 'client', access: 'public', default: 'https://traza.technology' }),
       PUBLIC_API_MODE: envField.enum({ context: 'client', access: 'public', values: ['mock', 'remote'], default: 'mock' }),
       PUBLIC_API_BASE_URL: envField.string({ context: 'client', access: 'public', default: '' }),
       PUBLIC_ANALYTICS_PROVIDER: envField.enum({ context: 'client', access: 'public', values: ['none', 'console', 'beacon'], default: 'none' }),

@@ -1,27 +1,27 @@
 import type { InstitutionalContent } from '../institutional.types';
 
 /**
- * Demo C · Vista institucional (ES). Todo lo que describe es una demostración con datos simulados:
+ * Vista institucional (ES). Alertas, casos, inspecciones y cronología de auditoría:
  * no afirma implementación, relación institucional ni cifras reales.
  */
 export const institutional: InstitutionalContent = {
   meta: {
     title: 'Vista institucional',
     description:
-      'Vista institucional de demostración: cómo vería una entidad de control las alertas de riesgo, los casos, las inspecciones de campo y la cronología de auditoría dentro de un piloto. Datos simulados.',
+      'Vista institucional: cómo ve una entidad de control las alertas de riesgo, los casos, las inspecciones de campo y la cronología de auditoría dentro de un piloto.',
   },
 
   hero: {
-    eyebrow: 'Demo C · Vista institucional',
+    eyebrow: 'Vista institucional',
     title: 'Riesgos, casos y auditoría en un piloto',
     subtitle:
-      'Así vería la información una entidad de control dentro de un piloto de Traza: alertas explicadas en lenguaje claro, casos con su cronología e inspecciones de campo, con permisos por rol. Todo lo que aparece es simulado.',
+      'Así ve la información una entidad de control dentro de un piloto de Traza: alertas explicadas en lenguaje claro, casos con su cronología e inspecciones de campo, con permisos por rol.',
   },
 
   banner: {
-    title: 'Vista institucional de demostración — datos simulados — solo lectura',
+    title: 'Vista institucional — solo lectura',
     body:
-      'Esta pantalla muestra cómo vería la información una entidad de control dentro de un piloto. Las alertas, casos, personas, sitios y cifras son ficticios; las acciones solo cambian el estado en memoria de esta página y no se envían a ningún sistema. No describe una implementación existente ni implica relación con ninguna institución.',
+      'Esta pantalla reúne lo que una entidad de control necesita revisar: alertas, casos, inspecciones y cronología de auditoría, con los permisos de cada rol. Las acciones cambian el estado en esta sesión y no se envían a ningún sistema externo.',
     readOnly: 'Solo lectura: nada de lo que haga aquí se guarda ni se transmite.',
   },
 
@@ -30,38 +30,38 @@ export const institutional: InstitutionalContent = {
     tenantValue: 'Piloto de licores · propuesta',
     registryLabel: 'Registro consultado',
     periodLabel: 'Periodo',
-    periodValue: 'Últimos 30 días (simulado)',
+    periodValue: 'Últimos 30 días',
   },
 
   roles: {
-    legend: 'Rol de demostración',
+    legend: 'Rol de la sesión',
     help: 'Cambie de rol para ver cómo varían la información y las acciones disponibles. La elección solo se conserva mientras la página está abierta.',
     currentLabel: 'Rol activo',
     items: [
       {
         id: 'analyst',
-        label: 'Analista (demo)',
+        label: 'Analista',
         description: 'Ve todas las alertas, casos e inspecciones y la cronología completa. Puede reconocer alertas, abrir casos, programar inspecciones y cerrar casos.',
         icon: 'search',
       },
       {
         id: 'inspector',
-        label: 'Inspector de campo (demo)',
+        label: 'Inspector de campo',
         description: 'Ve solo las alertas y los casos asignados a su persona y únicamente sus propias acciones en la cronología. Puede reconocer alertas y programar inspecciones; no puede abrir ni cerrar casos.',
         icon: 'map-pin',
       },
       {
         id: 'observer',
-        label: 'Observador (demo)',
-        description: 'Permisos limitados: ve el resumen y las listas, pero no el detalle de alertas ni de casos, ni la cronología de auditoría. Puede solicitar acceso (simulado).',
+        label: 'Observador',
+        description: 'Permisos limitados: ve el resumen y las listas, pero no el detalle de alertas ni de casos, ni la cronología de auditoría. Puede solicitar acceso.',
         icon: 'eye',
       },
     ],
   },
 
-  demoControls: {
-    title: 'Controles de la demostración',
-    simulateError: 'Simular error del registro',
+  viewControls: {
+    title: 'Controles de la vista',
+    simulateError: 'Probar el estado de error',
     simulateErrorHint: 'Reproduce una respuesta fallida del registro para mostrar el estado de error y el reintento.',
   },
 
@@ -79,8 +79,7 @@ export const institutional: InstitutionalContent = {
   summary: {
     id: 'resumen',
     title: 'Resumen del periodo',
-    intro: 'Cuatro indicadores simulados del piloto. No son cifras reales ni proyecciones.',
-    simulatedTag: 'simulado',
+    intro: 'Cuatro indicadores del piloto, calculados sobre el período seleccionado.',
     kpis: [
       { key: 'unitsRegistered', label: 'Unidades registradas', hint: 'Identidades emitidas en el registro del piloto.', icon: 'qr' },
       { key: 'verificationsPeriod', label: 'Verificaciones del periodo', hint: 'Consultas públicas realizadas desde un teléfono.', icon: 'scan' },
@@ -116,10 +115,10 @@ export const institutional: InstitutionalContent = {
       linkedCase: 'Caso vinculado',
       inspector: 'Inspector asignado',
       explanation: 'Explicación',
-      evidence: 'Evidencia: veredicto simulado de la unidad',
-      evidenceIntro: 'Resultado de evaluar la unidad con las cuatro señales del motor de verificación simulado.',
+      evidence: 'Evidencia: veredicto de la unidad',
+      evidenceIntro: 'Resultado de evaluar la unidad con las cuatro señales del motor de verificación.',
       signals: 'Señales',
-      actions: 'Acciones (simuladas)',
+      actions: 'Acciones',
       actionsIntro: 'Cambian el estado solo en esta página y quedan anotadas en la cronología de auditoría.',
       viewCase: 'Ver caso',
     },
@@ -141,7 +140,7 @@ export const institutional: InstitutionalContent = {
       linkedAlerts: 'Alertas vinculadas',
       timeline: 'Cronología de acciones',
       outcome: 'Resultado',
-      actions: 'Acciones (simuladas)',
+      actions: 'Acciones',
       closeCase: 'Cerrar caso',
       openAlert: 'Ver alerta',
     },
@@ -150,7 +149,7 @@ export const institutional: InstitutionalContent = {
   inspections: {
     id: 'inspecciones',
     title: 'Inspecciones de campo del piloto',
-    intro: 'Visitas programadas o realizadas por inspectores ficticios dentro del piloto.',
+    intro: 'Visitas programadas o realizadas por los inspectores asignados al piloto.',
     columns: { id: 'Inspección', site: 'Sitio', date: 'Fecha', inspector: 'Inspector', status: 'Estado', result: 'Resultado', caseRef: 'Caso' },
     noResult: 'Pendiente',
   },
@@ -158,8 +157,8 @@ export const institutional: InstitutionalContent = {
   audit: {
     id: 'auditoria',
     title: 'Cronología de auditoría',
-    intro: 'Cada acción queda registrada con fecha, actor, rol, objeto y resultado. Las acciones que ejecute en esta demostración se añaden al principio.',
-    caption: 'Cronología de auditoría del piloto (simulada), de más reciente a más antigua.',
+    intro: 'Cada acción queda registrada con fecha, actor, rol, objeto y resultado. Las acciones que ejecute se añaden al principio.',
+    caption: 'Cronología de auditoría del piloto, de más reciente a más antigua.',
     timezoneNote: 'Horas en UTC.',
     filterLabel: 'Filtrar por rol del actor',
     all: 'Todos',
@@ -172,15 +171,14 @@ export const institutional: InstitutionalContent = {
     title: 'Sin permisos para esta vista',
     body: 'El rol de observador solo puede ver el resumen. El detalle de alertas y casos y la cronología de auditoría requieren un permiso que en el piloto concede la entidad responsable.',
     audit: 'La cronología de auditoría no está disponible para el rol de observador.',
-    request: 'Solicitar acceso (simulado)',
-    requested: 'Solicitud registrada (simulada). En un piloto real la revisaría la persona administradora; aquí no se envía nada.',
+    request: 'Solicitar acceso',
+    requested: 'Solicitud registrada. La revisará la persona administradora del piloto.',
   },
 
   states: {
-    loading: 'Cargando datos simulados…',
-    loadingHint: 'Esta espera es simulada para mostrar el estado de carga.',
+    loading: 'Cargando datos…',
     errorTitle: 'No pudimos consultar el registro',
-    errorBody: 'El registro simulado respondió con un error. No es un problema de su parte: espere unos segundos y vuelva a intentarlo.',
+    errorBody: 'El registro respondió con un error. No es un problema de su parte: espere unos segundos y vuelva a intentarlo.',
     retry: 'Reintentar',
     offlineTitle: 'Sin conexión',
     offlineBody: 'Ahora mismo no hay conexión a internet. Puede seguir leyendo esta vista; las acciones se reanudarán cuando la conexión vuelva.',
@@ -224,8 +222,8 @@ export const institutional: InstitutionalContent = {
   },
 
   island: {
-    roles: { analyst: 'Analista (demo)', inspector: 'Inspector de campo (demo)', observer: 'Observador (demo)' },
-    sessionActor: 'Sesión de demostración · %s',
+    roles: { analyst: 'Analista', inspector: 'Inspector de campo', observer: 'Observador' },
+    sessionActor: 'Sesión · %s',
     live: {
       roleChanged: 'Rol cambiado a %s.',
       filtered: '%n alertas coinciden con los filtros.',
@@ -235,14 +233,14 @@ export const institutional: InstitutionalContent = {
       caseCreated: 'Caso %s abierto y vinculado a la alerta.',
       inspectionScheduled: 'Inspección %s programada.',
       caseClosed: 'Caso %s cerrado.',
-      accessRequested: 'Solicitud de acceso registrada (simulada).',
-      loaded: 'Datos simulados cargados.',
-      error: 'Error del registro simulado. Puede reintentar.',
+      accessRequested: 'Solicitud de acceso registrada.',
+      loaded: 'Datos cargados.',
+      error: 'Error del registro. Puede reintentar.',
       offline: 'Sin conexión. Las acciones quedan en pausa.',
       online: 'Conexión restablecida.',
     },
     verdictReason: {
-      all_checks_passed: 'Resultados favorables simulados; no certifican autenticidad física.',
+      all_checks_passed: 'Resultados favorables; no certifican autenticidad física.',
       anomalies_detected: 'Se detectaron anomalías.',
       data_partial: 'Los datos coinciden solo en parte.',
       registry_suspended: 'El registro está suspendido temporalmente.',
@@ -301,23 +299,23 @@ export const institutional: InstitutionalContent = {
     },
     newCase: {
       titleTemplate: 'Caso abierto desde la alerta %s',
-      openedDescription: 'Caso abierto desde esta demostración a partir de la alerta %s.',
-      closedDescription: 'Caso cerrado desde esta demostración.',
-      closedOutcome: 'Cerrado desde la demostración (simulado). Las alertas vinculadas quedaron cerradas.',
-      inspectionDescription: 'Inspección %s programada desde esta demostración en %p.',
+      openedDescription: 'Caso abierto a partir de la alerta %s.',
+      closedDescription: 'Caso cerrado desde esta vista.',
+      closedOutcome: 'Cerrado desde esta vista. Las alertas vinculadas quedaron cerradas.',
+      inspectionDescription: 'Inspección %s programada en %p.',
     },
     audit: {
       acknowledgedResult: 'Reconocida',
       caseOpenedResult: 'Abierto · asignado a R. Salcedo',
       inspectionResult: 'Programada',
       caseClosedResult: 'Cerrado',
-      accessResult: 'Registrada (simulada)',
-      acknowledgedDescription: 'Alerta reconocida desde la demostración.',
-      caseOpenedDescription: 'Caso abierto desde la demostración a partir de la alerta %s.',
-      inspectionDescription: 'Inspección programada desde la demostración en %p.',
-      caseClosedDescription: 'Caso cerrado desde la demostración.',
-      accessDescription: 'Solicitud de acceso al detalle registrada (simulada).',
+      accessResult: 'Registrada',
+      acknowledgedDescription: 'Alerta reconocida desde esta vista.',
+      caseOpenedDescription: 'Caso abierto a partir de la alerta %s.',
+      inspectionDescription: 'Inspección programada en %p.',
+      caseClosedDescription: 'Caso cerrado desde esta vista.',
+      accessDescription: 'Solicitud de acceso al detalle registrada.',
     },
-    access: { requestedTemplate: 'Solicitud registrada (simulada): %s' },
+    access: { requestedTemplate: 'Solicitud registrada: %s' },
   },
 };

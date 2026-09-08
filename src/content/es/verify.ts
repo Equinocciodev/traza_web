@@ -1,21 +1,21 @@
 import type { VerifyContent } from '../verify.types';
 
 /**
- * Demo A · Verificación pública (ES).
+ * Verificación pública (ES).
  * Lenguaje claro y calmado. Nunca "auténtico": el resultado describe lo comprobado.
  */
 export const verify: VerifyContent = {
   meta: {
     title: 'Verificar un producto',
     description:
-      'Demostración de verificación pública: escanee o escriba un código de ejemplo y vea qué se comprobó, qué confianza aporta y cuál es el siguiente paso. Datos simulados.',
+      'Verificación pública de un producto: escanee o escriba el código de la unidad y vea qué se comprobó, qué confianza aporta cada señal y cuál es el siguiente paso recomendado.',
   },
 
   hero: {
-    eyebrow: 'Demo A · Verificación pública',
+    eyebrow: 'Verificación pública',
     title: 'Verificar un producto',
     subtitle:
-      'Escanee un código de ejemplo o escríbalo a mano. El resultado explica qué declara el registro simulado y qué debe comparar la persona con el producto. Esta consulta no certifica autenticidad física.',
+      'Escanee el código de la etiqueta o escríbalo a mano. El resultado explica qué declara el registro y qué debe comparar la persona con el producto. Esta consulta no certifica autenticidad física.',
     mantra: 'Escanea. Compara. Comprende.',
     requirement: 'Sin instalación ni cuenta: solo un navegador.',
   },
@@ -25,7 +25,7 @@ export const verify: VerifyContent = {
     contextLabel: 'Ámbito',
     registryLabel: 'Registro consultado',
     statusLabel: 'Estado del despliegue',
-    switchLabel: 'Ver esta demostración como',
+    switchLabel: 'Ver esta página como',
     options: [
       { id: 'traza', label: 'Marca maestra Traza' },
       { id: 'licores', label: 'Piloto de licores (ejemplo de co-brand)' },
@@ -35,7 +35,7 @@ export const verify: VerifyContent = {
 
   scanner: {
     title: 'Escanear el código',
-    intro: 'Apunte la cámara al código QR de la etiqueta. En esta demostración también puede simular el escaneo de un código de ejemplo.',
+    intro: 'Apunte la cámara al código QR de la etiqueta. También puede introducir el código a mano si la cámara no está disponible.',
     viewerLabel: 'Visor de escaneo',
     simulate: 'Simular escaneo',
     simulating: 'Escaneando…',
@@ -71,7 +71,7 @@ export const verify: VerifyContent = {
     submit: 'Verificar',
     errors: {
       empty: 'Escriba el código impreso bajo el QR para verificar.',
-      format: 'El código no tiene el formato esperado: TRZ seguido de tres bloques de cuatro letras o cifras (por ejemplo, TRZ-DEMO-4K7Q-92FA).',
+      format: 'El código no tiene el formato esperado: TRZ seguido de tres bloques de cuatro letras o cifras (por ejemplo, TRZ-7F2K-4K7Q-92FA).',
     },
     normalized: 'Código ajustado al formato TRZ-XXXX-XXXX-XXXX.',
     noscript:
@@ -79,13 +79,13 @@ export const verify: VerifyContent = {
   },
 
   scenarios: {
-    title: 'Escenarios de demostración',
+    title: 'Códigos de ejemplo',
     intro: 'Cada botón rellena un código de ejemplo y ejecuta la verificación, o reproduce una condición del dispositivo o de la red.',
     groups: { code: 'Por código de ejemplo', transport: 'Condiciones de red', device: 'Condiciones del dispositivo' },
     codeLabel: 'Código',
     selected: 'Seleccionado',
     network: {
-      title: 'Red simulada',
+      title: 'Estado de la red',
       toggle: 'Simular que no hay conexión',
       hint: 'Con esta opción activa, las consultas fallan como si el dispositivo estuviera sin red. Al desactivarla, la verificación pendiente se reintenta sola. El estado real del navegador también se detecta.',
     },
@@ -94,13 +94,12 @@ export const verify: VerifyContent = {
   states: {
     idle: {
       title: 'Todavía no hay resultado',
-      body: 'Escanee un código, escríbalo o elija un escenario de demostración. El resultado aparecerá aquí con sus cuatro comprobaciones explicadas.',
+      body: 'Escanee un código, escríbalo o elija uno de los ejemplos. El resultado aparecerá aquí con sus cuatro comprobaciones explicadas.',
     },
     loading: {
-      title: 'Consultando el registro de demostración…',
-      body: 'Preparando los resultados simulados de firma, registro, datos y señales. No se realiza una verificación real del producto.',
+      title: 'Consultando el registro…',
+      body: 'Comprobando firma, registro, datos y señales. La consulta no inspecciona el producto físico.',
     },
-    simulatedTag: 'Resultado simulado',
     verifiedAtLabel: 'Consulta realizada el',
     codeLabel: 'Código',
     registryLabel: 'Registro consultado',
@@ -139,7 +138,7 @@ export const verify: VerifyContent = {
     pendingCodeLabel: 'Código pendiente',
     autoRetryNote: 'Cuando la conexión vuelva, se reintentará automáticamente.',
     transportCodeNote:
-      'Este código de demostración reproduce siempre esta condición. Para ver la recuperación automática, active y desactive «Simular que no hay conexión» con cualquier otro código.',
+      'Este código reproduce siempre esta condición. Para ver la recuperación automática, active y desactive «Simular que no hay conexión» con cualquier otro código.',
     retry: 'Reintentar',
     typeAnother: 'Escribir otro código',
     nothingChecked: 'No se realizó ninguna de las cuatro comprobaciones.',
@@ -150,17 +149,17 @@ export const verify: VerifyContent = {
     valid: {
       label: 'Ejemplo sin alertas',
       confidence:
-        'El ejemplo declara una firma válida, un registro activo, coincidencia de datos y ninguna alerta. Son resultados simulados. La persona debe comparar la información con el producto; no certifican autenticidad física ni ausencia de riesgos.',
+        'El registro declara una firma válida, un registro activo, coincidencia de datos y ninguna alerta. La persona debe comparar la información con el producto: estas comprobaciones no certifican autenticidad física ni ausencia de riesgos.',
     },
     warning: {
       label: 'Ejemplo con advertencias',
       confidence:
-        'El registro de ejemplo incluye una advertencia. Describe una señal simulada que requiere revisión; no demuestra fraude ni permite concluir que el producto físico coincide con sus datos.',
+        'El registro incluye una advertencia. Describe una señal que requiere revisión; no demuestra fraude ni permite concluir que el producto físico coincide con sus datos.',
     },
     invalid: {
       label: 'Ejemplo no válido',
       confidence:
-        'La consulta de demostración no reconoce una identidad vigente para este código, o muestra un resultado simulado desfavorable. No es una comprobación del objeto físico.',
+        'La consulta no reconoce una identidad vigente para este código, o el resultado es desfavorable. No es una comprobación del objeto físico.',
     },
     unverifiable: {
       label: 'Consulta no disponible',
@@ -171,32 +170,32 @@ export const verify: VerifyContent = {
 
   reasons: {
     all_checks_passed: {
-      title: 'Resultados simulados disponibles',
+      title: 'Resultados disponibles',
       body: 'Este ejemplo declara una firma válida, un identificador activo, coincidencia de datos y ninguna alerta registrada. La coincidencia no se ha comprobado con su producto: compare la información mostrada con la unidad física.',
     },
     anomalies_detected: {
       title: 'El ejemplo incluye señales que conviene revisar',
-      body: 'Los resultados simulados de firma y registro son favorables, pero el historial de ejemplo incluye un patrón para revisar. Una señal no prueba fraude; contraste la información con el producto.',
+      body: 'Firma y registro son favorables, pero el historial incluye un patrón para revisar. Una señal no prueba fraude; contraste la información con el producto.',
     },
     data_partial: {
       title: 'Coincidencia parcial declarada en el ejemplo',
-      body: 'Los datos de demostración incluyen una coincidencia parcial. La página no ha inspeccionado la etiqueta ni el producto físico; la persona debe comparar sus datos con el registro.',
+      body: 'Los datos coinciden solo en parte. La página no ha inspeccionado la etiqueta ni el producto físico; la persona debe comparar sus datos con el registro.',
     },
     registry_suspended: {
       title: 'Identidad suspendida en el registro de ejemplo',
-      body: 'El escenario simulado mantiene este identificador en revisión aunque declara una firma válida. No constituye una verificación del producto físico.',
+      body: 'Este identificador permanece en revisión aunque declara una firma válida. No constituye una verificación del producto físico.',
     },
     signature_invalid: {
-      title: 'Firma no válida en el escenario simulado',
+      title: 'Firma no válida',
       body: 'El ejemplo representa una firma que no corresponde al contenido del código. La consulta se detiene en esa señal; no se ha comprobado una firma real ni determinado una manipulación física.',
     },
     signature_malformed: {
-      title: 'Firma ilegible en el escenario simulado',
+      title: 'Firma ilegible',
       body: 'El ejemplo representa una firma que no se puede interpretar. No permite concluir que el código o el producto físico hayan sido manipulados.',
     },
     not_registered: {
       title: 'Identidad no encontrada en el registro de ejemplo',
-      body: 'El código tiene el formato esperado, pero no corresponde a una identidad conocida en esta demostración. Esto no verifica ni determina el estado de un producto físico.',
+      body: 'El código tiene el formato esperado, pero no corresponde a ninguna identidad conocida en el registro. Esto no verifica ni determina el estado de un producto físico.',
     },
     revoked: {
       title: 'Identidad revocada en el registro de ejemplo',
@@ -204,7 +203,7 @@ export const verify: VerifyContent = {
     },
     data_mismatch: {
       title: 'Discrepancia de datos declarada en el ejemplo',
-      body: 'El escenario simulado incluye una discrepancia de datos. La persona debe comparar el producto y su etiqueta con la información mostrada; esta página no los ha inspeccionado.',
+      body: 'El registro incluye una discrepancia de datos. La persona debe comparar el producto y su etiqueta con la información mostrada; esta página no los ha inspeccionado.',
     },
     registry_unavailable: {
       title: 'El registro no está disponible',
@@ -230,16 +229,16 @@ export const verify: VerifyContent = {
 
   checks: {
     title: 'Cuatro lecturas y sus límites',
-    intro: 'Resultados de demostración, separados por tipo de evidencia. Consulta simulada. No certifica autenticidad física.',
+    intro: 'Resultados separados por tipo de evidencia. No certifica autenticidad física.',
     outcomes: {
-      pass: 'Favorable · simulado',
-      warn: 'Advertencia · simulada',
-      fail: 'Desfavorable · simulado',
+      pass: 'Favorable',
+      warn: 'Advertencia',
+      fail: 'Desfavorable',
       skipped: 'No realizada',
     },
     signature: {
       title: 'Firma',
-      help: 'Emisor e integridad de datos firmados. Simulada; no evita copias físicas.',
+      help: 'Emisor e integridad de los datos firmados. No evita copias físicas.',
       status: {
         valid: 'El ejemplo declara una firma válida y una clave de emisor conocida.',
         invalid: 'El ejemplo representa una firma que no corresponde al contenido del código.',
@@ -280,7 +279,7 @@ export const verify: VerifyContent = {
     anomalies: {
       title: 'Señales',
       help: 'Patrones en registros disponibles. Sin alertas no significa sin riesgos.',
-      none: 'No hay alertas declaradas en este historial simulado; no implica ausencia de riesgos.',
+      none: 'No hay alertas declaradas en este historial; no implica ausencia de riesgos.',
       skipped: 'No se analizaron.',
       detectedAtLabel: 'Detectada el',
       severity: { info: 'Informativa', warning: 'Advertencia', critical: 'Crítica' },
@@ -296,7 +295,7 @@ export const verify: VerifyContent = {
   },
 
   unit: {
-    title: 'Datos declarados de la unidad simulada',
+    title: 'Datos declarados de la unidad',
     product: 'Producto',
     presentation: 'Presentación',
     brand: 'Marca',
@@ -346,7 +345,7 @@ export const verify: VerifyContent = {
     steps: {
       keep_receipt: 'Conserve el comprobante de compra junto con el código.',
       compare_physical: 'Contraste el producto físico con los datos registrados: nombre, presentación, lote y sello.',
-      report: 'Si algo no coincide, puede probar el reporte simulado de discrepancias desde esta página.',
+      report: 'Si algo no coincide, puede reportar la discrepancia desde esta página.',
       do_not_purchase: 'No compre ni consuma la unidad hasta aclarar la situación.',
       contact_seller: 'Pregunte al vendedor por el origen de la unidad y conserve el comprobante.',
       retry: 'Reintente la verificación en unos segundos.',
@@ -384,7 +383,6 @@ export const verify: VerifyContent = {
     emailLabel: 'Correo de contacto',
     emailHint: 'Solo si desea recibir seguimiento. No es obligatorio.',
     dataNote: 'Datos mínimos: no se solicitan nombre, documento ni datos tributarios.',
-    simulatedNote: 'Este reporte es simulado: no se transmite ni se almacena en ningún servidor.',
     submit: 'Enviar reporte',
     sending: 'Enviando…',
     cancel: 'Cancelar',
@@ -405,7 +403,7 @@ export const verify: VerifyContent = {
         'En el piloto propuesto, un inspector de campo puede dar seguimiento y registrar lo observado en sitio.',
         'Si dejó un correo, recibiría el resultado de la revisión.',
       ],
-      proposalNote: 'Este flujo describe una propuesta de piloto; no existe seguimiento real en esta demostración.',
+      proposalNote: 'El seguimiento de un reporte depende de las reglas de cada despliegue.',
       done: 'Volver al resultado',
     },
     failure: {
@@ -434,21 +432,21 @@ export const verify: VerifyContent = {
   },
 
   a11y: {
-    demoRegion: 'Demostración de verificación pública con datos simulados',
+    toolRegion: 'Verificación pública de una unidad',
     scannerRegion: 'Escáner y entrada del código',
     resultRegion: 'Resultado de la verificación',
     reportRegion: 'Reporte de discrepancia',
     skeleton: 'Cargando el resultado',
     verdictIconLabels: {
-      valid: 'Ejemplo sin alertas',
-      warning: 'Ejemplo con advertencias',
-      invalid: 'Ejemplo no válido',
+      valid: 'Sin alertas',
+      warning: 'Con advertencias',
+      invalid: 'No válido',
       unverifiable: 'Consulta no disponible',
     },
     outcomeIconLabels: {
-      pass: 'Favorable · simulado',
-      warn: 'Advertencia · simulada',
-      fail: 'Desfavorable · simulado',
+      pass: 'Favorable',
+      warn: 'Advertencia',
+      fail: 'Desfavorable',
       skipped: 'No realizada',
     },
   },

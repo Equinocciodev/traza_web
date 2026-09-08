@@ -1,9 +1,9 @@
 /**
- * Contenido de la demo C · Vista institucional (siempre rotulada como demo).
+ * Contenido de la vista institucional.
  * Propietario: especialista de la vista institucional.
  *
  * Reglas: todo texto visible vive aquí (ES/EN); la vista nunca afirma implementación, relación institucional
- * ni cifras reales. Los KPIs se rotulan "simulado". Los estados se comunican con icono + texto.
+ * Los estados se comunican con icono + texto, nunca solo con color.
  */
 import type { PageMeta, IconName } from './types';
 import type { Severity, AnomalyCode, SignatureStatus, RegistryStatus, DataMatch } from '@/fixtures/types';
@@ -35,7 +35,7 @@ export interface InstitutionalLabels {
  */
 export interface InstitutionalIslandStrings {
   roles: Record<InstitutionalRoleId, string>;
-  /** Actor de las acciones ejecutadas por la sesión: "Sesión de demostración · %s". */
+  /** Actor de las acciones ejecutadas por la sesión: "Sesión · %s". */
   sessionActor: string;
   live: {
     roleChanged: string;
@@ -111,7 +111,7 @@ export interface InstitutionalIslandStrings {
     accessDescription: string;
   };
   access: {
-    /** "Solicitud registrada (simulada): %s" */
+    /** "Solicitud registrada: %s" */
     requestedTemplate: string;
   };
 }
@@ -133,13 +133,12 @@ export interface InstitutionalContent {
     currentLabel: string;
     items: { id: InstitutionalRoleId; label: string; description: string; icon: IconName }[];
   };
-  demoControls: { title: string; simulateError: string; simulateErrorHint: string };
+  viewControls: { title: string; simulateError: string; simulateErrorHint: string };
   nav: { label: string; items: { id: string; label: string }[] };
   summary: {
     id: string;
     title: string;
     intro: string;
-    simulatedTag: string;
     kpis: { key: KpiKey; label: string; hint: string; icon: IconName }[];
     byType: { title: string; intro: string; countLabel: string };
   };
@@ -215,7 +214,6 @@ export interface InstitutionalContent {
   permissions: { title: string; body: string; audit: string; request: string; requested: string };
   states: {
     loading: string;
-    loadingHint: string;
     errorTitle: string;
     errorBody: string;
     retry: string;

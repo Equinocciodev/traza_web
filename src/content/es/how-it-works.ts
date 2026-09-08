@@ -183,7 +183,7 @@ export const howItWorks: HowItWorksContent = {
   cta: {
     title: 'Véalo con un código de ejemplo',
     body:
-      'La demostración de verificación incluye códigos simulados que muestran cada uno de los resultados posibles.',
+      'La verificación pública incluye códigos de ejemplo que muestran cada uno de los resultados posibles.',
     primaryCta: { label: 'Verificar un producto', key: 'verify', variant: 'primary' },
     secondaryCta: { label: 'Ver el recorrido', key: 'journey', variant: 'secondary' },
   },

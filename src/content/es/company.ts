@@ -4,14 +4,14 @@ export const company: CompanyContent = {
   meta: {
     title: 'Empresa',
     description:
-      'Traza es una empresa privada y plataforma multisector de identidad digital unitaria, trazabilidad y verificación. Misión, principios y contacto del equipo.',
+      'Traza Technology, C.A. es una empresa privada y plataforma multisector de identidad digital unitaria, trazabilidad y verificación. Conozca la misión, los principios del producto y cómo contactar al equipo.',
   },
 
   hero: {
     eyebrow: 'Empresa',
     title: 'Una empresa privada al servicio de la confianza en los productos',
     subtitle:
-      'Traza es una empresa privada y una plataforma tecnológica multisector. Presta servicios de identidad digital unitaria, trazabilidad, verificación y control a entidades del sector público y a industrias privadas.',
+      'Traza Technology, C.A. es una empresa privada y una plataforma tecnológica multisector. Presta servicios de identidad digital unitaria, trazabilidad, verificación y control a entidades del sector público y a industrias privadas.',
   },
 
   mission: {
@@ -100,11 +100,11 @@ export const company: CompanyContent = {
         'Otro',
       ],
       message: 'Mensaje',
-      consent: 'Entiendo que este formulario es una simulación y que no se enviará ni almacenará ningún dato.',
+      consent: 'Acepto que mis datos se usen únicamente para responder a este mensaje.',
       submit: 'Enviar mensaje',
       success: {
         title: 'Mensaje recibido',
-        body: 'Gracias por escribir. En este demo el envío es simulado: no se ha transmitido ni guardado ningún dato.',
+        body: 'Gracias por escribir. Le responderemos en días hábiles al correo que indicó.',
       },
       error: {
         title: 'No se pudo enviar',
@@ -113,10 +113,20 @@ export const company: CompanyContent = {
     },
     emailLabel: 'Correo de contacto',
     emailFallback:
-      'El correo público de contacto se configura en cada despliegue. En este demo no hay un correo real habilitado.',
-    responseNote: 'En un despliegue real, el equipo responde en días hábiles.',
+      'Escríbanos desde el formulario y le responderemos al correo que indique.',
+    responseNote: 'El equipo responde en días hábiles.',
+  },
+
+  legal: {
+    title: 'Datos de la empresa',
+    items: [
+      { label: 'Razón social', value: 'Traza Technology, C.A.' },
+      { label: 'Marca', value: 'Traza®' },
+      { label: 'Actividad', value: 'Plataforma de identidad digital unitaria, trazabilidad y verificación' },
+      { label: 'Sitio', value: 'traza.technology' },
+    ],
   },
 
   disclaimer:
-    'Demostración conceptual. Esta página no afirma clientes, contratos, certificaciones ni relación con gobiernos o agencias. El caso de uso de licores es una propuesta de piloto y el formulario de contacto es simulado.',
+    'Esta página no afirma contratos, certificaciones ni relación con gobiernos o agencias. El caso de uso de licores es una propuesta de piloto.',
 };

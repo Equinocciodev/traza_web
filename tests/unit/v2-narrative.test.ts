@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { getV2Narrative, NARRATIVE_DEMO_REFERENCE, narrativeBeatAt, narrativeDuration } from '@/content/v2-narrative';
+import { getV2Narrative, NARRATIVE_UNIT_REFERENCE, narrativeBeatAt, narrativeDuration } from '@/content/v2-narrative';
 import { FEATURED_UNIT_CODE, UNIT_BY_CODE } from '@/fixtures/units';
 import type { Locale } from '@/i18n';
 import { readFileSync } from 'node:fs';
@@ -33,13 +33,13 @@ describe('v2 narrative contract', () => {
 
   it('links to an existing fixture and does not invent dates or a public identifier', () => {
     const unit = UNIT_BY_CODE.get(FEATURED_UNIT_CODE)!;
-    expect(NARRATIVE_DEMO_REFERENCE.code).toBe(unit.code);
-    expect(NARRATIVE_DEMO_REFERENCE.issuedAt).toBe(unit.signature.issuedAt);
-    expect(NARRATIVE_DEMO_REFERENCE.registeredAt).toBe(unit.registry.registeredAt);
-    expect(Number.isFinite(Date.parse(NARRATIVE_DEMO_REFERENCE.issuedAt!))).toBe(true);
-    expect(Number.isFinite(Date.parse(NARRATIVE_DEMO_REFERENCE.registeredAt!))).toBe(true);
-    expect(JSON.stringify(getV2Narrative('es'))).not.toMatch(/TRZ-DEMO-|\b20\d{2}-\d{2}-\d{2}\b/);
-    expect(JSON.stringify(getV2Narrative('en'))).not.toMatch(/TRZ-DEMO-|\b20\d{2}-\d{2}-\d{2}\b/);
+    expect(NARRATIVE_UNIT_REFERENCE.code).toBe(unit.code);
+    expect(NARRATIVE_UNIT_REFERENCE.issuedAt).toBe(unit.signature.issuedAt);
+    expect(NARRATIVE_UNIT_REFERENCE.registeredAt).toBe(unit.registry.registeredAt);
+    expect(Number.isFinite(Date.parse(NARRATIVE_UNIT_REFERENCE.issuedAt!))).toBe(true);
+    expect(Number.isFinite(Date.parse(NARRATIVE_UNIT_REFERENCE.registeredAt!))).toBe(true);
+    expect(JSON.stringify(getV2Narrative('es'))).not.toMatch(/TRZ-7F2K-|\b20\d{2}-\d{2}-\d{2}\b/);
+    expect(JSON.stringify(getV2Narrative('en'))).not.toMatch(/TRZ-7F2K-|\b20\d{2}-\d{2}-\d{2}\b/);
   });
 
   for (const locale of ['es', 'en'] as Locale[]) {
@@ -85,11 +85,11 @@ describe('v2 narrative contract', () => {
         const beat = product.beats.find((item) => item.id === 'a6-lookup')!;
         expect(beat.rows.map((row) => row.label)).toEqual(locale === 'es'
           ? ['Firma', 'Registro', 'Datos', 'Señales'] : ['Signature', 'Registry', 'Data', 'Signals']);
-        expect(beat.rows[0].detail).toContain(locale === 'es' ? 'Simulada; no evita copias físicas.' : 'Simulated; does not prevent physical copies.');
+        expect(beat.rows[0].detail).toContain(locale === 'es' ? 'No evita copias físicas.' : 'It does not prevent physical copies.');
         expect(beat.rows[2].detail).toContain(locale === 'es' ? 'La persona revisa' : 'The person checks');
         expect(beat.rows[3].detail).toContain(locale === 'es' ? 'Sin alertas no significa sin riesgos.' : 'No alerts does not mean no risks.');
         expect(beat.transcript).toContain(locale === 'es'
-          ? 'Consulta simulada. No certifica autenticidad física.' : 'Simulated lookup. Does not certify physical authenticity.');
+          ? 'La consulta no certifica autenticidad física.' : 'The lookup does not certify physical authenticity.');
       });
 
       it('uses corrected C.1 missing-event language and keeps the causes non-exhaustive', () => {

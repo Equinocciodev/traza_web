@@ -1,29 +1,29 @@
 ---
 /**
- * Rejilla de tarjetas de demostración (Demo A/B/C): etiqueta, icono, título, texto y botón.
+ * Rejilla de tarjetas de perspectiva (público / cadena / control): etiqueta, icono, título, texto y botón.
  */
 import Card from '@/components/ui/Card.astro';
 import Button from '@/components/ui/Button.astro';
 import { ctaHref, ctaVariant } from '@/components/ui/cta';
-import type { DemoCard } from '@/content/types';
+import type { PerspectiveCard } from '@/content/types';
 import type { Locale } from '@/i18n';
 
 interface Props {
   locale: Locale;
-  items: DemoCard[];
+  items: PerspectiveCard[];
   headingLevel?: 3 | 4;
   class?: string;
 }
 const { locale, items, headingLevel = 3, class: className } = Astro.props;
 ---
 
-<ul class:list={['demo-grid', 'grid', 'grid--3', className]} data-reveal data-reveal-stagger>
+<ul class:list={['perspective-grid', 'grid', 'grid--3', className]} data-reveal data-reveal-stagger>
   {
     items.map((item) => (
-      <li class="demo-grid__item" data-demo={item.key}>
-        <Card title={item.title} icon={item.icon} tag={item.tag} headingLevel={headingLevel} class="demo-card">
+      <li class="perspective-grid__item" data-perspective={item.key}>
+        <Card title={item.title} icon={item.icon} tag={item.tag} headingLevel={headingLevel} class="perspective-card">
           <p>{item.body}</p>
-          <p class="demo-card__action">
+          <p class="perspective-card__action">
             <Button href={ctaHref(locale, item.cta)} variant={ctaVariant(item.cta, 'secondary')} icon="arrow-right">
               {item.cta.label}
             </Button>
@@ -35,21 +35,21 @@ const { locale, items, headingLevel = 3, class: className } = Astro.props;
 </ul>
 
 <style>
-  .demo-grid {
+  .perspective-grid {
     margin: 0;
     padding: 0;
     list-style: none;
   }
-  .demo-grid__item {
+  .perspective-grid__item {
     min-width: 0;
   }
-  .demo-grid :global(.demo-card .card__body) {
+  .perspective-grid :global(.perspective-card .card__body) {
     display: flex;
     flex-direction: column;
     flex: 1 1 auto;
     gap: var(--space-4);
   }
-  .demo-grid :global(.demo-card__action) {
+  .perspective-grid :global(.perspective-card__action) {
     margin: auto 0 0;
     padding-top: var(--space-2);
   }

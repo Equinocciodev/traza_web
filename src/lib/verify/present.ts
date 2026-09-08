@@ -44,7 +44,7 @@ export const SEVERITY_TONE: Record<Severity, Tone> = {
   critical: 'danger',
 };
 
-/** ¿Es uno de los códigos especiales que el adaptador simulado interpreta como condición de transporte? */
+/** ¿Es uno de los códigos especiales que el adaptador interpreta como condición de transporte? */
 export function isTransportCode(code: string): boolean {
   return (Object.values(TRANSPORT_CODES) as string[]).includes(code);
 }

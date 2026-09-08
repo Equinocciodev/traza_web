@@ -1,8 +1,8 @@
 ---
 /**
- * Plantilla de la demo B · Recorrido del producto (ES: /recorrido/, EN: /en/journey/).
+ * Plantilla del recorrido del producto (ES: /recorrido/, EN: /en/journey/).
  * Hero ligero (sin JS), isla JourneyApp sobre HTML renderizado, explicación de la historia de la
- * unidad y llamada a las otras demostraciones.
+ * unidad y enlaces a las otras vistas.
  */
 import Base from '@/layouts/Base.astro';
 import Button from '@/components/ui/Button.astro';
@@ -30,16 +30,12 @@ const ctaHref = (cta: Cta) => (cta.key ? route(locale, cta.key) + (cta.suffix ??
       <p class="eyebrow">{journey.hero.eyebrow}</p>
       <h1>{journey.hero.title}</h1>
       <p class="lede">{journey.hero.subtitle}</p>
-      <p class="journey-hero__note">
-        <span class="demo-tag"><Icon name="info" size={14} />{journey.demo.simulatedNotice}</span>
-        <span>{journey.hero.note}</span>
-      </p>
     </div>
   </section>
 
-  <section class="section section--subtle journey-demo" aria-labelledby="journey-demo-title">
+  <section class="section section--subtle journey-explorer" aria-labelledby="journey-explorer-title">
     <div class="container container--wide">
-      <SectionHeader eyebrow={journey.demo.eyebrow} title={journey.demo.title} intro={journey.demo.intro} id="journey-demo-title" />
+      <SectionHeader eyebrow={journey.explorer.eyebrow} title={journey.explorer.title} intro={journey.explorer.intro} id="journey-explorer-title" />
       <JourneyApp locale={locale} />
     </div>
   </section>
@@ -103,15 +99,6 @@ const ctaHref = (cta: Cta) => (cta.key ? route(locale, cta.key) + (cta.suffix ??
   }
   .journey-hero h1 {
     max-width: 22ch;
-  }
-  .journey-hero__note {
-    display: flex;
-    flex-wrap: wrap;
-    align-items: center;
-    gap: var(--space-2) var(--space-3);
-    margin-top: var(--space-5);
-    font-size: var(--text-sm);
-    color: var(--color-text-secondary);
   }
   .journey-explain__grid {
     display: grid;

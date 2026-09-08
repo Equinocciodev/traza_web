@@ -132,7 +132,7 @@ export const caseSpirits: CaseSpiritsContent = {
         icon: 'flag',
       },
     ],
-    note: 'Arquitectura objetivo propuesta; no implementada ni auditada en este demo. La verificación que se muestra en las demostraciones se simula con datos de ejemplo y no utiliza criptografía real.',
+    note: 'Arquitectura objetivo de la propuesta: no implementada todavía. Su desarrollo y su auditoría forman parte del alcance que se acordaría con la institución.',
   },
 
   fieldInspection: {
@@ -150,30 +150,30 @@ export const caseSpirits: CaseSpiritsContent = {
   cobrand: {
     title: 'Co-brand condicional',
     body:
-      'La propuesta contempla que la verificación pública muestre la marca del regulador junto a la de Traza. En este demo, ese lockup aparece únicamente dentro de este caso de uso y del tenant de ejemplo, como muestra de cómo se vería un despliegue co-brand.',
+      'La propuesta contempla que la verificación pública muestre la marca del regulador junto a la de Traza. Ese lockup aparece únicamente dentro de este caso de uso y de su tenant de ejemplo, como muestra de cómo se vería un despliegue co-brand.',
     lockupNote:
       'El lockup «SENIAT | TRAZA» es un ejemplo de co-brand condicional incluido en la propuesta de piloto. Se muestra en versión tipográfica, sin emblema oficial, y su uso depende de la aprobación de la institución. No implica relación oficial, respaldo ni aprobación.',
     cta: { label: 'Ver la verificación con el tenant de ejemplo', key: 'verify', suffix: '?t=licores', variant: 'secondary' },
   },
 
   nonClaims: {
-    title: 'Lo que este demo no afirma',
+    title: 'Lo que esta propuesta no afirma',
     intro:
-      'Para evitar confusiones, dejamos por escrito lo que esta página y las demostraciones asociadas no dicen.',
+      'Para evitar confusiones, dejamos por escrito lo que esta página no dice.',
     items: [
       'No afirma que exista una implementación oficial ni un sistema en funcionamiento.',
       'No afirma una relación contractual, comercial o institucional con SENIAT ni con ninguna otra agencia; SENIAT se menciona solo como destinatario de una propuesta de piloto.',
-      'No presenta cifras del piloto: cantidades, plazos, costos o resultados. Todo dato numérico visible en las demostraciones es simulado.',
-      'No afirma seguridad de producción: la arquitectura descrita es un objetivo y las demostraciones no usan criptografía real.',
+      'No presenta cifras del piloto: cantidades, plazos, costos o resultados.',
+      'No afirma seguridad de producción: la arquitectura descrita es un objetivo cuya implementación se audita en cada despliegue.',
       'No ofrece conclusiones legales ni regulatorias; la propuesta no sustituye el análisis normativo que corresponda.',
       'No autoriza el uso de la marca ni del emblema de ninguna institución; el lockup mostrado es un ejemplo condicional.',
     ],
   },
 
   cta: {
-    title: 'Vea el caso de uso en las demostraciones',
+    title: 'Vea el caso de uso en la plataforma',
     body:
-      'La verificación pública con el tenant de ejemplo, el recorrido de una botella y la vista institucional muestran cómo se vería el piloto, siempre con datos simulados.',
+      'La verificación pública con el tenant de ejemplo, el recorrido de una botella y la vista institucional muestran cómo se vería el piloto.',
     primaryCta: { label: 'Verificar con el tenant de ejemplo', key: 'verify', suffix: '?t=licores', variant: 'primary' },
     secondaryCta: { label: 'Abrir la vista institucional', key: 'institutional', variant: 'secondary' },
   },

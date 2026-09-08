@@ -1,7 +1,7 @@
 import type { Locale } from '@/i18n';
 import { FEATURED_UNIT_CODE, UNIT_BY_CODE } from '@/fixtures/units';
 
-/** Editorial simulation only. This module never writes to the verification engine or its fixtures. */
+/** Editorial copy only. This module never writes to the verification engine or its fixtures. */
 export type StoryId = 'product' | 'programme';
 type Copy = Record<Locale, string>;
 export interface NarrativeRow { label: string; detail: string }
@@ -49,7 +49,7 @@ const PRODUCT: SourceBeat[] = [
     summary: copy('Todo el recorrido sigue al mismo producto y a su registro.', 'The whole journey follows the same product and its record.'),
     actor: copy('Participante del programa', 'Programme participant'),
     change: copy('Se define la unidad que se quiere identificar.', 'The unit to be identified is defined.'),
-    limit: copy('Render conceptual. No representa una instalación ni un producto real de Traza.', 'Conceptual render. It does not depict a real Traza installation or product.'),
+    limit: copy('Ilustración. No representa una instalación ni un producto real de Traza.', 'Illustration. It does not depict a real Traza installation or product.'),
   },
   {
     id: 'a1-registration', chapter: 'identity', seconds: 10, kind: 'record',
@@ -69,7 +69,7 @@ const PRODUCT: SourceBeat[] = [
     summary: copy('El identificador queda vinculado al registro de la unidad.', 'The identifier is linked to the unit record.'),
     actor: copy('Emisor autorizado por el programa', 'Issuer authorised by the programme'),
     change: copy('Estado narrativo: emitida. Todavía no implica aplicación ni activación.', 'Narrative state: issued. This does not yet imply application or activation.'),
-    limit: copy('Firma simulada · demostración, no comprobación real. No evita copias físicas.', 'Simulated signature · demonstration, not real verification. It does not prevent physical copies.'),
+    limit: copy('La firma acredita emisor e integridad de los datos. No evita copias físicas.', 'The signature attests issuer and data integrity. It does not prevent physical copies.'),
     rows: [{ label: copy('Identidad', 'Identity'), detail: copy('Emitida · aún no aplicada.', 'Issued · not yet applied.') }],
   },
   {
@@ -78,7 +78,7 @@ const PRODUCT: SourceBeat[] = [
     summary: copy('La marca se aplica al objeto; su activación sigue pendiente.', 'The mark is applied to the object; activation is still pending.'),
     actor: copy('Responsable de aplicación en la línea', 'Person responsible for application on the line'),
     change: copy('La aplicación se registra por separado de la autorización para activar.', 'Application is recorded separately from authorisation to activate.'),
-    limit: copy('Estos estados son una propuesta narrativa; no amplían el motor de la demo.', 'These states are a narrative proposal; they do not extend the demo engine.'),
+    limit: copy('Estos estados son una propuesta narrativa; no amplían el motor de verificación.', 'These states are a narrative proposal; they do not extend the verification engine.'),
     rows: [
       { label: copy('Aplicación', 'Application'), detail: copy('Marca aplicada al objeto.', 'Mark applied to the object.') },
       { label: copy('Activación', 'Activation'), detail: copy('Pendiente · aún no activa.', 'Pending · not yet active.') },
@@ -90,7 +90,7 @@ const PRODUCT: SourceBeat[] = [
     summary: copy('El programa define quién activa y qué debe comprobar antes.', 'The programme defines who activates and what must be checked first.'),
     actor: copy('Rol autorizado según las reglas del programa', 'Authorised role under the programme rules'),
     change: copy('El estado pasa de pendiente a activo y se documenta el cambio.', 'The state changes from pending to active and the change is documented.'),
-    limit: copy('Transición conceptual. No se inventa una fecha de activación ni una autorización real.', 'Conceptual transition. No activation date or real authorisation is invented.'),
+    limit: copy('Transición ilustrada. No se inventa una fecha de activación ni una autorización real.', 'Illustrated transition. No activation date or real authorisation is invented.'),
     rows: [{ label: copy('Estado narrativo', 'Narrative state'), detail: copy('Activa · cambio documentado.', 'Active · change documented.') }],
   },
   {
@@ -115,7 +115,7 @@ const PRODUCT: SourceBeat[] = [
     change: copy('La relación deja de estar activa; la historia anterior permanece.', 'The relationship is no longer active; its previous history remains.'),
     limit: copy('Una relación histórica no demuestra dónde se encuentra hoy el producto.', 'A historical relationship does not prove where the product is today.'),
     rows: [
-      { label: copy('Relación caja-unidad', 'Case-unit relationship'), detail: copy('Cerrada en el relato conceptual.', 'Closed in the conceptual story.') },
+      { label: copy('Relación caja-unidad', 'Case-unit relationship'), detail: copy('Cerrada en el relato.', 'Closed in the story.') },
       { label: copy('Identidad de la unidad', 'Unit identity'), detail: copy('Se conserva.', 'Preserved.') },
     ],
   },
@@ -138,9 +138,9 @@ const PRODUCT: SourceBeat[] = [
     summary: copy('La consulta separa la evidencia; no entrega una nota de autenticidad.', 'The lookup separates the evidence; it does not give an authenticity score.'),
     actor: copy('Persona que consulta y compara el producto', 'Person looking up and comparing the product'),
     change: copy('Se muestra la información disponible sin confundir las comprobaciones.', 'Available information is shown without conflating the checks.'),
-    limit: copy('Consulta simulada. No certifica autenticidad física.', 'Simulated lookup. Does not certify physical authenticity.'),
+    limit: copy('La consulta no certifica autenticidad física.', 'The lookup does not certify physical authenticity.'),
     rows: [
-      { label: copy('Firma', 'Signature'), detail: copy('Emisor e integridad de datos firmados. Simulada; no evita copias físicas.', 'Issuer and integrity of the signed data. Simulated; does not prevent physical copies.') },
+      { label: copy('Firma', 'Signature'), detail: copy('Emisor e integridad de datos firmados. No evita copias físicas.', 'Issuer and integrity of the signed data. It does not prevent physical copies.') },
       { label: copy('Registro', 'Registry'), detail: copy('Identificador encontrado y estado declarado. No demuestra ubicación.', 'Identifier found and declared status. Does not demonstrate location.') },
       { label: copy('Datos', 'Data'), detail: copy('Información para comparar. La persona revisa su coincidencia con el producto.', 'Information to compare. The person checks whether it matches the product.') },
       { label: copy('Señales', 'Signals'), detail: copy('Patrones en registros disponibles. Sin alertas no significa sin riesgos.', 'Patterns in the available records. No alerts does not mean no risks.') },
@@ -152,7 +152,7 @@ const PRODUCT: SourceBeat[] = [
     summary: copy('Una señal ayuda a priorizar la revisión. No acusa por sí sola.', 'A signal helps prioritise review. It does not make an accusation by itself.'),
     actor: copy('Rol de revisión o inspección, según el programa', 'Review or inspection role, according to the programme'),
     change: copy('La revisión y su resultado documentado se incorporan al registro.', 'The review and its documented outcome are added to the record.'),
-    limit: copy('Ejemplo conceptual: el resultado puede confirmar o corregir el estado. No modifica el registro de demostración.', 'Conceptual example: the outcome may confirm or correct the state. It does not modify the demonstration record.'),
+    limit: copy('Ejemplo: el resultado puede confirmar o corregir el estado. No modifica el registro.', 'Example: the outcome may confirm or correct the state. It does not modify the record.'),
     rows: [
       { label: copy('Señal', 'Signal'), detail: copy('Una observación que merece revisión.', 'An observation that merits review.') },
       { label: copy('Resultado', 'Outcome'), detail: copy('Decisión humana documentada; no veredicto automático.', 'Documented human decision; not an automatic verdict.') },
@@ -251,7 +251,7 @@ const PROGRAMME: SourceBeat[] = [
 
 const UI = {
   heading: copy('Cada producto\ntiene una historia.', 'Every product\nhas a story.'),
-  region: copy('Recorridos conceptuales de trazabilidad', 'Conceptual traceability journeys'),
+  region: copy('Recorridos ilustrados de trazabilidad', 'Illustrated traceability journeys'),
   tabs: copy('Elegir un recorrido', 'Choose a journey'),
   chapters: copy('Capítulos del recorrido', 'Journey chapters'),
   play: copy('Reproducir recorrido', 'Play journey'),
@@ -269,15 +269,15 @@ const UI = {
   actor: copy('Quién aporta o decide', 'Who contributes or decides'),
   change: copy('Qué cambia', 'What changes'),
   limit: copy('Límite de esta lectura', 'Limit of this reading'),
-  record: copy('Registro de demostración relacionado', 'Related demonstration record'),
-  recordNote: copy('Datos ficticios existentes. El relato no modifica este registro.', 'Existing fictional data. The story does not modify this record.'),
-  imageAlt: copy('Render conceptual de una botella con una banda marcada DEMO.', 'Conceptual render of a bottle with a band marked DEMO.'),
+  record: copy('Registro relacionado', 'Related record'),
+  recordNote: copy('El relato no modifica este registro.', 'The story does not modify this record.'),
+  imageAlt: copy('Render de una botella ámbar con una banda azul en el cuello.', 'Render of an amber bottle with a blue band on the neck.'),
   step: copy('Paso {current} de {total}: {title}', 'Step {current} of {total}: {title}'),
   pausedAway: copy('En pausa al salir de la vista. Puedes continuar cuando quieras.', 'Paused when leaving the view. Resume whenever you are ready.'),
   finished: copy('Recorrido completado. Puedes repetirlo o explorar sus capítulos.', 'Journey completed. Replay it or explore its chapters.'),
-  proposal: copy('Render conceptual · propuesta', 'Conceptual render · proposal'),
-  conceptualObject: copy('Objeto conceptual', 'Conceptual object'),
-  relation: copy('Relación ilustrada entre el producto conceptual y los datos de este paso. No es un escaneo ni una comprobación física.', 'Illustrated relationship between the conceptual product and this step’s data. This is not a scan or a physical check.'),
+  proposal: copy('Ilustración · propuesta', 'Illustration · proposal'),
+  illustratedObject: copy('Objeto ilustrado', 'Illustrated object'),
+  relation: copy('Relación ilustrada entre el producto y los datos de este paso. No es un escaneo ni una comprobación física.', 'Illustrated relationship between the product and this step’s data. This is not a scan or a physical check.'),
 };
 
 /** Both languages share a clock, sized for the longer visible reading, not for a short film target. */
@@ -338,8 +338,8 @@ export function getV2Narrative(locale: Locale) {
   return { ui, stories };
 }
 
-/** Existing demo reference, not a new fictional identifier or activation timestamp. */
-export const NARRATIVE_DEMO_REFERENCE = {
+/** Reference to an existing unit in the fixtures, not a new identifier or activation timestamp. */
+export const NARRATIVE_UNIT_REFERENCE = {
   code: FEATURED_UNIT_CODE,
   issuedAt: UNIT_BY_CODE.get(FEATURED_UNIT_CODE)?.signature.issuedAt,
   registeredAt: UNIT_BY_CODE.get(FEATURED_UNIT_CODE)?.registry.registeredAt,

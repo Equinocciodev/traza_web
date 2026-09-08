@@ -1,8 +1,8 @@
 ---
 /**
- * Isla de la DEMO C · Vista institucional.
+ * Isla de la vista institucional.
  * HTML renderizado en servidor (roles, KPIs, alertas, casos, inspecciones y cronología) sobre el que
- * `institutional.ts` monta el comportamiento: rol de demostración, filtros, detalle, acciones simuladas
+ * `institutional.ts` monta el comportamiento: rol de la sesión, filtros, detalle, acciones
  * en memoria y estados (carga, vacío, error, sin conexión, sin permisos).
  */
 import Icon from '@/components/ui/Icon.astro';
@@ -51,7 +51,7 @@ const labelsData = JSON.stringify(t.labels);
         <div class="roles__options">
           {t.roles.items.map((r) => (
             <label class="roles__option">
-              <input class="roles__input" type="radio" name="demo-role" value={r.id} data-role={r.id} checked={r.id === 'analyst'} />
+              <input class="roles__input" type="radio" name="session-role" value={r.id} data-role={r.id} checked={r.id === 'analyst'} />
               <span class="roles__body">
                 <Icon name={r.icon} size={18} />
                 <span>{r.label}</span>
@@ -85,10 +85,10 @@ const labelsData = JSON.stringify(t.labels);
             <dd>{t.context.periodValue}</dd>
           </div>
         </dl>
-        <div class="demo-controls" data-js-only>
-          <p class="demo-controls__title">{t.demoControls.title}</p>
-          <Button variant="secondary" size="sm" icon="server" iconPosition="start" data-action="simulate-error">{t.demoControls.simulateError}</Button>
-          <p class="demo-controls__hint">{t.demoControls.simulateErrorHint}</p>
+        <div class="view-controls" data-js-only>
+          <p class="view-controls__title">{t.viewControls.title}</p>
+          <Button variant="secondary" size="sm" icon="server" iconPosition="start" data-action="simulate-error">{t.viewControls.simulateError}</Button>
+          <p class="view-controls__hint">{t.viewControls.simulateErrorHint}</p>
         </div>
       </div>
     </div>
@@ -118,7 +118,6 @@ const labelsData = JSON.stringify(t.labels);
       <p class="inst__loading" data-loading-text hidden>
         <Icon name="refresh" size={16} />
         <span>{t.states.loading}</span>
-        <span class="inst__loading-hint">{t.states.loadingHint}</span>
       </p>
     </div>
 
@@ -142,7 +141,6 @@ const labelsData = JSON.stringify(t.labels);
             <span class="kpi__icon" aria-hidden="true"><Icon name={k.icon} size={20} /></span>
             <span class="kpi__label">{k.label}</span>
             <span class="kpi__value" data-count={KPIS[k.key]} data-count-duration="1000" data-kpi-value={k.key}>{formatNumber(KPIS[k.key], locale)}</span>
-            <span class="demo-tag kpi__tag">{t.summary.simulatedTag}</span>
             <span class="kpi__hint">{k.hint}</span>
           </li>
         ))}
@@ -344,12 +342,12 @@ const labelsData = JSON.stringify(t.labels);
       gap: 0;
     }
   }
-  .demo-controls {
+  .view-controls {
     padding: var(--space-4);
     border: var(--border-width) dashed var(--color-border-strong);
     border-radius: var(--radius-md);
   }
-  .demo-controls__title {
+  .view-controls__title {
     margin: 0 0 var(--space-2);
     font-family: var(--font-mono);
     font-size: var(--text-xs);
@@ -357,7 +355,7 @@ const labelsData = JSON.stringify(t.labels);
     text-transform: uppercase;
     color: var(--color-text-secondary);
   }
-  .demo-controls__hint {
+  .view-controls__hint {
     margin: var(--space-2) 0 0;
     font-size: var(--text-xs);
     color: var(--color-text-secondary);

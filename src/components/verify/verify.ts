@@ -1,12 +1,12 @@
 /**
- * Demo A · Controlador de la isla de verificación pública (cliente).
+ * Controlador de la isla de verificación pública (cliente).
  *
  * Se monta sobre el HTML renderizado por VerifyApp.astro y solo cambia atributos, texto y visibilidad:
  * - Tenant desde `?t=` (resolveTenant) → data-tenant, lockup condicional y textos de contexto.
  * - Deep link `?c=CODIGO` → precarga y verifica.
- * - Escáner simulado (haz) y cámara real guardada (getUserMedia + BarcodeDetector si existe).
+ * - Escáner con haz de lectura y cámara del dispositivo (getUserMedia + BarcodeDetector si existe).
  * - Entrada manual con normalización y validación accesible.
- * - Escenarios de demostración (código, transporte, dispositivo) y red simulada.
+ * - Escenarios de ejemplo (código, transporte, dispositivo) y estado de red.
  * - Estados: idle, loading, error (offline/servidor/tiempo de espera), result, report.
  * - Conectividad real (online/offline) con reintento automático del código pendiente.
  * - Analítica sin el código completo.
@@ -446,7 +446,7 @@ export function initVerifyApp(root: HTMLElement): void {
   });
 
   /* ------------------------------------------------------------------ */
-  /* Escenarios de demostración                                          */
+  /* Códigos de ejemplo                                          */
   /* ------------------------------------------------------------------ */
 
   /** Código con formato válido que no sea un código especial de transporte (o null). */

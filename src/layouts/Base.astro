@@ -1,7 +1,7 @@
 ---
 /**
  * Layout base: metadatos SEO/OG/hreflang, fuentes autoalojadas, estilos globales, skip link,
- * cabecera, pie e indicador de demostración. Sin scripts inline (compatible con CSP estricta);
+ * cabecera y pie. Sin scripts inline (compatible con CSP estricta);
  * el único bloque inline es el JSON-LD (bloque de datos, no ejecutable).
  */
 import '@fontsource/space-grotesk/latin-600.css';
@@ -23,7 +23,6 @@ import '@/styles/motion.css';
 import Header from '@/components/site/Header.astro';
 import HeaderV2 from '@/components/site/HeaderV2.astro';
 import Footer from '@/components/site/Footer.astro';
-import DemoBadge from '@/components/ui/DemoBadge.astro';
 import { getContent } from '@/content';
 import { env } from '@/config/env';
 import { withBase, LOCALES, LOCALE_LABELS, ROUTES, type Locale, type RouteKey } from '@/i18n';
@@ -67,31 +66,69 @@ const canonical = new URL(withBase(canonicalPath), siteUrl).toString();
 const ogImageUrl = new URL(ogImage, siteUrl).toString();
 const alternates = LOCALES.map((l) => ({ locale: l, href: new URL(withBase(ROUTES[l][routeKey === 'notFound' ? 'home' : routeKey]), siteUrl).toString() }));
 
+/**
+ * Perfiles públicos y datos identificativos de la empresa. Se declaran una sola vez aquí
+ * y viajan en el `@graph` de todas las páginas: buscadores y redes los leen del mismo sitio.
+ */
+const SAME_AS = ['https://www.instagram.com/traza.technology/'];
+
+const organization = {
+  '@type': 'Organization',
+  '@id': `${siteUrl}/#organization`,
+  name: common.meta.siteName,
+  legalName: 'Traza Technology, C.A.',
+  url: siteUrl,
+  slogan: common.brand.tagline,
+  description: common.meta.defaultDescription,
+  logo: {
+    '@type': 'ImageObject',
+    '@id': `${siteUrl}/#logo`,
+    url: new URL(withBase('/og/default.png'), siteUrl).toString(),
+    width: 1200,
+    height: 630,
+    caption: common.meta.siteName,
+  },
+  image: { '@id': `${siteUrl}/#logo` },
+  sameAs: SAME_AS,
+  ...(env.contactEmail
+    ? {
+        email: env.contactEmail,
+        contactPoint: [
+          {
+            '@type': 'ContactPoint',
+            contactType: 'sales',
+            email: env.contactEmail,
+            availableLanguage: ['es', 'en'],
+          },
+        ],
+      }
+    : {}),
+};
+
 const jsonLd = {
   '@context': 'https://schema.org',
   '@graph': [
-    {
-      '@type': 'Organization',
-      '@id': `${siteUrl}/#organization`,
-      name: common.meta.siteName,
-      url: siteUrl,
-      slogan: common.brand.tagline,
-    },
+    organization,
     {
       '@type': 'WebSite',
       '@id': `${siteUrl}/#website`,
       url: siteUrl,
       name: common.meta.siteName,
-      inLanguage: LOCALE_LABELS[locale].htmlLang,
+      description: common.meta.defaultDescription,
+      inLanguage: LOCALES.map((l) => LOCALE_LABELS[l].htmlLang),
       publisher: { '@id': `${siteUrl}/#organization` },
+      copyrightHolder: { '@id': `${siteUrl}/#organization` },
     },
     {
       '@type': schemaType,
+      '@id': `${canonical}#webpage`,
       url: canonical,
       name: fullTitle,
       description,
       inLanguage: LOCALE_LABELS[locale].htmlLang,
       isPartOf: { '@id': `${siteUrl}/#website` },
+      about: { '@id': `${siteUrl}/#organization` },
+      primaryImageOfPage: { '@type': 'ImageObject', url: ogImageUrl },
     },
   ],
 };
@@ -112,8 +149,10 @@ const jsonLd = {
     {noindex && <meta name="robots" content="noindex, nofollow" />}
     <meta name="theme-color" content="#0b1f3f" />
     <meta name="color-scheme" content="light" />
-    <link rel="icon" href={withBase('/favicon.svg')} type="image/svg+xml" />
-    <link rel="apple-touch-icon" href={withBase('/apple-touch-icon.png')} />
+    <link rel="icon" href={withBase('/favicon.svg')} type="image/svg+xml" sizes="any" />
+    <link rel="icon" href={withBase('/favicon-32.png')} type="image/png" sizes="32x32" />
+    <link rel="apple-touch-icon" href={withBase('/apple-touch-icon.png')} sizes="180x180" />
+    <meta name="apple-mobile-web-app-title" content={common.meta.siteName} />
     <link rel="manifest" href={withBase('/site.webmanifest')} />
 
     <meta property="og:type" content="website" />
@@ -136,13 +175,11 @@ const jsonLd = {
   </head>
   <body class:list={[bodyClass]} data-tenant={tenant && tenant !== 'traza' ? tenant : undefined}>
     <a class="skip-link" href="#main">{common.skipLink}</a>
-    {!homeV2 && <DemoBadge content={common.demoBadge} variant="strip" />}
     {homeV2 ? <HeaderV2 locale={locale} common={common} /> : <Header locale={locale} routeKey={routeKey} common={common} />}
     <main id="main" tabindex="-1">
       <slot />
     </main>
     <Footer locale={locale} routeKey={routeKey} common={common} />
-    {!homeV2 && <DemoBadge content={common.demoBadge} variant="floating" />}
   </body>
 </html>
 

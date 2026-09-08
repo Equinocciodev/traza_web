@@ -1,10 +1,10 @@
 /**
- * Adaptador de API del demo.
+ * Adaptador de API.
  *
- * - Modo `mock` (por defecto): resuelve con fixtures locales y latencias simuladas; no hace red.
+ * - Modo `mock` (por defecto): resuelve con fixtures locales y latencias controladas; no hace red.
  *   Reproduce las condiciones de transporte (offline, error de servidor, tiempo de espera) con códigos especiales
  *   y también detecta el estado real de conexión del navegador.
- * - Modo `remote`: esqueleto para endpoints futuros (ver src/config/env.ts → ENDPOINTS). No se usa en el demo.
+ * - Modo `remote`: esqueleto para endpoints futuros (ver src/config/env.ts → ENDPOINTS).
  *
  * La interfaz `TrazaApi` es el contrato que las islas consumen; cambiar de modo no cambia la UI.
  */
@@ -32,7 +32,7 @@ export interface VerifyOptions {
   tenant: TenantId;
   locale: Locale;
   signal?: AbortSignal;
-  /** Latencia simulada en ms (solo mock). Por defecto 450–900 ms. */
+  /** Latencia artificial en ms (solo mock). Por defecto 450–900 ms. */
   latency?: number;
 }
 
@@ -64,7 +64,7 @@ export function isBrowserOffline(): boolean {
   return typeof navigator !== 'undefined' && navigator.onLine === false;
 }
 
-/** Espera simulada, cancelable con AbortSignal. */
+/** Espera artificial, cancelable con AbortSignal. */
 export function simulateLatency(ms: number, signal?: AbortSignal): Promise<void> {
   return new Promise((resolve, reject) => {
     if (signal?.aborted) return reject(new ApiError('aborted'));
@@ -92,7 +92,7 @@ function pad(n: number, width: number): string {
 }
 
 /* ------------------------------------------------------------------ */
-/* Implementación simulada                                             */
+/* Implementación local (mock)                                             */
 /* ------------------------------------------------------------------ */
 
 export function createMockApi(): TrazaApi {

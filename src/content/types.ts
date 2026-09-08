@@ -5,7 +5,7 @@
  * - Nada se afirma como hecho si no está respaldado por una fuente aprobada. Las cantidades y la
  *   arquitectura de seguridad del caso licores se presentan como "propuesta de piloto" o "arquitectura objetivo".
  * - Ninguna relación con gobiernos, agencias, clientes, certificaciones, escala, uptime o impacto económico
- *   se presenta como hecho. Los datos visibles en demos son simulados.
+ *   se presenta como hecho.
  * - Nunca se llama "auténtico" a un producto solo porque una firma sea sintácticamente válida.
  * - Sin datos personales ni tributarios reales.
  */
@@ -74,7 +74,7 @@ export interface Cta {
   /** Ruta interna por clave (preferida) o enlace externo/ancla en `href`. */
   key?: RouteKey;
   href?: string;
-  /** Sufijo opcional para la ruta (por ejemplo `?t=licores` o `#demo`). */
+  /** Sufijo opcional para la ruta (por ejemplo `?t=licores` o `#historia`). */
   suffix?: string;
   variant?: 'primary' | 'secondary' | 'ghost' | 'link';
   external?: boolean;
@@ -139,7 +139,7 @@ export interface AudienceCard {
   icon: IconName;
 }
 
-export interface DemoCard {
+export interface PerspectiveCard {
   key: 'verify' | 'journey' | 'institutional';
   tag: string;
   title: string;
@@ -168,14 +168,6 @@ export interface CommonContent {
     defaultDescription: string;
     ogImageAlt: string;
   };
-  demoBadge: {
-    /** Texto completo: "Demostración conceptual — datos simulados". */
-    long: string;
-    /** Versión corta para móviles. */
-    short: string;
-    /** Explicación accesible (tooltip / texto oculto). */
-    explain: string;
-  };
   skipLink: string;
   nav: {
     ariaLabel: string;
@@ -196,7 +188,7 @@ export interface CommonContent {
     columns: FooterColumn[];
     /** Aviso legal breve con ©, sin afirmar registro ni jurisdicción. */
     legal: string;
-    /** Descargo de responsabilidad: demo conceptual, datos simulados, sin relación institucional afirmada. */
+    /** Descargo de responsabilidad: sin relación institucional afirmada. */
     disclaimer: string;
     privacyLabel: string;
     contactLabel: string;
@@ -210,7 +202,7 @@ export interface CommonContent {
     close: string;
     back: string;
     breadcrumbs: string;
-    demoRegion: string;
+    toolRegion: string;
   };
   states: {
     loading: string;
@@ -257,7 +249,7 @@ export interface HomeContent {
     mantra: string;
     primaryCta: Cta;
     secondaryCta: Cta;
-    /** Tarjeta de unidad simulada del hero. */
+    /** Tarjeta de unidad del hero. */
     unitPreview: {
       caption: string;
       code: string;
@@ -291,11 +283,11 @@ export interface HomeContent {
     intro: string;
     items: AudienceCard[];
   };
-  demos: {
+  perspectives: {
     eyebrow: string;
     title: string;
     intro: string;
-    items: DemoCard[];
+    items: PerspectiveCard[];
     note: string;
   };
   useCase: {
@@ -385,7 +377,7 @@ export interface SectorPageContent {
   approach: { title: string; intro: string; items: Feature[] };
   flow: { title: string; intro: string; steps: Step[] };
   outcomes: { title: string; intro: string; items: string[]; note: string };
-  demos: { title: string; items: DemoCard[] };
+  perspectives: { title: string; items: PerspectiveCard[] };
   /** Descargo específico: nada de lo anterior afirma clientes, certificaciones ni resultados medidos. */
   disclaimer: string;
   cta: { title: string; body: string; primaryCta: Cta; secondaryCta: Cta };
@@ -424,7 +416,7 @@ export interface CaseSpiritsContent {
     title: string;
     intro: string;
     items: Feature[];
-    /** "Arquitectura objetivo propuesta; no implementada ni auditada en este demo." */
+    /** "Arquitectura objetivo de la propuesta: no implementada todavía." */
     note: string;
   };
   fieldInspection: { title: string; body: string; bullets: string[] };
@@ -471,6 +463,8 @@ export interface CompanyContent {
     emailFallback: string;
     responseNote: string;
   };
+  /** Datos identificativos de la empresa (razón social, marca, actividad, sitio). */
+  legal: { title: string; items: { label: string; value: string }[] };
   disclaimer: string;
 }
 

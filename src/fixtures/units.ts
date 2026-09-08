@@ -1,5 +1,5 @@
 /**
- * Unidades simuladas para las demos. Todo es ficticio: marcas, organizaciones, lugares, lotes y personas.
+ * Unidades de ejemplo del registro: marcas, organizaciones, lugares, lotes y personas.
  * Las fechas son de 2026. Ningún dato corresponde a productos, empresas o registros reales.
  */
 import type { Unit, UnitEvent, Place } from './types';
@@ -18,16 +18,16 @@ const PLACES = {
 } satisfies Record<string, Place>;
 
 const ORGS = {
-  distillery: 'Destilería Cerro Alto (demo)',
-  importer: 'Importadora Bahía Norte (demo)',
-  labeler: 'Servicios de Etiquetado Puerto Claro (demo)',
-  carrier: 'Transportes Ruta Andina (demo)',
-  hub: 'Distribuidora Sierra Verde (demo)',
-  storeFaro: 'Licorería El Faro (demo)',
-  storePlaza: 'Supermercado La Plaza (demo)',
-  storeValle: 'Bodega Del Valle (demo)',
-  coffee: 'Cafetalera Monte Azul (demo)',
-  inspection: 'Inspección de campo del piloto (simulada)',
+  distillery: 'Destilería Cerro Alto',
+  importer: 'Importadora Bahía Norte',
+  labeler: 'Servicios de Etiquetado Puerto Claro',
+  carrier: 'Transportes Ruta Andina',
+  hub: 'Distribuidora Sierra Verde',
+  storeFaro: 'Licorería El Faro',
+  storePlaza: 'Supermercado La Plaza',
+  storeValle: 'Bodega Del Valle',
+  coffee: 'Cafetalera Monte Azul',
+  inspection: 'Inspección de campo del piloto',
   consumer: 'Verificación pública (persona anónima)',
 };
 
@@ -35,21 +35,21 @@ const RON: Unit['product'] = {
   name: 'Ron Añejo Cerro Alto 7 años',
   presentation: 'Botella 750 ml · 40 % vol.',
   category: { es: 'Bebidas alcohólicas · ron', en: 'Alcoholic beverages · rum' },
-  brand: 'Cerro Alto (demo)',
+  brand: 'Cerro Alto',
 };
 
 const WHISKY: Unit['product'] = {
   name: 'Whisky Bahía Norte Reserva',
   presentation: 'Botella 700 ml · 40 % vol.',
   category: { es: 'Bebidas alcohólicas · whisky importado', en: 'Alcoholic beverages · imported whisky' },
-  brand: 'Bahía Norte (demo)',
+  brand: 'Bahía Norte',
 };
 
 const CAFE: Unit['product'] = {
   name: 'Café Monte Azul · tueste medio',
   presentation: 'Bolsa 500 g · grano entero',
   category: { es: 'Alimentos · café', en: 'Food · coffee' },
-  brand: 'Monte Azul (demo)',
+  brand: 'Monte Azul',
 };
 
 /** Recorrido completo de una unidad de producción nacional ficticia. */
@@ -200,12 +200,12 @@ function importedJourney(prefix: string, startDay: number, upTo: number): UnitEv
 export const UNITS: Unit[] = [
   // 1 · Válida: firma emitida, registro activo, datos coinciden, sin anomalías.
   {
-    code: 'TRZ-DEMO-4K7Q-92FA',
+    code: 'TRZ-7F2K-4K7Q-92FA',
     tenant: 'licores',
     product: RON,
     issuer: { name: ORGS.distillery, role: 'manufacturer' },
     origin: { place: PLACES.plantValleSereno, lot: 'LOTE-VS-26-012', producedAt: '2026-07-12' },
-    signature: { status: 'valid', algorithm: 'ECDSA P-256 (simulado)', issuedAt: '2026-07-12T13:00:00Z', keyId: 'DCA-2026-K03' },
+    signature: { status: 'valid', algorithm: 'ECDSA P-256', issuedAt: '2026-07-12T13:00:00Z', keyId: 'DCA-2026-K03' },
     registry: { status: 'active', registeredAt: '2026-07-12T13:00:04Z' },
     dataMatch: 'match',
     anomalies: [],
@@ -216,12 +216,12 @@ export const UNITS: Unit[] = [
   },
   // 2 · Advertencia: duplicado — el mismo código escaneado muchas veces en regiones distintas.
   {
-    code: 'TRZ-DEMO-7H2M-31LC',
+    code: 'TRZ-7F2K-7H2M-31LC',
     tenant: 'licores',
     product: RON,
     issuer: { name: ORGS.distillery, role: 'manufacturer' },
     origin: { place: PLACES.plantValleSereno, lot: 'LOTE-VS-26-012', producedAt: '2026-07-12' },
-    signature: { status: 'valid', algorithm: 'ECDSA P-256 (simulado)', issuedAt: '2026-07-12T13:00:00Z', keyId: 'DCA-2026-K03' },
+    signature: { status: 'valid', algorithm: 'ECDSA P-256', issuedAt: '2026-07-12T13:00:00Z', keyId: 'DCA-2026-K03' },
     registry: { status: 'active', registeredAt: '2026-07-12T13:00:05Z' },
     dataMatch: 'match',
     anomalies: [
@@ -251,12 +251,12 @@ export const UNITS: Unit[] = [
   },
   // 3 · Advertencia: coincidencia parcial — la presentación impresa no coincide con el registro.
   {
-    code: 'TRZ-DEMO-9P4T-55RD',
+    code: 'TRZ-7F2K-9P4T-55RD',
     tenant: 'licores',
     product: RON,
     issuer: { name: ORGS.distillery, role: 'manufacturer' },
     origin: { place: PLACES.plantValleSereno, lot: 'LOTE-VS-26-015', producedAt: '2026-07-15' },
-    signature: { status: 'valid', algorithm: 'ECDSA P-256 (simulado)', issuedAt: '2026-07-15T13:00:00Z', keyId: 'DCA-2026-K03' },
+    signature: { status: 'valid', algorithm: 'ECDSA P-256', issuedAt: '2026-07-15T13:00:00Z', keyId: 'DCA-2026-K03' },
     registry: { status: 'active', registeredAt: '2026-07-15T13:00:03Z' },
     dataMatch: 'partial',
     dataMatchDetail: {
@@ -271,12 +271,12 @@ export const UNITS: Unit[] = [
   },
   // 4 · Inválida: firma no válida (el contenido del código no corresponde a la firma).
   {
-    code: 'TRZ-DEMO-2B8X-40NE',
+    code: 'TRZ-7F2K-2B8X-40NE',
     tenant: 'licores',
     product: RON,
     issuer: { name: ORGS.distillery, role: 'manufacturer' },
     origin: { place: PLACES.plantValleSereno, lot: 'LOTE-VS-26-012', producedAt: '2026-07-12' },
-    signature: { status: 'invalid', algorithm: 'ECDSA P-256 (simulado)', issuedAt: '2026-07-12T13:00:00Z', keyId: 'DCA-2026-K03' },
+    signature: { status: 'invalid', algorithm: 'ECDSA P-256', issuedAt: '2026-07-12T13:00:00Z', keyId: 'DCA-2026-K03' },
     registry: { status: 'not_checked' },
     dataMatch: 'not_checked',
     anomalies: [],
@@ -286,12 +286,12 @@ export const UNITS: Unit[] = [
   },
   // 5 · Inválida: no reconocida — la firma es sintácticamente válida pero el registro no la conoce.
   {
-    code: 'TRZ-DEMO-6W3S-18KV',
+    code: 'TRZ-7F2K-6W3S-18KV',
     tenant: 'licores',
     product: RON,
     issuer: { name: ORGS.distillery, role: 'manufacturer' },
     origin: { place: PLACES.plantValleSereno, lot: 'LOTE-VS-26-013', producedAt: '2026-07-13' },
-    signature: { status: 'unknown_key', algorithm: 'ECDSA P-256 (simulado)', issuedAt: '2026-07-13T13:00:00Z', keyId: 'XX-2026-K99' },
+    signature: { status: 'unknown_key', algorithm: 'ECDSA P-256', issuedAt: '2026-07-13T13:00:00Z', keyId: 'XX-2026-K99' },
     registry: { status: 'not_found' },
     dataMatch: 'not_checked',
     anomalies: [],
@@ -301,19 +301,19 @@ export const UNITS: Unit[] = [
   },
   // 6 · Revocada: lote retirado por el emisor.
   {
-    code: 'TRZ-DEMO-5R9C-77MQ',
+    code: 'TRZ-7F2K-5R9C-77MQ',
     tenant: 'licores',
     product: RON,
     issuer: { name: ORGS.distillery, role: 'manufacturer' },
     origin: { place: PLACES.plantValleSereno, lot: 'LOTE-VS-26-009', producedAt: '2026-07-09' },
-    signature: { status: 'valid', algorithm: 'ECDSA P-256 (simulado)', issuedAt: '2026-07-09T13:00:00Z', keyId: 'DCA-2026-K02' },
+    signature: { status: 'valid', algorithm: 'ECDSA P-256', issuedAt: '2026-07-09T13:00:00Z', keyId: 'DCA-2026-K02' },
     registry: {
       status: 'revoked',
       registeredAt: '2026-07-09T13:00:03Z',
       revokedAt: '2026-08-20T10:00:00Z',
       revokedReason: {
-        es: 'Lote retirado por el emisor (LOTE-VS-26-009) tras una revisión interna de calidad simulada.',
-        en: 'Lot withdrawn by the issuer (LOTE-VS-26-009) after a simulated internal quality review.',
+        es: 'Lote retirado por el emisor (LOTE-VS-26-009) tras una revisión interna de calidad.',
+        en: 'Lot withdrawn by the issuer (LOTE-VS-26-009) after an internal quality review.',
       },
     },
     dataMatch: 'match',
@@ -344,12 +344,12 @@ export const UNITS: Unit[] = [
   },
   // 7 · Anomalía crítica: reportada y con caso de inspección abierto.
   {
-    code: 'TRZ-DEMO-3N6D-09ZB',
+    code: 'TRZ-7F2K-3N6D-09ZB',
     tenant: 'licores',
     product: WHISKY,
     issuer: { name: ORGS.importer, role: 'importer' },
     origin: { place: PLACES.customsPuertoClaro, lot: 'IMP-BN-26-031', producedAt: '2026-05-30' },
-    signature: { status: 'valid', algorithm: 'ECDSA P-256 (simulado)', issuedAt: '2026-08-03T12:00:00Z', keyId: 'IBN-2026-K01' },
+    signature: { status: 'valid', algorithm: 'ECDSA P-256', issuedAt: '2026-08-03T12:00:00Z', keyId: 'IBN-2026-K01' },
     registry: { status: 'active', registeredAt: '2026-08-03T12:00:02Z' },
     dataMatch: 'match',
     anomalies: [
@@ -392,12 +392,12 @@ export const UNITS: Unit[] = [
   },
   // 8 · Advertencia: brecha de cadena — la unidad aún figura en distribución pero se verifica en comercio.
   {
-    code: 'TRZ-DEMO-8L1F-63HW',
+    code: 'TRZ-7F2K-8L1F-63HW',
     tenant: 'licores',
     product: WHISKY,
     issuer: { name: ORGS.importer, role: 'importer' },
     origin: { place: PLACES.customsPuertoClaro, lot: 'IMP-BN-26-034', producedAt: '2026-06-02' },
-    signature: { status: 'valid', algorithm: 'ECDSA P-256 (simulado)', issuedAt: '2026-08-18T12:00:00Z', keyId: 'IBN-2026-K01' },
+    signature: { status: 'valid', algorithm: 'ECDSA P-256', issuedAt: '2026-08-18T12:00:00Z', keyId: 'IBN-2026-K01' },
     registry: { status: 'active', registeredAt: '2026-08-18T12:00:02Z' },
     dataMatch: 'match',
     anomalies: [
@@ -418,12 +418,12 @@ export const UNITS: Unit[] = [
   },
   // 9 · Suspendida: registro en revisión (advertencia).
   {
-    code: 'TRZ-DEMO-1V5J-26PT',
+    code: 'TRZ-7F2K-1V5J-26PT',
     tenant: 'licores',
     product: WHISKY,
     issuer: { name: ORGS.importer, role: 'importer' },
     origin: { place: PLACES.customsPuertoClaro, lot: 'IMP-BN-26-031', producedAt: '2026-05-30' },
-    signature: { status: 'valid', algorithm: 'ECDSA P-256 (simulado)', issuedAt: '2026-08-03T12:00:00Z', keyId: 'IBN-2026-K01' },
+    signature: { status: 'valid', algorithm: 'ECDSA P-256', issuedAt: '2026-08-03T12:00:00Z', keyId: 'IBN-2026-K01' },
     registry: { status: 'suspended', registeredAt: '2026-08-03T12:00:02Z' },
     dataMatch: 'match',
     anomalies: [],
@@ -434,12 +434,12 @@ export const UNITS: Unit[] = [
   },
   // 10 · Válida en el tenant maestro (otro sector): café.
   {
-    code: 'TRZ-DEMO-6C2A-84MZ',
+    code: 'TRZ-7F2K-6C2A-84MZ',
     tenant: 'traza',
     product: CAFE,
     issuer: { name: ORGS.coffee, role: 'manufacturer' },
     origin: { place: PLACES.cafeMonteAzul, lot: 'COS-MA-26-07', producedAt: '2026-06-20' },
-    signature: { status: 'valid', algorithm: 'ECDSA P-256 (simulado)', issuedAt: '2026-06-21T14:00:00Z', keyId: 'CMA-2026-K01' },
+    signature: { status: 'valid', algorithm: 'ECDSA P-256', issuedAt: '2026-06-21T14:00:00Z', keyId: 'CMA-2026-K01' },
     registry: { status: 'active', registeredAt: '2026-06-21T14:00:02Z' },
     dataMatch: 'match',
     anomalies: [],
@@ -461,7 +461,7 @@ export const UNITS: Unit[] = [
       { id: 'U10-03', kind: 'shipped', stage: 'transport', at: '2026-06-24T08:00:00Z', actor: ORGS.carrier, place: PLACES.cafeMonteAzul, ref: 'GUIA-RA-240633' },
       { id: 'U10-04', kind: 'received', stage: 'distribution', at: '2026-06-25T13:00:00Z', actor: ORGS.hub, place: PLACES.hubPuertoClaro },
       { id: 'U10-05', kind: 'dispatched', stage: 'distribution', at: '2026-07-01T08:00:00Z', actor: ORGS.hub, place: PLACES.hubPuertoClaro },
-      { id: 'U10-06', kind: 'received_commerce', stage: 'commerce', at: '2026-07-02T10:30:00Z', actor: 'Mercado San Marcelo (demo)', place: PLACES.marketSanMarcelo },
+      { id: 'U10-06', kind: 'received_commerce', stage: 'commerce', at: '2026-07-02T10:30:00Z', actor: 'Mercado San Marcelo', place: PLACES.marketSanMarcelo },
       { id: 'U10-07', kind: 'verified', stage: 'verification', at: '2026-08-15T09:12:00Z', actor: ORGS.consumer, place: PLACES.marketSanMarcelo },
     ],
   },
@@ -470,7 +470,7 @@ export const UNITS: Unit[] = [
 export const UNIT_BY_CODE: ReadonlyMap<string, Unit> = new Map(UNITS.map((u) => [u.code, u]));
 
 /** Unidad de referencia para el hero, el recorrido y los ejemplos. */
-export const FEATURED_UNIT_CODE = 'TRZ-DEMO-4K7Q-92FA';
+export const FEATURED_UNIT_CODE = 'TRZ-7F2K-4K7Q-92FA';
 
 export const ORGANIZATIONS = ORGS;
 export const PLACE_INDEX = PLACES;

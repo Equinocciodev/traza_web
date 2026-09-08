@@ -1,7 +1,7 @@
 /**
- * Fixtures de la DEMO C · Vista institucional (alertas, casos, inspecciones de campo, cronología de auditoría y KPIs).
+ * Fixtures de la vista institucional (alertas, casos, inspecciones de campo, cronología de auditoría y KPIs).
  *
- * TODO es ficticio y simulado: personas, organizaciones, sitios, regiones, folios, fechas y cifras.
+ * Datos de ejemplo del registro: personas, organizaciones, sitios, regiones, folios, fechas y cifras.
  * Ningún dato personal ni tributario. Las regiones son las regiones ficticias de `units.ts`.
  * Nada de lo aquí descrito corresponde a una implementación real ni a una entidad de control real.
  */
@@ -31,7 +31,7 @@ export const SEVERITIES: readonly Severity[] = ['critical', 'warning', 'info'] a
 export type CaseStatus = 'open' | 'in_review' | 'closed';
 export type InspectionStatus = 'scheduled' | 'done';
 
-/** Rol de quien actúa en la cronología. `observer` solo aparece en acciones simuladas de la sesión. */
+/** Rol de quien actúa en la cronología. `observer` solo aparece en acciones de la propia sesión. */
 export type ActorRole = 'system' | 'analyst' | 'inspector' | 'supervisor' | 'issuer' | 'observer';
 export const ACTOR_ROLES: readonly ActorRole[] = ['system', 'analyst', 'inspector', 'supervisor', 'issuer', 'observer'] as const;
 
@@ -52,7 +52,7 @@ export type AuditAction =
 
 export interface DemoPerson {
   id: string;
-  /** Nombre ficticio, siempre rotulado como tal. */
+  /** Nombre de la persona. */
   name: string;
   role: ActorRole;
 }
@@ -74,7 +74,7 @@ export interface InstitutionalAlert {
   explanation: LocalizedText;
   /** Caso vinculado, si existe. */
   caseId?: string;
-  /** Inspector ficticio asignado (id de `PEOPLE`). */
+  /** Inspector asignado (id de `PEOPLE`). */
   assignedTo?: string;
 }
 
@@ -133,22 +133,22 @@ export interface InstitutionalKpis {
 /* ------------------------------------------------------------------ */
 
 export const PEOPLE: readonly DemoPerson[] = [
-  { id: 'sys-rules', name: 'Motor de reglas (simulado)', role: 'system' },
-  { id: 'ana-quintero', name: 'Lucía Quintero (demo)', role: 'analyst' },
-  { id: 'insp-salcedo', name: 'Rodrigo Salcedo (demo)', role: 'inspector' },
-  { id: 'insp-ibarra', name: 'Mariana Ibarra (demo)', role: 'inspector' },
-  { id: 'sup-montiel', name: 'Andrés Montiel (demo)', role: 'supervisor' },
+  { id: 'sys-rules', name: 'Motor de reglas', role: 'system' },
+  { id: 'ana-quintero', name: 'Lucía Quintero', role: 'analyst' },
+  { id: 'insp-salcedo', name: 'Rodrigo Salcedo', role: 'inspector' },
+  { id: 'insp-ibarra', name: 'Mariana Ibarra', role: 'inspector' },
+  { id: 'sup-montiel', name: 'Andrés Montiel', role: 'supervisor' },
   { id: 'issuer-cerro-alto', name: ORGANIZATIONS.distillery, role: 'issuer' },
   { id: 'issuer-bahia-norte', name: ORGANIZATIONS.importer, role: 'issuer' },
 ] as const;
 
 export const PERSON_BY_ID: ReadonlyMap<string, DemoPerson> = new Map(PEOPLE.map((p) => [p.id, p]));
 
-/** Identidad que asume el rol "Inspector de campo (demo)": solo ve lo asignado a esta persona ficticia. */
-export const DEMO_INSPECTOR_ID = 'insp-salcedo';
+/** Identidad que asume el rol "Inspector de campo": solo ve lo asignado a esta persona. */
+export const INSPECTOR_ID = 'insp-salcedo';
 
-/** Prefijo del actor para las acciones que ejecuta la sesión de demostración. */
-export const DEMO_SESSION_ACTOR_PREFIX = 'demo:';
+/** Prefijo del actor para las acciones que ejecuta la sesión. */
+export const SESSION_ACTOR_PREFIX = 'session:';
 
 /* ------------------------------------------------------------------ */
 /* Alertas (ordenadas de más reciente a más antigua)                   */
@@ -159,7 +159,7 @@ export const ALERTS: readonly InstitutionalAlert[] = [
     id: 'ALR-2026-035',
     type: 'chain_gap',
     severity: 'info',
-    unitCode: 'TRZ-DEMO-8L1F-63HW',
+    unitCode: 'TRZ-7F2K-8L1F-63HW',
     region: 'Región Norte',
     detectedAt: '2026-09-02T12:20:00Z',
     status: 'open',
@@ -176,7 +176,7 @@ export const ALERTS: readonly InstitutionalAlert[] = [
     id: 'ALR-2026-034',
     type: 'suspended',
     severity: 'warning',
-    unitCode: 'TRZ-DEMO-1V5J-26PT',
+    unitCode: 'TRZ-7F2K-1V5J-26PT',
     region: 'Región Centro',
     detectedAt: '2026-09-01T10:05:00Z',
     status: 'open',
@@ -195,7 +195,7 @@ export const ALERTS: readonly InstitutionalAlert[] = [
     id: 'ALR-2026-033',
     type: 'partial_match',
     severity: 'warning',
-    unitCode: 'TRZ-DEMO-9P4T-55RD',
+    unitCode: 'TRZ-7F2K-9P4T-55RD',
     region: 'Región Centro',
     detectedAt: '2026-08-30T11:02:00Z',
     status: 'open',
@@ -212,7 +212,7 @@ export const ALERTS: readonly InstitutionalAlert[] = [
     id: 'ALR-2026-032',
     type: 'geo_inconsistent',
     severity: 'warning',
-    unitCode: 'TRZ-DEMO-7H2M-31LC',
+    unitCode: 'TRZ-7F2K-7H2M-31LC',
     region: 'Región Sur',
     detectedAt: '2026-08-29T20:12:00Z',
     status: 'open',
@@ -231,7 +231,7 @@ export const ALERTS: readonly InstitutionalAlert[] = [
     id: 'ALR-2026-031',
     type: 'duplicate_scans',
     severity: 'warning',
-    unitCode: 'TRZ-DEMO-7H2M-31LC',
+    unitCode: 'TRZ-7F2K-7H2M-31LC',
     region: 'Región Norte',
     detectedAt: '2026-08-29T20:10:00Z',
     status: 'acknowledged',
@@ -250,7 +250,7 @@ export const ALERTS: readonly InstitutionalAlert[] = [
     id: 'ALR-2026-030',
     type: 'reported',
     severity: 'critical',
-    unitCode: 'TRZ-DEMO-3N6D-09ZB',
+    unitCode: 'TRZ-7F2K-3N6D-09ZB',
     region: 'Región Centro',
     detectedAt: '2026-08-28T16:45:00Z',
     status: 'acknowledged',
@@ -269,7 +269,7 @@ export const ALERTS: readonly InstitutionalAlert[] = [
     id: 'ALR-2026-029',
     type: 'duplicate_scans',
     severity: 'info',
-    unitCode: 'TRZ-DEMO-9P4T-55RD',
+    unitCode: 'TRZ-7F2K-9P4T-55RD',
     region: 'Región Centro',
     detectedAt: '2026-08-30T10:25:00Z',
     status: 'closed',
@@ -286,7 +286,7 @@ export const ALERTS: readonly InstitutionalAlert[] = [
     id: 'ALR-2026-028',
     type: 'lot_withdrawn',
     severity: 'critical',
-    unitCode: 'TRZ-DEMO-5R9C-77MQ',
+    unitCode: 'TRZ-7F2K-5R9C-77MQ',
     region: 'Región Sur',
     detectedAt: '2026-08-20T10:00:00Z',
     status: 'closed',
@@ -295,8 +295,8 @@ export const ALERTS: readonly InstitutionalAlert[] = [
       en: 'Lot LOTE-VS-26-009 withdrawn by the issuer; the identifier is listed as revoked.',
     },
     explanation: {
-      es: 'El emisor publicó la revocación del lote LOTE-VS-26-009 (RET-2026-004) tras una revisión interna de calidad simulada. Toda verificación de este identificador muestra el estado revocado. Siguiente paso: confirmar que las unidades del lote salieron de los puntos de venta.',
-      en: 'The issuer published the revocation of lot LOTE-VS-26-009 (RET-2026-004) after a simulated internal quality review. Every verification of this identifier shows the revoked state. Next step: confirm that the lot’s units have left the points of sale.',
+      es: 'El emisor publicó la revocación del lote LOTE-VS-26-009 (RET-2026-004) tras una revisión interna de calidad. Toda verificación de este identificador muestra el estado revocado. Siguiente paso: confirmar que las unidades del lote salieron de los puntos de venta.',
+      en: 'The issuer published the revocation of lot LOTE-VS-26-009 (RET-2026-004) after an internal quality review. Every verification of this identifier shows the revoked state. Next step: confirm that the lot’s units have left the points of sale.',
     },
     caseId: 'CASO-2026-0139',
     assignedTo: 'insp-ibarra',
@@ -305,7 +305,7 @@ export const ALERTS: readonly InstitutionalAlert[] = [
     id: 'ALR-2026-026',
     type: 'chain_gap',
     severity: 'info',
-    unitCode: 'TRZ-DEMO-4K7Q-92FA',
+    unitCode: 'TRZ-7F2K-4K7Q-92FA',
     region: 'Región Norte',
     detectedAt: '2026-07-22T11:05:00Z',
     status: 'closed',
@@ -352,8 +352,8 @@ export const CASES: readonly InstitutionalCase[] = [
         at: '2026-09-01T11:35:00Z',
         actorId: 'sys-rules',
         description: {
-          es: 'Suspensión del identificador confirmada en el registro por Importadora Bahía Norte (demo).',
-          en: 'Identifier suspension confirmed in the registry by Importadora Bahía Norte (fictitious).',
+          es: 'Suspensión del identificador confirmada en el registro por Importadora Bahía Norte.',
+          en: 'Identifier suspension confirmed in the registry by Importadora Bahía Norte.',
         },
       },
       {
@@ -370,8 +370,8 @@ export const CASES: readonly InstitutionalCase[] = [
   {
     id: 'CASO-2026-0143',
     title: {
-      es: 'Verificaciones repetidas del código TRZ-DEMO-7H2M-31LC en tres regiones',
-      en: 'Repeated verifications of code TRZ-DEMO-7H2M-31LC across three regions',
+      es: 'Verificaciones repetidas del código TRZ-7F2K-7H2M-31LC en tres regiones',
+      en: 'Repeated verifications of code TRZ-7F2K-7H2M-31LC across three regions',
     },
     status: 'open',
     alertIds: ['ALR-2026-031', 'ALR-2026-032'],
@@ -441,8 +441,8 @@ export const CASES: readonly InstitutionalCase[] = [
         at: '2026-08-31T11:50:00Z',
         actorId: 'insp-salcedo',
         description: {
-          es: 'Visita realizada: sello dañado confirmado, unidad retenida y muestra enviada al emisor para revisión. Acta simulada adjunta.',
-          en: 'Visit completed: damaged seal confirmed, unit retained and sample sent to the issuer for review. Simulated record attached.',
+          es: 'Visita realizada: sello dañado confirmado, unidad retenida y muestra enviada al emisor para revisión. Acta adjunta.',
+          en: 'Visit completed: damaged seal confirmed, unit retained and sample sent to the issuer for review. Record attached.',
         },
       },
       {
@@ -450,8 +450,8 @@ export const CASES: readonly InstitutionalCase[] = [
         at: '2026-09-02T08:40:00Z',
         actorId: 'ana-quintero',
         description: {
-          es: 'Solicitud de dictamen enviada a Importadora Bahía Norte (demo). A la espera de respuesta.',
-          en: 'Statement requested from Importadora Bahía Norte (fictitious). Awaiting reply.',
+          es: 'Solicitud de dictamen enviada a Importadora Bahía Norte. A la espera de respuesta.',
+          en: 'Statement requested from Importadora Bahía Norte. Awaiting reply.',
         },
       },
     ],
@@ -558,8 +558,8 @@ export const INSPECTIONS: readonly FieldInspection[] = [
     at: '2026-08-23T10:15:00Z',
     inspectorId: 'insp-ibarra',
     result: {
-      es: '3 unidades del lote retiradas; acta firmada por el comercio (simulada).',
-      en: '3 units of the lot removed; record signed by the retailer (simulated).',
+      es: '3 unidades del lote retiradas; acta firmada por el comercio.',
+      en: '3 units of the lot removed; record signed by the retailer.',
     },
   },
 ];
@@ -578,7 +578,7 @@ export const AUDIT_LOG: readonly AuditEntry[] = [
     action: 'summary_exported',
     object: 'RESUMEN-S36',
     result: OK,
-    description: { es: 'Resumen semanal del piloto exportado (simulado).', en: 'Weekly pilot summary exported (simulated).' },
+    description: { es: 'Resumen semanal del piloto exportado.', en: 'Weekly pilot summary exported.' },
   },
   {
     id: 'AUD-2026-0226',
@@ -605,7 +605,7 @@ export const AUDIT_LOG: readonly AuditEntry[] = [
     action: 'alert_created',
     object: 'ALR-2026-035',
     result: { es: 'Creada · informativa', en: 'Created · info' },
-    description: { es: 'Brecha de cadena detectada en TRZ-DEMO-8L1F-63HW.', en: 'Chain gap detected on TRZ-DEMO-8L1F-63HW.' },
+    description: { es: 'Brecha de cadena detectada en TRZ-7F2K-8L1F-63HW.', en: 'Chain gap detected on TRZ-7F2K-8L1F-63HW.' },
   },
   {
     id: 'AUD-2026-0223',
@@ -614,7 +614,7 @@ export const AUDIT_LOG: readonly AuditEntry[] = [
     action: 'issuer_requested',
     object: 'CASO-2026-0142',
     result: { es: 'Enviada', en: 'Sent' },
-    description: { es: 'Solicitud de dictamen enviada a Importadora Bahía Norte (demo).', en: 'Statement requested from Importadora Bahía Norte (fictitious).' },
+    description: { es: 'Solicitud de dictamen enviada a Importadora Bahía Norte.', en: 'Statement requested from Importadora Bahía Norte.' },
   },
   {
     id: 'AUD-2026-0222',
@@ -641,7 +641,7 @@ export const AUDIT_LOG: readonly AuditEntry[] = [
     action: 'alert_created',
     object: 'ALR-2026-034',
     result: { es: 'Creada · advertencia', en: 'Created · warning' },
-    description: { es: 'Identificador TRZ-DEMO-1V5J-26PT suspendido en el registro.', en: 'Identifier TRZ-DEMO-1V5J-26PT suspended in the registry.' },
+    description: { es: 'Identificador TRZ-7F2K-1V5J-26PT suspendido en el registro.', en: 'Identifier TRZ-7F2K-1V5J-26PT suspended in the registry.' },
   },
   {
     id: 'AUD-2026-0219',
@@ -659,7 +659,7 @@ export const AUDIT_LOG: readonly AuditEntry[] = [
     action: 'alert_created',
     object: 'ALR-2026-033',
     result: { es: 'Creada · advertencia', en: 'Created · warning' },
-    description: { es: 'Coincidencia parcial de datos en TRZ-DEMO-9P4T-55RD (1 L frente a 750 ml).', en: 'Partial data match on TRZ-DEMO-9P4T-55RD (1 L vs 750 ml).' },
+    description: { es: 'Coincidencia parcial de datos en TRZ-7F2K-9P4T-55RD (1 L frente a 750 ml).', en: 'Partial data match on TRZ-7F2K-9P4T-55RD (1 L vs 750 ml).' },
   },
   {
     id: 'AUD-2026-0217',
@@ -677,7 +677,7 @@ export const AUDIT_LOG: readonly AuditEntry[] = [
     action: 'alert_created',
     object: 'ALR-2026-029',
     result: { es: 'Creada · informativa', en: 'Created · info' },
-    description: { es: 'Verificaciones repetidas en TRZ-DEMO-9P4T-55RD.', en: 'Repeated verifications on TRZ-DEMO-9P4T-55RD.' },
+    description: { es: 'Verificaciones repetidas en TRZ-7F2K-9P4T-55RD.', en: 'Repeated verifications on TRZ-7F2K-9P4T-55RD.' },
   },
   {
     id: 'AUD-2026-0215',
@@ -704,7 +704,7 @@ export const AUDIT_LOG: readonly AuditEntry[] = [
     action: 'alert_created',
     object: 'ALR-2026-032',
     result: { es: 'Creada · advertencia', en: 'Created · warning' },
-    description: { es: 'Incoherencia geográfica en TRZ-DEMO-7H2M-31LC.', en: 'Geographic inconsistency on TRZ-DEMO-7H2M-31LC.' },
+    description: { es: 'Incoherencia geográfica en TRZ-7F2K-7H2M-31LC.', en: 'Geographic inconsistency on TRZ-7F2K-7H2M-31LC.' },
   },
   {
     id: 'AUD-2026-0212',
@@ -713,7 +713,7 @@ export const AUDIT_LOG: readonly AuditEntry[] = [
     action: 'alert_created',
     object: 'ALR-2026-031',
     result: { es: 'Creada · advertencia', en: 'Created · warning' },
-    description: { es: '14 verificaciones en 3 regiones para TRZ-DEMO-7H2M-31LC.', en: '14 verifications across 3 regions for TRZ-DEMO-7H2M-31LC.' },
+    description: { es: '14 verificaciones en 3 regiones para TRZ-7F2K-7H2M-31LC.', en: '14 verifications across 3 regions for TRZ-7F2K-7H2M-31LC.' },
   },
   {
     id: 'AUD-2026-0211',
@@ -803,7 +803,7 @@ export const AUDIT_LOG: readonly AuditEntry[] = [
     action: 'alert_created',
     object: 'ALR-2026-028',
     result: { es: 'Creada · crítica', en: 'Created · critical' },
-    description: { es: 'Lote retirado: identificador TRZ-DEMO-5R9C-77MQ marcado como revocado.', en: 'Lot withdrawn: identifier TRZ-DEMO-5R9C-77MQ marked as revoked.' },
+    description: { es: 'Lote retirado: identificador TRZ-7F2K-5R9C-77MQ marcado como revocado.', en: 'Lot withdrawn: identifier TRZ-7F2K-5R9C-77MQ marked as revoked.' },
   },
   {
     id: 'AUD-2026-0201',
@@ -830,15 +830,15 @@ export const AUDIT_LOG: readonly AuditEntry[] = [
     action: 'alert_created',
     object: 'ALR-2026-026',
     result: { es: 'Creada · informativa', en: 'Created · info' },
-    description: { es: 'Recepción en comercio fuera del umbral de 24 h para TRZ-DEMO-4K7Q-92FA.', en: 'Retail receipt outside the 24 h threshold for TRZ-DEMO-4K7Q-92FA.' },
+    description: { es: 'Recepción en comercio fuera del umbral de 24 h para TRZ-7F2K-4K7Q-92FA.', en: 'Retail receipt outside the 24 h threshold for TRZ-7F2K-4K7Q-92FA.' },
   },
 ];
 
 /* ------------------------------------------------------------------ */
-/* KPIs simulados                                                      */
+/* KPIs del período                                                      */
 /* ------------------------------------------------------------------ */
 
-/** Valores fijos y pequeños del periodo simulado; los contadores de alertas y casos se derivan de los fixtures. */
+/** Valores fijos y pequeños del periodo; los contadores de alertas y casos se derivan de los fixtures. */
 export const KPI_BASE = {
   unitsRegistered: 1284,
   verificationsPeriod: 312,

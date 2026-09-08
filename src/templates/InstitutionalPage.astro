@@ -1,6 +1,6 @@
 ---
 /**
- * DEMO C · Vista institucional (ES/EN). Banner permanente de demostración, cabecera compacta y la isla.
+ * Vista institucional (ES/EN). Aviso de solo lectura, cabecera compacta y la isla.
  * Nada de lo que muestra afirma implementación ni relación institucional.
  */
 import Base from '@/layouts/Base.astro';
@@ -30,7 +30,7 @@ const { institutional: t, common } = getContent(locale);
     </div>
   </div>
 
-  <header class="inst-hero" aria-label={common.a11y.demoRegion}>
+  <header class="inst-hero" aria-label={common.a11y.toolRegion}>
     <div class="container inst-hero__inner">
       <p class="eyebrow">{t.hero.eyebrow}</p>
       <h1>{t.hero.title}</h1>

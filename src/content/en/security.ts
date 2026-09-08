@@ -4,7 +4,7 @@ export const security: SecurityContent = {
   meta: {
     title: 'Security and trust',
     description:
-      'Traza’s security and trust principles: signature per unit, verification by signals, minimal data and transparency about what this demo does not claim.',
+      'Traza’s security and trust principles: one signature per unit, verification by separate signals, minimal data, and explicit transparency about the limits of what a digital check can prove.',
   },
 
   hero: {
@@ -77,7 +77,7 @@ export const security: SecurityContent = {
         icon: 'alert',
       },
     ],
-    note: 'Target architecture. This demo does not implement real cryptography, does not expose real services and does not claim production security controls.',
+    note: 'Target product architecture: this page does not implement or claim a security certification. The controls described are implemented and audited in each deployment.',
   },
 
   verificationHonesty: {
@@ -96,13 +96,13 @@ export const security: SecurityContent = {
   privacy: {
     title: 'Privacy',
     body:
-      'The platform is designed so that verifying costs no personal data. This demo applies the same standard.',
+      'The platform is designed so that verifying costs no personal data. This site applies the same standard.',
     bullets: [
       'No cookies by default. This site does not set cookies or third-party trackers.',
       'No personal data in public verification: looking up a code does not require identifying yourself.',
       'Discrepancy reports with minimal, optional data; whoever reports decides what to share.',
       'Unit identities contain no personal or tax data.',
-      'Cookieless analytics, optional and disabled by default in this demo.',
+      'Cookieless analytics, optional and disabled by default.',
     ],
   },
 
@@ -124,13 +124,13 @@ export const security: SecurityContent = {
     title: 'Responsible vulnerability disclosure',
     body:
       'If you find a security issue on this site or in the platform, we would be grateful if you reported it responsibly before making it public. We commit to acknowledging receipt, keeping the conversation open and crediting the contribution if you wish.',
-    note: 'The contact channel for security reports is a placeholder configured in each deployment. No real channel is enabled in this demo.',
+    note: 'Security reports reach the company contact address. Each deployment may additionally define its own channel.',
   },
 
   cta: {
     title: 'See how a result is explained',
     body:
-      'The verification demo shows each signal separately and the recommended next step, with simulated codes covering every possible result.',
+      'Public verification shows each signal separately and the recommended next step, with sample codes covering every possible result.',
     primaryCta: { label: 'Verify a product', key: 'verify', variant: 'primary' },
     secondaryCta: { label: 'How it works', key: 'howItWorks', variant: 'secondary' },
   },

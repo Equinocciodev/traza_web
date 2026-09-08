@@ -1,21 +1,21 @@
 import type { VerifyContent } from '../verify.types';
 
 /**
- * Demo A · Public verification (EN).
+ * Public verification (EN).
  * Plain, calm language. Never "authentic": the result describes what was checked.
  */
 export const verify: VerifyContent = {
   meta: {
     title: 'Verify a product',
     description:
-      'Public verification demo: scan or type a sample code and see what was checked, how much confidence it gives and what to do next. Simulated data.',
+      'Public verification of a product: scan or type the unit code and see what was checked, how much confidence each signal gives and what the recommended next step is.',
   },
 
   hero: {
-    eyebrow: 'Demo A · Public verification',
+    eyebrow: 'Public verification',
     title: 'Verify a product',
     subtitle:
-      'Scan a sample code or type it by hand. The result explains what the simulated record declares and what the person must compare with the product. This lookup does not certify physical authenticity.',
+      'Scan the code on the label or type it by hand. The result explains what the record declares and what the person must compare with the product. This lookup does not certify physical authenticity.',
     mantra: 'Scan. Compare. Understand.',
     requirement: 'No installation, no account: just a browser.',
   },
@@ -25,7 +25,7 @@ export const verify: VerifyContent = {
     contextLabel: 'Scope',
     registryLabel: 'Registry consulted',
     statusLabel: 'Deployment status',
-    switchLabel: 'View this demo as',
+    switchLabel: 'View this page as',
     options: [
       { id: 'traza', label: 'Traza master brand' },
       { id: 'licores', label: 'Spirits pilot (co-brand example)' },
@@ -35,7 +35,7 @@ export const verify: VerifyContent = {
 
   scanner: {
     title: 'Scan the code',
-    intro: 'Point the camera at the QR code on the label. In this demo you can also simulate scanning a sample code.',
+    intro: 'Point the camera at the QR code on the label. You can also type the code by hand if the camera is unavailable.',
     viewerLabel: 'Scanning viewer',
     simulate: 'Simulate scan',
     simulating: 'Scanning…',
@@ -70,7 +70,7 @@ export const verify: VerifyContent = {
     submit: 'Verify',
     errors: {
       empty: 'Type the code printed under the QR to verify.',
-      format: 'The code is not in the expected format: TRZ followed by three blocks of four letters or digits (for example, TRZ-DEMO-4K7Q-92FA).',
+      format: 'The code is not in the expected format: TRZ followed by three blocks of four letters or digits (for example, TRZ-7F2K-4K7Q-92FA).',
     },
     normalized: 'Code adjusted to the TRZ-XXXX-XXXX-XXXX format.',
     noscript:
@@ -78,13 +78,13 @@ export const verify: VerifyContent = {
   },
 
   scenarios: {
-    title: 'Demo scenarios',
+    title: 'Sample codes',
     intro: 'Each button fills in a sample code and runs the verification, or reproduces a device or network condition.',
     groups: { code: 'By sample code', transport: 'Network conditions', device: 'Device conditions' },
     codeLabel: 'Code',
     selected: 'Selected',
     network: {
-      title: 'Simulated network',
+      title: 'Network state',
       toggle: 'Simulate no connection',
       hint: 'While this is on, requests fail as if the device had no network. When you turn it off, the pending verification is retried automatically. The real browser state is detected too.',
     },
@@ -93,13 +93,12 @@ export const verify: VerifyContent = {
   states: {
     idle: {
       title: 'No result yet',
-      body: 'Scan a code, type it or pick a demo scenario. The result will appear here with its four checks explained.',
+      body: 'Scan a code, type it or pick one of the samples. The result will appear here with its four checks explained.',
     },
     loading: {
-      title: 'Consulting the demonstration registry…',
-      body: 'Preparing simulated signature, registry, data and signal results. No real product verification takes place.',
+      title: 'Consulting the registry…',
+      body: 'Checking signature, registry, data and signals. This lookup does not inspect the physical product.',
     },
-    simulatedTag: 'Simulated result',
     verifiedAtLabel: 'Lookup performed on',
     codeLabel: 'Code',
     registryLabel: 'Registry consulted',
@@ -138,7 +137,7 @@ export const verify: VerifyContent = {
     pendingCodeLabel: 'Pending code',
     autoRetryNote: 'When the connection returns, it will be retried automatically.',
     transportCodeNote:
-      'This demo code always reproduces this condition. To see the automatic recovery, switch "Simulate no connection" on and off with any other code.',
+      'This code always reproduces this condition. To see the automatic recovery, switch "Simulate no connection" on and off with any other code.',
     retry: 'Retry',
     typeAnother: 'Type another code',
     nothingChecked: 'None of the four checks was performed.',
@@ -149,16 +148,16 @@ export const verify: VerifyContent = {
     valid: {
       label: 'Example without alerts',
       confidence:
-        'The example declares a valid signature, an active record, matching data and no alerts. These are simulated results. The person must compare the information with the product; they do not certify physical authenticity or the absence of risks.',
+        'The record declares a valid signature, an active record, matching data and no alerts. The person must compare the information with the product: these checks do not certify physical authenticity or the absence of risks.',
     },
     warning: {
       label: 'Example with warnings',
-      confidence: 'The example record includes a warning. It describes a simulated signal requiring review; it does not prove fraud or establish that the physical product matches its data.',
+      confidence: 'The record includes a warning. It describes a signal requiring review; it does not prove fraud or establish that the physical product matches its data.',
     },
     invalid: {
       label: 'Invalid example',
       confidence:
-        'The demonstration lookup does not recognise a current identity for this code, or shows an unfavourable simulated result. It is not a check of the physical object.',
+        'The lookup does not recognise a current identity for this code, or the result is unfavourable. It is not a check of the physical object.',
     },
     unverifiable: {
       label: 'Lookup unavailable',
@@ -168,32 +167,32 @@ export const verify: VerifyContent = {
 
   reasons: {
     all_checks_passed: {
-      title: 'Simulated results available',
+      title: 'Results available',
       body: 'This example declares a valid signature, an active identifier, matching data and no recorded alerts. The match has not been checked against your product: compare the displayed information with the physical unit.',
     },
     anomalies_detected: {
       title: 'The example includes signals worth reviewing',
-      body: 'The simulated signature and registry results are favourable, but the example history includes a pattern to review. A signal does not prove fraud; compare the information with the product.',
+      body: 'Signature and registry are favourable, but the history includes a pattern to review. A signal does not prove fraud; compare the information with the product.',
     },
     data_partial: {
       title: 'Partial match declared in the example',
-      body: 'The demonstration data include a partial match. The page has not inspected the label or physical product; the person must compare their information with the record.',
+      body: 'The data match only in part. The page has not inspected the label or physical product; the person must compare their information with the record.',
     },
     registry_suspended: {
       title: 'Identity suspended in the example record',
-      body: 'The simulated scenario keeps this identifier under review while declaring a valid signature. It does not constitute verification of the physical product.',
+      body: 'This identifier remains under review while declaring a valid signature. It does not constitute verification of the physical product.',
     },
     signature_invalid: {
-      title: 'Invalid signature in the simulated scenario',
+      title: 'Invalid signature',
       body: 'The example represents a signature that does not correspond to the code contents. The lookup stops at that signal; it has not checked a real signature or established physical tampering.',
     },
     signature_malformed: {
-      title: 'Unreadable signature in the simulated scenario',
+      title: 'Unreadable signature',
       body: 'The example represents a signature that cannot be interpreted. It does not establish that the code or physical product has been tampered with.',
     },
     not_registered: {
       title: 'Identity not found in the example registry',
-      body: 'The code has the expected format but does not correspond to a known identity in this demonstration. This does not verify or determine the state of a physical product.',
+      body: 'The code has the expected format but does not correspond to any known identity in the registry. This does not verify or determine the state of a physical product.',
     },
     revoked: {
       title: 'Identity revoked in the example registry',
@@ -201,7 +200,7 @@ export const verify: VerifyContent = {
     },
     data_mismatch: {
       title: 'Data discrepancy declared in the example',
-      body: 'The simulated scenario includes a data discrepancy. The person must compare the product and label with the displayed information; this page has not inspected them.',
+      body: 'The record includes a data discrepancy. The person must compare the product and label with the displayed information; this page has not inspected them.',
     },
     registry_unavailable: {
       title: 'The registry is unavailable',
@@ -227,16 +226,16 @@ export const verify: VerifyContent = {
 
   checks: {
     title: 'Four readings and their limits',
-    intro: 'Demonstration results, separated by evidence type. Simulated lookup. Does not certify physical authenticity.',
+    intro: 'Results separated by evidence type. Does not certify physical authenticity.',
     outcomes: {
-      pass: 'Favourable · simulated',
-      warn: 'Warning · simulated',
-      fail: 'Unfavourable · simulated',
+      pass: 'Favourable',
+      warn: 'Warning',
+      fail: 'Unfavourable',
       skipped: 'Not performed',
     },
     signature: {
       title: 'Signature',
-      help: 'Issuer and integrity of the signed data. Simulated; does not prevent physical copies.',
+      help: 'Issuer and integrity of the signed data. Does not prevent physical copies.',
       status: {
         valid: 'The example declares a valid signature and a known issuer key.',
         invalid: 'The example represents a signature that does not correspond to the code contents.',
@@ -250,7 +249,7 @@ export const verify: VerifyContent = {
     },
     registry: {
       title: 'Registry status',
-      help: 'Identifier existence and declared status in the example registry. Does not demonstrate physical location.',
+      help: 'Identifier existence and declared status in the registry. Does not demonstrate physical location.',
       status: {
         active: 'Identifier found; active status declared in the example.',
         not_found: 'Identifier not found in the example registry.',
@@ -277,7 +276,7 @@ export const verify: VerifyContent = {
     anomalies: {
       title: 'Signals',
       help: 'Patterns in the available records. No alerts does not mean no risks.',
-      none: 'No alerts are declared in this simulated history; this does not imply an absence of risks.',
+      none: 'No alerts are declared in this history; this does not imply an absence of risks.',
       skipped: 'Not analysed.',
       detectedAtLabel: 'Detected on',
       severity: { info: 'Informational', warning: 'Warning', critical: 'Critical' },
@@ -293,7 +292,7 @@ export const verify: VerifyContent = {
   },
 
   unit: {
-    title: 'Declared data of the simulated unit',
+    title: 'Declared data of the unit',
     product: 'Product',
     presentation: 'Presentation',
     brand: 'Brand',
@@ -343,7 +342,7 @@ export const verify: VerifyContent = {
     steps: {
       keep_receipt: 'Keep the purchase receipt together with the code.',
       compare_physical: 'Compare the physical product with the registered data: name, presentation, lot and seal.',
-      report: 'If anything does not match, you can try the simulated discrepancy report on this page.',
+      report: 'If anything does not match, you can report the discrepancy from this page.',
       do_not_purchase: 'Do not buy or consume the unit until the situation is clarified.',
       contact_seller: 'Ask the seller about the origin of the unit and keep the receipt.',
       retry: 'Retry the verification in a few seconds.',
@@ -381,7 +380,6 @@ export const verify: VerifyContent = {
     emailLabel: 'Contact email',
     emailHint: 'Only if you want follow-up. Not required.',
     dataNote: 'Minimal data: no name, ID document or tax data are requested.',
-    simulatedNote: 'This report is simulated: it is not transmitted to nor stored on any server.',
     submit: 'Send report',
     sending: 'Sending…',
     cancel: 'Cancel',
@@ -402,7 +400,7 @@ export const verify: VerifyContent = {
         'In the proposed pilot, a field inspector can follow up and record what is observed on site.',
         'If you left an email, you would receive the outcome of the review.',
       ],
-      proposalNote: 'This flow describes a pilot proposal; there is no real follow-up in this demo.',
+      proposalNote: 'Follow-up on a report depends on the rules of each deployment.',
       done: 'Back to the result',
     },
     failure: {
@@ -431,21 +429,21 @@ export const verify: VerifyContent = {
   },
 
   a11y: {
-    demoRegion: 'Public verification demo with simulated data',
+    toolRegion: 'Public verification of a unit',
     scannerRegion: 'Scanner and code entry',
     resultRegion: 'Verification result',
     reportRegion: 'Discrepancy report',
     skeleton: 'Loading the result',
     verdictIconLabels: {
-      valid: 'Example without alerts',
-      warning: 'Example with warnings',
-      invalid: 'Invalid example',
+      valid: 'Without alerts',
+      warning: 'With warnings',
+      invalid: 'Invalid',
       unverifiable: 'Lookup unavailable',
     },
     outcomeIconLabels: {
-      pass: 'Favourable · simulated',
-      warn: 'Warning · simulated',
-      fail: 'Unfavourable · simulated',
+      pass: 'Favourable',
+      warn: 'Warning',
+      fail: 'Unfavourable',
       skipped: 'Not performed',
     },
   },

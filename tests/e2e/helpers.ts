@@ -7,7 +7,7 @@ import { LOCALES, ROUTES, type Locale, type RouteKey } from '@/i18n';
 import { getContent } from '@/content';
 
 /** URL pública configurada en el build (PUBLIC_SITE_URL por defecto). */
-export const SITE_URL = process.env.PW_SITE_URL ?? 'https://traza-demo.example';
+export const SITE_URL = process.env.PW_SITE_URL ?? 'https://traza.technology';
 
 export interface SitePage {
   locale: Locale;

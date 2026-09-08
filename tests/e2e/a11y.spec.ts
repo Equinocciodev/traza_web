@@ -15,7 +15,7 @@
  *     error de servidor, recorrido en paso intermedio, vista institucional con detalle y rol
  *     observador, menú móvil abierto y formulario de contacto con errores.
  *  3. Comprobaciones manuales automatizadas: un solo h1 y jerarquía sin saltos, landmarks, skip
- *     link, foco visible, teclado (cabecera y tres demos), targets táctiles, reflow 320, zoom 200 %,
+ *     link, foco visible, teclado (cabecera y las tres vistas), targets táctiles, reflow 320, zoom 200 %,
  *     reduced motion, lang/hreflang, nombres accesibles, aria-live, etiquetas y errores de formulario.
  */
 import { test, expect, type Page, type Locator } from '@playwright/test';
@@ -511,7 +511,7 @@ test.describe('teclado · cabecera', () => {
   });
 });
 
-test.describe('teclado · demos', () => {
+test.describe('teclado · vistas interactivas', () => {
   test(`${ROUTES.es.verify} · escenarios y formulario manual con teclado; foco al resultado; aria-live`, async ({ page }) => {
     await open(page, ROUTES.es.verify);
     await verifyEnhanced(page);
@@ -552,7 +552,7 @@ test.describe('teclado · demos', () => {
     expect((await input.getAttribute('aria-describedby'))?.split(/\s+/)).toContain('verify-code-error');
     await expect(input).toBeFocused();
     // Un código con formato válido enviado con Enter también funciona
-    await input.fill('TRZ-DEMO-4K7Q-92FA');
+    await input.fill('TRZ-7F2K-4K7Q-92FA');
     await page.keyboard.press('Enter');
     await expect(page.getByTestId('result-title')).toBeFocused({ timeout: 15_000 });
   });

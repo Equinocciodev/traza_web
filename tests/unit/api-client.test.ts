@@ -9,11 +9,11 @@ import { UNITS } from '@/fixtures/units';
 import { TENANTS } from '@/config/tenants';
 import type { DiscrepancyReport } from '@/fixtures/types';
 
-const VALID = 'TRZ-DEMO-4K7Q-92FA';
-const SIGNATURE_INVALID = 'TRZ-DEMO-2B8X-40NE';
-const REVOKED = 'TRZ-DEMO-5R9C-77MQ';
+const VALID = 'TRZ-7F2K-4K7Q-92FA';
+const SIGNATURE_INVALID = 'TRZ-7F2K-2B8X-40NE';
+const REVOKED = 'TRZ-7F2K-5R9C-77MQ';
 const UNKNOWN_KNOWN_FORMAT = 'TRZ-ZZZZ-ZZZZ-ZZZZ';
-const CAFE_TRAZA_TENANT = 'TRZ-DEMO-6C2A-84MZ';
+const CAFE_TRAZA_TENANT = 'TRZ-7F2K-6C2A-84MZ';
 
 const baseReport: DiscrepancyReport = {
   code: VALID,
@@ -49,12 +49,11 @@ describe('createMockApi().verify', () => {
     expect(api.mode).toBe('mock');
   });
 
-  it('código válido → verificación superada, con la unidad pública y marca simulated', async () => {
+  it('código válido → verificación superada, con la unidad pública', async () => {
     const r = await api.verify(VALID, { tenant: 'licores', locale: 'es', latency: 0 });
     expect(r.verdict).toBe('valid');
     expect(r.reason).toBe('all_checks_passed');
     expect(r.code).toBe(VALID);
-    expect(r.simulated).toBe(true);
     expect(r.unit?.code).toBe(VALID);
     expect(r.checks.registry.registryName).toBe(TENANTS.licores.registryName.es);
     // La unidad pública nunca expone las señales internas de la unidad.
@@ -64,7 +63,7 @@ describe('createMockApi().verify', () => {
   });
 
   it('normaliza la entrada (minúsculas, espacios, sin guiones, URL) antes de resolver', async () => {
-    for (const input of ['trz demo 4k7q 92fa', 'TRZDEMO4K7Q92FA', ` https://traza-demo.example/verificar/?c=${VALID} `]) {
+    for (const input of ['trz 7f2k 4k7q 92fa', 'TRZ7F2K4K7Q92FA', ` https://traza.technology/verificar/?c=${VALID} `]) {
       const r = await api.verify(input, { tenant: 'licores', locale: 'es', latency: 0 });
       expect(r.code).toBe(VALID);
       expect(r.verdict).toBe('valid');
@@ -116,8 +115,7 @@ describe('createMockApi().verify', () => {
       const r = await api.verify(unit.code, { tenant: unit.tenant, locale: 'es', latency: 0 });
       expect(r.code).toBe(unit.code);
       expect(['valid', 'warning', 'invalid']).toContain(r.verdict);
-      expect(r.simulated).toBe(true);
-    }
+      }
   });
 
   it('códigos de transporte → ApiError con el kind correspondiente', async () => {
@@ -232,7 +230,7 @@ describe('createApi / createRemoteApi', () => {
   });
 
   it('remote: construye la URL del contrato /v1/verify y devuelve el JSON', async () => {
-    const payload = { verdict: 'valid', reason: 'all_checks_passed', code: VALID, simulated: true };
+    const payload = { verdict: 'valid', reason: 'all_checks_passed', code: VALID };
     const fetchMock = vi.fn(async () => new Response(JSON.stringify(payload), { status: 200, headers: { 'Content-Type': 'application/json' } }));
     vi.stubGlobal('fetch', fetchMock);
     const api = createRemoteApi('https://api.example');

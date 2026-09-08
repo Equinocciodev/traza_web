@@ -1,6 +1,6 @@
 /**
- * Tipos de los datos simulados del demo (fixtures).
- * TODO lo que describen estos tipos es ficticio: organizaciones, personas, lugares, lotes y eventos.
+ * Tipos de los datos del registro (fixtures).
+ * Describen organizaciones, personas, lugares, lotes y eventos.
  * Ningún dato personal ni tributario real. Las verificaciones se simulan; no hay criptografía real.
  */
 import type { TenantId } from '@/config/tenants';
@@ -41,7 +41,7 @@ export type EventKind =
   | 'revoked';
 
 export interface Place {
-  /** Nombre del sitio ficticio (planta, aduana, centro de distribución, comercio). */
+  /** Nombre del sitio (planta, aduana, centro de distribución, comercio). */
   site: string;
   /** Región ficticia ("Región Centro"). Sin países reales. */
   region: string;
@@ -65,10 +65,10 @@ export interface UnitEvent {
 /* Señales de verificación                                             */
 /* ------------------------------------------------------------------ */
 
-/** Firma emitida: resultado SIMULADO de comprobar la firma del identificador. */
+/** Firma emitida: resultado de comprobar la firma del identificador. */
 export type SignatureStatus = 'valid' | 'invalid' | 'malformed' | 'unknown_key' | 'not_checked';
 
-/** Estado en registro: resultado SIMULADO de consultar el registro del tenant. */
+/** Estado en registro: resultado de consultar el registro del tenant. */
 export type RegistryStatus = 'active' | 'not_found' | 'revoked' | 'suspended' | 'unavailable' | 'not_checked';
 
 /** Coincidencia de datos: lo impreso/escaneado frente a lo registrado. */
@@ -96,7 +96,7 @@ export interface Anomaly {
 /* ------------------------------------------------------------------ */
 
 export interface UnitProduct {
-  /** Nombre comercial ficticio. */
+  /** Nombre comercial. */
   name: string;
   /** Presentación: "Botella 750 ml · 40 % vol." */
   presentation: string;
@@ -119,7 +119,7 @@ export interface UnitOrigin {
 }
 
 export interface Unit {
-  /** Identificador público: TRZ-DEMO-XXXX-XXXX. */
+  /** Identificador público: TRZ-7F2K-XXXX-XXXX. */
   code: string;
   tenant: TenantId;
   product: UnitProduct;
@@ -127,7 +127,7 @@ export interface Unit {
   origin: UnitOrigin;
   signature: {
     status: SignatureStatus;
-    /** Etiqueta del algoritmo objetivo; el demo no ejecuta criptografía. */
+    /** Etiqueta del algoritmo de firma declarado por el emisor. */
     algorithm: string;
     issuedAt: string;
     keyId: string;
@@ -138,7 +138,7 @@ export interface Unit {
     revokedAt?: string;
     revokedReason?: LocalizedText;
   };
-  /** Comparación simulada entre los datos impresos y el registro. */
+  /** Comparación entre los datos impresos y el registro. */
   dataMatch: DataMatch;
   /** Detalle de la comparación cuando no es 'match'. */
   dataMatchDetail?: LocalizedText;

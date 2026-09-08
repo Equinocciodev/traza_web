@@ -55,7 +55,7 @@ export function initStoryPlayers(): void {
         const productBounds = bottle.getBoundingClientRect();
         const startX = from.right - bounds.left;
         const startY = frame.getBoundingClientRect().top - bounds.top;
-        // Measured point on the DEMO band of this exact 1024×1536 image, not a floating endpoint.
+        // Measured point on the neck band of this exact 1024×1536 image, not a floating endpoint.
         const endX = productBounds.left - bounds.left + productBounds.width * .55;
         const endY = productBounds.top - bounds.top + productBounds.height * .74;
         objectLabel.style.left = `${Math.min(endX + 14, bounds.width * .81)}px`;

@@ -5,6 +5,8 @@
  *     tagline "Identidad digital para productos reales", motivo QR discreto y acento de circuito.
  *     Sin texto ni emblemas de agencias.
  *   - public/apple-touch-icon.png (180×180): desde public/favicon.svg, aplanado sobre azul marino.
+ *   - public/icon-192.png, icon-512.png y icon-512-maskable.png: iconos del manifiesto (PWA/Android).
+ *     El maskable deja el 20 % de margen que exige la máscara de Android.
  *
  * Usa `sharp` (dependencia opcional de Astro presente en node_modules); el texto se renderiza con
  * la fuente Poppins instalada en el sistema (fallback a sans-serif si no está disponible).
@@ -18,6 +20,10 @@ import { fileURLToPath } from 'node:url';
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const OUT_OG = path.join(ROOT, 'public', 'og', 'default.png');
 const OUT_APPLE = path.join(ROOT, 'public', 'apple-touch-icon.png');
+const OUT_32 = path.join(ROOT, 'public', 'favicon-32.png');
+const OUT_192 = path.join(ROOT, 'public', 'icon-192.png');
+const OUT_512 = path.join(ROOT, 'public', 'icon-512.png');
+const OUT_MASKABLE = path.join(ROOT, 'public', 'icon-512-maskable.png');
 const FAVICON = path.join(ROOT, 'public', 'favicon.svg');
 
 /* Tokens (mismos valores que src/styles/tokens.css) */
@@ -67,7 +73,7 @@ function circuit() {
     </g>`;
 }
 
-function ogSvg({ tagline, domain, badge }) {
+function ogSvg({ tagline, domain }) {
   const escape = (s) => s.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
   return `<svg xmlns="http://www.w3.org/2000/svg" width="${WIDTH}" height="${HEIGHT}" viewBox="0 0 ${WIDTH} ${HEIGHT}">
   <rect width="${WIDTH}" height="${HEIGHT}" fill="${NAVY_900}"/>
@@ -82,10 +88,6 @@ function ogSvg({ tagline, domain, badge }) {
   <rect x="100" y="292" width="176" height="14" rx="3" fill="${CYAN_400}"/>
   <text x="96" y="392" font-family="${FONT}" font-size="46" font-weight="500" fill="${WHITE}" opacity="0.94">${escape(tagline)}</text>
   <text x="96" y="450" font-family="${FONT}" font-size="26" font-weight="400" fill="${CYAN_300}">${escape(domain)}</text>
-  <g font-family="${FONT}" font-size="20" font-weight="400" fill="${WHITE}" opacity="0.7">
-    <rect x="96" y="548" width="${badge.length * 10.6 + 36}" height="40" rx="6" fill="none" stroke="${WHITE}" stroke-opacity="0.35" stroke-dasharray="4 3"/>
-    <text x="114" y="575">${escape(badge)}</text>
-  </g>
 </svg>`;
 }
 
@@ -95,7 +97,6 @@ async function main() {
   const og = ogSvg({
     tagline: 'Identidad digital para productos reales',
     domain: 'traza.technology',
-    badge: 'Demostración conceptual — datos simulados',
   });
 
   await mkdir(path.dirname(OUT_OG), { recursive: true });
@@ -108,7 +109,25 @@ async function main() {
     .png({ compressionLevel: 9 })
     .toFile(OUT_APPLE);
 
-  for (const file of [OUT_OG, OUT_APPLE]) {
+  for (const [file, size] of [[OUT_32, 32], [OUT_192, 192], [OUT_512, 512]]) {
+    await sharp(favicon, { density: 600 })
+      .resize(size, size, { fit: 'contain', background: NAVY_900 })
+      .flatten({ background: NAVY_900 })
+      .png({ compressionLevel: 9 })
+      .toFile(file);
+  }
+
+  // Maskable: el glifo ocupa el 60 % central para sobrevivir al recorte circular de Android.
+  const pad = Math.round(512 * 0.2);
+  const inner = 512 - pad * 2;
+  await sharp(favicon, { density: 600 })
+    .resize(inner, inner, { fit: 'contain', background: NAVY_900 })
+    .flatten({ background: NAVY_900 })
+    .extend({ top: pad, bottom: pad, left: pad, right: pad, background: NAVY_900 })
+    .png({ compressionLevel: 9 })
+    .toFile(OUT_MASKABLE);
+
+  for (const file of [OUT_OG, OUT_APPLE, OUT_32, OUT_192, OUT_512, OUT_MASKABLE]) {
     const info = await sharp(file).metadata();
     const size = (await stat(file)).size;
     console.log(`${path.relative(ROOT, file)} → ${info.width}×${info.height} ${info.format} (${(size / 1024).toFixed(1)} KB)`);

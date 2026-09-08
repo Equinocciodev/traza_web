@@ -4,7 +4,7 @@ export const howItWorks: HowItWorksContent = {
   meta: {
     title: 'How it works',
     description:
-      'Step by step: identity issuance, labeling, chain events and public verification by separate signals, with each possible result explained.',
+      'Step by step: how an identity is issued and signed, how it is applied to the label, how chain events are recorded, and how public verification explains each possible result signal by signal.',
   },
 
   hero: {
@@ -183,7 +183,7 @@ export const howItWorks: HowItWorksContent = {
   cta: {
     title: 'See it with a sample code',
     body:
-      'The verification demo includes simulated codes that show each of the possible results.',
+      'Public verification includes sample codes that show each of the possible results.',
     primaryCta: { label: 'Verify a product', key: 'verify', variant: 'primary' },
     secondaryCta: { label: 'See the journey', key: 'journey', variant: 'secondary' },
   },

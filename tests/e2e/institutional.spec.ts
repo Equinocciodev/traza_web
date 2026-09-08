@@ -4,7 +4,7 @@
  * sin conexión real (context.setOffline) y versión en inglés.
  */
 import { expect, test, type Page } from '@playwright/test';
-import { ALERTS, CASES, CASE_BY_ID, INSPECTIONS, DEMO_INSPECTOR_ID, KPIS, alertAssignedTo } from '@/fixtures/institutional';
+import { ALERTS, CASES, CASE_BY_ID, INSPECTIONS, INSPECTOR_ID, KPIS, alertAssignedTo } from '@/fixtures/institutional';
 import { collectConsoleErrors, content, expectNoAuthenticClaim, open } from './helpers';
 
 const es = content('es').institutional;
@@ -29,9 +29,9 @@ async function setRole(page: Page, role: 'analyst' | 'inspector' | 'observer'): 
   await expect(root(page)).toHaveAttribute('data-role', role);
 }
 
-const inspectorAlerts = ALERTS.filter((a) => alertAssignedTo(a, (id) => CASE_BY_ID.get(id)) === DEMO_INSPECTOR_ID);
-const inspectorCases = CASES.filter((c) => c.inspectorId === DEMO_INSPECTOR_ID);
-const inspectorInspections = INSPECTIONS.filter((i) => i.inspectorId === DEMO_INSPECTOR_ID);
+const inspectorAlerts = ALERTS.filter((a) => alertAssignedTo(a, (id) => CASE_BY_ID.get(id)) === INSPECTOR_ID);
+const inspectorCases = CASES.filter((c) => c.inspectorId === INSPECTOR_ID);
+const inspectorInspections = INSPECTIONS.filter((i) => i.inspectorId === INSPECTOR_ID);
 
 test.describe('carga y roles', () => {
   test('carga simulada, KPIs derivados de los fixtures y rotulados como simulados', async ({ page }) => {
@@ -43,7 +43,7 @@ test.describe('carga y roles', () => {
     await expect(kpi(page, 'alertsOpen')).toHaveAttribute('data-count', String(KPIS.alertsOpen));
     await expect(kpi(page, 'casesInProgress')).toHaveAttribute('data-count', String(KPIS.casesInProgress));
     await expect(kpi(page, 'unitsRegistered')).toHaveAttribute('data-count', String(KPIS.unitsRegistered));
-    await expect(page.getByTestId('kpis').locator('.demo-tag')).toHaveCount(4);
+    await expect(page.getByTestId('kpis').locator('.meta-tag')).toHaveCount(4);
     await expect(page.getByTestId('institutional-banner').or(page.locator('.inst-banner, [data-banner]')).first()).toBeVisible();
     await expect(page.locator('body')).toContainText(es.banner.title);
     await expect(alertRows(page)).toHaveCount(ALERTS.length);
@@ -64,7 +64,7 @@ test.describe('carga y roles', () => {
     await expect(page.locator('[data-filter-role="all"]')).toBeHidden();
     const actors = await visibleAudit(page).evaluateAll((rows) => rows.map((r) => (r as HTMLElement).dataset.actor));
     expect(actors.length).toBeGreaterThan(0);
-    for (const actor of actors) expect(actor).toBe(DEMO_INSPECTOR_ID);
+    for (const actor of actors) expect(actor).toBe(INSPECTOR_ID);
     // El inspector puede reconocer pero no abrir casos.
     await page.locator(`button[data-alert-open="${inspectorAlerts[0]!.id}"]`).click();
     const detail = page.getByTestId('alert-detail');

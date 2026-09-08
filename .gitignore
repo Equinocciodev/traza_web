@@ -19,3 +19,14 @@ playwright/.cache/
 # Sistema
 .DS_Store
 *.log
+
+# Lighthouse
+.lighthouse/
+
+# Capturas generadas por Playwright (`npm run screenshots`)
+docs/capturas/
+
+# Editores
+.idea/
+.vscode/
+*.swp

@@ -1,12 +1,12 @@
 /**
- * Isla de la DEMO C · Vista institucional.
+ * Isla de la vista institucional.
  *
  * Monta sobre el HTML renderizado en servidor (InstitutionalApp.astro):
- *  - rol de demostración (analista / inspector de campo / observador) con permisos simulados;
+ *  - rol de la sesión (analista / inspector de campo / observador) con sus permisos;
  *  - filtros de alertas (severidad, estado) y de auditoría (rol del actor);
  *  - detalle de alerta/caso clonando plantillas `<template data-tpl>` y pastillas `<template data-pill>`;
- *  - acciones simuladas que cambian el estado SOLO en memoria y añaden entradas a la cronología;
- *  - estados: carga simulada, vacío, error simulado del registro, sin conexión real y sin permisos.
+ *  - acciones que cambian el estado SOLO en memoria y añaden entradas a la cronología;
+ *  - estados: carga, vacío, error del registro, sin conexión y sin permisos.
  *
  * Nada se guarda ni se transmite. Sin innerHTML con datos: todo texto se asigna con textContent.
  */
@@ -16,8 +16,8 @@ import {
   INSPECTIONS,
   AUDIT_LOG,
   PERSON_BY_ID,
-  DEMO_INSPECTOR_ID,
-  DEMO_SESSION_ACTOR_PREFIX,
+  INSPECTOR_ID,
+  SESSION_ACTOR_PREFIX,
   computeKpis,
   alertAssignedTo,
   type InstitutionalAlert,
@@ -137,18 +137,18 @@ export function initInstitutional(root: HTMLElement): void {
 
   const alertById = (id: string) => state.alerts.find((a) => a.id === id);
   const caseById = (id: string) => state.cases.find((c) => c.id === id);
-  const sessionActorId = () => `${DEMO_SESSION_ACTOR_PREFIX}${state.role}`;
+  const sessionActorId = () => `${SESSION_ACTOR_PREFIX}${state.role}`;
 
   function actorName(actorId: string): string {
-    if (actorId.startsWith(DEMO_SESSION_ACTOR_PREFIX)) {
-      const role = actorId.slice(DEMO_SESSION_ACTOR_PREFIX.length) as Role;
+    if (actorId.startsWith(SESSION_ACTOR_PREFIX)) {
+      const role = actorId.slice(SESSION_ACTOR_PREFIX.length) as Role;
       return fill(S.sessionActor, { s: S.roles[role] ?? role });
     }
     return PERSON_BY_ID.get(actorId)?.name ?? actorId;
   }
 
   function actorRole(actorId: string): ActorRole {
-    if (actorId.startsWith(DEMO_SESSION_ACTOR_PREFIX)) return actorId.slice(DEMO_SESSION_ACTOR_PREFIX.length) as ActorRole;
+    if (actorId.startsWith(SESSION_ACTOR_PREFIX)) return actorId.slice(SESSION_ACTOR_PREFIX.length) as ActorRole;
     return PERSON_BY_ID.get(actorId)?.role ?? 'system';
   }
 
@@ -204,12 +204,12 @@ export function initInstitutional(root: HTMLElement): void {
   /* Visibilidad por rol                                               */
   /* ---------------------------------------------------------------- */
 
-  const canSeeAlert = (a: InstitutionalAlert): boolean => state.role !== 'inspector' || alertAssignedTo(a, caseById) === DEMO_INSPECTOR_ID;
-  const canSeeCase = (c: InstitutionalCase): boolean => state.role !== 'inspector' || c.inspectorId === DEMO_INSPECTOR_ID;
-  const canSeeInspection = (i: FieldInspection): boolean => state.role !== 'inspector' || i.inspectorId === DEMO_INSPECTOR_ID;
+  const canSeeAlert = (a: InstitutionalAlert): boolean => state.role !== 'inspector' || alertAssignedTo(a, caseById) === INSPECTOR_ID;
+  const canSeeCase = (c: InstitutionalCase): boolean => state.role !== 'inspector' || c.inspectorId === INSPECTOR_ID;
+  const canSeeInspection = (i: FieldInspection): boolean => state.role !== 'inspector' || i.inspectorId === INSPECTOR_ID;
   const canSeeAudit = (e: AuditEntry): boolean => {
     if (state.role === 'analyst') return true;
-    if (state.role === 'inspector') return e.actorId === DEMO_INSPECTOR_ID || e.actorId === `${DEMO_SESSION_ACTOR_PREFIX}inspector`;
+    if (state.role === 'inspector') return e.actorId === INSPECTOR_ID || e.actorId === `${SESSION_ACTOR_PREFIX}inspector`;
     return false;
   };
 
@@ -656,7 +656,7 @@ export function initInstitutional(root: HTMLElement): void {
   function setRole(role: Role, opts: { announceChange?: boolean } = {}): void {
     state.role = role;
     root.dataset.role = role;
-    for (const input of qa<HTMLInputElement>('input[name="demo-role"]')) input.checked = input.value === role;
+    for (const input of qa<HTMLInputElement>('input[name="session-role"]')) input.checked = input.value === role;
     for (const desc of qa('[data-role-desc]')) desc.hidden = desc.dataset.roleDesc !== role;
 
     applyAlertFilters();
@@ -751,7 +751,7 @@ export function initInstitutional(root: HTMLElement): void {
   }
 
   /* ---------------------------------------------------------------- */
-  /* Acciones simuladas                                                */
+  /* Acciones de la sesión                                                */
   /* ---------------------------------------------------------------- */
 
   function acknowledge(a: InstitutionalAlert): void {
@@ -784,13 +784,13 @@ export function initInstitutional(root: HTMLElement): void {
       title: text(fill(S.newCase.titleTemplate, { s: a.id })),
       status: 'open',
       alertIds: [a.id],
-      inspectorId: DEMO_INSPECTOR_ID,
+      inspectorId: INSPECTOR_ID,
       openedAt: now,
       actions: [{ id: `${id}-01`, at: now, actorId: sessionActorId(), description: text(fill(S.newCase.openedDescription, { s: a.id })) }],
     };
     state.cases.unshift(c);
     a.caseId = id;
-    a.assignedTo = DEMO_INSPECTOR_ID;
+    a.assignedTo = INSPECTOR_ID;
     if (a.status === 'open') a.status = 'acknowledged';
     addCaseRow(c);
     updateAlertRow(a);
@@ -888,7 +888,7 @@ export function initInstitutional(root: HTMLElement): void {
 
   root.addEventListener('change', (ev) => {
     const input = ev.target;
-    if (input instanceof HTMLInputElement && input.name === 'demo-role' && input.checked) {
+    if (input instanceof HTMLInputElement && input.name === 'session-role' && input.checked) {
       const role = input.value as Role;
       if (role === 'analyst' || role === 'inspector' || role === 'observer') setRole(role);
     }
@@ -998,7 +998,7 @@ export function initInstitutional(root: HTMLElement): void {
   /* ---------------------------------------------------------------- */
 
   root.classList.add('is-enhanced');
-  const checked = q<HTMLInputElement>('input[name="demo-role"]:checked');
+  const checked = q<HTMLInputElement>('input[name="session-role"]:checked');
   const initialRole = (checked?.value as Role | undefined) ?? 'analyst';
   setRole(initialRole === 'inspector' || initialRole === 'observer' ? initialRole : 'analyst', { announceChange: false });
   renderKpis();

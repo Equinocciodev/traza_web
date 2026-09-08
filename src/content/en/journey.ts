@@ -1,32 +1,29 @@
 import type { JourneyContent } from '../journey.types';
 
 /**
- * Demo B · Product journey (EN).
- * Everything shown is simulated: units, organisations, places, lots and dates are fictional.
+ * Product journey (EN).
  * The six stage names match `home.chain.nodes`.
  */
 export const journey: JourneyContent = {
   meta: {
     title: 'Product journey',
     description:
-      'Follow a simulated unit from the factory or customs to final verification: six stages, events with actor, place and date, and the story built along the way. Conceptual demonstration.',
+      'Follow a unit from the factory or customs through to final verification: six stages, events recorded with actor, place and date, and the story that is built along the way.',
   },
 
   hero: {
-    eyebrow: 'Demo B · Product journey',
+    eyebrow: 'Product journey',
     title: 'From the factory to verification, step by step',
     subtitle:
-      'Each unit adds events as it moves along the chain: who records them, where and when. This demonstration rebuilds that journey with simulated data and plays it back stage by stage.',
-    note: 'Conceptual demonstration with simulated data: units, organisations, places, lots and dates are fictional.',
+      'Each unit adds events as it moves along the chain: who records them, where and when. This page rebuilds that journey and plays it back stage by stage.',
   },
 
-  demo: {
-    eyebrow: 'Interactive demonstration',
+  explorer: {
+    eyebrow: 'Interactive journey',
     title: 'The line that completes itself',
     intro:
-      'Choose a unit and play its journey. The line advances through the recorded stages and each card shows the event as it appears in the simulated registry. Some units never reach the end: the line stops at the last recorded stage.',
-    regionLabel: 'Interactive journey of a simulated unit',
-    simulatedNotice: 'Simulated data',
+      'Choose a unit and play its journey. The line advances through the recorded stages and each card shows the event as it appears in the registry. Some units never reach the end: the line stops at the last recorded stage.',
+    regionLabel: 'Interactive journey of a unit',
     keyboardHint: 'With focus inside the stage list, use the arrow keys to move forward or back; Home and End jump to the ends.',
     noScript: 'Playback controls require JavaScript. The full list of events for the example unit is shown below.',
   },
@@ -76,12 +73,12 @@ export const journey: JourneyContent = {
     codeLabel: 'Code',
     registryLabel: 'Registry',
     options: [
-      { code: 'TRZ-DEMO-4K7Q-92FA', label: 'Domestic rum · complete journey with public verification' },
-      { code: 'TRZ-DEMO-3N6D-09ZB', label: 'Imported whisky · with discrepancy report and inspection' },
-      { code: 'TRZ-DEMO-8L1F-63HW', label: 'Imported whisky · held at distribution (in progress)' },
-      { code: 'TRZ-DEMO-5R9C-77MQ', label: 'Domestic rum · lot revoked by the issuer' },
-      { code: 'TRZ-DEMO-6C2A-84MZ', label: 'Coffee · Traza demonstration registry (another sector)' },
-      { code: 'TRZ-DEMO-2B8X-40NE', label: 'Unit with no recorded journey' },
+      { code: 'TRZ-7F2K-4K7Q-92FA', label: 'Domestic rum · complete journey with public verification' },
+      { code: 'TRZ-7F2K-3N6D-09ZB', label: 'Imported whisky · with discrepancy report and inspection' },
+      { code: 'TRZ-7F2K-8L1F-63HW', label: 'Imported whisky · held at distribution (in progress)' },
+      { code: 'TRZ-7F2K-5R9C-77MQ', label: 'Domestic rum · lot revoked by the issuer' },
+      { code: 'TRZ-7F2K-6C2A-84MZ', label: 'Coffee · Traza registry (another sector)' },
+      { code: 'TRZ-7F2K-2B8X-40NE', label: 'Unit with no recorded journey' },
     ],
   },
 
@@ -109,12 +106,11 @@ export const journey: JourneyContent = {
 
   eventsSection: {
     title: 'Recorded events',
-    intro: 'Grouped by stage, in the order they appear in the simulated registry. Future stages are dimmed, never hidden.',
+    intro: 'Grouped by stage, in the order they appear in the registry. Future stages are dimmed, never hidden.',
   },
 
   story: {
     title: 'Story of the unit',
-    simulatedTag: 'Simulated data',
     fields: [
       { key: 'issuer', label: 'Manufacturer / importer', icon: 'factory' },
       { key: 'product', label: 'Product / presentation', icon: 'box' },
@@ -127,11 +123,11 @@ export const journey: JourneyContent = {
     loading: 'Rebuilding the journey…',
     empty: {
       title: 'No recorded journey',
-      body: 'The selected unit has no events in the simulated registry. This happens, for example, when the identifier was not issued by a known key or its signature does not match the code content: without events there is no journey to rebuild. Public verification explains separately what was checked and what the next step is.',
+      body: 'The selected unit has no events in the registry. This happens, for example, when the identifier was not issued by a known key or its signature does not match the code content: without events there is no journey to rebuild. Public verification explains separately what was checked and what the next step is.',
     },
     error: {
       title: 'We could not query the registry',
-      body: 'This is a simulated error that shows how the demonstration behaves when the registry does not respond. It is not a problem on your side: retry to rebuild the journey.',
+      body: 'The registry did not respond to the query. It is not a problem on your side: retry to rebuild the journey.',
       retry: 'Retry',
     },
   },
@@ -168,7 +164,7 @@ export const journey: JourneyContent = {
         icon: 'truck',
       },
     ],
-    note: 'No event in this demonstration comes from a real system. In a deployment, events would be recorded from the management systems of each actor in the chain, following the rules of each tenant.',
+    note: 'Events are recorded from the management systems of each actor in the chain, following the rules of each tenant.',
   },
 
   cta: {
@@ -223,7 +219,7 @@ export const journey: JourneyContent = {
       loaded: 'Journey rebuilt: {unit}.',
       loading: 'Rebuilding the journey…',
       empty: 'No recorded journey for this unit.',
-      error: 'The registry could not be queried (simulated error). You can retry.',
+      error: 'The registry could not be queried. You can retry.',
       unrecorded: 'There is no record of the {stage} stage for this unit.',
       restarted: 'Journey restarted at {stage}.',
     },

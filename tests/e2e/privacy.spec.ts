@@ -1,6 +1,6 @@
 /**
  * Privacidad: lo que afirma el aviso se cumple en tiempo de ejecución — sin cookies, sin almacenamiento local,
- * sin peticiones a terceros y sin envío de datos al usar las tres demos y el formulario.
+ * sin peticiones a terceros y sin envío de datos al usar las tres vistas y el formulario.
  */
 import { expect, test, type Page } from '@playwright/test';
 import { SCENARIO_BY_ID } from '@/fixtures/scenarios';
@@ -11,7 +11,7 @@ async function storageState(page: Page): Promise<{ cookie: string; local: number
   return page.evaluate(() => ({ cookie: document.cookie, local: localStorage.length, session: sessionStorage.length }));
 }
 
-test('usar las demos y el formulario no crea cookies, almacenamiento ni peticiones salientes', async ({ page, context }) => {
+test('usar las vistas y el formulario no crea cookies, almacenamiento ni peticiones salientes', async ({ page, context }) => {
   const outgoing: string[] = [];
   const origin = new URL(test.info().project.use.baseURL as string).origin;
   page.on('request', (req) => {
@@ -31,7 +31,7 @@ test('usar las demos y el formulario no crea cookies, almacenamiento ni peticion
   await expect(page.getByTestId('report-success')).toBeVisible({ timeout: 10_000 });
 
   await open(page, '/recorrido/');
-  await page.getByTestId('journey-unit-select').selectOption('TRZ-DEMO-3N6D-09ZB');
+  await page.getByTestId('journey-unit-select').selectOption('TRZ-7F2K-3N6D-09ZB');
   await expect(page.getByTestId('journey')).toHaveAttribute('data-view', 'ready', { timeout: 5_000 });
 
   await open(page, '/institucional/');

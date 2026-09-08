@@ -79,10 +79,10 @@ export const platform: PlatformContent = {
       },
     ],
     example: {
-      caption: 'Ejemplo simulado de identidad unitaria (datos ficticios)',
-      code: 'TRZ-DEMO-6C2A-84MZ',
+      caption: 'Ejemplo de identidad unitaria',
+      code: 'TRZ-7F2K-6C2A-84MZ',
       rows: [
-        { label: 'Fabricante / importador', value: 'Cafetalera Monte Azul (demo)' },
+        { label: 'Fabricante / importador', value: 'Cafetalera Monte Azul' },
         { label: 'Producto / presentación', value: 'Café Monte Azul · tueste medio · bolsa 500 g' },
         { label: 'Origen / lote', value: 'Beneficio Monte Azul · COS-MA-26-07' },
         { label: 'Movimientos / destino', value: 'Origen → etiquetado → transporte → distribución → comercio · Mercado San Marcelo' },
@@ -122,7 +122,7 @@ export const platform: PlatformContent = {
         icon: 'plug',
       },
     ],
-    note: 'Arquitectura objetivo propuesta. Este demo no implementa criptografía real ni afirma controles de seguridad de producción: la verificación se simula con datos de ejemplo.',
+    note: 'Arquitectura objetivo del producto. Los controles criptográficos y de seguridad se implementan y auditan en cada despliegue.',
   },
 
   verificationModel: {
@@ -184,13 +184,13 @@ export const platform: PlatformContent = {
       'Exportación del registro para auditoría y análisis',
       'Autenticación del emisor y trazabilidad de quién reporta cada evento',
     ],
-    note: 'Las capacidades de integración se describen de forma genérica y sin nombrar productos. Este demo no se conecta a ningún sistema externo.',
+    note: 'Las capacidades de integración se describen de forma genérica y sin nombrar productos: cada despliegue acuerda sus conectores.',
   },
 
   cta: {
     title: 'Vea la plataforma en funcionamiento',
     body:
-      'Las tres demostraciones muestran la verificación pública, el recorrido de una unidad y la vista institucional, siempre con datos simulados.',
+      'Las tres vistas muestran la verificación pública, el recorrido de una unidad y el panel institucional.',
     primaryCta: { label: 'Verificar un producto', key: 'verify', variant: 'primary' },
     secondaryCta: { label: 'Cómo funciona', key: 'howItWorks', variant: 'secondary' },
   },

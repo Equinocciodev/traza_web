@@ -1,6 +1,6 @@
 ---
 /**
- * Demo A · Isla de verificación pública.
+ * Isla de verificación pública.
  *
  * Progressive enhancement: todo el HTML (contexto de tenant, escáner, entrada manual, escenarios,
  * estructura del resultado, formulario de reporte) se renderiza en servidor. El módulo cliente
@@ -75,7 +75,7 @@ const verifyPath = route(locale, 'verify');
   data-default-tenant={defaultTenant.id}
   data-show-cobrand={env.showCobrandExample ? 'true' : 'false'}
   data-tenant={defaultTenant.id !== 'traza' ? defaultTenant.id : undefined}
-  aria-label={t.a11y.demoRegion}
+  aria-label={t.a11y.toolRegion}
 >
   <script type="application/json" is:inline data-verify-strings set:html={stringsJson} />
 
@@ -277,7 +277,6 @@ const verifyPath = route(locale, 'verify');
             </div>
             <div class="verify-error__pills">
               <StatusPill tone="neutral" icon="info">{t.verdicts.unverifiable.label}</StatusPill>
-              <span class="demo-tag">{t.states.simulatedTag}</span>
             </div>
             <h2 class="verify-error__title" tabindex="-1" data-error-title></h2>
             <p class="verify-error__body" data-error-body></p>
@@ -314,7 +313,6 @@ const verifyPath = route(locale, 'verify');
                     </StatusPill>
                   ))
                 }
-                <span class="demo-tag" data-testid="simulated-tag">{t.states.simulatedTag}</span>
               </div>
               <h2 class="result__title" tabindex="-1" data-result-title data-testid="result-title"></h2>
               <p class="result__explanation" data-result-explanation></p>
@@ -469,7 +467,6 @@ const verifyPath = route(locale, 'verify');
 
             <Callout tone="neutral" icon="lock" class="report-form__notes">
               <p>{t.report.dataNote}</p>
-              <p>{t.report.simulatedNote}</p>
             </Callout>
 
             <div data-report-view="error" data-testid="report-error" data-kind="" role="alert" hidden>
@@ -490,7 +487,6 @@ const verifyPath = route(locale, 'verify');
           <div class="report-success" data-report-view="success" data-testid="report-success" data-folio="" role="status" hidden>
             <div class="report-success__pills">
               <StatusPill tone="success" icon="check">{t.report.success.title}</StatusPill>
-              <span class="demo-tag">{t.states.simulatedTag}</span>
             </div>
             <h2 class="report-success__title" tabindex="-1" data-report-success-title>{t.report.success.title}</h2>
             <p>{t.report.success.body}</p>
@@ -526,7 +522,7 @@ const verifyPath = route(locale, 'verify');
       </section>
     </div>
 
-    <!-- Escenarios de demostración -->
+    <!-- Códigos de ejemplo -->
     <details class="verify-panel verify-scenarios" data-scenarios data-testid="scenario-panel" open>
       <summary class="verify-scenarios__summary">
         <h2 class="verify-panel__title verify-scenarios__title">

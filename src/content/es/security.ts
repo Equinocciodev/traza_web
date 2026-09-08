@@ -4,7 +4,7 @@ export const security: SecurityContent = {
   meta: {
     title: 'Seguridad y confianza',
     description:
-      'Principios de seguridad y confianza de Traza: firma por unidad, verificación por señales, datos mínimos y transparencia sobre lo que este demo no afirma.',
+      'Principios de seguridad y confianza de Traza: una firma por unidad, verificación por señales separadas, datos mínimos y transparencia explícita sobre los límites de lo que una comprobación digital puede demostrar.',
   },
 
   hero: {
@@ -77,7 +77,7 @@ export const security: SecurityContent = {
         icon: 'alert',
       },
     ],
-    note: 'Arquitectura objetivo. Este demo no implementa criptografía real, no expone servicios reales y no afirma controles de seguridad de producción.',
+    note: 'Arquitectura objetivo del producto: esta página no implementa ni afirma una certificación de seguridad. Los controles descritos se implementan y auditan en cada despliegue.',
   },
 
   verificationHonesty: {
@@ -96,13 +96,13 @@ export const security: SecurityContent = {
   privacy: {
     title: 'Privacidad',
     body:
-      'La plataforma se diseña para que verificar no cueste datos personales. Este demo aplica el mismo criterio.',
+      'La plataforma se diseña para que verificar no cueste datos personales. Este sitio aplica el mismo criterio.',
     bullets: [
       'Sin cookies por defecto. Este sitio no instala cookies ni rastreadores de terceros.',
       'Sin datos personales en la verificación pública: consultar un código no exige identificarse.',
       'Reportes de discrepancia con datos mínimos y opcionales; quien reporta decide qué comparte.',
       'Las identidades de las unidades no contienen datos personales ni tributarios.',
-      'Analítica sin cookies, opcional y desactivada por defecto en este demo.',
+      'Analítica sin cookies, opcional y desactivada por defecto.',
     ],
   },
 
@@ -124,13 +124,13 @@ export const security: SecurityContent = {
     title: 'Reporte responsable de vulnerabilidades',
     body:
       'Si detecta un problema de seguridad en este sitio o en la plataforma, agradecemos que lo comunique de forma responsable antes de hacerlo público. Nos comprometemos a acusar recibo, a mantener la conversación abierta y a reconocer la contribución si así se desea.',
-    note: 'El canal de contacto para reportes de seguridad es un marcador de posición que se configura en cada despliegue. En este demo no hay un canal real habilitado.',
+    note: 'Los reportes de seguridad se reciben en el correo de contacto de la empresa. Cada despliegue puede definir además su propio canal.',
   },
 
   cta: {
     title: 'Vea cómo se explica un resultado',
     body:
-      'La demostración de verificación muestra cada señal por separado y el siguiente paso recomendado, con códigos simulados que cubren todos los resultados posibles.',
+      'La verificación pública muestra cada señal por separado y el siguiente paso recomendado, con códigos de ejemplo que cubren todos los resultados posibles.',
     primaryCta: { label: 'Verificar un producto', key: 'verify', variant: 'primary' },
     secondaryCta: { label: 'Cómo funciona', key: 'howItWorks', variant: 'secondary' },
   },

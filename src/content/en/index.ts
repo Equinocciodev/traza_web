@@ -1,7 +1,7 @@
 /**
  * Agregador de contenido (en). NO editar la lista de módulos: cada módulo tiene un propietario.
  *  - common, home, platform, solutions, how-it-works, case-spirits, security, company, privacy, not-found → contenido institucional
- *  - verify → demo A · journey → demo B · institutional → demo C
+ *  - verify · journey · institutional
  */
 import type { SiteContent } from '../types';
 import { common } from './common';

@@ -3,7 +3,7 @@
  *
  * La marca maestra vive en traza.technology. Cada despliegue por país, regulador o industria
  * puede definir un tenant con su lockup, acentos y textos de contexto. Los lockups de agencias
- * son condicionales: solo se muestran cuando una fuente aprobada lo autoriza. En este demo el
+ * son condicionales: solo se muestran cuando una fuente aprobada lo autoriza. Aquí el
  * tenant `licores` es un EJEMPLO de co-brand para una propuesta de piloto (sin emblema oficial),
  * y se puede desactivar con PUBLIC_SHOW_COBRAND_EXAMPLE=false.
  */
@@ -36,7 +36,7 @@ export interface Tenant {
   cobrandNotice?: Record<Locale, string>;
   /** Texto de contexto que se muestra en la verificación pública. */
   verifyContext: Record<Locale, string>;
-  /** Nombre del registro consultado (simulado). */
+  /** Nombre del registro consultado. */
   registryName: Record<Locale, string>;
   /** Canal de siguiente paso recomendado (texto por idioma). */
   nextStepHint: Record<Locale, string>;
@@ -49,12 +49,12 @@ export const TENANTS: Record<TenantId, Tenant> = {
     shortName: { es: 'Traza', en: 'Traza' },
     kind: 'master',
     scope: { es: 'Multisector', en: 'Multi-sector' },
-    statusLabel: { es: 'Marca maestra · demostración', en: 'Master brand · demonstration' },
+    statusLabel: { es: 'Marca maestra', en: 'Master brand' },
     verifyContext: {
       es: 'Verificación pública de Traza. El resultado se refiere únicamente al identificador escaneado.',
       en: 'Traza public verification. The result refers only to the scanned identifier.',
     },
-    registryName: { es: 'Registro de demostración de Traza', en: 'Traza demonstration registry' },
+    registryName: { es: 'Registro de Traza', en: 'Traza registry' },
     nextStepHint: {
       es: 'Si algo no coincide con el producto que tiene en la mano, envíe un reporte de discrepancia.',
       en: 'If anything does not match the product in your hand, submit a discrepancy report.',
@@ -66,7 +66,7 @@ export const TENANTS: Record<TenantId, Tenant> = {
     shortName: { es: 'Piloto licores', en: 'Spirits pilot' },
     kind: 'regulator-pilot',
     scope: { es: 'Bebidas alcohólicas', en: 'Alcoholic beverages' },
-    statusLabel: { es: 'Propuesta de piloto · demostración', en: 'Pilot proposal · demonstration' },
+    statusLabel: { es: 'Propuesta de piloto', en: 'Pilot proposal' },
     lockup: {
       parts: ['SENIAT', 'TRAZA'],
       alt: {
@@ -82,7 +82,7 @@ export const TENANTS: Record<TenantId, Tenant> = {
       es: 'Verificación pública del piloto de licores (propuesta). El resultado se refiere únicamente al identificador escaneado.',
       en: 'Public verification for the spirits pilot (proposal). The result refers only to the scanned identifier.',
     },
-    registryName: { es: 'Registro del piloto de licores (simulado)', en: 'Spirits pilot registry (simulated)' },
+    registryName: { es: 'Registro del piloto de licores', en: 'Spirits pilot registry' },
     nextStepHint: {
       es: 'Ante una discrepancia, conserve la unidad y envíe el reporte; un inspector de campo puede dar seguimiento en el piloto.',
       en: 'If there is a discrepancy, keep the unit and submit the report; a field inspector can follow up within the pilot.',

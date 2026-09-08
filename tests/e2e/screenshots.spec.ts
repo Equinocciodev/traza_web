@@ -1,5 +1,5 @@
 /**
- * Capturas finales de entrega (proyecto `screenshots`): las 15 páginas ES, las 3 demos EN y los estados clave
+ * Capturas finales de entrega (proyecto `screenshots`): las 15 páginas ES, las 3 vistas EN y los estados clave
  * de cada demo, a 1366 y 360 px de ancho, en docs/capturas/final/<ruta>-<ancho>.png.
  */
 import { expect, test, type Page } from '@playwright/test';
@@ -45,7 +45,7 @@ async function settle(page: Page, path: string, width: (typeof WIDTHS)[number]):
   await page.waitForLoadState('networkidle');
 }
 
-/** Páginas estáticas: 15 ES (incluida la 404) + 3 demos EN. */
+/** Páginas estáticas: 15 ES (incluida la 404) + 3 vistas EN. */
 const STATIC: { name: string; path: string }[] = [
   { name: 'inicio', path: ROUTES.es.home },
   { name: 'plataforma', path: ROUTES.es.platform },
@@ -157,14 +157,14 @@ for (const w of WIDTHS) {
       test(`recorrido-en-curso-${w.width}`, async ({ page }) => {
         await page.emulateMedia({ reducedMotion: 'reduce' });
         await settle(page, ROUTES.es.journey, w);
-        await page.getByTestId('journey-unit-select').selectOption('TRZ-DEMO-8L1F-63HW');
+        await page.getByTestId('journey-unit-select').selectOption('TRZ-7F2K-8L1F-63HW');
         await expect(page.getByTestId('journey')).toHaveAttribute('data-view', 'ready', { timeout: 5_000 });
         await expect(page.getByTestId('journey')).toHaveAttribute('data-stage-index', '3');
         await shoot(page, 'recorrido-en-curso', w.width);
       });
       test(`recorrido-vacio-${w.width}`, async ({ page }) => {
         await settle(page, ROUTES.es.journey, w);
-        await page.getByTestId('journey-unit-select').selectOption('TRZ-DEMO-2B8X-40NE');
+        await page.getByTestId('journey-unit-select').selectOption('TRZ-7F2K-2B8X-40NE');
         await expect(page.getByTestId('journey-empty')).toBeVisible({ timeout: 5_000 });
         await shoot(page, 'recorrido-vacio', w.width);
       });

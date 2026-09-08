@@ -61,7 +61,7 @@
   animation: reveal-child var(--dur-base) var(--ease-standard) both;
 }
 
-/* ---- Haz de escaneo QR (demo A): una barra translúcida recorre el visor mientras dura el escaneo.
+/* ---- Haz de escaneo QR: una barra translúcida recorre el visor mientras dura el escaneo.
    Solo transform; el brillo es estático (viaja con la capa compuesta, no se repinta). ---- */
 .scan-beam {
   position: absolute;
@@ -90,7 +90,7 @@
   }
 }
 
-/* ---- Pulso discreto del nodo activo de la cadena (demo B): dos ciclos, nunca constante ---- */
+/* ---- Pulso discreto del nodo activo de la cadena: dos ciclos, nunca constante ---- */
 .node-pulse {
   animation: node-pulse 1.6s var(--ease-standard) 2;
 }

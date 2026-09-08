@@ -1,7 +1,7 @@
 ---
 /**
  * Página de sector (gobierno / industria / ciudadanos): retos, enfoque, flujo por pasos,
- * resultados esperados (cualitativos), demostraciones relacionadas, descargo y cierre.
+ * resultados esperados (cualitativos), vistas relacionadas, descargo y cierre.
  */
 import Base from '@/layouts/Base.astro';
 import PageHero from '@/components/ui/PageHero.astro';
@@ -11,7 +11,7 @@ import CtaBand from '@/components/ui/CtaBand.astro';
 import FeatureGrid from '@/components/ui/FeatureGrid.astro';
 import SectionHeader from '@/components/ui/SectionHeader.astro';
 import StepList from '@/components/ui/StepList.astro';
-import DemoCardGrid from '@/components/site/DemoCardGrid.astro';
+import PerspectiveGrid from '@/components/site/PerspectiveGrid.astro';
 import { getContent } from '@/content';
 import type { Locale, RouteKey } from '@/i18n';
 
@@ -71,10 +71,10 @@ const page = {
     </div>
   </section>
 
-  <section class="section" aria-labelledby="demos-title" data-reveal>
+  <section class="section" aria-labelledby="perspectives-title" data-reveal>
     <div class="container">
-      <SectionHeader title={page.demos.title} id="demos-title" />
-      <DemoCardGrid locale={locale} items={page.demos.items} />
+      <SectionHeader title={page.perspectives.title} id="perspectives-title" />
+      <PerspectiveGrid locale={locale} items={page.perspectives.items} />
       <div class="section__note">
         <Callout tone="neutral">{page.disclaimer}</Callout>
       </div>

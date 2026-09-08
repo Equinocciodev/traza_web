@@ -1,5 +1,5 @@
 /**
- * Contenido de la demo A · Verificación pública.
+ * Contenido de la verificación pública.
  * Propietario: especialista de UX de verificación.
  *
  * Todo el texto visible de la isla vive aquí (ES/EN). El cliente recibe un subconjunto tipado
@@ -105,7 +105,6 @@ export interface VerifyContent {
   states: {
     idle: TitledText;
     loading: TitledText;
-    simulatedTag: string;
     verifiedAtLabel: string;
     codeLabel: string;
     registryLabel: string;
@@ -217,7 +216,6 @@ export interface VerifyContent {
     emailLabel: string;
     emailHint: string;
     dataNote: string;
-    simulatedNote: string;
     submit: string;
     sending: string;
     cancel: string;
@@ -237,7 +235,7 @@ export interface VerifyContent {
   };
 
   a11y: {
-    demoRegion: string;
+    toolRegion: string;
     scannerRegion: string;
     resultRegion: string;
     reportRegion: string;

@@ -1,5 +1,5 @@
 /**
- * Tipos del motor de verificación SIMULADO.
+ * Tipos del motor de verificación.
  * El motor no ejecuta criptografía: deriva un veredicto explicable a partir de cuatro señales
  * separadas (firma emitida, estado en registro, coincidencia de datos y anomalías) que vienen de fixtures.
  */
@@ -85,8 +85,6 @@ export interface VerificationResult {
   };
   nextSteps: NextStep[];
   unit?: PublicUnit;
-  /** Marca explícita: todo resultado de este demo es simulado. */
-  simulated: true;
 }
 
 export type CodeParse =

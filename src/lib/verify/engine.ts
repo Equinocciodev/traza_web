@@ -1,5 +1,5 @@
 /**
- * Motor de verificación SIMULADO (sin criptografía real).
+ * Motor de verificación por señales.
  *
  * Deriva un veredicto explicable a partir de cuatro señales separadas:
  *   1. Firma emitida      — ¿el identificador fue emitido por una clave conocida y no fue alterado?
@@ -26,7 +26,7 @@ import type {
 
 export type { VerificationResult, Verdict, ReasonCode, NextStep } from './types';
 
-/** Formato público de los identificadores del demo: TRZ-XXXX-XXXX-XXXX (alfanumérico, mayúsculas). */
+/** Formato público de los identificadores: TRZ-XXXX-XXXX-XXXX (alfanumérico, mayúsculas). */
 const CODE_PATTERN = /^TRZ-[A-Z0-9]{4}-[A-Z0-9]{4}-[A-Z0-9]{4}$/;
 
 /** Normaliza el código completo; en URLs HTTP(S) admite el parámetro c o el último segmento. */
@@ -180,7 +180,6 @@ export function evaluateUnit(unit: Unit, opts: { registryName: string; now?: Dat
     },
     nextSteps: nextStepsFor(verdict, reason),
     unit: verdict === 'invalid' && (reason === 'signature_invalid' || reason === 'signature_malformed' || reason === 'not_registered') ? undefined : toPublicUnit(unit),
-    simulated: true,
   };
 }
 
@@ -199,7 +198,6 @@ export function unknownIdentifierResult(code: string, tenant: TenantId, registry
       anomalies: { outcome: 'skipped', items: [], highest: null },
     },
     nextSteps: nextStepsFor('invalid', 'not_registered'),
-    simulated: true,
   };
 }
 
@@ -223,7 +221,6 @@ export function unverifiableResult(
       anomalies: { outcome: 'skipped', items: [], highest: null },
     },
     nextSteps: reason === 'unknown_format' ? ['type_code'] : nextStepsFor('unverifiable', reason),
-    simulated: true,
   };
 }
 

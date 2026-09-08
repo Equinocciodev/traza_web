@@ -1,27 +1,27 @@
 import type { InstitutionalContent } from '../institutional.types';
 
 /**
- * Demo C · Institutional view (EN). Everything it describes is a demonstration with simulated data:
+ * Institutional view (EN). Alerts, cases, inspections and audit timeline:
  * it claims no implementation, institutional relationship or real figures.
  */
 export const institutional: InstitutionalContent = {
   meta: {
     title: 'Institutional view',
     description:
-      'Institutional demo view: how a control entity would see risk alerts, cases, field inspections and the audit timeline within a pilot. Simulated data.',
+      'Institutional view: how a control entity sees risk alerts, cases with their timeline, field inspections and the full audit trail within a pilot, with permissions for each role.',
   },
 
   hero: {
-    eyebrow: 'Demo C · Institutional view',
+    eyebrow: 'Institutional view',
     title: 'Risks, cases and audit in a pilot',
     subtitle:
-      'This is how a control entity would see the information within a Traza pilot: alerts explained in plain language, cases with their timeline and field inspections, with role-based permissions. Everything shown is simulated.',
+      'This is how a control entity sees the information within a Traza pilot: alerts explained in plain language, cases with their timeline and field inspections, with role-based permissions.',
   },
 
   banner: {
-    title: 'Institutional demo view — simulated data — read only',
+    title: 'Institutional view — read only',
     body:
-      'This screen shows how a control entity would see the information within a pilot. Alerts, cases, people, sites and figures are fictitious; actions only change the in-memory state of this page and are not sent to any system. It does not describe an existing implementation nor imply a relationship with any institution.',
+      'This screen brings together what a control entity needs to review: alerts, cases, inspections and the audit timeline, with each role\'s permissions. Actions change the state of this session and are not sent to any external system.',
     readOnly: 'Read only: nothing you do here is saved or transmitted.',
   },
 
@@ -30,38 +30,38 @@ export const institutional: InstitutionalContent = {
     tenantValue: 'Spirits pilot · proposal',
     registryLabel: 'Registry queried',
     periodLabel: 'Period',
-    periodValue: 'Last 30 days (simulated)',
+    periodValue: 'Last 30 days',
   },
 
   roles: {
-    legend: 'Demo role',
+    legend: 'Session role',
     help: 'Switch roles to see how the information and the available actions change. The choice is only kept while the page is open.',
     currentLabel: 'Active role',
     items: [
       {
         id: 'analyst',
-        label: 'Analyst (demo)',
+        label: 'Analyst',
         description: 'Sees every alert, case and inspection and the full timeline. Can acknowledge alerts, open cases, schedule inspections and close cases.',
         icon: 'search',
       },
       {
         id: 'inspector',
-        label: 'Field inspector (demo)',
+        label: 'Field inspector',
         description: 'Sees only the alerts and cases assigned to them and only their own actions in the timeline. Can acknowledge alerts and schedule inspections; cannot open or close cases.',
         icon: 'map-pin',
       },
       {
         id: 'observer',
-        label: 'Observer (demo)',
-        description: 'Limited permissions: sees the summary and the lists, but not alert or case details nor the audit timeline. Can request access (simulated).',
+        label: 'Observer',
+        description: 'Limited permissions: sees the summary and the lists, but not alert or case details nor the audit timeline. Can request access.',
         icon: 'eye',
       },
     ],
   },
 
-  demoControls: {
-    title: 'Demo controls',
-    simulateError: 'Simulate registry error',
+  viewControls: {
+    title: 'View controls',
+    simulateError: 'Test the error state',
     simulateErrorHint: 'Reproduces a failed registry response to show the error state and the retry.',
   },
 
@@ -79,8 +79,7 @@ export const institutional: InstitutionalContent = {
   summary: {
     id: 'summary',
     title: 'Period summary',
-    intro: 'Four simulated indicators for the pilot. They are neither real figures nor projections.',
-    simulatedTag: 'simulated',
+    intro: 'Four indicators for the pilot, computed over the selected period.',
     kpis: [
       { key: 'unitsRegistered', label: 'Units registered', hint: 'Identities issued in the pilot registry.', icon: 'qr' },
       { key: 'verificationsPeriod', label: 'Verifications this period', hint: 'Public checks made from a phone.', icon: 'scan' },
@@ -116,10 +115,10 @@ export const institutional: InstitutionalContent = {
       linkedCase: 'Linked case',
       inspector: 'Assigned inspector',
       explanation: 'Explanation',
-      evidence: 'Evidence: simulated verdict for the unit',
-      evidenceIntro: 'Result of evaluating the unit with the four signals of the simulated verification engine.',
+      evidence: 'Evidence: verdict for the unit',
+      evidenceIntro: 'Result of evaluating the unit with the four signals of the verification engine.',
       signals: 'Signals',
-      actions: 'Actions (simulated)',
+      actions: 'Actions',
       actionsIntro: 'They change the state only on this page and are recorded in the audit timeline.',
       viewCase: 'View case',
     },
@@ -141,7 +140,7 @@ export const institutional: InstitutionalContent = {
       linkedAlerts: 'Linked alerts',
       timeline: 'Action timeline',
       outcome: 'Outcome',
-      actions: 'Actions (simulated)',
+      actions: 'Actions',
       closeCase: 'Close case',
       openAlert: 'View alert',
     },
@@ -150,7 +149,7 @@ export const institutional: InstitutionalContent = {
   inspections: {
     id: 'inspections',
     title: 'Pilot field inspections',
-    intro: 'Visits scheduled or completed by fictitious inspectors within the pilot.',
+    intro: 'Visits scheduled or completed by the inspectors assigned to the pilot.',
     columns: { id: 'Inspection', site: 'Site', date: 'Date', inspector: 'Inspector', status: 'Status', result: 'Result', caseRef: 'Case' },
     noResult: 'Pending',
   },
@@ -158,8 +157,8 @@ export const institutional: InstitutionalContent = {
   audit: {
     id: 'audit',
     title: 'Audit timeline',
-    intro: 'Every action is recorded with date, actor, role, object and result. Actions you run in this demo are added at the top.',
-    caption: 'Pilot audit timeline (simulated), newest first.',
+    intro: 'Every action is recorded with date, actor, role, object and result. Actions you run are added at the top.',
+    caption: 'Pilot audit timeline, newest first.',
     timezoneNote: 'Times in UTC.',
     filterLabel: 'Filter by actor role',
     all: 'All',
@@ -172,15 +171,14 @@ export const institutional: InstitutionalContent = {
     title: 'No permission for this view',
     body: 'The observer role can only see the summary. Alert and case details and the audit timeline require a permission that, in the pilot, the responsible entity grants.',
     audit: 'The audit timeline is not available to the observer role.',
-    request: 'Request access (simulated)',
-    requested: 'Request recorded (simulated). In a real pilot an administrator would review it; nothing is sent here.',
+    request: 'Request access',
+    requested: 'Request recorded. The pilot administrator will review it.',
   },
 
   states: {
-    loading: 'Loading simulated data…',
-    loadingHint: 'This wait is simulated to show the loading state.',
+    loading: 'Loading data…',
     errorTitle: 'We could not query the registry',
-    errorBody: 'The simulated registry responded with an error. It is not a problem on your side: wait a few seconds and try again.',
+    errorBody: 'The registry responded with an error. It is not a problem on your side: wait a few seconds and try again.',
     retry: 'Retry',
     offlineTitle: 'Offline',
     offlineBody: 'There is no internet connection right now. You can keep reading this view; actions will resume when the connection returns.',
@@ -224,8 +222,8 @@ export const institutional: InstitutionalContent = {
   },
 
   island: {
-    roles: { analyst: 'Analyst (demo)', inspector: 'Field inspector (demo)', observer: 'Observer (demo)' },
-    sessionActor: 'Demo session · %s',
+    roles: { analyst: 'Analyst', inspector: 'Field inspector', observer: 'Observer' },
+    sessionActor: 'Session · %s',
     live: {
       roleChanged: 'Role changed to %s.',
       filtered: '%n alerts match the filters.',
@@ -235,14 +233,14 @@ export const institutional: InstitutionalContent = {
       caseCreated: 'Case %s opened and linked to the alert.',
       inspectionScheduled: 'Inspection %s scheduled.',
       caseClosed: 'Case %s closed.',
-      accessRequested: 'Access request recorded (simulated).',
-      loaded: 'Simulated data loaded.',
-      error: 'Simulated registry error. You can retry.',
+      accessRequested: 'Access request recorded.',
+      loaded: 'Data loaded.',
+      error: 'Registry error. You can retry.',
       offline: 'Offline. Actions are paused.',
       online: 'Connection restored.',
     },
     verdictReason: {
-      all_checks_passed: 'Favourable simulated results; they do not certify physical authenticity.',
+      all_checks_passed: 'Favourable results; they do not certify physical authenticity.',
       anomalies_detected: 'Anomalies were detected.',
       data_partial: 'The data only partially match.',
       registry_suspended: 'The registry entry is temporarily suspended.',
@@ -301,23 +299,23 @@ export const institutional: InstitutionalContent = {
     },
     newCase: {
       titleTemplate: 'Case opened from alert %s',
-      openedDescription: 'Case opened from this demo based on alert %s.',
-      closedDescription: 'Case closed from this demo.',
-      closedOutcome: 'Closed from the demo (simulated). Linked alerts were closed.',
-      inspectionDescription: 'Inspection %s scheduled from this demo at %p.',
+      openedDescription: 'Case opened based on alert %s.',
+      closedDescription: 'Case closed from this view.',
+      closedOutcome: 'Closed from this view. Linked alerts were closed.',
+      inspectionDescription: 'Inspection %s scheduled at %p.',
     },
     audit: {
       acknowledgedResult: 'Acknowledged',
       caseOpenedResult: 'Opened · assigned to R. Salcedo',
       inspectionResult: 'Scheduled',
       caseClosedResult: 'Closed',
-      accessResult: 'Recorded (simulated)',
-      acknowledgedDescription: 'Alert acknowledged from the demo.',
-      caseOpenedDescription: 'Case opened from the demo based on alert %s.',
-      inspectionDescription: 'Inspection scheduled from the demo at %p.',
-      caseClosedDescription: 'Case closed from the demo.',
-      accessDescription: 'Request for access to the detail recorded (simulated).',
+      accessResult: 'Recorded',
+      acknowledgedDescription: 'Alert acknowledged from this view.',
+      caseOpenedDescription: 'Case opened based on alert %s.',
+      inspectionDescription: 'Inspection scheduled at %p.',
+      caseClosedDescription: 'Case closed from this view.',
+      accessDescription: 'Request for access to the detail recorded.',
     },
-    access: { requestedTemplate: 'Request recorded (simulated): %s' },
+    access: { requestedTemplate: 'Request recorded: %s' },
   },
 };

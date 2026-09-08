@@ -12,15 +12,8 @@ export const common: CommonContent = {
     siteName: 'traza',
     titleTemplate: '%s · traza',
     defaultDescription:
-      'Traza es una plataforma de identidad digital unitaria, trazabilidad y verificación pública para productos reales. Demostración conceptual con datos simulados.',
-    ogImageAlt: 'traza® — Identidad digital para productos reales. Demostración conceptual con datos simulados.',
-  },
-
-  demoBadge: {
-    long: 'Demostración conceptual — datos simulados',
-    short: 'Demo · datos simulados',
-    explain:
-      'Este sitio es una demostración conceptual. Los códigos, unidades, eventos, resultados y organizaciones que muestra son simulados; nada de ello corresponde a una implementación real ni implica relación con ninguna institución.',
+      'Plataforma de identidad digital unitaria, trazabilidad y verificación pública para productos reales: un identificador firmado por unidad, el registro auditable de su recorrido y una comprobación desde el navegador.',
+    ogImageAlt: 'traza® — Identidad digital para productos reales.',
   },
 
   skipLink: 'Ir al contenido principal',
@@ -59,7 +52,7 @@ export const common: CommonContent = {
   footer: {
     columns: [
       {
-        title: 'Demostraciones',
+        title: 'Plataforma en uso',
         links: [
           { label: 'Verificación pública', key: 'verify' },
           { label: 'Recorrido del producto', key: 'journey' },
@@ -81,12 +74,13 @@ export const common: CommonContent = {
         links: [
           { label: 'Empresa y contacto', key: 'company' },
           { label: 'Aviso de privacidad', key: 'privacy' },
+          { label: 'Instagram', href: 'https://www.instagram.com/traza.technology/', external: true },
         ],
       },
     ],
     legal: '© 2026 traza. Todos los derechos reservados.',
     disclaimer:
-      'Demostración conceptual con datos simulados. Este sitio no afirma relación alguna con gobiernos, reguladores, clientes ni certificaciones. El caso de uso de licores se presenta como propuesta de piloto; nada de lo mostrado constituye una implementación oficial.',
+      'Este sitio no afirma relación alguna con gobiernos, reguladores ni certificaciones. El caso de uso de licores se presenta como propuesta de piloto; no constituye una implementación oficial.',
     privacyLabel: 'Privacidad',
     contactLabel: 'Contacto',
     languageLabel: 'Idioma',
@@ -101,7 +95,7 @@ export const common: CommonContent = {
     close: 'Cerrar',
     back: 'Volver',
     breadcrumbs: 'Ruta de navegación',
-    demoRegion: 'Demostración interactiva con datos simulados',
+    toolRegion: 'Herramienta interactiva',
   },
 
   states: {
@@ -127,13 +121,13 @@ export const common: CommonContent = {
     submit: 'Enviar',
     sending: 'Enviando…',
     sentTitle: 'Mensaje recibido',
-    sentBody: 'Gracias. En este demo el envío es simulado: no se ha transmitido ni guardado ningún dato.',
+    sentBody: 'Gracias por escribir. Le responderemos en días hábiles.',
     errorTitle: 'No se pudo enviar',
     errorBody: 'Ocurrió un problema al procesar el formulario. Revise los campos señalados e inténtelo de nuevo.',
     optional: 'opcional',
     privacyNote:
-      'Este formulario es simulado: no envía datos a ningún servidor ni los almacena. Solo muestra cómo funcionaría el flujo.',
+      'Sus datos se usan únicamente para responderle. No se almacenan en este sitio ni se comparten con terceros.',
     errorSummaryTitle: 'Revise los siguientes campos',
-    noScript: 'El envío simulado requiere JavaScript. Mientras no esté disponible, el botón está deshabilitado y sus datos no se envían.',
+    noScript: 'El envío del formulario requiere JavaScript. Mientras no esté disponible, escríbanos directamente al correo de contacto.',
   },
 };

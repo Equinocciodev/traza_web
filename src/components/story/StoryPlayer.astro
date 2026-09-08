@@ -1,20 +1,26 @@
 ---
 import type { Locale } from '@/i18n';
-import { getV2Narrative, NARRATIVE_DEMO_REFERENCE } from '@/content/v2-narrative';
+import { getV2Narrative, NARRATIVE_UNIT_REFERENCE } from '@/content/v2-narrative';
 import Icon from '@/components/ui/Icon.astro';
 import './story-player.css';
 
 interface Props { locale: Locale; id?: string }
 const { locale, id = 'story-player' } = Astro.props;
 const { ui, stories } = getV2Narrative(locale);
-const imageUrl = `${import.meta.env.BASE_URL.replace(/\/$/, '')}/images/v2/story-bottle.webp`;
+const assetBase = import.meta.env.BASE_URL.replace(/\/$/, '');
+const imageUrl = `${assetBase}/images/v2/story-bottle.webp`;
+/** Se muestra a min(52vw, 640px) en escritorio y ~470 px en móvil: no hace falta servir 1024 px. */
+const imageSrcset = [384, 512, 768]
+  .map((w) => `${assetBase}/images/v2/story-bottle-${w}.webp ${w}w`)
+  .concat(`${imageUrl} 1024w`)
+  .join(', ');
 ---
 
 <section class="story-player" id={id} data-story-player data-locale={locale}
   data-ui={JSON.stringify(ui)} aria-labelledby={`${id}-heading`}>
   <div class="story__visual" aria-hidden="true">
-    <img class="story__bottle" src={imageUrl} alt="" width="1024" height="1536"
-      loading="lazy" decoding="async" />
+    <img class="story__bottle" src={imageUrl} srcset={imageSrcset} sizes="(max-width: 47.99em) 470px, min(52vw, 690px)"
+      alt="" width="1024" height="1536" loading="lazy" decoding="async" />
   </div>
   <div class="story__inner">
     <!-- Exclusively an informative relation, anchored by measurement to the object and step data. -->
@@ -23,7 +29,7 @@ const imageUrl = `${import.meta.env.BASE_URL.replace(/\/$/, '')}/images/v2/story
       <circle data-story-connection-start r="4" />
       <circle data-story-connection-end r="4" />
     </svg>
-    <span class="story__object-label" data-story-object-label hidden>{ui.conceptualObject}</span>
+    <span class="story__object-label" data-story-object-label hidden>{ui.illustratedObject}</span>
     <h2 class="story__heading" id={`${id}-heading`} data-story-heading>{ui.heading}</h2>
     <p class="story__sr-only">{ui.imageAlt}</p>
     <div class="story__tabs" role="tablist" aria-label={ui.tabs}>
@@ -102,7 +108,7 @@ const imageUrl = `${import.meta.env.BASE_URL.replace(/\/$/, '')}/images/v2/story
           <div class="story__transcript-content">
             <p class="story__proposal">{story.label}</p>
             {story.id === 'product' && (
-              <p class="story__reference">{ui.record}: <span>{NARRATIVE_DEMO_REFERENCE.code}</span>. {ui.recordNote}</p>
+              <p class="story__reference">{ui.record}: <span>{NARRATIVE_UNIT_REFERENCE.code}</span>. {ui.recordNote}</p>
             )}
             <ol>
               {story.beats.map((beat) => (

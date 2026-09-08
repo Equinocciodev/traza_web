@@ -8,7 +8,7 @@ export const solutions: SolutionsContent = {
   meta: {
     title: 'Solutions',
     description:
-      'Identity, traceability and verification solutions for governments and regulators, industry and citizens, built on one shared technology layer.',
+      'Identity, traceability and public verification solutions for governments and regulators, for industry and for citizens, all built on one shared technology layer with the rules of each programme.',
   },
 
   hero: {
@@ -225,12 +225,12 @@ export const solutionsGovernment: SectorPageContent = {
     note: 'Expected outcomes are qualitative. No figures or measured results are presented.',
   },
 
-  demos: {
-    title: 'Related demos',
+  perspectives: {
+    title: 'See it in the platform',
     items: [
       {
         key: 'institutional',
-        tag: 'Demo C',
+        tag: 'For oversight',
         title: 'Institutional view',
         body: 'Consult the registry as a control agency would: units, anomalies, discrepancies and field inspection.',
         cta: { label: 'Open the institutional view', key: 'institutional', variant: 'primary' },
@@ -238,7 +238,7 @@ export const solutionsGovernment: SectorPageContent = {
       },
       {
         key: 'verify',
-        tag: 'Demo A',
+        tag: 'For the public',
         title: 'Public verification',
         body: 'See what the public would see when verifying a unit, with the co-brand example from the spirits use case.',
         cta: { label: 'Verify with the sample tenant', key: 'verify', suffix: '?t=licores', variant: 'secondary' },
@@ -246,7 +246,7 @@ export const solutionsGovernment: SectorPageContent = {
       },
       {
         key: 'journey',
-        tag: 'Demo B',
+        tag: 'For the chain',
         title: 'Product journey',
         body: 'Follow a unit from the factory or customs to retail and see which events are recorded.',
         cta: { label: 'See the journey', key: 'journey', variant: 'secondary' },
@@ -256,7 +256,7 @@ export const solutionsGovernment: SectorPageContent = {
   },
 
   disclaimer:
-    'Nothing above claims a relationship with governments or agencies, certifications or measured results. The spirits use case is a pilot proposal and the demos use simulated data.',
+    'Nothing above claims a relationship with governments or agencies, certifications or measured results. The spirits use case is a pilot proposal.',
 
   cta: {
     title: 'Let’s talk about a well-scoped pilot',
@@ -275,7 +275,7 @@ export const solutionsIndustry: SectorPageContent = {
   meta: {
     title: 'Industry',
     description:
-      'Unit-level identity, traceability and brand protection for manufacturers, importers and distributors, integrated with the systems already in place.',
+      'Unit-level identity, traceability and brand protection for manufacturers, importers and distributors, integrated with the management systems the company already has in place.',
   },
   key: 'industry',
 
@@ -398,12 +398,12 @@ export const solutionsIndustry: SectorPageContent = {
     note: 'Expected outcomes are qualitative. No figures or measured results are presented.',
   },
 
-  demos: {
-    title: 'Related demos',
+  perspectives: {
+    title: 'See it in the platform',
     items: [
       {
         key: 'journey',
-        tag: 'Demo B',
+        tag: 'For the chain',
         title: 'Product journey',
         body: 'Follow a unit from the factory to retail and see how each event completes its history.',
         cta: { label: 'See the journey', key: 'journey', variant: 'primary' },
@@ -411,7 +411,7 @@ export const solutionsIndustry: SectorPageContent = {
       },
       {
         key: 'verify',
-        tag: 'Demo A',
+        tag: 'For the public',
         title: 'Public verification',
         body: 'See what the public would see when checking one of your units from the browser.',
         cta: { label: 'Verify a product', key: 'verify', variant: 'secondary' },
@@ -419,7 +419,7 @@ export const solutionsIndustry: SectorPageContent = {
       },
       {
         key: 'institutional',
-        tag: 'Demo C',
+        tag: 'For oversight',
         title: 'Institutional view',
         body: 'Consult the registry, anomalies and reported discrepancies from the organization’s point of view.',
         cta: { label: 'Open the institutional view', key: 'institutional', variant: 'secondary' },
@@ -429,7 +429,7 @@ export const solutionsIndustry: SectorPageContent = {
   },
 
   disclaimer:
-    'Nothing above claims commercial relationships, certifications or measured results. Integrations are described generically and the demos use simulated data.',
+    'Nothing above claims commercial relationships, certifications or measured results. Integrations are described generically: each deployment agrees its own connectors.',
 
   cta: {
     title: 'Start with one product line',
@@ -558,12 +558,12 @@ export const solutionsCitizens: SectorPageContent = {
     note: 'Benefits are qualitative. No figures or measured results are presented.',
   },
 
-  demos: {
-    title: 'Related demos',
+  perspectives: {
+    title: 'See it in the platform',
     items: [
       {
         key: 'verify',
-        tag: 'Demo A',
+        tag: 'For the public',
         title: 'Public verification',
         body: 'Try verification with sample codes and see the different possible results, explained in plain language.',
         cta: { label: 'Verify a product', key: 'verify', variant: 'primary' },
@@ -571,7 +571,7 @@ export const solutionsCitizens: SectorPageContent = {
       },
       {
         key: 'journey',
-        tag: 'Demo B',
+        tag: 'For the chain',
         title: 'Product journey',
         body: 'Discover what lies behind the code: the path a unit travels before reaching your hands.',
         cta: { label: 'See the journey', key: 'journey', variant: 'secondary' },
@@ -581,12 +581,12 @@ export const solutionsCitizens: SectorPageContent = {
   },
 
   disclaimer:
-    'The demos use simulated data: the codes and results they show do not correspond to real products. Nothing above claims certifications or measured results.',
+    'Nothing above claims certifications or measured results.',
 
   cta: {
     title: 'Try it with a sample code',
     body:
-      'The public verification demo includes several simulated codes with different results. It is the fastest way to understand what you will see when you scan.',
+      'Public verification includes several sample codes with different results. It is the fastest way to understand what you will see when you scan.',
     primaryCta: { label: 'Verify a product', key: 'verify', variant: 'primary' },
     secondaryCta: { label: 'How it works', key: 'howItWorks', variant: 'secondary' },
   },

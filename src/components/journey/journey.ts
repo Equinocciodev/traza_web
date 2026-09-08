@@ -1,9 +1,9 @@
 /**
- * Isla del recorrido del producto (demo B) — lógica de cliente.
+ * Isla del recorrido del producto — lógica de cliente.
  *
  * Se monta sobre el HTML renderizado en servidor (estado final de la unidad destacada) y añade:
  * reproducción etapa por etapa ("el trazo que se completa"), controles accesibles, lista de pasos
- * con teclado, cambio de unidad, estados (cargando / vacío / error simulado) y anuncios aria-live.
+ * con teclado, cambio de unidad, estados (cargando / vacío / error) y anuncios aria-live.
  *
  * Reglas de motion: solo stroke-dashoffset (línea), transform/opacity (pulso de nodo, revelado de
  * tarjetas, barra de progreso). Una única reproducción automática al entrar en el viewport, nunca en

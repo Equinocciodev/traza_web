@@ -1,0 +1,39 @@
+# Rutas que las herramientas de IA (Cursor, Copilot, Continue, Claude, Codeium…) no deben
+# indexar ni enviar a un servicio remoto. No es un control de seguridad: es higiene de contexto
+# — evita que artefactos generados y documentos internos entren en un prompt o en un índice.
+
+# Dependencias y artefactos de build
+node_modules/
+dist/
+.astro/
+.lighthouse/
+
+# Resultados y evidencia de pruebas
+test-results/
+playwright-report/
+blob-report/
+playwright/.cache/
+docs/capturas/
+
+# Documentación interna de la etapa previa del proyecto: briefs, informes de QA,
+# handoffs de auditoría y matrices de afirmaciones. Describen el sitio como una
+# demostración y contradicen el contenido actual; no deben alimentar sugerencias.
+docs/
+
+# Entorno local (el ejemplo sí se versiona y sí es útil como contexto)
+.env
+.env.*
+!.env.example
+
+# Binarios y medios: cuestan mucho contexto y no aportan nada al razonamiento
+*.png
+*.jpg
+*.jpeg
+*.webp
+*.mp4
+*.woff
+*.woff2
+*.ico
+
+# Locks
+package-lock.json

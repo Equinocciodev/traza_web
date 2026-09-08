@@ -1,6 +1,6 @@
 /**
  * Seguridad: la CSP estricta y las demás cabeceras de public/_headers se aplican con cabeceras HTTP reales
- * (segundo servidor estático propio) y las tres demos, el formulario y la cabecera siguen funcionando sin
+ * (segundo servidor estático propio) y las tres vistas, el formulario y la cabecera siguen funcionando sin
  * ninguna violación (evento securitypolicyviolation) ni error de consola.
  */
 import { expect, test, type Page } from '@playwright/test';
@@ -164,7 +164,7 @@ test.describe('las páginas funcionan bajo la CSP estricta', () => {
     await openStrict(page, '/recorrido/');
     await page.locator('[data-jr-diagram]').scrollIntoViewIfNeeded();
     await expect(page.getByTestId('journey-play')).toHaveAttribute('data-state', 'ended', { timeout: 15_000 });
-    await page.getByTestId('journey-unit-select').selectOption('TRZ-DEMO-2B8X-40NE');
+    await page.getByTestId('journey-unit-select').selectOption('TRZ-7F2K-2B8X-40NE');
     await expect(page.getByTestId('journey-empty')).toBeVisible({ timeout: 5_000 });
     await page.getByTestId('journey-error-sim').click();
     await expect(page.getByTestId('journey-error')).toBeVisible({ timeout: 5_000 });

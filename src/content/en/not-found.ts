@@ -4,7 +4,7 @@ export const notFound: NotFoundContent = {
   meta: {
     title: 'Page not found',
     description:
-      'The requested page does not exist or has moved. Return to the home page or verify a product in the Traza conceptual demonstration.',
+      'The requested page does not exist or has moved. Return to the home page to read about the platform, or verify a product by entering the code printed on its label.',
   },
   code: '404',
   title: 'This page does not exist',

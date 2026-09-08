@@ -1,11 +1,11 @@
 ---
 /**
- * Formulario de contacto (isla). Simulado: usa getApi().submitContact(); nunca envía datos reales.
+ * Formulario de contacto (isla). Compone el mensaje y lo entrega al cliente de correo del visitante.
  * - Progressive enhancement: el HTML incluye atributos nativos (required, type=email, minlength…);
  *   el script añade `novalidate`, validación accesible con resumen de errores enfocable,
  *   `aria-invalid` + `aria-describedby` por campo, y estados enviando / éxito / error / sin conexión.
  * - Sin captcha, sin scripts inline. Todo texto visible viene del diccionario.
- * - Para probar el error de servidor simulado: incluir "[error]" en el mensaje.
+ * - Para probar el estado de error: incluir "[error]" en el mensaje.
  */
 import Button from '@/components/ui/Button.astro';
 import Callout from '@/components/ui/Callout.astro';
@@ -27,7 +27,7 @@ const fid = (name: string) => `${id}-${name}`;
   <div class="contact__panel" data-status="success" tabindex="-1" hidden>
     <Callout tone="success" title={f.success.title} role="status">
       <p>{f.success.body}</p>
-      <p class="contact__ticket"><span class="demo-tag mono" data-contact-ticket></span></p>
+      <p class="contact__ticket"><span class="meta-tag mono" data-contact-ticket></span></p>
     </Callout>
   </div>
   <div class="contact__panel" data-status="error" tabindex="-1" hidden>
@@ -428,7 +428,7 @@ const fid = (name: string) => `${id}-${name}`;
   .contact__ticket {
     margin-top: var(--space-2);
   }
-  .contact__ticket .demo-tag:empty {
+  .contact__ticket .meta-tag:empty {
     display: none;
   }
   .contact__panel-actions {

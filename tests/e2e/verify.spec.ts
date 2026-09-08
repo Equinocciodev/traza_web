@@ -265,7 +265,7 @@ test.describe('entrada manual', () => {
     await expect(error).toHaveText(es.manual.errors.format);
     await expect(app(page)).toHaveAttribute('data-state', 'idle');
 
-    await input.fill('trz demo 4k7q 92fa');
+    await input.fill('trz 7f2k 4k7q 92fa');
     await input.blur();
     await expect(input).toHaveValue(VALID);
     await expect(page.locator('[data-manual-normalized]')).toHaveText(es.manual.normalized);
@@ -331,7 +331,7 @@ test.describe('deep link y tenant', () => {
 
   test('una unidad de otro despliegue se rotula con su registro', async ({ page }) => {
     await open(page, '/verificar/?t=licores');
-    await page.getByTestId('manual-input').fill('TRZ-DEMO-6C2A-84MZ');
+    await page.getByTestId('manual-input').fill('TRZ-7F2K-6C2A-84MZ');
     await page.getByTestId('verify-button').click();
     await expect(result(page)).toBeVisible({ timeout: 10_000 });
     await expect(result(page)).toHaveAttribute('data-verdict', 'valid');

@@ -4,7 +4,7 @@ export const home: HomeContent = {
   meta: {
     title: 'Digital identity for real products',
     description:
-      'Traza gives each unit a signed digital identity, records its journey and lets anyone verify it from the browser. Conceptual demo with simulated data.',
+      'Traza gives each unit a signed digital identity, records its journey along the chain and lets anyone check it from a browser, with nothing to install and no account to create, in a result explained signal by signal.',
   },
 
   hero: {
@@ -14,12 +14,12 @@ export const home: HomeContent = {
       'Traza assigns each unit a signed digital identity, records its movements along the chain and lets anyone verify it from any browser, with nothing to install and no account to create.',
     mantra: 'Scan. Verify. Trust.',
     primaryCta: { label: 'Verify a product', key: 'verify', variant: 'primary' },
-    secondaryCta: { label: 'Request a demonstration', key: 'company', suffix: '#contact-title', variant: 'secondary' },
+    secondaryCta: { label: 'Talk to the team', key: 'company', suffix: '#contact-title', variant: 'secondary' },
     unitPreview: {
-      caption: 'Simulated unit · fictional data',
-      code: 'TRZ-DEMO-4K7Q-92FA',
+      caption: 'Identity of a unit',
+      code: 'TRZ-7F2K-4K7Q-92FA',
       fields: [
-        { label: 'Manufacturer / importer', value: 'Destilería Cerro Alto (demo)' },
+        { label: 'Manufacturer / importer', value: 'Destilería Cerro Alto' },
         { label: 'Product / presentation', value: 'Ron Añejo Cerro Alto 7 años · 750 ml bottle' },
         { label: 'Origin / lot', value: 'Planta Valle Sereno · LOTE-VS-26-012' },
         { label: 'Last movement', value: 'Received at retail · Licorería El Faro' },
@@ -176,15 +176,15 @@ export const home: HomeContent = {
     ],
   },
 
-  demos: {
-    eyebrow: 'Demos',
+  perspectives: {
+    eyebrow: 'The platform at work',
     title: 'Three ways to see it in action',
     intro:
-      'Each demo shows one part of the platform from the point of view of the person using it: the public, whoever follows a unit and the institution in control.',
+      'Each view shows one part of the platform from the point of view of the person using it: the public, whoever follows a unit and the institution in control.',
     items: [
       {
         key: 'verify',
-        tag: 'Demo A',
+        tag: 'For the public',
         title: 'Public verification',
         body: 'Scan or type a sample code and read a result explained by signals: signature, registry, data match and anomalies.',
         cta: { label: 'Verify a product', key: 'verify', variant: 'primary' },
@@ -192,7 +192,7 @@ export const home: HomeContent = {
       },
       {
         key: 'journey',
-        tag: 'Demo B',
+        tag: 'For the chain',
         title: 'Product journey',
         body: 'Follow a unit from the factory or customs to retail, event by event, and see how its history is built.',
         cta: { label: 'See the journey', key: 'journey', variant: 'secondary' },
@@ -200,14 +200,14 @@ export const home: HomeContent = {
       },
       {
         key: 'institutional',
-        tag: 'Demo C',
+        tag: 'For oversight',
         title: 'Institutional view',
         body: 'Consult the registry as a regulator or a company would: units, anomalies, discrepancies and field inspection.',
         cta: { label: 'Open the institutional view', key: 'institutional', variant: 'secondary' },
         icon: 'chart',
       },
     ],
-    note: 'All three demos use simulated data. No code, unit, event or organization shown in them is real.',
+    note: 'All three views work on the same record: what changes is what each role can see and do.',
   },
 
   useCase: {

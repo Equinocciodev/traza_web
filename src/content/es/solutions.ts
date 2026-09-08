@@ -8,7 +8,7 @@ export const solutions: SolutionsContent = {
   meta: {
     title: 'Soluciones',
     description:
-      'Soluciones de identidad, trazabilidad y verificación para gobiernos y reguladores, industria y ciudadanos, sobre una misma capa tecnológica.',
+      'Soluciones de identidad unitaria, trazabilidad y verificación pública para gobiernos y reguladores, para la industria y para los ciudadanos, todas sobre una misma capa tecnológica y con las reglas de cada programa.',
   },
 
   hero: {
@@ -102,7 +102,7 @@ export const solutionsGovernment: SectorPageContent = {
   meta: {
     title: 'Gobierno y reguladores',
     description:
-      'Cómo Traza apoya a reguladores y agencias de control con identidad unitaria, inspección de campo, registro auditable y despliegues co-brand por país.',
+      'Cómo Traza apoya a reguladores y agencias de control: identidad unitaria por producto, inspección de campo integrada, registro auditable de cada evento y despliegues co-brand por país o por programa.',
   },
   key: 'government',
 
@@ -225,12 +225,12 @@ export const solutionsGovernment: SectorPageContent = {
     note: 'Resultados esperados de carácter cualitativo. No se presentan cifras ni resultados medidos.',
   },
 
-  demos: {
-    title: 'Demostraciones relacionadas',
+  perspectives: {
+    title: 'Véalo en la plataforma',
     items: [
       {
         key: 'institutional',
-        tag: 'Demo C',
+        tag: 'Para el control',
         title: 'Vista institucional',
         body: 'Consulte el registro como lo haría una agencia de control: unidades, anomalías, discrepancias e inspección de campo.',
         cta: { label: 'Abrir la vista institucional', key: 'institutional', variant: 'primary' },
@@ -238,7 +238,7 @@ export const solutionsGovernment: SectorPageContent = {
       },
       {
         key: 'verify',
-        tag: 'Demo A',
+        tag: 'Para el público',
         title: 'Verificación pública',
         body: 'Vea lo que vería el público al verificar una unidad, con el ejemplo de co-brand del caso de uso de licores.',
         cta: { label: 'Verificar con el tenant de ejemplo', key: 'verify', suffix: '?t=licores', variant: 'secondary' },
@@ -246,7 +246,7 @@ export const solutionsGovernment: SectorPageContent = {
       },
       {
         key: 'journey',
-        tag: 'Demo B',
+        tag: 'Para la cadena',
         title: 'Recorrido del producto',
         body: 'Siga una unidad desde la fábrica o la aduana hasta el comercio y vea qué eventos quedan registrados.',
         cta: { label: 'Ver el recorrido', key: 'journey', variant: 'secondary' },
@@ -256,7 +256,7 @@ export const solutionsGovernment: SectorPageContent = {
   },
 
   disclaimer:
-    'Nada de lo anterior afirma relación con gobiernos o agencias, certificaciones ni resultados medidos. El caso de uso de licores es una propuesta de piloto y las demostraciones usan datos simulados.',
+    'Nada de lo anterior afirma relación con gobiernos o agencias, certificaciones ni resultados medidos. El caso de uso de licores es una propuesta de piloto.',
 
   cta: {
     title: 'Conversemos sobre un piloto acotado',
@@ -275,7 +275,7 @@ export const solutionsIndustry: SectorPageContent = {
   meta: {
     title: 'Industria',
     description:
-      'Identidad unitaria, trazabilidad y protección de marca para fabricantes, importadores y distribuidores, con integración a los sistemas ya existentes.',
+      'Identidad unitaria, trazabilidad y protección de marca para fabricantes, importadores y distribuidores, con integración a los sistemas de gestión que la empresa ya tiene en funcionamiento.',
   },
   key: 'industry',
 
@@ -398,12 +398,12 @@ export const solutionsIndustry: SectorPageContent = {
     note: 'Resultados esperados de carácter cualitativo. No se presentan cifras ni resultados medidos.',
   },
 
-  demos: {
-    title: 'Demostraciones relacionadas',
+  perspectives: {
+    title: 'Véalo en la plataforma',
     items: [
       {
         key: 'journey',
-        tag: 'Demo B',
+        tag: 'Para la cadena',
         title: 'Recorrido del producto',
         body: 'Siga una unidad desde la fábrica hasta el comercio y vea cómo cada evento completa su historia.',
         cta: { label: 'Ver el recorrido', key: 'journey', variant: 'primary' },
@@ -411,7 +411,7 @@ export const solutionsIndustry: SectorPageContent = {
       },
       {
         key: 'verify',
-        tag: 'Demo A',
+        tag: 'Para el público',
         title: 'Verificación pública',
         body: 'Vea lo que vería el público al comprobar una de sus unidades desde el navegador.',
         cta: { label: 'Verificar un producto', key: 'verify', variant: 'secondary' },
@@ -419,7 +419,7 @@ export const solutionsIndustry: SectorPageContent = {
       },
       {
         key: 'institutional',
-        tag: 'Demo C',
+        tag: 'Para el control',
         title: 'Vista institucional',
         body: 'Consulte el registro, las anomalías y las discrepancias reportadas desde el punto de vista de la organización.',
         cta: { label: 'Abrir la vista institucional', key: 'institutional', variant: 'secondary' },
@@ -429,7 +429,7 @@ export const solutionsIndustry: SectorPageContent = {
   },
 
   disclaimer:
-    'Nada de lo anterior afirma relaciones comerciales, certificaciones ni resultados medidos. Las integraciones se describen de forma genérica y las demostraciones usan datos simulados.',
+    'Nada de lo anterior afirma relaciones comerciales, certificaciones ni resultados medidos. Las integraciones se describen de forma genérica: cada despliegue acuerda sus conectores.',
 
   cta: {
     title: 'Empiece por una línea de producto',
@@ -558,12 +558,12 @@ export const solutionsCitizens: SectorPageContent = {
     note: 'Beneficios de carácter cualitativo. No se presentan cifras ni resultados medidos.',
   },
 
-  demos: {
-    title: 'Demostraciones relacionadas',
+  perspectives: {
+    title: 'Véalo en la plataforma',
     items: [
       {
         key: 'verify',
-        tag: 'Demo A',
+        tag: 'Para el público',
         title: 'Verificación pública',
         body: 'Pruebe la verificación con códigos de ejemplo y vea distintos resultados posibles, explicados en lenguaje claro.',
         cta: { label: 'Verificar un producto', key: 'verify', variant: 'primary' },
@@ -571,7 +571,7 @@ export const solutionsCitizens: SectorPageContent = {
       },
       {
         key: 'journey',
-        tag: 'Demo B',
+        tag: 'Para la cadena',
         title: 'Recorrido del producto',
         body: 'Descubra qué hay detrás del código: el camino que una unidad recorre antes de llegar a sus manos.',
         cta: { label: 'Ver el recorrido', key: 'journey', variant: 'secondary' },
@@ -581,12 +581,12 @@ export const solutionsCitizens: SectorPageContent = {
   },
 
   disclaimer:
-    'Las demostraciones usan datos simulados: los códigos y resultados que muestran no corresponden a productos reales. Nada de lo anterior afirma certificaciones ni resultados medidos.',
+    'Nada de lo anterior afirma certificaciones ni resultados medidos.',
 
   cta: {
     title: 'Pruébelo con un código de ejemplo',
     body:
-      'La demostración de verificación pública incluye varios códigos simulados con resultados distintos. Es la forma más rápida de entender qué verá al escanear.',
+      'La verificación pública incluye varios códigos de ejemplo con resultados distintos. Es la forma más rápida de entender qué verá al escanear.',
     primaryCta: { label: 'Verificar un producto', key: 'verify', variant: 'primary' },
     secondaryCta: { label: 'Cómo funciona', key: 'howItWorks', variant: 'secondary' },
   },

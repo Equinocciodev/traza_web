@@ -1,5 +1,5 @@
 /**
- * Integridad de los datos simulados: unidades, escenarios y vista institucional.
+ * Integridad de los datos del registro: unidades, escenarios y vista institucional.
  * Comprueba formato de códigos, orden de eventos, referencias cruzadas y ausencia de datos reales o personales.
  */
 import { describe, expect, it } from 'vitest';
@@ -16,7 +16,7 @@ import {
   KPI_BASE,
   PEOPLE,
   PERSON_BY_ID,
-  DEMO_INSPECTOR_ID,
+  INSPECTOR_ID,
   computeKpis,
   countAlertsByType,
   alertAssignedTo,
@@ -184,10 +184,11 @@ describe('unidades', () => {
         expect(lastProgress?.stage ?? last.stage).toBe(unit.currentStage);
       });
 
-      it('el algoritmo de firma se rotula como simulado y el emisor es ficticio (demo)', () => {
-        expect(unit.signature.algorithm).toMatch(/simulad/i);
-        expect(unit.issuer.name).toMatch(/\(demo\)/);
-        expect(unit.product.brand).toMatch(/\(demo\)/);
+      it('el algoritmo de firma se nombra sin rótulos de demostración', () => {
+        expect(unit.signature.algorithm).toMatch(/ECDSA|Ed25519|RSA/i);
+        for (const value of [unit.signature.algorithm, unit.issuer.name, unit.product.brand]) {
+          expect(value).not.toMatch(/\(demo\)|\(simulad|demostraci[oó]n/i);
+        }
       });
     });
   }
@@ -238,8 +239,8 @@ describe('vista institucional', () => {
       const ids = list.map((x) => x.id);
       expect(new Set(ids).size).toBe(ids.length);
     }
-    expect(PERSON_BY_ID.has(DEMO_INSPECTOR_ID)).toBe(true);
-    expect(PERSON_BY_ID.get(DEMO_INSPECTOR_ID)?.role).toBe('inspector');
+    expect(PERSON_BY_ID.has(INSPECTOR_ID)).toBe(true);
+    expect(PERSON_BY_ID.get(INSPECTOR_ID)?.role).toBe('inspector');
   });
 
   it('las alertas referencian unidades, casos e inspectores existentes y tipos válidos', () => {
@@ -310,13 +311,13 @@ describe('vista institucional', () => {
   });
 
   it('el inspector de demostración tiene al menos una alerta, un caso y una inspección visibles', () => {
-    expect(ALERTS.some((a) => alertAssignedTo(a, (id) => CASE_BY_ID.get(id)) === DEMO_INSPECTOR_ID)).toBe(true);
-    expect(CASES.some((c) => c.inspectorId === DEMO_INSPECTOR_ID)).toBe(true);
-    expect(INSPECTIONS.some((i) => i.inspectorId === DEMO_INSPECTOR_ID)).toBe(true);
+    expect(ALERTS.some((a) => alertAssignedTo(a, (id) => CASE_BY_ID.get(id)) === INSPECTOR_ID)).toBe(true);
+    expect(CASES.some((c) => c.inspectorId === INSPECTOR_ID)).toBe(true);
+    expect(INSPECTIONS.some((i) => i.inspectorId === INSPECTOR_ID)).toBe(true);
   });
 
-  it('las personas ficticias van rotuladas como demo o simuladas', () => {
-    for (const p of PEOPLE) expect(p.name).toMatch(/\(demo\)|\(simulad/);
+  it('los nombres de las personas no llevan rótulos de demostración', () => {
+    for (const p of PEOPLE) expect(p.name).not.toMatch(/\(demo\)|\(simulad/i);
   });
 });
 

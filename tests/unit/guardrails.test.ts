@@ -27,7 +27,7 @@ const FIXTURES: Entry[] = walk({ UNITS, SCENARIOS, ALERTS, CASES, INSPECTIONS, A
 const CONFIG: Entry[] = walk({ TENANTS, SECTORS }, 'config', []);
 const ALL: Entry[] = [...CONTENT, ...FIXTURES, ...CONFIG];
 
-/** Páginas corporativas (no demos): aquí no se admite ninguna cifra de escala o impacto. */
+/** Páginas corporativas: aquí no se admite ninguna cifra de escala o impacto. */
 const CORPORATE = /^(es|en)\.(common|home|platform|solutions|solutionsGovernment|solutionsIndustry|solutionsCitizens|howItWorks|caseSpirits|security|company|privacy|notFound)\./;
 
 /** Frases en las que se explica por qué NO se usa "auténtico" (única mención admitida). */
@@ -127,15 +127,34 @@ describe('cifras de escala o impacto', () => {
     }
   });
 
-  it('las cifras de las demos van rotuladas como simuladas en su sección', () => {
-    for (const locale of ['es', 'en'] as const) {
-      const c = getContent(locale);
-      expect(c.institutional.summary.intro).toMatch(/simulad|simulat|not real/i);
-      expect(c.institutional.summary.simulatedTag).toMatch(/simulad|simulat/i);
-      expect(c.institutional.banner.title).toMatch(/simulad|simulat/i);
-      expect(c.journey.hero.note).toMatch(/simulad|simulat/i);
-      expect(c.verify.states.simulatedTag).toMatch(/simulad|simulat/i);
-    }
+});
+
+describe('vocabulario de demostración', () => {
+  /**
+   * El sitio es la web corporativa de Traza Technology, C.A.: ningún texto visible debe
+   * presentarlo como una demostración ni rotular su contenido como simulado o ficticio.
+   * Se admiten los controles que ofrecen simular una condición ("simular escaneo",
+   * "simular que no hay conexión"): describen lo que hace un botón, no el origen del dato.
+   */
+  const DEMO_VOCAB = /demostraci[oó]n|demonstration|\bdemos?\b|simulad[oa]s?|simulated|ficticio|fictitious|fictional/i;
+  const CONTROL_ALLOWED = /^(simular|simulate)\b/i;
+
+  it('ningún texto de contenido se describe como demo, simulado o ficticio', () => {
+    const found = CONTENT.filter((e) => DEMO_VOCAB.test(e.text) && !CONTROL_ALLOWED.test(e.text.trim()))
+      .map((e) => `${e.path}: «${e.text.slice(0, 90)}»`);
+    expect(found).toEqual([]);
+  });
+
+  it('los fixtures y la configuración tampoco usan ese vocabulario', () => {
+    const found = [...FIXTURES, ...CONFIG].filter((e) => DEMO_VOCAB.test(e.text))
+      .map((e) => `${e.path}: «${e.text.slice(0, 90)}»`);
+    expect(found).toEqual([]);
+  });
+
+  it('los códigos de ejemplo no llevan el bloque DEMO', () => {
+    const codes = ALL.filter((e) => /TRZ-/.test(e.text));
+    expect(codes.length).toBeGreaterThan(0);
+    expect(codes.filter((e) => /TRZ-DEMO/i.test(e.text))).toEqual([]);
   });
 });
 
@@ -148,21 +167,18 @@ describe('datos personales y tributarios', () => {
     expect(found).toEqual([]);
   });
 
-  it('el placeholder de correo del formulario no es una dirección real', () => {
+  it('el correo de contacto se configura por entorno, nunca en los diccionarios de contenido', () => {
+    // PUBLIC_CONTACT_EMAIL alimenta la página de empresa; el contenido no debe fijar direcciones.
     const emails = ALL.filter((e) => /@/.test(e.text));
     expect(emails).toEqual([]);
   });
 });
 
-describe('indicador de demostración y co-brand', () => {
-  it('el indicador persistente tiene el texto exacto en español y una versión corta', () => {
-    const es = getContent('es').common.demoBadge;
-    expect(es.long).toBe('Demostración conceptual — datos simulados');
-    expect(es.short.length).toBeLessThan(es.long.length);
-    expect(es.explain).toMatch(/simulad/i);
-    const en = getContent('en').common.demoBadge;
-    expect(en.long).toMatch(/conceptual demonstration/i);
-    expect(en.long).toMatch(/simulated data/i);
+describe('no-afirmación institucional y co-brand', () => {
+  it('no existe un indicador persistente de demostración en el contenido común', () => {
+    for (const locale of ['es', 'en'] as const) {
+      expect('demoBadge' in getContent(locale).common).toBe(false);
+    }
   });
 
   it('el pie niega relaciones institucionales y rotula el caso de licores como propuesta de piloto', () => {

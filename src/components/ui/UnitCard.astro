@@ -1,7 +1,7 @@
 ---
 /**
- * Tarjeta de unidad simulada: código en mono, campos de la historia de la unidad y estado.
- * Todo el contenido llega del diccionario (datos ficticios). Sin JavaScript.
+ * Tarjeta de unidad: código en mono, campos de la historia de la unidad y estado.
+ * Todo el contenido llega del diccionario. Sin JavaScript.
  */
 import Icon from './Icon.astro';
 import StatusPill from './StatusPill.astro';
@@ -21,7 +21,7 @@ const { caption, code, fields, statusLabel, statusTone = 'success', tag, class: 
 
 <figure class:list={['unit-card', className]}>
   <figcaption class="unit-card__head">
-    <span class="demo-tag">{tag ?? caption}</span>
+    <span class="meta-tag">{tag ?? caption}</span>
     <span class="unit-card__qr" aria-hidden="true"><Icon name="qr" size={22} /></span>
   </figcaption>
   <p class="unit-card__code mono">{code}</p>
@@ -69,7 +69,7 @@ const { caption, code, fields, statusLabel, statusTone = 'success', tag, class: 
     justify-content: space-between;
     gap: var(--space-3);
   }
-  .unit-card__head .demo-tag {
+  .unit-card__head .meta-tag {
     color: var(--uc-muted);
     background: var(--color-neutral-50);
     border-color: var(--color-neutral-300);

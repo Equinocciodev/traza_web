@@ -4,14 +4,14 @@ export const company: CompanyContent = {
   meta: {
     title: 'Company',
     description:
-      'Traza is a private company and multisector platform for unit-level digital identity, traceability and verification. Mission, principles and team contact.',
+      'Traza Technology, C.A. is a private company and multisector platform for unit-level digital identity, traceability and verification. Read the mission, the product principles and how to reach the team.',
   },
 
   hero: {
     eyebrow: 'Company',
     title: 'A private company dedicated to trust in products',
     subtitle:
-      'Traza is a private company and a multisector technology platform. It provides unit-level digital identity, traceability, verification and control services to public-sector entities and private industries.',
+      'Traza Technology, C.A. is a private company and a multisector technology platform. It provides unit-level digital identity, traceability, verification and control services to public-sector entities and private industries.',
   },
 
   mission: {
@@ -100,11 +100,11 @@ export const company: CompanyContent = {
         'Other',
       ],
       message: 'Message',
-      consent: 'I understand that this form is a simulation and that no data will be sent or stored.',
+      consent: 'I agree that my details may be used only to reply to this message.',
       submit: 'Send message',
       success: {
         title: 'Message received',
-        body: 'Thank you for writing. In this demo the submission is simulated: no data has been transmitted or stored.',
+        body: 'Thank you for writing. We will reply within business days to the address you provided.',
       },
       error: {
         title: 'Could not send',
@@ -113,10 +113,20 @@ export const company: CompanyContent = {
     },
     emailLabel: 'Contact email',
     emailFallback:
-      'The public contact email is configured in each deployment. No real email is enabled in this demo.',
-    responseNote: 'In a real deployment, the team responds on business days.',
+      'Write to us using the form and we will reply to the address you provide.',
+    responseNote: 'The team responds on business days.',
+  },
+
+  legal: {
+    title: 'Company details',
+    items: [
+      { label: 'Registered name', value: 'Traza Technology, C.A.' },
+      { label: 'Brand', value: 'Traza®' },
+      { label: 'Activity', value: 'Unit-level digital identity, traceability and verification platform' },
+      { label: 'Site', value: 'traza.technology' },
+    ],
   },
 
   disclaimer:
-    'Conceptual demonstration. This page does not claim clients, contracts, certifications or a relationship with governments or agencies. The spirits use case is a pilot proposal and the contact form is simulated.',
+    'This page does not claim contracts, certifications or a relationship with governments or agencies. The spirits use case is a pilot proposal.',
 };

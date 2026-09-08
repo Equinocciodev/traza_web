@@ -1,5 +1,5 @@
 /*
-  Estilos base de Traza® demo: reset moderado, tipografía, foco visible, utilidades de layout.
+  Estilos base de Traza®: reset moderado, tipografía, foco visible, utilidades de layout.
   Progressive enhancement: todo el contenido es legible sin JavaScript; las islas interactivas
   añaden comportamiento sobre HTML semántico.
 */
@@ -336,8 +336,8 @@ th {
   margin-top: var(--space-2);
 }
 
-/* Pequeña marca de agua de demostración dentro de paneles */
-.demo-tag {
+/* Etiqueta discreta dentro de paneles */
+.meta-tag {
   display: inline-flex;
   align-items: center;
   gap: var(--space-2);
@@ -352,7 +352,7 @@ th {
   background: var(--color-bg-subtle);
 }
 
-.on-dark .demo-tag {
+.on-dark .meta-tag {
   color: var(--color-text-secondary);
   background: rgba(255, 255, 255, 0.06);
 }
@@ -372,8 +372,7 @@ th {
 @media print {
   .skip-link,
   .site-header,
-  .site-footer,
-  .demo-badge {
+  .site-footer {
     display: none !important;
   }
 }
