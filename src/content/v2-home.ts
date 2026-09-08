@@ -17,7 +17,7 @@ interface HomeV2Content {
 /** V2 editorial copy is separate from the preserved v1 dictionaries and verification model. */
 export const V2_HOME: Record<Locale, HomeV2Content> = {
   es: {
-    meta: { title: 'El origen importa. La evidencia conecta.', description: 'Traza conecta productos, industria e instituciones: una identidad digital firmada por unidad, el registro de su recorrido y una consulta pública que cualquiera puede hacer.' },
+    meta: { title: 'El origen importa. La evidencia conecta.', description: 'Traza conecta productos, industria e instituciones: una identidad firmada por unidad, el registro de su ciclo de vida y una consulta que cualquiera puede hacer.' },
     nav: [
       { label: 'Plataforma', key: 'platform' },
       { label: 'Cómo funciona', key: 'home', anchor: '#historia' },
@@ -55,7 +55,7 @@ export const V2_HOME: Record<Locale, HomeV2Content> = {
     },
   },
   en: {
-    meta: { title: 'Origin matters. Evidence connects.', description: 'Traza connects products, industry and institutions: a signed digital identity per unit, the record of its journey, and a public lookup anyone can run.' },
+    meta: { title: 'Origin matters. Evidence connects.', description: 'Traza connects products, industry and institutions: a signed identity per unit, the record of its lifecycle, and a public lookup anyone can run from a browser.' },
     nav: [
       { label: 'Platform', key: 'platform' }, { label: 'How it works', key: 'home', anchor: '#historia' },
       { label: 'Solutions', key: 'solutions' }, { label: 'Company', key: 'company' },

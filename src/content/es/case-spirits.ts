@@ -138,7 +138,7 @@ export const caseSpirits: CaseSpiritsContent = {
   fieldInspection: {
     title: 'La inspección de campo forma parte del piloto',
     body:
-      'La propuesta no aplaza la inspección de campo a una fase posterior: la incluye desde el inicio. Las señales del registro orientan a los equipos, y lo que observan en sitio vuelve al registro.',
+      'La propuesta no aplaza la inspección de campo a una fase posterior: la incluye desde el inicio. Las señales del registro orientan a los equipos, y lo que observan en sitio vuelve al registro. Lo que llega más tarde es la aplicación específica para inspectores; al principio se trabaja con la misma web y las vistas institucionales.',
     bullets: [
       'Verificación en sitio con la misma página web que usa el público, con vistas adicionales para el inspector',
       'Constancia de cada inspección vinculada a la unidad y al punto de venta',

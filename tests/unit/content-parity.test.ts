@@ -5,6 +5,7 @@
  */
 import { describe, expect, it } from 'vitest';
 import { getContent } from '@/content';
+import { V2_HOME } from '@/content/v2-home';
 import { CHAIN_STAGES } from '@/fixtures/types';
 import { ROUTES, LOCALES } from '@/i18n';
 import type { Cta } from '@/content/types';
@@ -194,6 +195,17 @@ describe('metadatos de página', () => {
         const len = (dict[k] as PageWithMeta).meta.description.length;
         expect(len < DESCRIPTION_MIN || len > DESCRIPTION_MAX, `${known} tiene ${len} caracteres: ya cumple el contrato`).toBe(true);
       }
+    });
+
+    it(`[${locale}] la descripción que de verdad renderiza la portada está dentro de rango`, () => {
+      /*
+       * La portada monta `HomePage.astro`, que pasa a `Base` la descripción de `V2_HOME`,
+       * no la de `home.meta`. Comprobar solo `home.meta` dejaba sin vigilar la única
+       * descripción que llega al HTML — y así se colaron 172 caracteres en producción.
+       */
+      const rendered = V2_HOME[locale].meta.description;
+      expect(rendered.length).toBeGreaterThanOrEqual(DESCRIPTION_MIN);
+      expect(rendered.length).toBeLessThanOrEqual(DESCRIPTION_MAX);
     });
 
     it(`[${locale}] la descripción por defecto y la de OG están dentro de rango`, () => {

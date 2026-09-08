@@ -138,7 +138,7 @@ export const caseSpirits: CaseSpiritsContent = {
   fieldInspection: {
     title: 'Field inspection is part of the pilot',
     body:
-      'The proposal does not defer field inspection to a later phase: it includes it from the start. Signals from the registry guide the teams, and what they observe on site flows back into the registry.',
+      'The proposal does not defer field inspection to a later phase: it includes it from the start. Signals from the registry guide the teams, and what they observe on site flows back into the registry. What arrives later is the dedicated inspector application; at first the work is done with the same web pages and the institutional views.',
     bullets: [
       'On-site verification with the same web page the public uses, with additional views for the inspector',
       'A record of each inspection linked to the unit and the point of sale',
