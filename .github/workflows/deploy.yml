@@ -37,9 +37,14 @@ jobs:
       - name: Build
         env:
           # Astro lee estas variables en astro.config.ts (site + base).
-          PUBLIC_SITE_URL: ${{ steps.pages.outputs.origin }}
+          # `origin` llega como http:// mientras «Enforce HTTPS» esté sin marcar;
+          # se normaliza a https para que canonical, Open Graph y sitemap no queden en claro.
+          ORIGIN: ${{ steps.pages.outputs.origin }}
           PUBLIC_BASE_PATH: ${{ steps.pages.outputs.base_path }}
-        run: npm run build
+        run: |
+          export PUBLIC_SITE_URL="${ORIGIN/#http:/https:}"
+          echo "site=$PUBLIC_SITE_URL base=$PUBLIC_BASE_PATH"
+          npm run build
 
       - uses: actions/upload-pages-artifact@v3
         with:
