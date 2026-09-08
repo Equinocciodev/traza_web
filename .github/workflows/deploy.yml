@@ -44,13 +44,13 @@ jobs:
           # Correo público de contacto: alimenta la página de empresa y el JSON-LD de Organization.
           PUBLIC_CONTACT_EMAIL: contacto@traza.technology
           PUBLIC_CONTACT_EMAIL_EN: contact@traza.technology
-          # Analítica: Google Analytics 4 mediante el SDK de Firebase. La configuración del
-          # proyecto son los valores por defecto de `astro.config.ts`, así que aquí basta con
-          # elegir el proveedor. Se activa SOLO en producción: en local y en las pruebas el
-          # proveedor queda en «none», que es lo que espera tests/e2e/privacy.spec.ts al
-          # comprobar que no se crean cookies. Una variable de Actions del mismo nombre lo
-          # sobreescribe, por si hiciera falta apagarlo sin tocar el repositorio.
-          PUBLIC_ANALYTICS_PROVIDER: ${{ vars.PUBLIC_ANALYTICS_PROVIDER || 'firebase' }}
+          # Analítica: Google Analytics 4 (gtag.js). El identificador de medición es el valor
+          # por defecto de `astro.config.ts`, así que aquí basta con elegir el proveedor. Se
+          # activa SOLO en producción: en local y en las pruebas queda en «none», que es lo que
+          # espera tests/e2e/privacy.spec.ts al comprobar que no se crean cookies. Una variable
+          # de Actions del mismo nombre lo sobreescribe, por si hiciera falta apagarlo sin
+          # tocar el repositorio.
+          PUBLIC_ANALYTICS_PROVIDER: ${{ vars.PUBLIC_ANALYTICS_PROVIDER || 'ga4' }}
         run: |
           export PUBLIC_SITE_URL="${ORIGIN/#http:/https:}"
           echo "site=$PUBLIC_SITE_URL base=$PUBLIC_BASE_PATH"

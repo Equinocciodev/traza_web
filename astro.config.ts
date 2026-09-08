@@ -49,26 +49,16 @@ export default defineConfig({
       PUBLIC_SITE_URL: envField.string({ context: 'client', access: 'public', default: 'https://traza.technology' }),
       PUBLIC_API_MODE: envField.enum({ context: 'client', access: 'public', values: ['mock', 'remote'], default: 'mock' }),
       PUBLIC_API_BASE_URL: envField.string({ context: 'client', access: 'public', default: '' }),
-      PUBLIC_ANALYTICS_PROVIDER: envField.enum({ context: 'client', access: 'public', values: ['none', 'console', 'beacon', 'firebase'], default: 'none' }),
+      PUBLIC_ANALYTICS_PROVIDER: envField.enum({ context: 'client', access: 'public', values: ['none', 'console', 'beacon', 'ga4'], default: 'none' }),
       /*
-       * Configuración web de Firebase del proyecto de Traza, con sus valores por defecto.
+       * Identificador de medición de Google Analytics 4.
        *
-       * Estos valores son públicos por diseño: viajan en el bundle del cliente y cualquiera
-       * puede leerlos en el navegador. No son un secreto y no tiene sentido tratarlos como
-       * tal. Lo que sí protege el proyecto es restringir la clave por referente HTTP en
-       * Google Cloud → Credenciales, de modo que solo funcione desde traza.technology.
-       *
-       * Van aquí como defaults —y no en variables del repositorio— para que el build no
-       * dependa de una configuración externa: quien clone y compile obtiene el mismo sitio.
-       * Cualquiera de ellos se puede sobreescribir por entorno si hace falta otro proyecto.
+       * Es público por diseño: viaja en el bundle y se ve en la URL de gtag.js. Va aquí como
+       * valor por defecto para que el build no dependa de configuración externa; quien clone
+       * y compile obtiene el mismo sitio. La analítica solo se activa si además
+       * PUBLIC_ANALYTICS_PROVIDER es «ga4», lo que el workflow hace únicamente en producción.
        */
-      PUBLIC_FIREBASE_API_KEY: envField.string({ context: 'client', access: 'public', default: 'AIzaSyAboJLHGfXvvN04PdeR1V-WM8AnwDpfO_o' }),
-      PUBLIC_FIREBASE_AUTH_DOMAIN: envField.string({ context: 'client', access: 'public', default: 'traza-76fd9.firebaseapp.com' }),
-      PUBLIC_FIREBASE_PROJECT_ID: envField.string({ context: 'client', access: 'public', default: 'traza-76fd9' }),
-      PUBLIC_FIREBASE_STORAGE_BUCKET: envField.string({ context: 'client', access: 'public', default: 'traza-76fd9.firebasestorage.app' }),
-      PUBLIC_FIREBASE_MESSAGING_SENDER_ID: envField.string({ context: 'client', access: 'public', default: '399504041936' }),
-      PUBLIC_FIREBASE_APP_ID: envField.string({ context: 'client', access: 'public', default: '1:399504041936:web:032b8a5edf9a729e9d7bd5' }),
-      PUBLIC_FIREBASE_MEASUREMENT_ID: envField.string({ context: 'client', access: 'public', default: 'G-CT7KNQL12G' }),
+      PUBLIC_GA4_MEASUREMENT_ID: envField.string({ context: 'client', access: 'public', default: 'G-CT7KNQL12G' }),
       PUBLIC_ANALYTICS_ENDPOINT: envField.string({ context: 'client', access: 'public', default: '' }),
       PUBLIC_DEFAULT_TENANT: envField.string({ context: 'client', access: 'public', default: 'traza' }),
       // Correo público de contacto, uno por idioma: quien escribe en inglés recibe respuesta

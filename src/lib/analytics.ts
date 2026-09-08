@@ -5,14 +5,14 @@
  * - `console`: registra en consola (solo desarrollo).
  * - `beacon`: envía un POST anónimo (navigator.sendBeacon) a PUBLIC_ANALYTICS_ENDPOINT con
  *   { event, props, path, locale, ts }. Sin identificadores de usuario, sin cookies, sin almacenamiento.
- * - `firebase`: Google Analytics 4 mediante el SDK de Firebase empaquetado. **Este proveedor sí
- *   usa cookies** (`_ga`, `_ga_<id>`) y envía datos a Google; el aviso de privacidad lo declara.
+ * - `ga4`: Google Analytics 4 con la etiqueta gtag.js. **Este proveedor sí usa cookies**
+ *   (`_ga`, `_ga_<id>`) y envía datos a Google; el aviso de privacidad lo declara.
  *
  * Todos respetan la señal Do Not Track del navegador.
  * Nunca pasar datos personales ni códigos completos como propiedades.
  */
 import { env } from '@/config/env';
-import { firebaseAnalyticsEnabled, trackFirebase } from '@/lib/analytics-firebase';
+import { ga4Enabled, trackGa4 } from '@/lib/analytics-ga4';
 
 export type AnalyticsEvent =
   | 'page_view'
@@ -49,9 +49,9 @@ export function track(event: AnalyticsEvent, props: AnalyticsProps = {}): void {
     console.debug('[analytics]', payload);
     return;
   }
-  if (firebaseAnalyticsEnabled()) {
+  if (ga4Enabled()) {
     // GA4 espera nombres de evento en snake_case, que es el formato de AnalyticsEvent.
-    trackFirebase(event, { ...props, page_path: payload.path, page_locale: payload.locale });
+    trackGa4(event, { ...props, page_path: payload.path, page_locale: payload.locale });
     return;
   }
   if (env.analyticsProvider === 'beacon' && env.analyticsEndpoint && 'sendBeacon' in navigator) {

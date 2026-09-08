@@ -134,6 +134,10 @@ ajuste de Pages.
 - **El QR de la etiqueta del hero es real.** `public/images/v2/hero-products.webp` lleva
   compuesto el QR de `HTTPS://T.EXAMPLE/V/7F2K4K7Q92FA` y decodifica en las tres variantes de
   ancho. Si reemplazas la fotografía, vuelve a componerlo y vuelve a comprobar que decodifica.
-- **La analítica está cableada pero inerte.** El proveedor `firebase` solo se activa si existen
-  las variables de Actions (`PUBLIC_ANALYTICS_PROVIDER` y las siete `PUBLIC_FIREBASE_*`). Sin
-  ellas no se descarga el SDK ni se instala ninguna cookie.
+- **La analítica solo corre en producción.** El proveedor `ga4` (gtag.js) se activa en el
+  workflow de despliegue; en local y en las pruebas queda en `none`, que es lo que espera
+  `tests/e2e/privacy.spec.ts` al comprobar que no se crean cookies. El identificador de
+  medición es el valor por defecto de `astro.config.ts`: es público por diseño, viaja en el
+  bundle y se ve en la URL de gtag.js. La configuración de gtag vive en
+  `src/lib/analytics-ga4.ts`, en un módulo propio y no en un script en línea, porque la CSP no
+  admite ninguno. Y se respeta «Do Not Track»: un visitante que la tenga activada no se mide.
