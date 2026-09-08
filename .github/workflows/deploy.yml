@@ -28,6 +28,9 @@ jobs:
       - name: Configure Pages
         id: pages
         uses: actions/configure-pages@v5
+        with:
+          # Activa Pages (origen: GitHub Actions) en la primera ejecución.
+          enablement: true
 
       - run: npm ci
 
