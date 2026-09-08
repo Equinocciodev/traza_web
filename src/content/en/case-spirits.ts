@@ -12,7 +12,7 @@ export const caseSpirits: CaseSpiritsContent = {
     tag: 'Pilot proposal',
     title: 'Unit-level identity and public verification for a regulated spirits market',
     subtitle:
-      'Traza’s first use case proposes giving each bottle a signed identity, recording its journey from the factory or customs to retail and letting anyone verify it from the browser.',
+      'Traza’s first use case proposes giving each bottle a signed identity, recording its lifecycle from issuance through every lookup, and letting anyone verify it from the browser.',
     disclaimer:
       'This case is presented as a pilot proposal addressed to a spirits regulator. It does not describe an official implementation, does not imply a contractual relationship and does not claim the participation of any agency.',
   },
@@ -43,7 +43,7 @@ export const caseSpirits: CaseSpiritsContent = {
       },
       {
         title: 'Chain event recording',
-        body: 'Dispatch from the factory or customs, labeling, transport, distribution and arrival at retail are recorded in order.',
+        body: 'Issuance, labelling, activation of the lot record and every public lookup are recorded in order.',
         icon: 'history',
       },
       {
@@ -80,7 +80,7 @@ export const caseSpirits: CaseSpiritsContent = {
       },
       {
         role: 'Carriers and distributors',
-        body: 'Report transfers, receipts and dispatches, completing the history of each unit.',
+        body: 'Request issuances, apply the labels and close the lot record, which is what activates the codes.',
         icon: 'truck',
       },
       {

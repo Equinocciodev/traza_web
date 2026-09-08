@@ -87,7 +87,7 @@ export const security: SecurityContent = {
     bullets: [
       'A valid signature indicates issuance; it does not prevent a legitimate label from being copied and placed on another unit.',
       'Registry status and anomalies complete the picture: an issued code may be revoked or may appear looked up in incompatible places.',
-      'The data match is the responsibility of whoever verifies: comparing product, presentation, lot and destination with what they hold in their hand.',
+      'The data match is the responsibility of whoever verifies: comparing product, presentation, lot and expiry date with what they hold in their hand.',
       'Physical inspection remains necessary. The platform guides where to look; it does not replace the eye of the inspector.',
       'That is why each result says what was checked, how much confidence it provides and what the next step is.',
     ],

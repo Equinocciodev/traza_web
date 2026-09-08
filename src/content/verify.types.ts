@@ -175,7 +175,7 @@ export interface VerifyContent {
     producedAt: string;
     stage: string;
     stages: Record<ChainStage, string>;
-    destination: string;
+    lastLookupPlace: string;
     lastEvent: string;
     eventKinds: Record<EventKind, string>;
     scans: string;

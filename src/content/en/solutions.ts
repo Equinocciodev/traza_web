@@ -131,7 +131,7 @@ export const solutionsGovernment: SectorPageContent = {
       },
       {
         title: 'Scattered records',
-        body: 'Production, import, transport and retail record their data in different systems that can rarely be cross-checked.',
+        body: 'Production, import and oversight record their data in different systems that can rarely be cross-checked.',
         icon: 'database',
       },
       {
@@ -194,7 +194,7 @@ export const solutionsGovernment: SectorPageContent = {
       {
         label: '03',
         title: 'Record the chain',
-        body: 'Chain actors report events: labeling, transport, distribution and arrival at retail.',
+        body: 'The issuer reports the lifecycle events: labelling, press proof and activation of the lot record.',
         icon: 'link',
       },
       {
@@ -248,7 +248,7 @@ export const solutionsGovernment: SectorPageContent = {
         key: 'journey',
         tag: 'For the chain',
         title: 'Product journey',
-        body: 'Follow a unit from the factory or customs to retail and see which events are recorded.',
+        body: 'Follow a unit from its issuance through its lookups and see which events are recorded.',
         cta: { label: 'See the journey', key: 'journey', variant: 'secondary' },
         icon: 'link',
       },
@@ -299,7 +299,7 @@ export const solutionsIndustry: SectorPageContent = {
       },
       {
         title: 'Little visibility beyond the warehouse',
-        body: 'Once dispatched, the unit disappears from the company’s own systems. What happens in transport and retail stays out of sight.',
+        body: 'Once dispatched, the unit disappears from the company’s own systems: there is no way to know whether it arrived, whether anyone checked it, or whether its code is turning up where it should not.',
         icon: 'eye',
       },
       {
@@ -373,7 +373,7 @@ export const solutionsIndustry: SectorPageContent = {
       {
         label: '04',
         title: 'Move and record',
-        body: 'Transport, distribution and retail report events that complete the history of each unit.',
+        body: 'Every public lookup completes the unit’s history: when the first one happened, how many there have been, and from where.',
         icon: 'truck',
       },
       {
@@ -390,7 +390,7 @@ export const solutionsIndustry: SectorPageContent = {
     intro: 'What a deployment of this kind sets out to achieve, expressed without figures.',
     items: [
       'The ability to prove which units the brand issued and which it did not',
-      'Visibility over transport, distribution and retail with data that used to be lost',
+      'Visibility over what happens after dispatch, with data that used to be lost',
       'Early signals of diversions and copies from the registry',
       'A public verification experience carrying the brand’s visual identity',
       'Integration with current systems without duplicating processes',
@@ -405,7 +405,7 @@ export const solutionsIndustry: SectorPageContent = {
         key: 'journey',
         tag: 'For the chain',
         title: 'Product journey',
-        body: 'Follow a unit from the factory to retail and see how each event completes its history.',
+        body: 'Follow a unit from its issuance through its lookups and see how each event completes its history.',
         cta: { label: 'See the journey', key: 'journey', variant: 'primary' },
         icon: 'link',
       },

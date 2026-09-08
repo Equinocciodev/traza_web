@@ -38,8 +38,8 @@ export const SECTORS: Sector[] = [
     name: { es: 'Agroindustria', en: 'Agribusiness' },
     icon: 'box',
     configurable: {
-      es: ['Origen y cosecha', 'Eventos de acopio y transporte', 'Destino declarado'],
-      en: ['Origin and harvest', 'Collection and transport events', 'Declared destination'],
+      es: ['Origen y cosecha', 'Lote de acopio y vencimiento', 'Estado del identificador'],
+      en: ['Origin and harvest', 'Collection lot and expiry', 'Identifier status'],
     },
   },
   {

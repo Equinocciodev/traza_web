@@ -48,7 +48,7 @@ type Playback = 'idle' | 'playing' | 'paused' | 'ended';
 type Source = 'auto' | 'user' | 'keyboard' | 'step' | 'unit_change' | 'retry';
 type PanelName = 'loading' | 'empty' | 'error';
 
-const STORY_KEYS: JourneyStoryKey[] = ['issuer', 'product', 'origin', 'movements'];
+const STORY_KEYS: JourneyStoryKey[] = ['issuer', 'product', 'origin', 'record'];
 
 function wait(ms: number): Promise<void> {
   return new Promise((resolve) => setTimeout(resolve, ms));

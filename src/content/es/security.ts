@@ -87,7 +87,7 @@ export const security: SecurityContent = {
     bullets: [
       'Una firma válida indica emisión, no impide que una etiqueta legítima se copie y se pegue en otra unidad.',
       'El estado en el registro y las anomalías completan el cuadro: un código emitido puede estar revocado o aparecer consultado en lugares incompatibles.',
-      'La coincidencia de datos es responsabilidad de quien verifica: comparar producto, presentación, lote y destino con lo que tiene en la mano.',
+      'La coincidencia de datos es responsabilidad de quien verifica: comparar producto, presentación, lote y fecha de vencimiento con lo que tiene en la mano.',
       'La inspección física sigue siendo necesaria. La plataforma orienta dónde mirar; no sustituye el ojo de quien inspecciona.',
       'Por eso cada resultado dice qué se comprobó, qué confianza aporta y cuál es el siguiente paso.',
     ],

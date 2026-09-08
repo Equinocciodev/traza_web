@@ -108,21 +108,21 @@ export function formatEventTime(iso: string, data: JourneyClientData): string {
   return formatDateTime(iso, data.locale);
 }
 
-/** Historia de la unidad: fabricante/importador · producto/presentación · origen/lote · movimientos/destino. */
+/** Historia de la unidad: fabricante/importador · producto/presentación · origen/lote · registro del ciclo de vida. */
 export function buildStory(model: JourneyModel, data: JourneyClientData): StoryEntry[] {
   const { unit } = model;
   const empty = data.story.empty;
   if (!unit) {
-    return (['issuer', 'product', 'origin', 'movements'] as JourneyStoryKey[]).map((key) => ({ key, primary: empty, secondary: empty }));
+    return (['issuer', 'product', 'origin', 'record'] as JourneyStoryKey[]).map((key) => ({ key, primary: empty, secondary: empty }));
   }
   const recordedStages = model.stages.filter((s) => s.events.length > 0).length;
-  const movementsPrimary =
+  const recordPrimary =
     unit.events.length > 0
-      ? fill(data.story.movements, { events: unit.events.length, stages: recordedStages, total: model.total })
-      : data.story.noMovements;
-  const movementsSecondary = unit.destination
-    ? fill(data.story.destination, { site: unit.destination.site, region: unit.destination.region })
-    : data.story.noDestination;
+      ? fill(data.story.record, { events: unit.events.length, stages: recordedStages, total: model.total })
+      : data.story.noRecord;
+  const recordSecondary = unit.lastLookupPlace
+    ? fill(data.story.lastLookup, { site: unit.lastLookupPlace.site, region: unit.lastLookupPlace.region })
+    : data.story.noLastLookup;
   return [
     { key: 'issuer', primary: unit.issuer.name, secondary: data.issuerRoles[unit.issuer.role] },
     {
@@ -138,6 +138,6 @@ export function buildStory(model: JourneyModel, data: JourneyClientData): StoryE
         date: formatDate(unit.origin.producedAt, data.locale, { timeZone: 'UTC' }),
       })}`,
     },
-    { key: 'movements', primary: movementsPrimary, secondary: movementsSecondary },
+    { key: 'record', primary: recordPrimary, secondary: recordSecondary },
   ];
 }

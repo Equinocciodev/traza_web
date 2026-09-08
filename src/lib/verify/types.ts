@@ -66,7 +66,7 @@ export interface PublicUnit {
   issuer: Unit['issuer'];
   origin: { lot: string; producedAt: string; place: Unit['origin']['place'] };
   currentStage: Unit['currentStage'];
-  destination?: Unit['destination'];
+  lastLookupPlace?: Unit['lastLookupPlace'];
   events: Unit['events'];
   scans: Unit['scans'];
 }

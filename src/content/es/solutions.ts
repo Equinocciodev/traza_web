@@ -131,7 +131,7 @@ export const solutionsGovernment: SectorPageContent = {
       },
       {
         title: 'Registros dispersos',
-        body: 'Producción, importación, transporte y comercio registran sus datos en sistemas distintos que rara vez se pueden cruzar.',
+        body: 'Producción, importación y control registran sus datos en sistemas distintos que rara vez se pueden cruzar.',
         icon: 'database',
       },
       {
@@ -194,7 +194,7 @@ export const solutionsGovernment: SectorPageContent = {
       {
         label: '03',
         title: 'Registrar la cadena',
-        body: 'Los actores de la cadena reportan eventos: etiquetado, transporte, distribución y llegada al comercio.',
+        body: 'El emisor reporta los eventos del ciclo de vida: etiquetado, prueba de imprenta y activación de la ficha del lote.',
         icon: 'link',
       },
       {
@@ -248,7 +248,7 @@ export const solutionsGovernment: SectorPageContent = {
         key: 'journey',
         tag: 'Para la cadena',
         title: 'Recorrido del producto',
-        body: 'Siga una unidad desde la fábrica o la aduana hasta el comercio y vea qué eventos quedan registrados.',
+        body: 'Siga una unidad desde su emisión hasta sus consultas y vea qué eventos quedan registrados.',
         cta: { label: 'Ver el recorrido', key: 'journey', variant: 'secondary' },
         icon: 'link',
       },
@@ -299,7 +299,7 @@ export const solutionsIndustry: SectorPageContent = {
       },
       {
         title: 'Poca visibilidad más allá del almacén',
-        body: 'Una vez despachada, la unidad desaparece de los sistemas propios. Lo que ocurre en transporte y comercio queda fuera de vista.',
+        body: 'Una vez despachada, la unidad desaparece de los sistemas propios: no se sabe si llegó, si alguien la comprobó ni si su código aparece donde no debería.',
         icon: 'eye',
       },
       {
@@ -373,7 +373,7 @@ export const solutionsIndustry: SectorPageContent = {
       {
         label: '04',
         title: 'Mover y registrar',
-        body: 'Transporte, distribución y comercio reportan eventos que completan la historia de cada unidad.',
+        body: 'Cada consulta pública completa la historia de la unidad: cuándo fue la primera, cuántas van y desde dónde.',
         icon: 'truck',
       },
       {
@@ -390,7 +390,7 @@ export const solutionsIndustry: SectorPageContent = {
     intro: 'Lo que un despliegue de este tipo busca conseguir, expresado sin cifras.',
     items: [
       'Capacidad de demostrar qué unidades emitió la marca y cuáles no',
-      'Visibilidad sobre transporte, distribución y comercio con datos que antes se perdían',
+      'Visibilidad sobre lo que ocurre después del despacho, con datos que antes se perdían',
       'Señales tempranas de desvíos y copias a partir del registro',
       'Una experiencia de verificación pública con la identidad visual de la marca',
       'Integración con los sistemas actuales sin duplicar procesos',
@@ -405,7 +405,7 @@ export const solutionsIndustry: SectorPageContent = {
         key: 'journey',
         tag: 'Para la cadena',
         title: 'Recorrido del producto',
-        body: 'Siga una unidad desde la fábrica hasta el comercio y vea cómo cada evento completa su historia.',
+        body: 'Siga una unidad desde su emisión hasta sus consultas y vea cómo cada evento completa su historia.',
         cta: { label: 'Ver el recorrido', key: 'journey', variant: 'primary' },
         icon: 'link',
       },

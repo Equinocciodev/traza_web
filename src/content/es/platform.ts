@@ -11,7 +11,7 @@ export const platform: PlatformContent = {
     eyebrow: 'Plataforma',
     title: 'Una capa de identidad, trazabilidad y verificación para productos reales',
     subtitle:
-      'Traza une tres cosas que suelen vivir separadas: la identidad de cada unidad, el registro de sus movimientos y una forma pública y sencilla de comprobar ambas.',
+      'Traza une tres cosas que suelen vivir separadas: la identidad de cada unidad, el registro de su ciclo de vida y una forma pública y sencilla de comprobar ambas.',
   },
 
   capabilities: {
@@ -26,7 +26,7 @@ export const platform: PlatformContent = {
       },
       {
         title: 'Registro de eventos de cadena',
-        body: 'Cada movimiento relevante —salida de fábrica, aduana, etiquetado, transporte, distribución, comercio— se registra como un evento con fecha, lugar y responsable.',
+        body: 'Cada momento del ciclo de vida —emisión, etiquetado, prueba de imprenta, activación de la ficha, consultas y cierre de la emisión— se registra como un evento con fecha, lugar y responsable.',
         icon: 'history',
       },
       {
@@ -145,7 +145,7 @@ export const platform: PlatformContent = {
       {
         key: 'match',
         title: 'Coincidencia de datos',
-        body: 'Si lo que muestra la etiqueta coincide con lo que dice el registro: producto, presentación, lote y destino.',
+        body: 'Si lo que muestra la etiqueta coincide con lo que dice el registro: producto, presentación, lote y fecha de vencimiento.',
         icon: 'compare',
       },
       {

@@ -11,30 +11,30 @@ export const howItWorks: HowItWorksContent = {
     eyebrow: 'How it works',
     title: 'From the code on the label to the result on screen',
     subtitle:
-      'Traza follows a simple principle: each unit has a signed identity, each movement leaves an event and anyone can check both. This is how it happens, step by step.',
+      'Traza follows a simple principle: each unit has a signed identity, each moment of its lifecycle leaves an event and anyone can check both. This is how it happens, step by step.',
   },
 
   steps: {
     title: 'Five steps',
     intro:
-      'From the moment a unit receives its identity until someone verifies it in a store, the process passes through five moments.',
+      'From the moment a unit receives its identity until someone checks it in front of a shelf, the process passes through five moments.',
     items: [
       {
         label: '01',
         title: 'Identity issuance',
-        body: 'The manufacturer or importer generates a unique identifier for each unit and signs it with its own keys. That identifier carries the four fields of the story: manufacturer or importer, product and presentation, origin and lot, and intended destination.',
+        body: 'The manufacturer or importer requests an issuance and the platform derives and signs a unique identifier per unit, with the keys in its custody. That identifier carries the four fields of the story: who issues it, what the product is, which lot it came from and when it expires.',
         icon: 'key',
       },
       {
         label: '02',
         title: 'Labeling',
-        body: 'The signed identifier is printed as a code on the label or seal. From then on, the physical unit and its digital identity travel together.',
+        body: 'The signed identifier is printed as a code on the label, using the plant’s own infrastructure and after a press proof is approved. From then on, the physical unit and its digital identity travel together.',
         icon: 'label',
       },
       {
         label: '03',
         title: 'Event recording',
-        body: 'Each actor in the chain — customs, transport, distribution, retail — reports an event when the unit passes through its hands. The registry keeps them in order, with date and responsible party.',
+        body: 'When the lot closes, the issuer completes the record — lot and expiry date, or serial — and at that moment the codes become active. A code that is looked up before activation does not say “verified”: it says “under review”.',
         icon: 'history',
       },
       {
@@ -58,40 +58,40 @@ export const howItWorks: HowItWorksContent = {
       'The history of a unit is built from the events at these nodes. Not every deployment uses all of them; each tenant defines the ones that matter to it.',
     nodes: [
       {
-        id: 'origin',
-        label: 'Factory / customs',
-        description: 'Point of issuance: the unit receives its identity when it leaves production or enters the country.',
-        icon: 'factory',
+        id: 'issuance',
+        label: 'Issuance',
+        description: 'The platform derives and signs each unit’s identifier, within the order that was requested.',
+        icon: 'signature',
       },
       {
         id: 'labeling',
-        label: 'Labeling',
-        description: 'The signed code is added to the label or seal of the unit.',
+        label: 'Labelling',
+        description: 'The signed code is printed and applied to the unit, using the plant’s own infrastructure.',
         icon: 'label',
       },
       {
-        id: 'transport',
-        label: 'Transport',
-        description: 'Each transfer is recorded with origin, destination and date.',
-        icon: 'truck',
+        id: 'activation',
+        label: 'Activation',
+        description: 'When the lot closes, the record is completed — lot and expiry, or serial — and the codes become active.',
+        icon: 'check',
       },
       {
-        id: 'distribution',
-        label: 'Distribution',
-        description: 'Distribution centers confirm receipt and dispatch toward retail.',
-        icon: 'warehouse',
-      },
-      {
-        id: 'commerce',
-        label: 'Retail',
-        description: 'The point of sale records the arrival; the unit becomes available to the public.',
-        icon: 'store',
-      },
-      {
-        id: 'verification',
-        label: 'Verification',
-        description: 'The final verification compares the label with the registry and explains the result.',
+        id: 'lookup',
+        label: 'Public lookup',
+        description: 'Anyone checks the unit from the browser and compares what they see with the registry.',
         icon: 'scan',
+      },
+      {
+        id: 'signals',
+        label: 'Signals',
+        description: 'Every lookup adds context: when the first one happened, how many there have been, and whether the pattern is impossible for a single unit.',
+        icon: 'chart',
+      },
+      {
+        id: 'closure',
+        label: 'Closure',
+        description: 'When activation ends, the sequence numbers that were never used are voided by range.',
+        icon: 'lock',
       },
     ],
     cta: { label: 'See the interactive journey', key: 'journey', variant: 'link' },
@@ -117,7 +117,7 @@ export const howItWorks: HowItWorksContent = {
       {
         key: 'match',
         title: 'Data match',
-        body: 'Compares the data on the label with the data in the registry: product, presentation, lot and destination.',
+        body: 'Compares the data on the label with the data in the registry: product, presentation, lot and expiry date.',
         icon: 'compare',
       },
       {
@@ -136,7 +136,7 @@ export const howItWorks: HowItWorksContent = {
       {
         status: 'warning',
         title: 'With warnings',
-        body: 'The signature is valid, but the registry shows something worth reviewing: for example, repeated lookups of the same code or a movement outside the expected route. The next step is to check against the unit and, if appropriate, report.',
+        body: 'The signature is valid, but the registry shows something worth reviewing: for example, the same code looked up from places a single unit cannot travel between in that time. The next step is to check against the unit and, if appropriate, report.',
       },
       {
         status: 'invalid',

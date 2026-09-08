@@ -123,7 +123,7 @@ function toPublicUnit(unit: Unit): PublicUnit {
     issuer: unit.issuer,
     origin: { lot: unit.origin.lot, producedAt: unit.origin.producedAt, place: unit.origin.place },
     currentStage: unit.currentStage,
-    destination: unit.destination,
+    lastLookupPlace: unit.lastLookupPlace,
     events: unit.events,
     scans: unit.scans,
   };

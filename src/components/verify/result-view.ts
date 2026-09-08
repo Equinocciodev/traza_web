@@ -178,7 +178,7 @@ function renderUnit(section: HTMLElement, unit: PublicUnit, ctx: RenderContext):
   set('origin', `${unit.origin.place.site}, ${unit.origin.place.region}`);
   set('producedAt', formatDate(unit.origin.producedAt, locale));
   set('stage', u.stages[unit.currentStage]);
-  set('destination', unit.destination ? `${unit.destination.site}, ${unit.destination.region}` : '—');
+  set('lastLookupPlace', unit.lastLookupPlace ? `${unit.lastLookupPlace.site}, ${unit.lastLookupPlace.region}` : '—');
   const last = lastEventOf(unit);
   set('lastEvent', last ? `${u.eventKinds[last.kind]} · ${formatDateTime(last.at, locale)} · ${last.place.site}` : '—');
   set('scans', unit.scans.total > 0 ? fill(u.scansValue, { total: unit.scans.total, regions: unit.scans.distinctRegions }) : u.noScans);

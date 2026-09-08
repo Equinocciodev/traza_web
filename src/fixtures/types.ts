@@ -13,32 +13,41 @@ export interface LocalizedText {
   en: string;
 }
 
-/** Etapas de la cadena (coinciden con `ChainNodeId` del contenido). */
-export type ChainStage = 'origin' | 'labeling' | 'transport' | 'distribution' | 'commerce' | 'verification';
+/**
+ * Etapas del ciclo de vida de una identidad (coinciden con `ChainNodeId` del contenido).
+ *
+ * No son etapas logísticas: la plataforma no registra transporte ni distribución. Son los
+ * momentos que el registro conoce de verdad — se emite el identificador, se aplica a la unidad,
+ * se activa al cerrar la ficha del lote, alguien lo consulta, las consultas acumulan señales y
+ * la emisión se cierra anulando los correlativos que no se usaron.
+ */
+export type ChainStage = 'issuance' | 'labeling' | 'activation' | 'lookup' | 'signals' | 'closure';
 
 export const CHAIN_STAGES: readonly ChainStage[] = [
-  'origin',
+  'issuance',
   'labeling',
-  'transport',
-  'distribution',
-  'commerce',
-  'verification',
+  'activation',
+  'lookup',
+  'signals',
+  'closure',
 ] as const;
 
 export type EventKind =
+  | 'import_declared'
   | 'identity_issued'
-  | 'customs_cleared'
   | 'labeled'
-  | 'shipped'
-  | 'in_transit'
-  | 'received'
-  | 'dispatched'
-  | 'received_commerce'
-  | 'sold'
+  | 'sample_approved'
+  | 'record_completed'
+  | 'activated'
   | 'verified'
-  | 'inspected'
+  | 'looked_up'
+  | 'anomaly_flagged'
   | 'reported'
-  | 'revoked';
+  | 'inspected'
+  | 'reassigned'
+  | 'range_voided'
+  | 'revoked'
+  | 'issuance_closed';
 
 export interface Place {
   /** Nombre del sitio (planta, aduana, centro de distribución, comercio). */
@@ -77,7 +86,7 @@ export type DataMatch = 'match' | 'partial' | 'mismatch' | 'not_checked';
 export type AnomalyCode =
   | 'duplicate_scans'
   | 'geo_inconsistent'
-  | 'chain_gap'
+  | 'pending_activation'
   | 'lot_withdrawn'
   | 'reported'
   | 'expired';
@@ -149,7 +158,8 @@ export interface Unit {
     lastAt?: string;
   };
   currentStage: ChainStage;
-  destination?: Place;
+  /** Lugar de la última consulta pública registrada (no un destino previsto). */
+  lastLookupPlace?: Place;
   events: UnitEvent[];
 }
 

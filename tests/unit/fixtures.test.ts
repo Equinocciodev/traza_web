@@ -27,19 +27,21 @@ import { SECTORS } from '@/config/sectors';
 
 const CODE_RE = /^TRZ-[A-Z0-9]{4}-[A-Z0-9]{4}-[A-Z0-9]{4}$/;
 const EVENT_KINDS: EventKind[] = [
+  'import_declared',
   'identity_issued',
-  'customs_cleared',
   'labeled',
-  'shipped',
-  'in_transit',
-  'received',
-  'dispatched',
-  'received_commerce',
-  'sold',
+  'sample_approved',
+  'record_completed',
+  'activated',
   'verified',
-  'inspected',
+  'looked_up',
+  'anomaly_flagged',
   'reported',
+  'inspected',
+  'reassigned',
+  'range_voided',
   'revoked',
+  'issuance_closed',
 ];
 const SCENARIO_IDS: ScenarioId[] = [
   'valid',
@@ -178,10 +180,7 @@ describe('unidades', () => {
       it('la etapa actual coincide con la última etapa registrada cuando hay eventos', () => {
         if (unit.events.length === 0) return;
         const last = unit.events.reduce((acc, e) => (e.at > acc.at ? e : acc));
-        // La etapa "verification" contiene verificaciones, reportes, inspecciones y revocaciones; el resto marca el avance.
-        const progress = unit.events.filter((e) => e.stage !== 'verification');
-        const lastProgress = progress[progress.length - 1];
-        expect(lastProgress?.stage ?? last.stage).toBe(unit.currentStage);
+        expect(last.stage).toBe(unit.currentStage);
       });
 
       it('el algoritmo de firma se nombra sin rótulos de demostración', () => {

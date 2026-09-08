@@ -11,30 +11,30 @@ export const howItWorks: HowItWorksContent = {
     eyebrow: 'Cómo funciona',
     title: 'Del código en la etiqueta al resultado en pantalla',
     subtitle:
-      'Traza sigue un principio sencillo: cada unidad tiene una identidad firmada, cada movimiento deja un evento y cualquier persona puede comprobar ambos. Así ocurre, paso a paso.',
+      'Traza sigue un principio sencillo: cada unidad tiene una identidad firmada, cada momento de su ciclo de vida deja un evento y cualquier persona puede comprobar ambos. Así ocurre, paso a paso.',
   },
 
   steps: {
     title: 'Cinco pasos',
     intro:
-      'Desde que una unidad recibe su identidad hasta que alguien la verifica en un comercio, el proceso pasa por cinco momentos.',
+      'Desde que una unidad recibe su identidad hasta que alguien la comprueba frente a un anaquel, el proceso pasa por cinco momentos.',
     items: [
       {
         label: '01',
         title: 'Emisión de la identidad',
-        body: 'El fabricante o importador genera un identificador único para cada unidad y lo firma con sus propias claves. Ese identificador recoge los cuatro campos de la historia: fabricante o importador, producto y presentación, origen y lote, y destino previsto.',
+        body: 'El fabricante o importador solicita una emisión y la plataforma deriva y firma un identificador único por unidad, con las claves bajo su custodia. Ese identificador recoge los cuatro campos de la historia: quién emite, qué es el producto, de qué lote viene y cuándo vence.',
         icon: 'key',
       },
       {
         label: '02',
         title: 'Etiquetado',
-        body: 'El identificador firmado se imprime como código en la etiqueta o el precinto. A partir de ahí, la unidad física y su identidad digital viajan juntas.',
+        body: 'El identificador firmado se imprime como código en la etiqueta, con la infraestructura de la propia planta y tras aprobar una prueba de imprenta. A partir de ahí, la unidad física y su identidad digital viajan juntas.',
         icon: 'label',
       },
       {
         label: '03',
         title: 'Registro de eventos',
-        body: 'Cada actor de la cadena —aduana, transporte, distribución, comercio— reporta un evento cuando la unidad pasa por sus manos. El registro los conserva en orden, con fecha y responsable.',
+        body: 'Al cerrar el lote, el emisor completa la ficha —lote y fecha de vencimiento, o serial— y en ese momento los códigos quedan activados. Un código emitido que se consulta sin estar activado no dice «verificado»: dice «en revisión».',
         icon: 'history',
       },
       {
@@ -58,40 +58,40 @@ export const howItWorks: HowItWorksContent = {
       'La historia de una unidad se construye con los eventos de estos nodos. No todos los despliegues usan los mismos; cada tenant define los que le importan.',
     nodes: [
       {
-        id: 'origin',
-        label: 'Fábrica / aduana',
-        description: 'Punto de emisión: la unidad recibe su identidad al salir de producción o al ingresar al país.',
-        icon: 'factory',
+        id: 'issuance',
+        label: 'Emisión',
+        description: 'La plataforma deriva y firma el identificador de cada unidad, dentro de la orden solicitada.',
+        icon: 'signature',
       },
       {
         id: 'labeling',
         label: 'Etiquetado',
-        description: 'El código firmado se incorpora a la etiqueta o al precinto de la unidad.',
+        description: 'El código firmado se imprime y se aplica a la unidad, con la infraestructura de la propia planta.',
         icon: 'label',
       },
       {
-        id: 'transport',
-        label: 'Transporte',
-        description: 'Cada traslado se registra con origen, destino y fecha.',
-        icon: 'truck',
+        id: 'activation',
+        label: 'Activación',
+        description: 'Al cerrar el lote se completa la ficha —lote y vencimiento, o serial— y los códigos quedan activados.',
+        icon: 'check',
       },
       {
-        id: 'distribution',
-        label: 'Distribución',
-        description: 'Los centros de distribución confirman recepción y salida hacia el comercio.',
-        icon: 'warehouse',
-      },
-      {
-        id: 'commerce',
-        label: 'Comercio',
-        description: 'El punto de venta registra la llegada; la unidad queda a disposición del público.',
-        icon: 'store',
-      },
-      {
-        id: 'verification',
-        label: 'Verificación',
-        description: 'La verificación final compara la etiqueta con el registro y explica el resultado.',
+        id: 'lookup',
+        label: 'Consulta pública',
+        description: 'Cualquier persona comprueba la unidad desde el navegador y compara lo que ve con el registro.',
         icon: 'scan',
+      },
+      {
+        id: 'signals',
+        label: 'Señales',
+        description: 'Cada consulta suma contexto: cuándo fue la primera, cuántas van y si el patrón es imposible para una sola unidad.',
+        icon: 'chart',
+      },
+      {
+        id: 'closure',
+        label: 'Cierre',
+        description: 'Al terminar la activación, los correlativos que no se usaron se anulan por rango.',
+        icon: 'lock',
       },
     ],
     cta: { label: 'Ver el recorrido interactivo', key: 'journey', variant: 'link' },
@@ -117,7 +117,7 @@ export const howItWorks: HowItWorksContent = {
       {
         key: 'match',
         title: 'Coincidencia de datos',
-        body: 'Contrasta los datos de la etiqueta con los del registro: producto, presentación, lote y destino.',
+        body: 'Contrasta los datos de la etiqueta con los del registro: producto, presentación, lote y fecha de vencimiento.',
         icon: 'compare',
       },
       {
@@ -136,7 +136,7 @@ export const howItWorks: HowItWorksContent = {
       {
         status: 'warning',
         title: 'Con advertencias',
-        body: 'La firma es válida, pero el registro muestra algo que conviene revisar: por ejemplo, consultas repetidas del mismo código o un movimiento fuera de la ruta prevista. El siguiente paso es contrastar con la unidad y, si procede, reportar.',
+        body: 'La firma es válida, pero el registro muestra algo que conviene revisar: por ejemplo, el mismo código consultado desde lugares que una sola unidad no puede recorrer en ese tiempo. El siguiente paso es contrastar con la unidad y, si procede, reportar.',
       },
       {
         status: 'invalid',

@@ -101,7 +101,12 @@ export interface Signal {
   icon?: IconName;
 }
 
-export type ChainNodeId = 'origin' | 'labeling' | 'transport' | 'distribution' | 'commerce' | 'verification';
+/**
+ * Nodos del diagrama del ciclo de vida. Coinciden uno a uno con `ChainStage` de los fixtures:
+ * la prueba `content-parity` comprueba que inicio, «cómo funciona» y el recorrido usen el mismo
+ * orden que `CHAIN_STAGES`, de modo que las tres vistas cuenten la misma historia.
+ */
+export type ChainNodeId = 'issuance' | 'labeling' | 'activation' | 'lookup' | 'signals' | 'closure';
 
 export interface ChainNode {
   id: ChainNodeId;

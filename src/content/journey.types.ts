@@ -14,7 +14,7 @@ import type { Locale } from '@/i18n';
 export type JourneyStageState = 'done' | 'active' | 'pending' | 'unrecorded';
 
 /** Campos de la historia de la unidad (narrativa verificada). */
-export type JourneyStoryKey = 'issuer' | 'product' | 'origin' | 'movements';
+export type JourneyStoryKey = 'issuer' | 'product' | 'origin' | 'record';
 
 export interface JourneyUnitOption {
   /** Código de una unidad existente en `src/fixtures/units.ts`; las que no existan se omiten. */
@@ -73,10 +73,12 @@ export interface JourneyRuntimeStrings {
     origin: string;
     lot: string;
     produced: string;
-    movements: string;
-    destination: string;
-    noDestination: string;
-    noMovements: string;
+    /** "{events} eventos en {stages} de {total} etapas" */
+    record: string;
+    /** "Última consulta: {site} · {region}" */
+    lastLookup: string;
+    noLastLookup: string;
+    noRecord: string;
     empty: string;
   };
   /** Prefijo accesible de la referencia documental ("Referencia"). */

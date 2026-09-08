@@ -813,8 +813,8 @@ export function initInstitutional(root: HTMLElement): void {
       return;
     }
     const unit = UNIT_BY_CODE.get(a.unitCode);
-    const site = unit?.destination?.site ?? unit?.origin.place.site ?? '—';
-    const region = unit?.destination?.region ?? a.region;
+    const site = unit?.lastLookupPlace?.site ?? unit?.origin.place.site ?? '—';
+    const region = unit?.lastLookupPlace?.region ?? a.region;
     const id = `INS-2026-${pad(state.counters.inspection++, 3)}`;
     const when = new Date();
     when.setUTCDate(when.getUTCDate() + 3);

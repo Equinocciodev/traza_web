@@ -63,7 +63,7 @@ const VERDICTS: Verdict[] = ['valid', 'warning', 'invalid', 'unverifiable'];
 const OUTCOMES: CheckOutcome[] = ['pass', 'warn', 'fail', 'skipped'];
 const SEVERITIES: Severity[] = ['info', 'warning', 'critical'];
 const KINDS: DiscrepancyKind[] = ['label_mismatch', 'seal_damaged', 'suspected_copy', 'wrong_location', 'already_scanned', 'other'];
-const UNIT_FIELDS = ['product', 'presentation', 'brand', 'category', 'issuer', 'lot', 'origin', 'producedAt', 'stage', 'destination', 'lastEvent', 'scans', 'lastScan'] as const;
+const UNIT_FIELDS = ['product', 'presentation', 'brand', 'category', 'issuer', 'lot', 'origin', 'producedAt', 'stage', 'lastLookupPlace', 'lastEvent', 'scans', 'lastScan'] as const;
 const verifyPath = route(locale, 'verify');
 ---
 

@@ -89,7 +89,9 @@ describe('términos vetados', () => {
   });
 
   it('no hay garantías absolutas ni promesas de seguridad', () => {
-    const found = hits(ALL, /garantiza|garantizado|guarantee[sd]?\b|infalible|inviolable|a prueba de|tamper-?proof|unhackable|imposible de (copiar|falsificar)|impossible to (copy|forge)|100 ?%/i, (e) => NON_CLAIM.test(e.text) || /promise absolute guarantees|prometer garantías/i.test(e.text));
+    // «a prueba de» solo es una promesa cuando dice de qué: «a prueba de copias». La coincidencia
+    // desnuda daba falsos positivos con frases legítimas como «una prueba de imprenta aprobada».
+    const found = hits(ALL, /garantiza|garantizado|guarantee[sd]?\b|infalible|inviolable|a prueba de (?:copias|falsificaci|manipulaci|fraude|todo)|tamper-?proof|unhackable|imposible de (copiar|falsificar)|impossible to (copy|forge)|100 ?%/i, (e) => NON_CLAIM.test(e.text) || /promise absolute guarantees|prometer garantías/i.test(e.text));
     expect(found).toEqual([]);
   });
 

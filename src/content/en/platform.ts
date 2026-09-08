@@ -11,7 +11,7 @@ export const platform: PlatformContent = {
     eyebrow: 'Platform',
     title: 'One layer of identity, traceability and verification for real products',
     subtitle:
-      'Traza brings together three things that usually live apart: the identity of each unit, the record of its movements, and a public, simple way to check both.',
+      'Traza brings together three things that usually live apart: the identity of each unit, the record of its lifecycle, and a public, simple way to check both.',
   },
 
   capabilities: {
@@ -26,7 +26,7 @@ export const platform: PlatformContent = {
       },
       {
         title: 'Chain event recording',
-        body: 'Every relevant movement — factory dispatch, customs, labeling, transport, distribution, retail — is recorded as an event with date, place and responsible party.',
+        body: 'Every moment of the lifecycle — issuance, labelling, press proof, record activation, lookups and issuance closure — is recorded as an event with date, place and responsible party.',
         icon: 'history',
       },
       {
@@ -145,7 +145,7 @@ export const platform: PlatformContent = {
       {
         key: 'match',
         title: 'Data match',
-        body: 'Whether what the label shows matches what the registry says: product, presentation, lot and destination.',
+        body: 'Whether what the label shows matches what the registry says: product, presentation, lot and expiry date.',
         icon: 'compare',
       },
       {

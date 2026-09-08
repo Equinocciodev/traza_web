@@ -12,7 +12,7 @@ export const caseSpirits: CaseSpiritsContent = {
     tag: 'Propuesta de piloto',
     title: 'Identidad unitaria y verificación pública para un mercado regulado de licores',
     subtitle:
-      'El primer caso de uso de Traza plantea dar a cada botella una identidad firmada, registrar su recorrido desde la fábrica o la aduana hasta el comercio y permitir que cualquier persona la verifique desde el navegador.',
+      'El primer caso de uso de Traza plantea dar a cada botella una identidad firmada, registrar su ciclo de vida desde la emisión hasta cada consulta y permitir que cualquier persona la verifique desde el navegador.',
     disclaimer:
       'Este caso se presenta como propuesta de piloto dirigida a un regulador de licores. No describe una implementación oficial, no implica relación contractual y no afirma la participación de ninguna agencia.',
   },
@@ -43,7 +43,7 @@ export const caseSpirits: CaseSpiritsContent = {
       },
       {
         title: 'Registro de eventos de cadena',
-        body: 'Salida de fábrica o aduana, etiquetado, transporte, distribución y llegada al comercio quedan registrados en orden.',
+        body: 'Emisión, etiquetado, activación de la ficha del lote y cada consulta pública quedan registrados en orden.',
         icon: 'history',
       },
       {
@@ -80,7 +80,7 @@ export const caseSpirits: CaseSpiritsContent = {
       },
       {
         role: 'Transportistas y distribuidores',
-        body: 'Reportan traslados, recepciones y salidas, completando la historia de cada unidad.',
+        body: 'Solicitan emisiones, aplican las etiquetas y cierran la ficha del lote, que es lo que activa los códigos.',
         icon: 'truck',
       },
       {
