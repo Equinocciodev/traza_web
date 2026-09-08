@@ -1,0 +1,105 @@
+---
+/**
+ * Los cuatro resultados de una consulta, con lo que cada uno prueba y lo que no.
+ *
+ * Se dibuja como una escala descendente de certeza, no como cuatro cajas iguales: la
+ * diferencia entre «verificado» y «en revisión» es el corazón del diseño y merece
+ * jerarquía visual. El estado se comunica con icono, texto y posición — nunca solo con color.
+ */
+import Icon from './Icon.astro';
+import type { Feature } from '@/content/types';
+
+interface Props {
+  /** Cuatro estados, del más favorable al menos. El icono los distingue sin depender del color. */
+  items: Feature[];
+  label: string;
+  class?: string;
+}
+const { items, label, class: className } = Astro.props;
+
+/** Tono por posición: no se lee del contenido para que el orden sea la única fuente de verdad. */
+const TONES = ['pass', 'review', 'warn', 'fail'] as const;
+---
+
+<ol class:list={['states', className]} aria-label={label}>
+  {
+    items.map((item, i) => (
+      <li class="states__item" data-tone={TONES[i] ?? 'warn'}>
+        <span class="states__mark" aria-hidden="true">
+          <Icon name={item.icon ?? 'info'} size={20} />
+        </span>
+        <div class="states__body">
+          <h3 class="states__title">{item.title}</h3>
+          <p class="states__text">{item.body}</p>
+        </div>
+      </li>
+    ))
+  }
+</ol>
+
+<style>
+  .states {
+    display: grid;
+    gap: var(--space-3);
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+  .states__item {
+    display: grid;
+    grid-template-columns: auto 1fr;
+    gap: var(--space-4);
+    align-items: start;
+    padding: var(--space-5);
+    border: var(--border-width) solid var(--color-border);
+    border-left-width: 3px;
+    border-radius: var(--radius-md);
+    background: var(--color-surface);
+  }
+  /* La escala de certeza: el borde izquierdo baja de verde a rojo, y el sangrado aumenta. */
+  .states__item[data-tone='pass'] {
+    border-left-color: var(--color-success, #1a7f4b);
+  }
+  .states__item[data-tone='review'] {
+    border-left-color: var(--color-warning, #b8860b);
+    margin-left: var(--space-3);
+  }
+  .states__item[data-tone='warn'] {
+    border-left-color: var(--color-warning, #b8860b);
+    margin-left: var(--space-6);
+  }
+  .states__item[data-tone='fail'] {
+    border-left-color: var(--color-danger, #b3261e);
+    margin-left: var(--space-9, 3.5rem);
+  }
+  .states__mark {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 2.25rem;
+    height: 2.25rem;
+    border-radius: var(--radius-sm);
+    background: var(--color-surface-subtle, rgba(11, 31, 63, 0.05));
+    color: var(--color-text-primary);
+  }
+  .states__title {
+    margin: 0 0 var(--space-1);
+    font-size: var(--text-base);
+  }
+  .states__text {
+    margin: 0;
+    font-size: var(--text-sm);
+    color: var(--color-text-secondary);
+  }
+
+  /* El sangrado escalonado no cabe en móvil: se alinea todo y manda el borde. */
+  @media (max-width: 47.99em) {
+    .states__item,
+    .states__item[data-tone='review'],
+    .states__item[data-tone='warn'],
+    .states__item[data-tone='fail'] {
+      margin-left: 0;
+      padding: var(--space-4);
+    }
+  }
+</style>

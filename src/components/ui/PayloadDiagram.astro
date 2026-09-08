@@ -1,0 +1,149 @@
+---
+/**
+ * Anatomía del identificador: los veinte bytes que viajan dentro del código, a escala.
+ *
+ * El ancho de cada bloque es proporcional a su tamaño en bytes, así que el dibujo dice algo
+ * que el texto no: la firma ocupa casi la mitad, y la versión y la época son dos bytes que
+ * hacen mucho con muy poco.
+ *
+ * Motion: los bloques se dibujan de izquierda a derecha al entrar en el viewport, una sola vez
+ * (`data-payload`, ver src/lib/motion.ts). Sin JavaScript, o con `prefers-reduced-motion`,
+ * se ve el diagrama completo desde el primer momento: la animación solo retrasa opacidad.
+ */
+import type { SpecRow } from '@/content/types';
+
+interface Props {
+  /** Las cuatro filas de la especificación; el tamaño en bytes se lee de `value`. */
+  rows: SpecRow[];
+  /** Nombre accesible del diagrama. */
+  label: string;
+  class?: string;
+}
+const { rows, label, class: className } = Astro.props;
+
+/** «10 bytes» → 10. Si una fila no declara bytes, se le da peso 1 para no romper el reparto. */
+function bytesOf(value: string): number {
+  const m = value.match(/(\d+)/);
+  return m ? Number(m[1]) : 1;
+}
+
+const sizes = rows.map((r) => bytesOf(r.value));
+const total = sizes.reduce((a, b) => a + b, 0) || 1;
+/** Porcentaje de ancho de cada bloque, con un mínimo para que la etiqueta quepa. */
+const widths = sizes.map((n) => Math.max((n / total) * 100, 9));
+const scale = 100 / widths.reduce((a, b) => a + b, 0);
+---
+
+<figure class:list={['payload', className]} data-payload aria-label={label}>
+  <ol class="payload__row">
+    {
+      rows.map((row, i) => (
+        <li class="payload__cell" style={`--w:${(widths[i] * scale).toFixed(3)}%`} data-payload-cell>
+          <span class="payload__size mono">{row.value}</span>
+          <span class="payload__label">{row.label}</span>
+        </li>
+      ))
+    }
+  </ol>
+  <figcaption class="payload__caption">
+    {
+      rows.map((row) => (
+        <span class="payload__note">
+          <b>{row.label}.</b> {row.note}
+        </span>
+      ))
+    }
+  </figcaption>
+</figure>
+
+<style>
+  .payload {
+    margin: 0;
+  }
+  .payload__row {
+    display: flex;
+    gap: 2px;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    counter-reset: none;
+  }
+  .payload__cell {
+    flex: 0 0 var(--w);
+    min-width: 0;
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-1);
+    padding: var(--space-4) var(--space-3);
+    border: var(--border-width) solid var(--color-border-strong);
+    background: var(--color-surface);
+    /* El bloque de la firma es el ancho: se distingue con un relleno sutil, no con color plano. */
+    background-image: linear-gradient(180deg, transparent 0%, rgba(11, 31, 63, 0.04) 100%);
+  }
+  .payload__cell:first-child {
+    border-radius: var(--radius-md) 0 0 var(--radius-md);
+  }
+  .payload__cell:last-child {
+    border-radius: 0 var(--radius-md) var(--radius-md) 0;
+  }
+  .payload__size {
+    font-size: var(--text-xs);
+    color: var(--color-text-secondary);
+    white-space: nowrap;
+  }
+  .payload__label {
+    font-size: var(--text-sm);
+    font-weight: 600;
+    line-height: 1.25;
+    overflow-wrap: break-word;
+  }
+  .payload__caption {
+    display: grid;
+    gap: var(--space-2);
+    margin-top: var(--space-5);
+    font-size: var(--text-sm);
+    color: var(--color-text-secondary);
+  }
+  .payload__note b {
+    color: var(--color-text-primary);
+    font-weight: 600;
+  }
+
+  /* Móvil: el reparto proporcional deja bloques ilegibles, así que se apila. */
+  @media (max-width: 47.99em) {
+    .payload__row {
+      flex-direction: column;
+      gap: 2px;
+    }
+    .payload__cell {
+      flex: 1 1 auto;
+      flex-direction: row;
+      align-items: baseline;
+      justify-content: space-between;
+      gap: var(--space-3);
+      padding: var(--space-3);
+    }
+    .payload__cell:first-child {
+      border-radius: var(--radius-md) var(--radius-md) 0 0;
+    }
+    .payload__cell:last-child {
+      border-radius: 0 0 var(--radius-md) var(--radius-md);
+    }
+  }
+
+  /* El estado inicial de la animación solo se aplica si JS la va a ejecutar. */
+  :global([data-payload].payload--pending) .payload__cell {
+    opacity: 0.15;
+  }
+  :global([data-payload].payload--pending) .payload__cell.is-lit {
+    opacity: 1;
+    transition: opacity var(--dur-slow) var(--ease-out);
+  }
+  @media (prefers-reduced-motion: reduce) {
+    :global([data-payload].payload--pending) .payload__cell,
+    :global([data-payload].payload--pending) .payload__cell.is-lit {
+      opacity: 1;
+      transition: none;
+    }
+  }
+</style>

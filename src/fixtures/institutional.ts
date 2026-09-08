@@ -12,7 +12,7 @@ import { ORGANIZATIONS } from './units';
 /* Tipos                                                               */
 /* ------------------------------------------------------------------ */
 
-export type AlertType = 'duplicate_scans' | 'geo_inconsistent' | 'chain_gap' | 'lot_withdrawn' | 'reported' | 'partial_match' | 'suspended';
+export type AlertType = 'duplicate_scans' | 'geo_inconsistent' | 'pending_activation' | 'lot_withdrawn' | 'reported' | 'partial_match' | 'suspended';
 
 export const ALERT_TYPES: readonly AlertType[] = [
   'reported',
@@ -21,7 +21,7 @@ export const ALERT_TYPES: readonly AlertType[] = [
   'geo_inconsistent',
   'partial_match',
   'suspended',
-  'chain_gap',
+  'pending_activation',
 ] as const;
 
 export type AlertStatus = 'open' | 'acknowledged' | 'closed';
@@ -157,15 +157,15 @@ export const SESSION_ACTOR_PREFIX = 'session:';
 export const ALERTS: readonly InstitutionalAlert[] = [
   {
     id: 'ALR-2026-035',
-    type: 'chain_gap',
+    type: 'pending_activation',
     severity: 'info',
     unitCode: 'TRZ-7F2K-8L1F-63HW',
     region: 'Región Norte',
     detectedAt: '2026-09-02T12:20:00Z',
     status: 'open',
     summary: {
-      es: 'Verificación en comercio sin despacho registrado desde distribución.',
-      en: 'Verified at retail with no dispatch recorded from distribution.',
+      es: 'Consulta pública de un identificador etiquetado que aún no está activado.',
+      en: 'Public lookup of a labelled identifier that is not activated yet.',
     },
     explanation: {
       es: 'El último evento registrado para esta unidad es la recepción en el Centro de distribución Sierra Verde; no consta el despacho a comercio, pero la verificación pública se hizo desde un punto de venta. Con frecuencia se trata de un retraso en el registro del distribuidor. Confianza como indicio de irregularidad: baja. Siguiente paso: confirmar con el distribuidor si el despacho ocurrió y regularizar el evento.',
@@ -303,7 +303,7 @@ export const ALERTS: readonly InstitutionalAlert[] = [
   },
   {
     id: 'ALR-2026-026',
-    type: 'chain_gap',
+    type: 'pending_activation',
     severity: 'info',
     unitCode: 'TRZ-7F2K-4K7Q-92FA',
     region: 'Región Norte',

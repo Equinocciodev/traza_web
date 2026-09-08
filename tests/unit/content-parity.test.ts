@@ -84,6 +84,9 @@ const PAGE_KEYS = [
   'solutionsCitizens',
   'howItWorks',
   'caseSpirits',
+  'codeSpec',
+  'integration',
+  'rationale',
   'security',
   'company',
   'privacy',
@@ -126,7 +129,10 @@ describe('paridad ES ↔ EN', () => {
     ] as const) {
       const empty: string[] = [];
       walkStrings(dict, locale, (path, text) => {
-        if (text.trim() === '' && !/story\.empty$/.test(path)) empty.push(path);
+        // Excepciones: el guion del estado vacío del recorrido y las líneas en blanco que
+        // separan grupos dentro de un bloque monoespaciado (son parte del formato, no un hueco).
+        const allowed = /story\.empty$/.test(path) || /\.code\.lines\[\d+\]$/.test(path);
+        if (text.trim() === '' && !allowed) empty.push(path);
       });
       expect(empty).toEqual([]);
     }

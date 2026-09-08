@@ -176,7 +176,7 @@ export type ScenarioId =
   | 'not_registered'
   | 'revoked'
   | 'reported'
-  | 'chain_gap'
+  | 'pending_activation'
   | 'suspended'
   | 'unreadable'
   | 'unknown_format'

@@ -478,6 +478,52 @@ export interface CompanyContent {
   disclaimer: string;
 }
 
+/* ------------------------------------------------------------------ */
+/* Páginas de referencia (etiqueta y código · integración · por qué)   */
+/* ------------------------------------------------------------------ */
+
+/** Fila de una tabla de especificaciones: qué se exige y con qué valor. */
+export interface SpecRow {
+  label: string;
+  value: string;
+  /** Aclaración breve de por qué ese valor, no solo cuál. */
+  note?: string;
+}
+
+/** Bloque monoespaciado: formato de un código, lista de endpoints, ejemplo de payload. */
+export interface CodeBlock {
+  caption: string;
+  lines: string[];
+}
+
+/**
+ * Sección de una página de referencia. Todo lo que sigue al título es opcional: cada
+ * sección usa solo lo que necesita, y la plantilla omite lo que no venga.
+ */
+export interface ReferenceSection {
+  /** Ancla estable para enlazar desde otras páginas. */
+  id: string;
+  title: string;
+  intro?: string;
+  paragraphs?: string[];
+  specs?: SpecRow[];
+  items?: Feature[];
+  code?: CodeBlock;
+  /** Diagrama que acompaña a la sección, dibujado en línea (sin dependencias). */
+  diagram?: 'payload' | 'lifecycle';
+  /** Advertencia o límite al pie de la sección. */
+  note?: string;
+}
+
+export interface ReferencePageContent {
+  meta: PageMeta;
+  hero: { eyebrow: string; title: string; subtitle: string };
+  /** Índice de la página: se construye con los ids de las secciones. */
+  contentsLabel: string;
+  sections: ReferenceSection[];
+  cta: { title: string; body: string; primaryCta: Cta; secondaryCta?: Cta };
+}
+
 export interface PrivacyContent {
   meta: PageMeta;
   title: string;
@@ -517,6 +563,9 @@ export interface SiteContent {
   solutionsCitizens: SectorPageContent;
   howItWorks: HowItWorksContent;
   caseSpirits: CaseSpiritsContent;
+  codeSpec: ReferencePageContent;
+  integration: ReferencePageContent;
+  rationale: ReferencePageContent;
   security: SecurityContent;
   company: CompanyContent;
   privacy: PrivacyContent;

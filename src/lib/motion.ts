@@ -554,6 +554,60 @@ export function observeTraceLines(root: ParentNode = document): () => void {
 let initialised = false;
 
 /** Inicializa revelados, count-ups y trazos de la página. Idempotente. */
+/**
+ * Anatomía del identificador (`[data-payload]`): los bloques se encienden de izquierda a
+ * derecha al entrar en el viewport, una sola vez. Mismo criterio que el resto del sistema:
+ * el estado apagado se aplica solo justo antes de animar, así que sin JavaScript —o con
+ * `prefers-reduced-motion`— el diagrama se ve completo desde el principio.
+ */
+export function observePayload(root: ParentNode = document): () => void {
+  const figures = qa<HTMLElement>(root, '[data-payload]');
+  if (figures.length === 0) return noop;
+
+  if (prefersReducedMotion() || !('IntersectionObserver' in window)) return noop;
+
+  const timers = new Set<number>();
+  const STEP_MS = 110;
+
+  const light = (figure: HTMLElement, animate: boolean) => {
+    const cells = qa<HTMLElement>(figure, '[data-payload-cell]');
+    if (!animate) return;
+    figure.classList.add('payload--pending');
+    cells.forEach((cell, i) => {
+      const timer = window.setTimeout(() => {
+        cell.classList.add('is-lit');
+        timers.delete(timer);
+        // Al terminar se retira todo: el diagrama queda en su estado natural.
+        if (i === cells.length - 1) {
+          const cleanup = window.setTimeout(() => {
+            figure.classList.remove('payload--pending');
+            cells.forEach((c) => c.classList.remove('is-lit'));
+            timers.delete(cleanup);
+          }, 500);
+          timers.add(cleanup);
+        }
+      }, i * STEP_MS);
+      timers.add(timer);
+    });
+  };
+
+  const watcher = watchViewport(
+    { enter: (el) => light(el as HTMLElement, true), skip: () => {} },
+    0.25,
+  );
+
+  const bottom = viewportBottom();
+  for (const figure of figures) {
+    if (figure.getBoundingClientRect().top > bottom) watcher.observe(figure);
+  }
+
+  return () => {
+    timers.forEach((t) => window.clearTimeout(t));
+    timers.clear();
+    watcher.disconnect();
+  };
+}
+
 export function initMotion(root: ParentNode = document): void {
   if (initialised) return;
   initialised = true;
@@ -561,4 +615,5 @@ export function initMotion(root: ParentNode = document): void {
   observeReveal(root);
   observeCountUp(root);
   observeTraceLines(root);
+  observePayload(root);
 }

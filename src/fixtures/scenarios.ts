@@ -43,13 +43,13 @@ export const SCENARIOS: Scenario[] = [
     },
   },
   {
-    id: 'chain_gap',
+    id: 'pending_activation',
     code: 'TRZ-7F2K-8L1F-63HW',
     trigger: 'code',
-    label: { es: 'Advertencia: brecha en la cadena', en: 'Warning: chain gap' },
+    label: { es: 'En revisión: pendiente de activación', en: 'Under review: pending activation' },
     description: {
-      es: 'La unidad se verifica en comercio pero el registro no muestra despacho.',
-      en: 'The unit is verified at retail but the registry shows no dispatch.',
+      es: 'La unidad se consulta pero su ficha aún no se ha cerrado: el código no está activado.',
+      en: 'The unit is looked up but its record has not been closed: the code is not activated.',
     },
   },
   {

@@ -261,7 +261,7 @@ export const institutional: InstitutionalContent = {
     anomalyCode: {
       duplicate_scans: 'Verificaciones repetidas',
       geo_inconsistent: 'Incoherencia geográfica',
-      chain_gap: 'Brecha de cadena',
+      pending_activation: 'Pendiente de activación',
       lot_withdrawn: 'Lote retirado',
       reported: 'Reporte de discrepancia',
       expired: 'Vencido',

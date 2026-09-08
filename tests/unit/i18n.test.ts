@@ -26,6 +26,9 @@ const EXPECTED_KEYS: RouteKey[] = [
   'solutionsCitizens',
   'howItWorks',
   'caseSpirits',
+  'codeSpec',
+  'integration',
+  'rationale',
   'verify',
   'journey',
   'institutional',
@@ -36,7 +39,7 @@ const EXPECTED_KEYS: RouteKey[] = [
 ];
 
 describe('ROUTES', () => {
-  it('declara exactamente las 15 claves en los dos idiomas', () => {
+  it(`declara exactamente las ${EXPECTED_KEYS.length} claves en los dos idiomas`, () => {
     expect(LOCALES).toEqual(['es', 'en']);
     expect(DEFAULT_LOCALE).toBe('es');
     for (const locale of LOCALES) {

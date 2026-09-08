@@ -24,6 +24,7 @@ export const common: CommonContent = {
     items: [
       { key: 'home', label: 'Home' },
       { key: 'platform', label: 'Platform' },
+      { key: 'howItWorks', label: 'How it works' },
       {
         key: 'solutions',
         label: 'Solutions',
@@ -31,17 +32,25 @@ export const common: CommonContent = {
           { key: 'solutionsGovernment', label: 'Government and regulators' },
           { key: 'solutionsIndustry', label: 'Industry' },
           { key: 'solutionsCitizens', label: 'Citizens' },
+          { key: 'caseSpirits', label: 'Use case: spirits' },
         ],
       },
-      { key: 'howItWorks', label: 'How it works' },
-      { key: 'caseSpirits', label: 'Case: Spirits' },
-      { key: 'security', label: 'Security and trust' },
+      {
+        key: 'security',
+        label: 'Technology',
+        children: [
+          { key: 'security', label: 'Security and trust' },
+          { key: 'codeSpec', label: 'The label and the code' },
+          { key: 'integration', label: 'Integration' },
+          { key: 'rationale', label: 'Why this design' },
+        ],
+      },
       { key: 'company', label: 'Company' },
     ],
     cta: { label: 'Verify', key: 'verify', variant: 'primary' },
-    menuOpen: 'Open menu',
-    menuClose: 'Close menu',
-    homeLinkLabel: 'traza — go to home page',
+    menuOpen: 'Open the menu',
+    menuClose: 'Close the menu',
+    homeLinkLabel: 'traza — go to home',
   },
 
   languageSwitch: {
@@ -66,8 +75,11 @@ export const common: CommonContent = {
           { label: 'Platform', key: 'platform' },
           { label: 'How it works', key: 'howItWorks' },
           { label: 'Solutions', key: 'solutions' },
-          { label: 'Case: Spirits', key: 'caseSpirits' },
+          { label: 'Use case: spirits', key: 'caseSpirits' },
           { label: 'Security and trust', key: 'security' },
+          { label: 'The label and the code', key: 'codeSpec' },
+          { label: 'Integration', key: 'integration' },
+          { label: 'Why this design', key: 'rationale' },
         ],
       },
       {

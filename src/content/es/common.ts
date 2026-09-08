@@ -24,6 +24,7 @@ export const common: CommonContent = {
     items: [
       { key: 'home', label: 'Inicio' },
       { key: 'platform', label: 'Plataforma' },
+      { key: 'howItWorks', label: 'Cómo funciona' },
       {
         key: 'solutions',
         label: 'Soluciones',
@@ -31,11 +32,19 @@ export const common: CommonContent = {
           { key: 'solutionsGovernment', label: 'Gobierno y reguladores' },
           { key: 'solutionsIndustry', label: 'Industria' },
           { key: 'solutionsCitizens', label: 'Ciudadanos' },
+          { key: 'caseSpirits', label: 'Caso de uso: licores' },
         ],
       },
-      { key: 'howItWorks', label: 'Cómo funciona' },
-      { key: 'caseSpirits', label: 'Caso: Licores' },
-      { key: 'security', label: 'Seguridad y confianza' },
+      {
+        key: 'security',
+        label: 'Tecnología',
+        children: [
+          { key: 'security', label: 'Seguridad y confianza' },
+          { key: 'codeSpec', label: 'La etiqueta y el código' },
+          { key: 'integration', label: 'Integración' },
+          { key: 'rationale', label: 'Por qué este diseño' },
+        ],
+      },
       { key: 'company', label: 'Empresa' },
     ],
     cta: { label: 'Verificar', key: 'verify', variant: 'primary' },
@@ -66,8 +75,11 @@ export const common: CommonContent = {
           { label: 'Plataforma', key: 'platform' },
           { label: 'Cómo funciona', key: 'howItWorks' },
           { label: 'Soluciones', key: 'solutions' },
-          { label: 'Caso: Licores', key: 'caseSpirits' },
+          { label: 'Caso de uso: licores', key: 'caseSpirits' },
           { label: 'Seguridad y confianza', key: 'security' },
+          { label: 'La etiqueta y el código', key: 'codeSpec' },
+          { label: 'Integración', key: 'integration' },
+          { label: 'Por qué este diseño', key: 'rationale' },
         ],
       },
       {

@@ -23,6 +23,9 @@ export type RouteKey =
   | 'solutionsCitizens'
   | 'howItWorks'
   | 'caseSpirits'
+  | 'codeSpec'
+  | 'integration'
+  | 'rationale'
   | 'verify'
   | 'journey'
   | 'institutional'
@@ -41,6 +44,9 @@ export const ROUTES: Record<Locale, Record<RouteKey, string>> = {
     solutionsCitizens: '/soluciones/ciudadanos/',
     howItWorks: '/como-funciona/',
     caseSpirits: '/casos/licores/',
+    codeSpec: '/etiqueta/',
+    integration: '/integracion/',
+    rationale: '/por-que-asi/',
     verify: '/verificar/',
     journey: '/recorrido/',
     institutional: '/institucional/',
@@ -58,6 +64,9 @@ export const ROUTES: Record<Locale, Record<RouteKey, string>> = {
     solutionsCitizens: '/en/solutions/citizens/',
     howItWorks: '/en/how-it-works/',
     caseSpirits: '/en/cases/spirits/',
+    codeSpec: '/en/label/',
+    integration: '/en/integration/',
+    rationale: '/en/why-this-design/',
     verify: '/en/verify/',
     journey: '/en/journey/',
     institutional: '/en/institutional/',

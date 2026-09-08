@@ -1,0 +1,239 @@
+---
+/**
+ * Plantilla de las páginas de referencia técnica: la etiqueta y el código, la integración,
+ * y por qué el diseño es así.
+ *
+ * Las tres comparten forma (`ReferencePageContent`) y por tanto plantilla. Cada sección usa
+ * solo las piezas que necesita —párrafos, especificaciones, puntos con icono, un bloque
+ * monoespaciado, un diagrama— y la plantilla omite en silencio lo que no venga. Así añadir
+ * una sección es editar el diccionario, no tocar esto.
+ */
+import Base from '@/layouts/Base.astro';
+import PageHero from '@/components/ui/PageHero.astro';
+import Callout from '@/components/ui/Callout.astro';
+import CtaBand from '@/components/ui/CtaBand.astro';
+import FeatureGrid from '@/components/ui/FeatureGrid.astro';
+import PayloadDiagram from '@/components/ui/PayloadDiagram.astro';
+import StateDiagram from '@/components/ui/StateDiagram.astro';
+import SectionHeader from '@/components/ui/SectionHeader.astro';
+import { getContent } from '@/content';
+import type { Locale, RouteKey } from '@/i18n';
+import type { ReferencePageContent } from '@/content/types';
+
+interface Props {
+  locale: Locale;
+  /** Cuál de las tres páginas se está montando. */
+  page: 'codeSpec' | 'integration' | 'rationale';
+  /** Icono del hero, propio de cada página. */
+  icon: 'qr' | 'plug' | 'history';
+}
+const { locale, page, icon } = Astro.props;
+const content = getContent(locale);
+const data: ReferencePageContent = content[page];
+const routeKey: RouteKey = page;
+---
+
+<Base locale={locale} routeKey={routeKey} title={data.meta.title} description={data.meta.description}>
+  <PageHero eyebrow={data.hero.eyebrow} title={data.hero.title} subtitle={data.hero.subtitle} icon={icon} />
+
+  {/* Índice de la página: en una referencia larga, saber qué hay antes de bajar es la mitad del valor. */}
+  <nav class="section section--tight toc" aria-labelledby="toc-title">
+    <div class="container">
+      <h2 id="toc-title" class="toc__title">{data.contentsLabel}</h2>
+      <ol class="toc__list">
+        {
+          data.sections.map((section, i) => (
+            <li class="toc__item">
+              <a class="toc__link" href={`#${section.id}`}>
+                <span class="toc__number mono">{String(i + 1).padStart(2, '0')}</span>
+                <span>{section.title}</span>
+              </a>
+            </li>
+          ))
+        }
+      </ol>
+    </div>
+  </nav>
+
+  {
+    data.sections.map((section, i) => (
+      <section
+        class:list={['section', i % 2 === 1 && 'section--subtle']}
+        id={section.id}
+        aria-labelledby={`${section.id}-title`}
+        data-reveal
+      >
+        <div class="container">
+          <SectionHeader title={section.title} intro={section.intro} id={`${section.id}-title`} />
+
+          {section.paragraphs && (
+            <div class="prose">
+              {section.paragraphs.map((p) => (
+                <p>{p}</p>
+              ))}
+            </div>
+          )}
+
+          {section.diagram === 'payload' && section.specs && (
+            <PayloadDiagram rows={section.specs} label={section.title} class="ref__diagram" />
+          )}
+
+          {section.diagram === 'lifecycle' && section.items && (
+            <StateDiagram items={section.items} label={section.title} class="ref__diagram" />
+          )}
+
+          {section.specs && section.diagram !== 'payload' && (
+            <dl class="specs">
+              {section.specs.map((row) => (
+                <div class="specs__row">
+                  <dt class="specs__label">{row.label}</dt>
+                  <dd class="specs__value mono">{row.value}</dd>
+                  {row.note && <dd class="specs__note">{row.note}</dd>}
+                </div>
+              ))}
+            </dl>
+          )}
+
+          {section.items && section.diagram !== 'lifecycle' && (
+            <FeatureGrid items={section.items} columns={section.items.length > 6 ? 3 : 2} />
+          )}
+
+          {section.code && (
+            <figure class="codeblock">
+              <figcaption class="codeblock__caption">{section.code.caption}</figcaption>
+              {/* Un <pre> con las líneas unidas: el lector de pantalla lo anuncia como un bloque. */}
+              <pre class="codeblock__pre"><code>{section.code.lines.join('\n')}</code></pre>
+            </figure>
+          )}
+
+          {section.note && (
+            <div class="section__note">
+              <Callout tone="info">{section.note}</Callout>
+            </div>
+          )}
+        </div>
+      </section>
+    ))
+  }
+
+  <CtaBand
+    title={data.cta.title}
+    body={data.cta.body}
+    locale={locale}
+    primaryCta={data.cta.primaryCta}
+    secondaryCta={data.cta.secondaryCta}
+  />
+</Base>
+
+<style>
+  .toc__title {
+    margin: 0 0 var(--space-4);
+    font-size: var(--text-sm);
+    font-weight: 600;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    color: var(--color-text-secondary);
+  }
+  .toc__list {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 17rem), 1fr));
+    gap: var(--space-2) var(--space-6);
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+  .toc__link {
+    display: grid;
+    grid-template-columns: auto 1fr;
+    gap: var(--space-3);
+    align-items: baseline;
+    padding-block: var(--space-2);
+    border-bottom: var(--border-width) solid var(--color-border);
+    text-decoration: none;
+    color: var(--color-text-primary);
+  }
+  .toc__link:hover,
+  .toc__link:focus-visible {
+    color: var(--color-accent, var(--color-navy-700));
+  }
+  .toc__number {
+    font-size: var(--text-xs);
+    color: var(--color-text-secondary);
+  }
+
+  .prose {
+    display: grid;
+    gap: var(--space-4);
+    max-width: 68ch;
+  }
+  .prose p {
+    margin: 0;
+  }
+
+  .ref__diagram {
+    margin-top: var(--space-8);
+  }
+
+  .specs {
+    display: grid;
+    gap: 0;
+    margin: var(--space-8) 0 0;
+    padding: 0;
+  }
+  .specs__row {
+    display: grid;
+    grid-template-columns: minmax(10rem, 16rem) minmax(8rem, 14rem) 1fr;
+    gap: var(--space-2) var(--space-5);
+    padding-block: var(--space-4);
+    border-top: var(--border-width) solid var(--color-border);
+  }
+  .specs__row:last-child {
+    border-bottom: var(--border-width) solid var(--color-border);
+  }
+  .specs__label {
+    font-weight: 600;
+  }
+  .specs__value,
+  .specs__note {
+    margin: 0;
+  }
+  .specs__value {
+    font-size: var(--text-sm);
+  }
+  .specs__note {
+    font-size: var(--text-sm);
+    color: var(--color-text-secondary);
+  }
+
+  .codeblock {
+    margin: var(--space-8) 0 0;
+  }
+  .codeblock__caption {
+    margin-bottom: var(--space-3);
+    font-size: var(--text-sm);
+    color: var(--color-text-secondary);
+  }
+  .codeblock__pre {
+    margin: 0;
+    padding: var(--space-5);
+    border: var(--border-width) solid var(--color-border-strong);
+    border-radius: var(--radius-md);
+    background: var(--color-navy-950, #07152b);
+    color: rgba(255, 255, 255, 0.92);
+    font-family: var(--font-mono);
+    font-size: var(--text-sm);
+    line-height: 1.6;
+    /* Una lista de endpoints no se parte: se desplaza dentro de su caja. */
+    overflow-x: auto;
+  }
+
+  @media (max-width: 47.99em) {
+    .specs__row {
+      grid-template-columns: 1fr;
+      gap: var(--space-1);
+    }
+    .specs__label {
+      font-size: var(--text-sm);
+    }
+  }
+</style>
