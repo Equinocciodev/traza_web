@@ -41,6 +41,38 @@ const { security } = getContent(locale);
     </div>
   </section>
 
+  {/* La firma no protege contra la copia: eso lo hacen las capas, y conviene decirlo aquí. */}
+  <section class="section" id="copia" aria-labelledby="anticloning-title" data-reveal>
+    <div class="container">
+      <SectionHeader title={security.antiCloning.title} intro={security.antiCloning.intro} id="anticloning-title" />
+      <FeatureGrid items={security.antiCloning.items} columns={3} />
+      <div class="section__note">
+        <Callout tone="info">{security.antiCloning.note}</Callout>
+      </div>
+    </div>
+  </section>
+
+  <section class="section section--subtle" id="claves" aria-labelledby="custody-title" data-reveal>
+    <div class="container">
+      <SectionHeader title={security.keyCustody.title} intro={security.keyCustody.intro} id="custody-title" />
+      <FeatureGrid items={security.keyCustody.items} columns={3} numbered />
+      <div class="section__note">
+        {/* El riesgo que queda en pie se destaca a propósito: es la parte que nadie publica. */}
+        <Callout tone="warning" icon="alert">{security.keyCustody.residualRisk}</Callout>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" id="degradacion" aria-labelledby="degradation-title" data-reveal>
+    <div class="container">
+      <SectionHeader title={security.degradation.title} intro={security.degradation.intro} id="degradation-title" />
+      <FeatureGrid items={security.degradation.items} columns={2} />
+      <div class="section__note">
+        <Callout tone="neutral">{security.degradation.note}</Callout>
+      </div>
+    </div>
+  </section>
+
   <section class="section honesty on-dark" aria-labelledby="honesty-title" data-reveal>
     <div class="container honesty__inner">
       <SectionHeader title={security.verificationHonesty.title} intro={security.verificationHonesty.body} id="honesty-title" class="honesty__header" />

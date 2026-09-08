@@ -80,6 +80,114 @@ export const security: SecurityContent = {
     note: 'Arquitectura objetivo del producto: esta página no implementa ni afirma una certificación de seguridad. Los controles descritos se implementan y auditan en cada despliegue.',
   },
 
+  antiCloning: {
+    title: 'Contra la copia trabajan varias capas, y ninguna basta sola',
+    intro:
+      'Conviene decirlo primero: la firma criptográfica no protege contra la copia. Un código copiado es un código válido. Lo que la firma impide es inventar códigos, que es un problema distinto. Contra la copia trabaja otra cosa: capas que se suman, cada una débil por separado.',
+    items: [
+      {
+        title: 'Analítica de duplicados',
+        body: 'El mismo identificador consultado desde lugares que una sola unidad no puede recorrer en el tiempo transcurrido, o con una frecuencia que ninguna botella tiene. El estado se degrada y se abre un caso.',
+        icon: 'chart',
+      },
+      {
+        title: 'Comparación humana',
+        body: 'El pasaporte muestra el lote y la fecha de vencimiento; quien tiene la unidad delante los compara con lo impreso en el envase. Un código copiado sobre otro lote no coincide. Es gratis y es el paso más eficaz.',
+        icon: 'compare',
+      },
+      {
+        title: 'Vinculación al serial',
+        body: 'En productos durables la etiqueta se vincula uno a uno con el serial del fabricante y el pasaporte lo muestra: quien compra compara con el serial impreso en el equipo.',
+        icon: 'fingerprint',
+      },
+      {
+        title: 'Primera consulta visible',
+        body: 'El pasaporte dice cuándo se consultó por primera vez y cuántas veces va. Una unidad recién comprada con un historial largo huele mal, y eso lo nota cualquiera sin saber nada del sistema.',
+        icon: 'history',
+      },
+      {
+        title: 'Etiqueta destructible',
+        body: 'Un sustrato que se rompe al despegarlo impide trasladar una etiqueta ya aplicada de una unidad a otra, que es el fraude más sencillo de todos.',
+        icon: 'label',
+      },
+      {
+        title: 'Activación en dos tiempos',
+        body: 'Un identificador emitido y etiquetado pero sin activar que aparece consultado en la calle es una señal de fuga. Por eso el resultado dice «en revisión» y no «verificado».',
+        icon: 'check',
+      },
+    ],
+    note: 'En fases posteriores se suman elementos que la cámara puede comprobar —un patrón de alta entropía que se degrada de forma medible al fotocopiarlo— y elementos materiales que un clon fotográfico no puede reproducir. Ninguna capa es suficiente; el conjunto es lo que hace caro el fraude.',
+  },
+
+  keyCustody: {
+    title: 'Quién puede usar las claves de firma',
+    intro:
+      'Las claves con las que se firma un identificador se custodian en un módulo de seguridad de hardware, no en el equipo de quien emite. El objetivo es explícito: que ninguna persona —incluido quien opera la plataforma— pueda usarlas fuera del flujo autorizado.',
+    items: [
+      {
+        title: 'El material no sale del módulo',
+        body: 'La clave maestra es una clave nativa del módulo, no exportable por diseño. La derivación de las claves de cada emisión ocurre dentro; a la memoria del servicio solo llegan claves de emisión concretas.',
+        icon: 'key',
+      },
+      {
+        title: 'Administrar no es usar',
+        body: 'Quien puede rotar o deshabilitar una clave tiene denegado su uso, y quien la usa es un único rol de servicio. Son permisos distintos y deliberadamente incompatibles.',
+        icon: 'lock',
+      },
+      {
+        title: 'Políticas que atan también al administrador',
+        body: 'Prohibido el material exportable, prohibido tocar el registro de auditoría, y los cambios de política solo por la tubería de despliegue. Nadie queda por encima de la regla.',
+        icon: 'shield-check',
+      },
+      {
+        title: 'Un solo camino a producción',
+        body: 'Nadie despliega a mano. El código criptográfico, los permisos y la infraestructura de claves exigen doble aprobación, con commits e imágenes firmadas. Exfiltrar exige cómplice.',
+        icon: 'settings',
+      },
+      {
+        title: 'Huella imborrable',
+        body: 'Todo uso de clave queda en un registro replicado a un archivo que los administradores no pueden escribir ni borrar, con alertas de uso anómalo y copia al espejo del organismo supervisor.',
+        icon: 'document',
+      },
+      {
+        title: 'Ceremonias con quórum',
+        body: 'Crear o rotar la clave maestra de una época exige varias personas con credenciales partidas y tokens físicos, y un testigo del organismo supervisor.',
+        icon: 'user',
+      },
+    ],
+    residualRisk:
+      'Queda un riesgo en pie, y es más honesto escribirlo que omitirlo: la colusión de dos personas con permisos complementarios. Las capas anteriores no la vuelven imposible; la vuelven detectable y atribuible. Hay además un canario de fondo: consultas sobre rangos que nunca se descargaron significan una firma filtrada en uso. Y el cierre de emisión acota el daño — cuando una emisión se cierra, los correlativos que no se usaron se anulan, de modo que un código forjado sobre ella cae en «no registrado» o «en revisión», nunca en «verificado».',
+  },
+
+  degradation: {
+    title: 'Qué tiene que seguir funcionando cuando algo falla',
+    intro:
+      'Un sistema fiscal que detiene una línea de producción o una caja de comercio ha causado más daño que el fraude que perseguía. Eso deja de ser una aspiración y pasa a ser una restricción de diseño, con consecuencias concretas.',
+    items: [
+      {
+        title: 'Imprimir no depende de la conexión',
+        body: 'El rango de identificadores se descarga una vez y un proceso local alimenta la impresora, con su propia cola y reporte diferido al reconectar. La planta no espera a la red.',
+        icon: 'offline',
+      },
+      {
+        title: 'La consulta y la emisión no comparten camino',
+        body: 'Son planos separados que se comunican por eventos. La consulta pública tiene que seguir respondiendo aunque la emisión esté en mantenimiento, y una generación masiva no compite con quien está frente a un anaquel.',
+        icon: 'layers',
+      },
+      {
+        title: 'Abierto al leer, cerrado al escribir',
+        body: 'Si el limitador de tasa se degrada, la consulta se sirve: más vale responder que negar. Las escrituras y la autenticación, al contrario, fallan cerradas.',
+        icon: 'network',
+      },
+      {
+        title: 'Los rechazos son telemetría',
+        body: 'Un intento de enumerar códigos es en sí mismo una señal de fraude: los picos de rechazo por origen y por prefijo alimentan la analítica y abren caso.',
+        icon: 'alert',
+      },
+    ],
+    note: 'Nada de esto es una promesa de disponibilidad. Es la lista de lo que debe seguir en pie cuando algo se cae, que es una pregunta distinta y más útil de responder por escrito.',
+  },
+
   verificationHonesty: {
     title: 'Por qué nunca decimos «auténtico»',
     body:

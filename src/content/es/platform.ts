@@ -4,7 +4,7 @@ export const platform: PlatformContent = {
   meta: {
     title: 'Plataforma de identidad, trazabilidad y control',
     description:
-      'Capacidades de la plataforma Traza: identidad unitaria, registro de eventos de cadena, verificación pública, control institucional y reglas por tenant.',
+      'Capacidades de la plataforma Traza: identidad unitaria, registro del ciclo de vida, verificación pública, control institucional y reglas por cada tenant.',
   },
 
   hero: {

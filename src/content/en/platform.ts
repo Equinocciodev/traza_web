@@ -4,7 +4,7 @@ export const platform: PlatformContent = {
   meta: {
     title: 'Platform for identity, traceability and control',
     description:
-      'Capabilities of the Traza platform: unit-level identity, chain event recording, public verification, institutional control views, and rules per tenant.',
+      'Capabilities of the Traza platform: unit-level identity, lifecycle recording, public verification, institutional control views, and rules set per tenant.',
   },
 
   hero: {

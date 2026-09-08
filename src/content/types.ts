@@ -440,6 +440,12 @@ export interface SecurityContent {
   hero: { eyebrow: string; title: string; subtitle: string };
   principles: { title: string; intro: string; items: Feature[] };
   target: { title: string; intro: string; items: Feature[]; note: string };
+  /** Capas contra la copia: ninguna basta sola, y la firma no es una de ellas. */
+  antiCloning: { title: string; intro: string; items: Feature[]; note: string };
+  /** Custodia de las claves de firma, incluido el riesgo que queda en pie. */
+  keyCustody: { title: string; intro: string; items: Feature[]; residualRisk: string };
+  /** Qué tiene que seguir funcionando cuando algo falla. */
+  degradation: { title: string; intro: string; items: Feature[]; note: string };
   verificationHonesty: { title: string; body: string; bullets: string[] };
   privacy: { title: string; body: string; bullets: string[] };
   transparency: { title: string; intro: string; items: string[] };

@@ -12,7 +12,7 @@ export const common: CommonContent = {
     siteName: 'Traza®',
     titleTemplate: '%s · Traza®',
     defaultDescription:
-      'Plataforma de identidad digital unitaria, trazabilidad y verificación pública: un identificador firmado por unidad y el registro auditable de su recorrido.',
+      'Plataforma de identidad digital unitaria, trazabilidad y verificación pública: un identificador firmado por unidad y el registro auditable de su ciclo de vida.',
     homeTitle: 'Traza — Identidad digital verificable para productos reales',
     ogImageAlt: 'traza® — Identidad digital para productos reales.',
   },
