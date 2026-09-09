@@ -2,6 +2,8 @@
 
 Corte: 9 de septiembre de 2026. Sitio: https://traza.technology/. Base revisada: `7f5e2d648a4efe2072b2d78ccd40664cdec64559`. Este informe distingue comportamiento ejecutable, datos de ejemplo y servicios no implementados. No certifica ausencia universal de defectos ni una operación sanitaria real.
 
+**Versión funcional final: `d0d04348748ce6ad8f23d120b66eaeda804f2855`**, [Pages 34387403754](https://github.com/Equinocciodev/traza_web/actions/runs/34387403754) completado con éxito. Los tres P2 de la revisión independiente quedan cerrados: ficha y cronología comprobadas sobre `57c2052`, y pie ES → EN → ES comprobado sobre `d0d0434`, conservando parámetros, campo, resultado y registro del piloto. Se recargaron normalmente las páginas ES/EN que seguían abiertas con documentos anteriores; no se reprodujo el fallo tras esa actualización. No se repitieron los otros dos hallazgos, cuyo código no cambió.
+
 ## Correcciones de esta revisión
 
 1. El cambio ES ↔ EN, tanto en cabecera como en pie mediante una lógica común, conserva el código de unidad y el ámbito `t`, tanto desde el QR como después de una entrada manual o lectura de imagen. Solo se conserva un identificador Traza válido; un QR ajeno no se abre ni se añade a la URL.
