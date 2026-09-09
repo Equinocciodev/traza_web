@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 /**
  * Exporta la composición OG integral y los iconos de identidad:
- *   - public/og/default.png (1200×630): fondo azul marino, wordmark "traza®" con subrayado cian,
+ *   - public/og/integral-v2.png (1200×630): fondo azul marino, wordmark "traza®" con subrayado cian,
  *     composición médica ImageGen completa, sin capas añadidas.
  *     Sin texto ni emblemas de agencias.
  *   - public/apple-touch-icon.png (180×180): desde public/favicon.svg, aplanado sobre azul marino.
@@ -18,7 +18,7 @@ import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
-const OUT_OG = path.join(ROOT, 'public', 'og', 'default.png');
+const OUT_OG = path.join(ROOT, 'public', 'og', 'integral-v2.png');
 const OUT_APPLE = path.join(ROOT, 'public', 'apple-touch-icon.png');
 const OUT_32 = path.join(ROOT, 'public', 'favicon-32.png');
 const OUT_192 = path.join(ROOT, 'public', 'icon-192.png');
@@ -35,7 +35,7 @@ async function main() {
 
   await mkdir(path.dirname(OUT_OG), { recursive: true });
   // Complete ImageGen composition; only resize/encode, never add logo, QR or line overlays.
-  await sharp(path.join(ROOT, 'public/images/integral-20260909/og.webp'))
+  await sharp(path.join(ROOT, 'public/images/integral-20260909/og-v2.webp'))
     .resize(WIDTH, HEIGHT, { fit: 'contain', background: '#07152b' })
     .png({ compressionLevel: 9 }).toFile(OUT_OG);
 
