@@ -32,7 +32,7 @@ export const GET: APIRoute = ({ site }) => {
     'solutionsGovernment',
     'solutionsIndustry',
     'solutionsCitizens',
-    'caseSpirits',
+    'caseMedicines',
     'verify',
     'journey',
     'institutional',

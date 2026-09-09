@@ -18,7 +18,7 @@ export const codeSpec: ReferencePageContent = {
     eyebrow: 'Referencia técnica',
     title: 'Un código corto, firmado y comprobable a simple vista',
     subtitle:
-      'El identificador de una unidad tiene que sobrevivir a una etiqueta pequeña, a una cámara mediocre y a que alguien lo escriba a mano. Esto es lo que se le exige y cómo está construido.',
+      'Esta página distingue el código de consulta que funciona en la web del formato objetivo de producción. El esquema de veinte bytes requiere implementación y auditoría criptográfica; la consulta de ejemplo no valida firmas reales.',
   },
 
   contentsLabel: 'En esta página',
@@ -28,7 +28,8 @@ export const codeSpec: ReferencePageContent = {
       id: 'requisitos',
       title: 'Cinco requisitos que fijan el diseño',
       intro:
-        'El formato no es una elección estética: cada requisito descarta alternativas. Los cinco juntos dejan muy pocas opciones posibles.',
+        'El ejemplo consultable usa el formato TRZ-XXXX-XXXX-XXXX y datos de un registro local. Los requisitos siguientes corresponden al diseño objetivo; no describen comprobaciones criptográficas ejecutadas por esta web.',
+      code: { caption: 'Código consultable de esta web · datos de ejemplo', lines: ['TRZ-7F2K-4K7Q-92FA', 'https://traza.technology/verificar/?c=TRZ-7F2K-4K7Q-92FA&t=medicamentos'] },
       items: [
         {
           title: 'Único a gran escala, sin coordinación central',
@@ -42,7 +43,7 @@ export const codeSpec: ReferencePageContent = {
         },
         {
           title: 'Comprobable sin consultar la base de datos',
-          body: 'La firma se valida sola. Así un código inventado se descarta en microsegundos de CPU y el registro solo atiende códigos que existen.',
+          body: 'El objetivo es validar la firma antes de consultar el registro. El esquema, las claves, su seguridad y el rendimiento deberán comprobarse en la implementación; esta web no ejecuta esa validación.',
           icon: 'signature',
         },
         {
@@ -61,23 +62,23 @@ export const codeSpec: ReferencePageContent = {
       id: 'anatomia',
       title: 'Anatomía del identificador',
       intro:
-        'El contenido que viaja en el código son veinte bytes con cuatro partes. Cada una responde a uno de los requisitos anteriores.',
+        'El formato objetivo reserva veinte bytes en cuatro partes. Es una propuesta de diseño pendiente de validación; no es el formato de doce caracteres de los códigos consultables en esta web.',
       diagram: 'payload',
       specs: [
         { label: 'Versión', value: '1 byte', note: 'Permite cambiar el formato más adelante sin invalidar lo ya impreso.' },
         { label: 'Época de clave', value: '1 byte', note: 'Direcciona la clave con la que se firmó. Rotar claves no invalida el histórico.' },
         { label: 'Identificador único', value: '10 bytes', note: 'La emisión y la posición dentro de ella, cifradas para no revelar orden ni volumen.' },
-        { label: 'Firma truncada', value: '8 bytes', note: 'Lo que hace que un código inventado no pase el primer filtro.' },
+        { label: 'Firma truncada', value: '8 bytes', note: 'Campo previsto para un autenticador. El esquema criptográfico y su seguridad requieren validación independiente.' },
       ],
-      note: 'La firma protege contra la invención de códigos, no contra la copia: un código copiado es válido. Contra la copia trabajan otras capas, explicadas en Seguridad y confianza.',
+      note: 'La distribución de bytes no demuestra seguridad ni constituye una firma ECDSA verificada. Una copia conserva el mismo identificador y no crea otra unidad. El formato definitivo y las medidas anticopia requieren validación en cada despliegue.',
     },
     {
       id: 'representacion',
       title: 'De veinte bytes a algo que se pueda leer y teclear',
       intro:
-        'El texto usa Base32 Crockford, un alfabeto que evita los caracteres que la gente confunde y que trae su propio dígito de control.',
+        'La representación objetivo propone Base32 Crockford con control de errores de escritura. El bloque siguiente es ilustrativo: no es un vector criptográfico de prueba ni un código reconocido por el registro de esta web.',
       code: {
-        caption: 'Forma textual, agrupada para lectura manual',
+        caption: 'Formato objetivo ilustrativo · no consultable en esta web',
         lines: [
           'TRZ-9FXK-2M4Q-J8TV-QH3N-7WPD-BL5R-XCK',
           '',
@@ -86,7 +87,7 @@ export const codeSpec: ReferencePageContent = {
         ],
       },
       paragraphs: [
-        'El dígito de control se valida en el navegador, antes de llamar a ningún servicio: un error de tecleo se avisa al instante y no gasta una consulta.',
+        'En el formato objetivo, el dígito de control se comprobaría antes de consultar un servicio. El lector de esta web comprueba el formato del identificador de ejemplo; no implementa ese algoritmo ni valida una firma criptográfica.',
         'La URL va en mayúsculas a propósito. El modo alfanumérico de QR codifica más información por módulo que el modo byte, así que el mismo contenido cabe en un QR una o dos versiones más pequeño: escanea antes y tolera más daño. El esquema y el dominio no distinguen mayúsculas, y el servidor acepta la ruta en mayúsculas.',
         'Un dominio corto también importa: menos caracteres son menos módulos, y menos módulos permiten imprimir más pequeño con el mismo nivel de corrección de errores.',
       ],
@@ -94,7 +95,7 @@ export const codeSpec: ReferencePageContent = {
     {
       id: 'indice',
       title: 'El código es su propio índice',
-      intro: 'De aquí sale el rendimiento, y es la parte del diseño que más se aparta de lo habitual.',
+      intro: 'La arquitectura objetivo propone direccionar el registro desde el identificador. Los beneficios descritos requieren implementación y medición; no son resultados comprobados por esta web.',
       paragraphs: [
         'La época direcciona la clave, así que no hay que probar claves. La firma descarta la basura sin tocar almacenamiento. La emisión embebida apunta directamente al único registro que contiene el pasaporte. Y la posición dentro de la emisión es la clave exacta de la fila.',
         'Nada busca; todo direcciona. Esa es la diferencia entre un identificador aleatorio —que obliga a consultar la base de datos incluso para descartar basura— y uno firmado, que decide válido o inventado antes de preguntar nada.',
@@ -112,7 +113,7 @@ export const codeSpec: ReferencePageContent = {
         { label: 'Corrección de errores', value: 'Nivel M mínimo, Q recomendado', note: 'Tolera roces y suciedad sin dejar de decodificar.' },
         { label: 'Tamaño del módulo', value: '≥ 0,33 mm', note: 'Por debajo, las cámaras de gama baja empiezan a fallar.' },
         { label: 'Zona quieta', value: '4 módulos', note: 'El margen en blanco es parte del código, no decoración.' },
-        { label: 'Tamaño impreso', value: '≥ 22 × 22 mm', note: 'Suficiente para una botella; obliga a que el contenido sea corto.' },
+        { label: 'Tamaño impreso', value: '≥ 22 × 22 mm', note: 'Referencia para el frasco de medicamento; se valida sobre el envase y sustrato elegidos.' },
         { label: 'Contraste', value: '≥ 40 %', note: 'Medido sobre el sustrato real, no sobre la pantalla del diseñador.' },
         { label: 'Junto al código', value: 'Últimos caracteres legibles', note: 'El respaldo cuando la cámara no coopera.' },
       ],
@@ -151,7 +152,7 @@ export const codeSpec: ReferencePageContent = {
 
   cta: {
     title: 'Lo que sigue',
-    body: 'Si le interesa cómo se pide una emisión y cómo se activa desde sus propios sistemas, la referencia de integración lo describe endpoint por endpoint. Si prefiere verlo funcionando, la consulta pública está abierta.',
+    body: 'La referencia de integración describe la API objetivo. La consulta pública permite explorar los códigos de ejemplo disponibles en esta web, con sus resultados y límites explicados.',
     primaryCta: { label: 'Ver la integración', key: 'integration', variant: 'primary' },
     secondaryCta: { label: 'Probar la consulta', key: 'verify', variant: 'secondary' },
   },

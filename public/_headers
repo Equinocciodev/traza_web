@@ -11,11 +11,12 @@
 # Esos orígenes están permitidos en script-src, img-src y connect-src; si se retira la
 # analítica, vuelva a dejar los tres en 'self'.
 #
+# blob: en img-src permite leer fotos QR locales sin subirlas a un servidor.
 # Para PUBLIC_API_MODE=remote añada el origen de la API a connect-src; para
 # PUBLIC_ANALYTICS_PROVIDER=beacon añada el origen de PUBLIC_ANALYTICS_ENDPOINT (sendBeacon usa connect-src).
 
 /*
-  Content-Security-Policy: default-src 'none'; script-src 'self' https://www.googletagmanager.com; style-src 'self'; img-src 'self' data: https://www.google-analytics.com; font-src 'self'; connect-src 'self' https://*.google-analytics.com https://*.analytics.google.com https://*.googletagmanager.com; media-src 'self'; manifest-src 'self'; object-src 'none'; base-uri 'none'; form-action 'self'; frame-ancestors 'none'; upgrade-insecure-requests
+  Content-Security-Policy: default-src 'none'; script-src 'self' https://www.googletagmanager.com; style-src 'self'; img-src 'self' data: blob: https://www.google-analytics.com; font-src 'self'; connect-src 'self' https://*.google-analytics.com https://*.analytics.google.com https://*.googletagmanager.com; media-src 'self'; manifest-src 'self'; object-src 'none'; base-uri 'none'; form-action 'self'; frame-ancestors 'none'; upgrade-insecure-requests
   Permissions-Policy: camera=(self), microphone=(), geolocation=(), payment=(), usb=(), browsing-topics=()
   Referrer-Policy: strict-origin-when-cross-origin
   X-Content-Type-Options: nosniff

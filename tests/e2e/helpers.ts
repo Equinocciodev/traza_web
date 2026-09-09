@@ -5,6 +5,7 @@
 import { expect, type Page, type ConsoleMessage } from '@playwright/test';
 import { LOCALES, ROUTES, type Locale, type RouteKey } from '@/i18n';
 import { getContent } from '@/content';
+import { V2_HOME } from '@/content/v2-home';
 
 /** URL pública configurada en el build (PUBLIC_SITE_URL por defecto). */
 export const SITE_URL = process.env.PW_SITE_URL ?? 'https://traza.technology';
@@ -30,6 +31,7 @@ export function content(locale: Locale) {
 }
 
 export function pageMeta(locale: Locale, key: RouteKey): { title: string; description: string } {
+  if (key === 'home') return V2_HOME[locale].meta;
   const c = getContent(locale) as unknown as Record<string, { meta: { title: string; description: string } }>;
   return c[key]!.meta;
 }
@@ -37,7 +39,7 @@ export function pageMeta(locale: Locale, key: RouteKey): { title: string; descri
 /** Título completo de pestaña tal como lo compone Base.astro. */
 export function expectedTitle(locale: Locale, key: RouteKey): string {
   const { common } = getContent(locale);
-  if (key === 'home') return `${common.meta.siteName} — ${common.brand.tagline}`;
+  if (key === 'home') return common.meta.homeTitle;
   return common.meta.titleTemplate.replace('%s', pageMeta(locale, key).title);
 }
 
@@ -86,7 +88,7 @@ export async function visibleText(page: Page): Promise<string> {
 /** Asegura que el texto visible no llama "auténtico" a nada. */
 export async function expectNoAuthenticClaim(page: Page): Promise<void> {
   const text = await visibleText(page);
-  const allowed = /nunca decimos|never say|no equivale a|not the same as/i;
+  const allowed = /nunca decimos|never say|no equivale a|not the same as|no certifican? autenticidad física|(?:does|do) not certify physical authenticity/i;
   const lines = text.split('\n').filter((l) => /aut[eé]ntic|authentic|genuin/i.test(l) && !allowed.test(l));
   expect(lines, 'texto visible con "auténtico" como veredicto').toEqual([]);
 }

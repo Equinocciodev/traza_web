@@ -11,16 +11,16 @@ export const security: SecurityContent = {
     eyebrow: 'Security and trust',
     title: 'Trust that is explained, not promised',
     subtitle:
-      'The security of a verification platform is measured by what it checks and by how clearly it states what it cannot check. These are our principles and our limits.',
+      'The security of a verification platform is measured by what it checks and by how clearly it states what it cannot check. These are the principles and limits of the target architecture. This website queries example data; it does not validate real signatures or operate the controls described.',
   },
 
   principles: {
     title: 'Principles',
-    intro: 'Five principles guide the design of the platform and the language it uses to present each result.',
+    intro: 'Five principles guide the target platform design. Their description does not establish that these controls are implemented on this website.',
     items: [
       {
         title: 'Signed unit-level identity',
-        body: 'Each unit has its own identifier, signed with keys managed by the issuer. No one else can issue identities in its name.',
+        body: 'The design calls for an identifier per unit, signed with issuer-managed keys, to check the origin of the identity. This website does not perform that cryptographic validation.',
         icon: 'signature',
       },
       {
@@ -30,7 +30,7 @@ export const security: SecurityContent = {
       },
       {
         title: 'Minimal data collection',
-        body: 'Verifying does not require identifying yourself. Reports ask only for what is necessary, and only optionally. No personal or tax data is stored in identities.',
+        body: 'Lookup does not require identifying yourself. A discrepancy report is prepared on this device and saved only if downloaded; this website does not send it. Identities contain no personal or tax data.',
         icon: 'lock',
       },
       {
@@ -53,7 +53,7 @@ export const security: SecurityContent = {
     items: [
       {
         title: 'ECDSA P-256 signatures',
-        body: 'For the spirits use case proposed to a regulator, identities would be signed with ECDSA over the P-256 curve, a widely documented standard.',
+        body: 'For the medicines use case proposed to a regulator, identities would be signed with ECDSA over the P-256 curve, a widely documented standard.',
         icon: 'key',
       },
       {
@@ -77,52 +77,52 @@ export const security: SecurityContent = {
         icon: 'alert',
       },
     ],
-    note: 'Target product architecture: this page does not implement or claim a security certification. The controls described are implemented and audited in each deployment.',
+    note: 'Target product architecture: this page does not implement or claim a security certification. The controls described would require implementation and auditing in each deployment.',
   },
 
   antiCloning: {
     title: 'Several layers work against copying, and none is enough alone',
     intro:
-      'Worth saying first: the cryptographic signature does not protect against copying. A copied code is a valid code. What the signature prevents is inventing codes, which is a different problem. Against copying something else works: layers that add up, each weak on its own.',
+      'A cryptographic signature can establish the origin of an identity, but does not prevent copying a valid code. The following layers belong to the target design; this website does not run anti-copy analytics or check security materials.',
     items: [
       {
         title: 'Duplicate analytics',
-        body: 'The same identifier looked up from places a single unit cannot travel between in the time elapsed, or at a frequency no bottle has. The state degrades and a case is opened.',
+        body: 'In the target architecture, a lookup frequency or pattern inconsistent with the expected use of a unit could raise a signal for review. This website does not change registry status or open an operational case.',
         icon: 'chart',
       },
       {
         title: 'Human comparison',
-        body: 'The passport shows the lot and the expiry date; whoever holds the unit compares them with what is printed on the container. A code copied onto another lot does not match. It is free and it is the most effective step.',
+        body: 'Compare the medicine’s lot, 120 ml presentation and expiry date with what is printed on the container. A difference needs review; a match does not establish the contents or physical condition of the unit.',
         icon: 'compare',
       },
       {
         title: 'Serial binding',
-        body: 'On durable goods the label is bound one to one with the manufacturer’s serial and the passport shows it: the buyer compares it with the serial printed on the device.',
+        body: 'For the example medicine, the label shows the unit identifier and lot. Compare them with the lookup; the link between the identifier and each physical unit would need to be established during labelling in a deployment.',
         icon: 'fingerprint',
       },
       {
         title: 'First lookup visible',
-        body: 'The passport says when it was first looked up and how many times since. A just-bought unit with a long history smells wrong, and anyone notices that without knowing anything about the system.',
+        body: 'The design calls for showing the first lookup and lookup frequency to review an unexpected history. This website’s example data does not constitute a history of real lookups of a physical unit.',
         icon: 'history',
       },
       {
         title: 'Destructible label',
-        body: 'A substrate that tears when peeled prevents moving an already-applied label from one unit to another, which is the simplest fraud of all.',
+        body: 'Phase 2 would evaluate a substrate that tears when peeled to make moving a label between units harder. The stamp shown on this website does not establish that physical property.',
         icon: 'label',
       },
       {
         title: 'Two-stage activation',
-        body: 'An identifier that is issued and labelled but not activated, turning up in a lookup out in the world, is a leak signal. That is why the result says “under review” and not “verified”.',
+        body: 'In the target design, a lookup of an identifier issued and labelled but not yet activated after production would be a signal for review. This website explains that status with example data; it does not activate units.',
         icon: 'check',
       },
     ],
-    note: 'Later phases add features a camera can check — a high-entropy pattern that degrades measurably when photocopied — and material features a photographic clone cannot reproduce. No layer is sufficient; the combination is what makes fraud expensive.',
+    note: 'Phase 2 considers evaluating high-entropy patterns and physical anti-copy features, subject to validation and integration. This website’s camera reads QR codes; it does not evaluate those patterns or certify a physical label. No layer is enough by itself.',
   },
 
   keyCustody: {
     title: 'Who can use the signing keys',
     intro:
-      'The keys that sign an identifier are held in a hardware security module, not on the machine of whoever issues. The objective is explicit: that no person — including whoever operates the platform — can use them outside the authorised flow.',
+      'The target architecture requires holding signing keys in a hardware security module and restricting their use to the authorised flow. The requirements below describe that design; this website does not operate that module or establish its implementation.',
     items: [
       {
         title: 'The material never leaves the module',
@@ -162,7 +162,7 @@ export const security: SecurityContent = {
   degradation: {
     title: 'What has to keep working when something fails',
     intro:
-      'A fiscal system that stops a production line or a shop till has done more damage than the fraud it was chasing. That stops being an aspiration and becomes a design constraint, with concrete consequences.',
+      'An identification system that stops a production line or a shop till has done more damage than the fraud it was chasing. The following requirements are constraints of the target architecture; they do not describe operational services on this website.',
     items: [
       {
         title: 'Printing does not depend on the connection',
@@ -181,7 +181,7 @@ export const security: SecurityContent = {
       },
       {
         title: 'Rejections are telemetry',
-        body: 'An attempt to enumerate codes is itself a fraud signal: spikes of rejection by origin and by code prefix feed the analytics and open a case.',
+        body: 'In the target architecture, rejection spikes by origin and code prefix would feed analytics and could open a case to review attempts to enumerate codes. This website does not run that operational workflow.',
         icon: 'alert',
       },
     ],
@@ -208,7 +208,7 @@ export const security: SecurityContent = {
     bullets: [
       'No advertising cookies and no third-party trackers. The site’s only cookies are for audience measurement, described in the privacy notice.',
       'No personal data in public verification: looking up a code does not require identifying yourself.',
-      'Discrepancy reports with minimal, optional data; whoever reports decides what to share.',
+      'Discrepancy reports are prepared locally: they are not sent and do not change the registry. Download a copy before closing the report and give it separately to the responsible organisation.',
       'Unit identities contain no personal or tax data.',
       'Aggregated audience measurement that does not identify people and honours “Do Not Track”.',
     ],
@@ -223,7 +223,7 @@ export const security: SecurityContent = {
       'Availability levels (uptime) or service commitments.',
       'External audits of code, infrastructure or processes.',
       'Clients, contracts or production deployments.',
-      'A relationship with governments, regulators or agencies: the spirits case is a pilot proposal.',
+      'A relationship with governments, regulators or agencies: the medicines case is a pilot proposal.',
       'Figures on scale, economic impact or results.',
     ],
   },
@@ -231,8 +231,8 @@ export const security: SecurityContent = {
   disclosure: {
     title: 'Responsible vulnerability disclosure',
     body:
-      'If you find a security issue on this site or in the platform, we would be grateful if you reported it responsibly before making it public. We commit to acknowledging receipt, keeping the conversation open and crediting the contribution if you wish.',
-    note: 'Security reports reach the company contact address. Each deployment may additionally define its own channel.',
+      'If you find a security issue on this site or in the platform, we would be grateful if you reported it responsibly before making it public. Use the company contact channel; preparing a local discrepancy report does not communicate a vulnerability.',
+    note: 'Check the channel available on the company page. This page does not send reports or confirm receipt; each deployment may define its own channel.',
   },
 
   cta: {

@@ -9,7 +9,11 @@
  * una sección es editar el diccionario, no tocar esto.
  */
 import Base from '@/layouts/Base.astro';
+import MedicineStamp from '@/components/ui/MedicineStamp.astro';
 import PageHero from '@/components/ui/PageHero.astro';
+import IntegrationMap from '@/components/ui/IntegrationMap.astro';
+import Eyebrow from '@/components/ui/Eyebrow.astro';
+import StepFlow from '@/components/ui/StepFlow.astro';
 import Callout from '@/components/ui/Callout.astro';
 import CtaBand from '@/components/ui/CtaBand.astro';
 import FeatureGrid from '@/components/ui/FeatureGrid.astro';
@@ -34,7 +38,21 @@ const routeKey: RouteKey = page;
 ---
 
 <Base locale={locale} routeKey={routeKey} title={data.meta.title} description={data.meta.description}>
-  <PageHero eyebrow={data.hero.eyebrow} title={data.hero.title} subtitle={data.hero.subtitle} icon={icon} />
+  {page === 'integration' ? <section class="integration-intro section" aria-labelledby="page-title">
+    <div class="container">
+      <Eyebrow>{data.hero.eyebrow}</Eyebrow>
+      <h1 id="page-title">{data.hero.title}</h1>
+      <p class="lede integration-intro__body">{data.hero.subtitle}</p>
+      <IntegrationMap locale={locale} />
+      <div class="integration-intro__scope">
+        <Eyebrow>{content.platform.integration.scope.eyebrow}</Eyebrow>
+        <h2>{content.platform.integration.scope.title}</h2>
+        <StepFlow items={content.platform.integration.scope.steps} columns={3} />
+      </div>
+    </div>
+  </section> : <PageHero eyebrow={data.hero.eyebrow} title={data.hero.title} subtitle={data.hero.subtitle} icon={icon} /> }
+
+  {page === 'codeSpec' && <div class="section container"><MedicineStamp locale={locale} /></div>}
 
   {/* Índice de la página: en una referencia larga, saber qué hay antes de bajar es la mitad del valor. */}
   <nav class="section section--tight toc" aria-labelledby="toc-title">
@@ -236,4 +254,9 @@ const routeKey: RouteKey = page;
       font-size: var(--text-sm);
     }
   }
+  .integration-intro { background:#fff; }
+  .integration-intro h1 { max-width:19ch; font-size:clamp(2.4rem,5vw,4.25rem); line-height:1.08; }
+  .integration-intro__body { max-width:70ch; margin-bottom:3.5rem; }
+  .integration-intro__scope { margin-top:4rem; }
+  .integration-intro__scope h2 { font-size:clamp(2rem,3.6vw,3.25rem); margin-bottom:2.5rem; }
 </style>

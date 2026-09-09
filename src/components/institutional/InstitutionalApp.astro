@@ -25,7 +25,7 @@ const { institutional: t } = getContent(locale);
 
 const byType = countAlertsByType(ALERTS);
 const typeRows = ALERT_TYPES.map((type) => ({ type, count: byType[type] })).filter((r) => r.count > 0);
-const registryName = TENANTS.licores.registryName[locale];
+const registryName = TENANTS.medicamentos.registryName[locale];
 const islandData = JSON.stringify(t.island);
 const labelsData = JSON.stringify(t.labels);
 ---

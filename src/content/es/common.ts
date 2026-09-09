@@ -22,9 +22,6 @@ export const common: CommonContent = {
   nav: {
     ariaLabel: 'Navegación principal',
     items: [
-      { key: 'home', label: 'Inicio' },
-      { key: 'platform', label: 'Plataforma' },
-      { key: 'howItWorks', label: 'Cómo funciona' },
       {
         key: 'solutions',
         label: 'Soluciones',
@@ -32,22 +29,28 @@ export const common: CommonContent = {
           { key: 'solutionsGovernment', label: 'Gobierno y reguladores' },
           { key: 'solutionsIndustry', label: 'Industria' },
           { key: 'solutionsCitizens', label: 'Ciudadanos' },
-          { key: 'caseSpirits', label: 'Caso de uso: licores' },
+          { key: 'caseMedicines', label: 'Caso de uso: medicamentos' },
         ],
       },
+      { key: 'platform', label: 'Plataforma' },
       {
-        key: 'security',
-        label: 'Tecnología',
+        key: 'howItWorks',
+        label: 'Recursos',
         children: [
-          { key: 'security', label: 'Seguridad y confianza' },
+          { key: 'howItWorks', label: 'Cómo funciona' },
           { key: 'codeSpec', label: 'La etiqueta y el código' },
           { key: 'integration', label: 'Integración' },
+          { key: 'security', label: 'Seguridad y confianza' },
           { key: 'rationale', label: 'Por qué este diseño' },
         ],
       },
       { key: 'company', label: 'Empresa' },
     ],
-    cta: { label: 'Verificar', key: 'verify', variant: 'primary' },
+    publicItems: [
+      { key: 'verify', label: 'Verificar un producto' },
+      { key: 'howItWorks', label: 'Ayuda' },
+    ],
+    cta: { label: 'Solicitar presentación', key: 'company', suffix: '#contact-title', variant: 'primary' },
     menuOpen: 'Abrir el menú',
     menuClose: 'Cerrar el menú',
     homeLinkLabel: 'traza — ir al inicio',
@@ -62,30 +65,26 @@ export const common: CommonContent = {
   footer: {
     columns: [
       {
-        title: 'Plataforma en uso',
+        title: 'Enlaces principales',
         links: [
+          { label: 'Inicio', key: 'home' },
+          { label: 'Soluciones', key: 'solutions' },
+          { label: 'Plataforma', key: 'platform' },
           { label: 'Verificación pública', key: 'verify' },
-          { label: 'Recorrido del producto', key: 'journey' },
-          { label: 'Vista institucional', key: 'institutional' },
+          { label: 'Empresa y contacto', key: 'company' },
         ],
       },
       {
-        title: 'Plataforma',
+        title: 'Recursos y consultas',
         links: [
-          { label: 'Plataforma', key: 'platform' },
           { label: 'Cómo funciona', key: 'howItWorks' },
-          { label: 'Soluciones', key: 'solutions' },
-          { label: 'Caso de uso: licores', key: 'caseSpirits' },
+          { label: 'Caso de uso: medicamentos', key: 'caseMedicines' },
           { label: 'Seguridad y confianza', key: 'security' },
           { label: 'La etiqueta y el código', key: 'codeSpec' },
           { label: 'Integración', key: 'integration' },
           { label: 'Por qué este diseño', key: 'rationale' },
-        ],
-      },
-      {
-        title: 'Empresa',
-        links: [
-          { label: 'Empresa y contacto', key: 'company' },
+          { label: 'Ciclo de vida de la unidad', key: 'journey' },
+          { label: 'Vista institucional', key: 'institutional' },
           { label: 'Aviso de privacidad', key: 'privacy' },
           { label: 'Instagram', href: 'https://www.instagram.com/traza.technology/', external: true, rel: 'me' },
         ],
@@ -93,7 +92,7 @@ export const common: CommonContent = {
     ],
     legal: '© 2026 traza. Todos los derechos reservados.',
     disclaimer:
-      'Este sitio no afirma relación alguna con gobiernos, reguladores ni certificaciones. El caso de uso de licores se presenta como propuesta de piloto; no constituye una implementación oficial.',
+      'Este sitio no afirma relación alguna con gobiernos, reguladores ni certificaciones. El caso de uso de medicamentos se presenta como propuesta de piloto; no constituye una implementación oficial.',
     privacyLabel: 'Privacidad',
     contactLabel: 'Contacto',
     languageLabel: 'Idioma',

@@ -171,12 +171,16 @@ function renderUnit(section: HTMLElement, unit: PublicUnit, ctx: RenderContext):
   const set = (field: string, value: string) => setText(section.querySelector(`[data-unit="${field}"]`), value);
   set('product', unit.product.name);
   set('presentation', unit.product.presentation);
+  set('dosageForm', unit.product.dosageForm?.[locale] ?? '—');
+  set('concentration', unit.product.concentration ?? '—');
+  set('healthRegistration', unit.product.healthRegistration ?? '—');
   set('brand', unit.product.brand);
   set('category', unit.product.category[locale]);
   set('issuer', `${unit.issuer.name} · ${u.issuerRoles[unit.issuer.role]}`);
   set('lot', unit.origin.lot);
   set('origin', `${unit.origin.place.site}, ${unit.origin.place.region}`);
-  set('producedAt', formatDate(unit.origin.producedAt, locale));
+  // La fecha de fabricación es un día de calendario, no un instante local.
+  set('producedAt', formatDate(unit.origin.producedAt, locale, { timeZone: 'UTC' }));
   set('stage', u.stages[unit.currentStage]);
   set('lastLookupPlace', unit.lastLookupPlace ? `${unit.lastLookupPlace.site}, ${unit.lastLookupPlace.region}` : '—');
   const last = lastEventOf(unit);

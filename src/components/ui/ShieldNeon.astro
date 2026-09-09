@@ -1,0 +1,32 @@
+---
+/** Ilustración decorativa de seguridad; no representa un sello ni una certificación. */
+import { withBase } from '@/i18n';
+
+interface Props { class?: string }
+const { class: className } = Astro.props;
+---
+
+<img
+  class:list={['shield-neon', className]}
+  src={withBase('/images/brand/shield-neon-v3.webp')}
+  width="1254"
+  height="1254"
+  alt=""
+  aria-hidden="true"
+  decoding="async"
+  loading="eager"
+/>
+
+<style>
+  .shield-neon {
+    display: block;
+    width: 100%;
+    max-width: 32rem;
+    height: auto;
+    margin-inline: auto;
+    object-fit: contain;
+    pointer-events: none;
+    mask-image: linear-gradient(90deg, transparent, #000 8%, #000 92%, transparent), linear-gradient(0deg, transparent, #000 8%, #000 92%, transparent);
+    mask-composite: intersect;
+  }
+</style>

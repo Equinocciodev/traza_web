@@ -20,6 +20,7 @@ import { ApiError, getApi, simulateLatency } from '@/lib/api';
 import { track } from '@/lib/analytics';
 import { prefersReducedMotion } from '@/lib/motion';
 import { CameraController, type CameraFailure } from '@/lib/verify/camera';
+import { decodeQrFile, QrImageError } from '@/lib/verify/qr-image';
 import { normalizeCode, parseCode, unverifiableResult, type ReasonCode, type VerificationResult } from '@/lib/verify/engine';
 import { analyticsPropsFor, isTransportCode } from '@/lib/verify/present';
 import { focusHeading, hide, qs, qsa, setText, show, toggle } from './dom';
@@ -71,6 +72,12 @@ export function initVerifyApp(root: HTMLElement): void {
   const useCameraBtn = qs<HTMLButtonElement>(root, '[data-testid="use-camera"]');
   const stopCameraBtn = qs<HTMLButtonElement>(root, '[data-action="stop-camera"]');
   const deviceViews = qsa(root, '[data-device]');
+  const imageInput = qs<HTMLInputElement>(root, '[data-qr-file]');
+  const imageReader = qs(root, '[data-image-reader]');
+  const imageStatus = qs(root, '[data-image-status]');
+  const imageError = qs(root, '[data-image-error]');
+  const exampleImage = qs<HTMLImageElement>(root, '[data-qr-example]');
+  const readExampleBtn = qs<HTMLButtonElement>(root, '[data-read-example]');
 
   const form = qs<HTMLFormElement>(root, '[data-verify-form]');
   const input = qs<HTMLInputElement>(root, '[data-manual-input]');
@@ -105,6 +112,7 @@ export function initVerifyApp(root: HTMLElement): void {
   let simulating = false;
   let controller: AbortController | null = null;
   let simulateTimer: number | undefined;
+  let imageController: AbortController | null = null;
 
   /* ------------------------------------------------------------------ */
   /* Tenant                                                              */
@@ -185,6 +193,10 @@ export function initVerifyApp(root: HTMLElement): void {
   }
 
   async function verifyCode(raw: string, source: Source): Promise<void> {
+    camera.stop();
+    cancelImageRead();
+    stopSimulation();
+    if (source !== 'scan') clearImageFeedback();
     const code = normalizeCode(raw);
     controller?.abort();
     const current = new AbortController();
@@ -232,6 +244,8 @@ export function initVerifyApp(root: HTMLElement): void {
   }
 
   function resetToIdle(): void {
+    stopReaders();
+    clearImageFeedback();
     clearVerification();
     input.value = '';
     clearManualError();
@@ -332,9 +346,14 @@ export function initVerifyApp(root: HTMLElement): void {
         if (document.activeElement === useCameraBtn || document.activeElement === document.body) stopCameraBtn.focus();
       },
       onDetected(rawValue) {
+        clearImageFeedback();
+        input.value = normalizeCode(rawValue);
+        clearManualError();
         void verifyCode(rawValue, 'scan');
       },
       onFailure(kind) {
+        show(useCameraBtn);
+        hide(stopCameraBtn);
         setDeviceState(kind);
       },
       onUnreadable() {
@@ -354,14 +373,118 @@ export function initVerifyApp(root: HTMLElement): void {
   );
 
   function startCamera(): void {
-    if (simulating) return;
+    if (camera.isBusy) return;
+    clearImageFeedback();
+    stopSimulation();
+    clearVerification();
     setDeviceState(null);
+    scanner.dataset.camera = 'starting';
+    setText(scannerStatus, strings.scanner.startingHint);
+    hide(useCameraBtn);
+    show(stopCameraBtn);
+    stopCameraBtn.focus();
     void camera.start();
   }
+
+  function stopSimulation(): void {
+    if (!simulating) return;
+    if (simulateTimer !== undefined) window.clearTimeout(simulateTimer);
+    simulateTimer = undefined;
+    simulating = false;
+    viewer.classList.remove('is-scanning');
+    simulateBtn.removeAttribute('aria-disabled');
+    scanner.dataset.camera = 'idle';
+    setText(scannerStatus, strings.scanner.idle);
+  }
+
+  function cancelImageRead(): void {
+    if (!imageController) return;
+    imageController.abort();
+    imageController = null;
+    imageReader.setAttribute('aria-busy', 'false');
+    readExampleBtn.removeAttribute('aria-disabled');
+    setText(imageStatus, strings.scanner.image.cancelled);
+    show(imageStatus);
+  }
+
+  function stopReaders(): void {
+    camera.stop();
+    cancelImageRead();
+    stopSimulation();
+  }
+
+  function clearImageFeedback(): void {
+    cancelImageRead();
+    hide(imageStatus);
+    hide(imageError);
+  }
+
+  async function readImage(getFile: (signal: AbortSignal) => Promise<Blob>): Promise<void> {
+    stopReaders();
+    clearVerification();
+    clearManualError();
+    setDeviceState(null);
+    const current = new AbortController();
+    imageController = current;
+    imageReader.setAttribute('aria-busy', 'true');
+    readExampleBtn.setAttribute('aria-disabled', 'true');
+    hide(imageError);
+    setText(imageStatus, strings.scanner.image.reading);
+    show(imageStatus);
+    const timeout = window.setTimeout(() => current.abort(new QrImageError('timeout')), 20000);
+    try {
+      const file = await getFile(current.signal);
+      if (current.signal.aborted) throw current.signal.reason;
+      const raw = await decodeQrFile(file, current.signal);
+      if (current.signal.aborted || imageController !== current) return;
+      imageController = null;
+      input.value = normalizeCode(raw);
+      setText(imageStatus, strings.scanner.image.success);
+      void verifyCode(raw, 'scan');
+    } catch (error) {
+      if (imageController !== current) return;
+      if (current.signal.aborted) {
+        const timedOut = current.signal.reason instanceof QrImageError && current.signal.reason.kind === 'timeout';
+        if (timedOut) {
+          hide(imageStatus);
+          setText(imageError, strings.scanner.image.timeout);
+          show(imageError);
+        } else setText(imageStatus, strings.scanner.image.cancelled);
+      } else {
+        const kind = error instanceof QrImageError ? error.kind : 'unavailable';
+        hide(imageStatus);
+        setText(imageError, strings.scanner.image[kind]);
+        show(imageError);
+      }
+    } finally {
+      window.clearTimeout(timeout);
+      if (imageController === current || imageController === null) {
+        if (imageController === current) imageController = null;
+        imageReader.setAttribute('aria-busy', 'false');
+        readExampleBtn.removeAttribute('aria-disabled');
+      }
+    }
+  }
+
+  imageInput.addEventListener('change', () => {
+    const file = imageInput.files?.[0];
+    imageInput.value = '';
+    if (file) void readImage(async () => file);
+  });
+  readExampleBtn.addEventListener('click', () => {
+    if (readExampleBtn.getAttribute('aria-disabled') === 'true') return;
+    void readImage(async (signal) => {
+      const response = await fetch(exampleImage.src, { signal, credentials: 'same-origin' });
+      if (!response.ok) throw new QrImageError('unavailable');
+      return response.blob();
+    });
+  });
 
   function simulateScan(): void {
     if (simulating) return;
     camera.stop();
+    clearImageFeedback();
+    clearVerification();
     setDeviceState(null);
     simulating = true;
     scanner.dataset.camera = 'simulating';
@@ -387,16 +510,18 @@ export function initVerifyApp(root: HTMLElement): void {
   stopCameraBtn.addEventListener('click', () => camera.stop());
   qsa<HTMLButtonElement>(root, '[data-action="type"]').forEach((btn) =>
     btn.addEventListener('click', () => {
+      stopReaders();
+      clearImageFeedback();
       setDeviceState(null);
       input.focus();
     }),
   );
   document.addEventListener('visibilitychange', () => {
-    if (document.visibilityState === 'hidden') camera.stop();
+    if (document.visibilityState === 'hidden') stopReaders();
   });
-  window.addEventListener('pagehide', () => camera.stop());
+  window.addEventListener('pagehide', stopReaders);
   document.addEventListener('keydown', (event) => {
-    if (event.key === 'Escape' && camera.isBusy) camera.stop();
+    if (event.key === 'Escape') stopReaders();
   });
 
   /* ------------------------------------------------------------------ */
@@ -419,6 +544,8 @@ export function initVerifyApp(root: HTMLElement): void {
 
   form.addEventListener('submit', (event) => {
     event.preventDefault();
+    stopReaders();
+    clearImageFeedback();
     const parsed = parseCode(input.value);
     if (!parsed.ok) {
       clearVerification();
@@ -460,6 +587,8 @@ export function initVerifyApp(root: HTMLElement): void {
   }
 
   function runScenario(btn: HTMLButtonElement): void {
+    stopReaders();
+    clearImageFeedback();
     const id = btn.dataset.scenario as ScenarioId;
     const code = btn.dataset.code;
     const trigger = btn.dataset.trigger;

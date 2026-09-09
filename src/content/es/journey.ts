@@ -6,7 +6,7 @@ import type { JourneyContent } from '../journey.types';
  */
 export const journey: JourneyContent = {
   meta: {
-    title: 'Recorrido del producto: seis etapas registradas',
+    title: 'Recorrido del producto y sus eventos registrados',
     description:
       'Siga una unidad desde la fábrica o la aduana hasta la verificación: seis etapas con actor, lugar y fecha, y la historia que se construye por el camino.',
   },
@@ -15,7 +15,7 @@ export const journey: JourneyContent = {
     eyebrow: 'Recorrido del producto',
     title: 'De la fábrica a la verificación, paso a paso',
     subtitle:
-      'Cada unidad suma eventos a medida que avanza por la cadena: quién los registra, dónde y cuándo. Esta página reconstruye ese recorrido y lo reproduce etapa por etapa.',
+      'Cada unidad reúne eventos de emisión, etiquetado, activación y consulta. Esta página reproduce lo que consta en su registro, con responsable, lugar y fecha.',
   },
 
   explorer: {
@@ -73,11 +73,11 @@ export const journey: JourneyContent = {
     codeLabel: 'Código',
     registryLabel: 'Registro',
     options: [
-      { code: 'TRZ-7F2K-4K7Q-92FA', label: 'Ron nacional · recorrido completo con verificación pública' },
-      { code: 'TRZ-7F2K-3N6D-09ZB', label: 'Whisky importado · con reporte de discrepancia e inspección' },
-      { code: 'TRZ-7F2K-8L1F-63HW', label: 'Whisky importado · etiquetado pero sin activar (en revisión)' },
-      { code: 'TRZ-7F2K-5R9C-77MQ', label: 'Ron nacional · lote revocado por el emisor' },
-      { code: 'TRZ-7F2K-6C2A-84MZ', label: 'Café · registro de Traza (otro sector)' },
+      { code: 'TRZ-7F2K-4K7Q-92FA', label: 'Solución oral nacional · en curso con consulta pública registrada' },
+      { code: 'TRZ-7F2K-3N6D-09ZB', label: 'Solución oral importada · con reporte de discrepancia e inspección' },
+      { code: 'TRZ-7F2K-8L1F-63HW', label: 'Solución oral importada · etiquetado pero sin activar (en revisión)' },
+      { code: 'TRZ-7F2K-5R9C-77MQ', label: 'Solución oral nacional · lote revocado por el emisor' },
+      { code: 'TRZ-7F2K-6C2A-84MZ', label: 'Solución oral · registro maestro de Traza' },
       { code: 'TRZ-7F2K-2B8X-40NE', label: 'Unidad sin recorrido registrado' },
     ],
   },
@@ -136,7 +136,7 @@ export const journey: JourneyContent = {
     eyebrow: 'La historia de la unidad',
     title: 'Cómo se construye una historia verificable',
     intro:
-      'Un recorrido es la suma de eventos que registra cada actor de la cadena. Cada evento aporta quién lo registra, dónde, cuándo y con qué referencia documental; juntos permiten contrastar lo que dice la etiqueta con lo que consta en el registro.',
+      'Un recorrido reúne los eventos aportados por el emisor y los generados por las consultas de la plataforma. Cada evento aporta quién lo registra, dónde, cuándo y con qué referencia documental; juntos permiten contrastar lo que dice la etiqueta con lo que consta en el registro.',
     quote: 'Traza no solo identifica productos. Construye su historia verificable.',
     fields: [
       {
@@ -160,7 +160,7 @@ export const journey: JourneyContent = {
       {
         key: 'record',
         label: 'Registro del ciclo de vida',
-        description: 'Cuántos eventos consta y en qué etapas. Un identificador etiquetado pero sin activar que ya se consulta en la calle es una señal a revisar.',
+        description: 'Cuántos eventos constan y en qué etapas. Un identificador etiquetado pero sin activar que ya se consulta en la calle es una señal a revisar.',
         icon: 'history',
       },
     ],

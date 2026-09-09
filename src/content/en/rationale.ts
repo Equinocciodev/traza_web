@@ -132,8 +132,8 @@ export const rationale: ReferencePageContent = {
 
   cta: {
     title: 'Where this continues',
-    body: 'The layers that work against copying, the custody of the keys and what the system does not promise are under Security and trust. The concrete proposal for a spirits regulator is in the use case.',
+    body: 'The layers that work against copying, the custody of the keys and what the system does not promise are under Security and trust. The concrete proposal for a medicines regulator is in the use case.',
     primaryCta: { label: 'Security and trust', key: 'security', variant: 'primary' },
-    secondaryCta: { label: 'See the use case', key: 'caseSpirits', variant: 'secondary' },
+    secondaryCta: { label: 'See the use case', key: 'caseMedicines', variant: 'secondary' },
   },
 };

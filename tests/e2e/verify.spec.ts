@@ -231,6 +231,13 @@ test.describe('condiciones de red', () => {
 });
 
 test.describe('entrada manual', () => {
+  test('el QR corto del hero identifica la misma unidad que el código completo', async ({ page }) => {
+    await open(page, '/verificar/');
+    await page.getByTestId('manual-input').fill('HTTPS://T.EXAMPLE/V/7F2K4K7Q92FA');
+    await page.getByTestId('manual-input').press('Enter');
+    await expect(page.getByTestId('result-code')).toHaveText('TRZ-7F2K-4K7Q-92FA');
+    await expect(result(page)).toHaveAttribute('data-verdict', 'valid');
+  });
   test('un intento mal formado retira el resultado válido anterior', async ({ page }) => {
     await open(page, `/verificar/?c=${VALID}`);
     await expect(result(page)).toHaveAttribute('data-verdict', 'valid');
@@ -294,30 +301,30 @@ test.describe('entrada manual', () => {
 });
 
 test.describe('deep link y tenant', () => {
-  test('/verificar/?t=licores&c=… aplica el tenant, muestra el lockup con su aviso y verifica el código', async ({ page }) => {
-    await open(page, `/verificar/?t=licores&c=${VALID}`);
-    await expect(app(page)).toHaveAttribute('data-tenant', 'licores');
-    await expect(page.locator('body')).toHaveAttribute('data-tenant', 'licores');
-    const lockup = page.locator('[data-tenant-lockup="licores"]');
+  test('/verificar/?t=medicamentos&c=… aplica el tenant, muestra el lockup con su aviso y verifica el código', async ({ page }) => {
+    await open(page, `/verificar/?t=medicamentos&c=${VALID}`);
+    await expect(app(page)).toHaveAttribute('data-tenant', 'medicamentos');
+    await expect(page.locator('body')).toHaveAttribute('data-tenant', 'medicamentos');
+    const lockup = page.locator('[data-tenant-lockup="medicamentos"]');
     await expect(lockup).toBeVisible();
-    await expect(lockup.locator('.lockup__mark')).toHaveAccessibleName(TENANTS.licores.lockup!.alt.es);
-    await expect(lockup).toContainText(TENANTS.licores.cobrandNotice!.es);
+    await expect(lockup.locator('.lockup__mark')).toHaveAccessibleName(TENANTS.medicamentos.lockup!.alt.es);
+    await expect(lockup).toContainText(TENANTS.medicamentos.cobrandNotice!.es);
     await expect(lockup).toContainText(es.tenant.lockupCaption);
-    await expect(page.locator('[data-tenant-text="name"]')).toHaveText(TENANTS.licores.name.es);
-    await expect(page.locator('[data-tenant-text="registryName"]')).toHaveText(TENANTS.licores.registryName.es);
-    await expect(page.getByTestId('tenant-licores')).toHaveAttribute('aria-current', 'true');
+    await expect(page.locator('[data-tenant-text="name"]')).toHaveText(TENANTS.medicamentos.name.es);
+    await expect(page.locator('[data-tenant-text="registryName"]')).toHaveText(TENANTS.medicamentos.registryName.es);
+    await expect(page.getByTestId('tenant-medicamentos')).toHaveAttribute('aria-current', 'true');
     await expect(page.getByTestId('tenant-traza')).not.toHaveAttribute('aria-current', 'true');
     await expect(page.getByTestId('manual-input')).toHaveValue(VALID);
     await expect(result(page)).toBeVisible({ timeout: 10_000 });
     await expect(result(page)).toHaveAttribute('data-verdict', 'valid');
-    await expect(result(page).locator('[data-result-registry]')).toHaveText(TENANTS.licores.registryName.es);
-    await expect(result(page).locator('[data-result-tenant-hint]')).toHaveText(TENANTS.licores.nextStepHint.es);
+    await expect(result(page).locator('[data-result-registry]')).toHaveText(TENANTS.medicamentos.registryName.es);
+    await expect(result(page).locator('[data-result-tenant-hint]')).toHaveText(TENANTS.medicamentos.nextStepHint.es);
 
     // Cambiar al tenant maestro retira el lockup y el parámetro de la URL sin recargar.
     await page.getByTestId('tenant-traza').click();
-    await expect(app(page)).not.toHaveAttribute('data-tenant', 'licores');
+    await expect(app(page)).not.toHaveAttribute('data-tenant', 'medicamentos');
     await expect(lockup).toBeHidden();
-    await expect(page).not.toHaveURL(/t=licores/);
+    await expect(page).not.toHaveURL(/t=medicamentos/);
     await expect(page.getByTestId('tenant-traza')).toHaveAttribute('aria-current', 'true');
     await expect(result(page).locator('[data-result-tenant-hint]')).toHaveText(TENANTS.traza.nextStepHint.es);
   });
@@ -326,11 +333,11 @@ test.describe('deep link y tenant', () => {
     await open(page, '/verificar/?t=otro');
     await expect(app(page)).not.toHaveAttribute('data-tenant', /.+/);
     await expect(page.locator('[data-tenant-text="name"]')).toHaveText(TENANTS.traza.name.es);
-    await expect(page.locator('[data-tenant-lockup="licores"]')).toBeHidden();
+    await expect(page.locator('[data-tenant-lockup="medicamentos"]')).toBeHidden();
   });
 
   test('una unidad de otro despliegue se rotula con su registro', async ({ page }) => {
-    await open(page, '/verificar/?t=licores');
+    await open(page, '/verificar/?t=medicamentos');
     await page.getByTestId('manual-input').fill('TRZ-7F2K-6C2A-84MZ');
     await page.getByTestId('verify-button').click();
     await expect(result(page)).toBeVisible({ timeout: 10_000 });
@@ -340,41 +347,60 @@ test.describe('deep link y tenant', () => {
   });
 });
 
+test.describe('ficha visible de medicamentos', () => {
+  for (const locale of ['es', 'en'] as const) {
+    test(`${locale}: unidad válida muestra forma, concentración, registro, ID y lote del fixture`, async ({ page }) => {
+      const unit = UNIT_BY_CODE.get(VALID)!;
+      const path = locale === 'es' ? '/verificar/' : '/en/verify/';
+      await open(page, `${path}?t=medicamentos&c=${encodeURIComponent(unit.code)}`);
+      await expect(app(page)).toHaveAttribute('data-tenant', 'medicamentos');
+      await expect(result(page)).toBeVisible();
+      await expect(result(page)).toHaveAttribute('data-verdict', 'valid');
+      await expect(page.getByTestId('result-code')).toBeVisible();
+      await expect(page.getByTestId('result-code')).toHaveText(unit.code);
+      const details = result(page).locator('[data-result-unit]');
+      await expect(details).toBeVisible();
+      const expectedFields = {
+        dosageForm: unit.product.dosageForm?.[locale],
+        concentration: unit.product.concentration,
+        healthRegistration: unit.product.healthRegistration,
+        lot: unit.origin.lot,
+      };
+      for (const [name, value] of Object.entries(expectedFields)) {
+        expect(value, `el fixture debe definir ${name}`).toBeTruthy();
+        expect(value).not.toBe('—');
+        const displayed = details.locator(`[data-unit="${name}"]`);
+        await expect(displayed).toHaveCount(1);
+        await expect(displayed).toBeVisible();
+        await expect(displayed).toHaveText(value!);
+      }
+    });
+  }
+});
+
 test.describe('reporte de discrepancia', () => {
   async function toResult(page: Page): Promise<void> {
     await open(page, '/verificar/');
+    await expect(app(page)).toHaveAttribute('data-enhanced', 'true');
     await runScenario(page, 'partial_match');
     await expect(result(page)).toBeVisible({ timeout: 10_000 });
   }
 
-  for (const previousOutcome of ['success', 'error'] as const) {
-    test(`cancelar y reabrir ignora la respuesta ${previousOutcome} del reporte anterior`, async ({ page }) => {
-      await page.clock.install({ time: new Date('2026-09-06T12:00:00Z') });
-      await toResult(page);
-      await page.clock.pauseAt(new Date('2026-09-06T13:00:00Z'));
-      await page.getByTestId('report-button').click();
-      await page.getByTestId('report-kind').selectOption('other');
-      await page.getByTestId('report-description').fill(`Primer reporte suficientemente largo ${previousOutcome === 'error' ? '[error]' : ''}.`);
-      await page.getByTestId('report-submit').click();
-      await expect(page.getByTestId('report-form')).toHaveAttribute('aria-busy', 'true');
-      await page.getByTestId('report-cancel').click();
-      await page.getByTestId('report-button').click();
-      await page.getByTestId('report-kind').selectOption('seal_damaged');
-      const nextDescription = 'Segundo reporte que permanece abierto hasta su propio envío.';
-      await page.getByTestId('report-description').fill(nextDescription);
-      await page.clock.runFor(1500);
-      await expect(page.getByTestId('report-form')).toBeVisible();
-      await expect(page.getByTestId('report-description')).toHaveValue(nextDescription);
-      await expect(page.getByTestId('report-success')).toBeHidden();
-      await expect(page.getByTestId('report-error')).toBeHidden();
-      await page.getByTestId('report-submit').click();
-      await page.clock.runFor(1500);
-      await expect(page.getByTestId('report-success')).toBeVisible();
-      await expect(page.getByTestId('report-success').locator('[data-report-success-code]')).toHaveText(SCENARIO_BY_ID.get('partial_match')!.code!);
-    });
-  }
+  test('cancelar descarta lo escrito y reabrir presenta un formulario limpio', async ({ page }) => {
+    await toResult(page);
+    await page.getByTestId('report-button').click();
+    await page.getByTestId('report-kind').selectOption('other');
+    await page.getByTestId('report-description').fill('Primer reporte que no deseo conservar.');
+    await page.getByTestId('report-cancel').click();
+    await expect(result(page)).toBeVisible();
+    await page.getByTestId('report-button').click();
+    await expect(page.getByTestId('report-description')).toHaveValue('');
+    await expect(page.getByTestId('report-kind')).toHaveValue('');
+    await expect(page.getByTestId('report-success')).toBeHidden();
+    await expect(page.getByTestId('report-download')).not.toHaveAttribute('href');
+  });
 
-  test('validación, envío con folio y vuelta al resultado', async ({ page }) => {
+  test('validación, preparación con folio local y vuelta al resultado', async ({ page }) => {
     await toResult(page);
     const code = SCENARIO_BY_ID.get('partial_match')!.code!;
     await page.getByTestId('report-button').click();
@@ -392,21 +418,13 @@ test.describe('reporte de discrepancia', () => {
     await expect(page.getByTestId('report-kind')).toBeFocused();
     await expect(page.getByTestId('report-kind')).toHaveAttribute('aria-invalid', 'true');
 
-    // Correo inválido opcional.
     await page.getByTestId('report-kind').selectOption('label_mismatch');
-    await page.getByTestId('report-description').fill('La etiqueta dice 1 L y el registro 750 ml.');
-    await page.getByTestId('report-email').fill('no-es-un-correo');
+    await page.getByTestId('report-description').fill('La etiqueta dice 60 ml y el registro 120 ml.');
     await page.getByTestId('report-submit').click();
-    await expect(page.locator('[data-field-error="email"]')).toBeVisible();
-    await expect(page.getByTestId('report-email')).toBeFocused();
-    await page.getByTestId('report-email').fill('');
-
-    await page.getByTestId('report-submit').click();
-    await expect(page.getByTestId('report-form')).toHaveAttribute('aria-busy', 'true');
     await expect(page.getByTestId('report-success')).toBeVisible({ timeout: 10_000 });
-    await expect(page.getByTestId('report-success')).toHaveAttribute('data-folio', /^RPT-2026-\d{6}$/);
+    await expect(page.getByTestId('report-success')).toHaveAttribute('data-folio', /^RPT-LOCAL-[0-9a-f-]{36}$/);
     const folio = await page.getByTestId('report-folio').textContent();
-    expect(folio).toMatch(/^RPT-2026-\d{6}$/);
+    expect(folio).toMatch(/^RPT-LOCAL-[0-9a-f-]{36}$/);
     await expect(page.getByTestId('report-success')).toContainText(es.report.success.proposalNote);
     await expect(page.getByTestId('report-success').locator('[data-report-success-code]')).toHaveText(code);
     expect(await focusedId(page)).toBe('h2');
@@ -419,40 +437,35 @@ test.describe('reporte de discrepancia', () => {
     expect(await focusedId(page)).toBe('result-title');
   });
 
-  test('"[error]" en la descripción → error de servidor con reintento; cancelar vuelve al resultado', async ({ page }) => {
+  test('un fallo de preparación conserva lo escrito y permite reintentar', async ({ page }) => {
     await toResult(page);
     await page.getByTestId('report-button').click();
     await page.getByTestId('report-kind').selectOption('seal_damaged');
-    await page.getByTestId('report-description').fill('Prueba de fallo [error] del servicio.');
+    await page.getByTestId('report-description').fill('El precinto se desprende al tocarlo.');
+    await page.evaluate(() => {
+      const original = URL.createObjectURL;
+      URL.createObjectURL = () => { URL.createObjectURL = original; throw new Error('local allocation failure'); };
+    });
     await page.getByTestId('report-submit').click();
-    const err = page.getByTestId('report-error');
-    await expect(err).toBeVisible({ timeout: 10_000 });
-    await expect(err).toHaveAttribute('data-kind', 'server');
-    await expect(err).toContainText(es.report.failure.server.title);
-    await expect(page.getByTestId('report-form')).toBeVisible();
-    await expect(page.getByTestId('report-description')).toHaveValue('Prueba de fallo [error] del servicio.');
+    await expect(page.getByTestId('report-error')).toBeVisible();
+    await expect(page.getByTestId('report-description')).toHaveValue('El precinto se desprende al tocarlo.');
     await expect(page.getByTestId('report-submit')).not.toHaveAttribute('aria-disabled', 'true');
-
-    await page.getByTestId('report-cancel').click();
-    await expect(page.getByTestId('report-form')).toBeHidden();
-    await expect(result(page)).toBeVisible();
-    await expect(app(page)).toHaveAttribute('data-state', 'result');
+    await page.getByTestId('report-submit').click();
+    await expect(page.getByTestId('report-success')).toBeVisible();
   });
 
-  test('con la red simulada sin conexión el reporte no se envía y conserva lo escrito', async ({ page }) => {
+  test('con la red del escenario desconectada se puede preparar la copia local', async ({ page }) => {
     await toResult(page);
     await page.getByTestId('report-button').click();
     await page.getByTestId('report-kind').selectOption('other');
     await page.getByTestId('report-description').fill('Descripción suficientemente larga.');
     await page.getByTestId('network-toggle').check();
-    await page.getByTestId('report-submit').click();
-    const err = page.getByTestId('report-error');
-    await expect(err).toBeVisible({ timeout: 10_000 });
-    await expect(err).toHaveAttribute('data-kind', 'offline');
+    await expect(page.getByTestId('report-description')).toBeVisible();
     await expect(page.getByTestId('report-description')).toHaveValue('Descripción suficientemente larga.');
-    await page.getByTestId('network-toggle').uncheck();
+    await expect(page.getByTestId('report-kind')).toHaveValue('other');
     await page.getByTestId('report-submit').click();
-    await expect(page.getByTestId('report-success')).toBeVisible({ timeout: 10_000 });
+    await expect(page.getByTestId('report-success')).toBeVisible();
+    await expect(page.getByTestId('report-download')).toHaveAttribute('href', /^blob:/);
   });
 });
 
@@ -467,15 +480,15 @@ test.describe('inglés', () => {
     await expect(result(page)).toHaveAttribute('data-reason', 'revoked');
     await expect(page.getByTestId('result-title')).toHaveText(en.reasons.revoked.title);
     await expect(page.getByTestId('result-confidence')).toHaveText(en.verdicts.invalid.confidence);
-    await expect(result(page).locator('[data-result-registry]')).toHaveText(TENANTS.licores.registryName.en);
+    await expect(result(page).locator('[data-result-registry]')).toHaveText(TENANTS.medicamentos.registryName.en);
     await expect(result(page).locator('[data-check="registry"] [data-check-note]')).toContainText(UNIT_BY_CODE.get(SCENARIO_BY_ID.get('revoked')!.code!)!.registry.revokedReason!.en);
     await expectNoAuthenticClaim(page);
     expect(console.stop()).toEqual([]);
   });
 
-  test('/en/verify/?t=licores muestra el contexto del tenant en inglés', async ({ page }) => {
-    await open(page, '/en/verify/?t=licores');
-    await expect(page.locator('[data-tenant-text="name"]')).toHaveText(TENANTS.licores.name.en);
-    await expect(page.locator('[data-tenant-lockup="licores"]')).toContainText(TENANTS.licores.cobrandNotice!.en);
+  test('/en/verify/?t=medicamentos muestra el contexto del tenant en inglés', async ({ page }) => {
+    await open(page, '/en/verify/?t=medicamentos');
+    await expect(page.locator('[data-tenant-text="name"]')).toHaveText(TENANTS.medicamentos.name.en);
+    await expect(page.locator('[data-tenant-lockup="medicamentos"]')).toContainText(TENANTS.medicamentos.cobrandNotice!.en);
   });
 });

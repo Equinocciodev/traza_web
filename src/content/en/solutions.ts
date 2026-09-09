@@ -15,7 +15,7 @@ export const solutions: SolutionsContent = {
     eyebrow: 'Solutions',
     title: 'One shared layer, three points of view',
     subtitle:
-      'Governments and regulators, industry and citizens use the same platform with different needs. Here we explain what it brings to each of them.',
+      'Traza proposes a shared foundation for institutions, industry and the public. This website lets you query sample units and prepare local reports; integrations are agreed per deployment.',
   },
 
   cards: [
@@ -34,11 +34,11 @@ export const solutions: SolutionsContent = {
     {
       key: 'industry',
       title: 'Industry',
-      body: 'Protect the brand, gain visibility over the chain and give the public a way to check each unit.',
+      body: 'Connect issuance, labelling, activation and lookups to review the identity of each unit.',
       bullets: [
         'Identity issued from production or import',
-        'Integration with management and warehouse systems',
-        'Alerts on anomalies in the chain',
+        'Proposed integration with management, production and labelling',
+        'Signals of inconsistencies in the unit record',
       ],
       cta: { label: 'See solutions for industry', key: 'solutionsIndustry', variant: 'secondary' },
       icon: 'industry',
@@ -46,11 +46,11 @@ export const solutions: SolutionsContent = {
     {
       key: 'citizens',
       title: 'Citizens',
-      body: 'Check a product at the point of sale, understand the result and flag it if something does not match.',
+      body: 'Compare a product with its record, understand the result and prepare a local copy if something does not match.',
       bullets: [
         'Nothing to install, no account to create',
         'Result explained in plain language',
-        'Discrepancy reports in a few steps',
+        'Local report preparation and download',
       ],
       cta: { label: 'See solutions for citizens', key: 'solutionsCitizens', variant: 'secondary' },
       icon: 'citizen',
@@ -63,19 +63,19 @@ export const solutions: SolutionsContent = {
       'There are not three different products, but one platform with different views and rules for each actor. This lets a regulator, a manufacturer and a person in a store look at the same registry with the level of detail that corresponds to each of them.',
     bullets: [
       'Unit-level digital identity signed by the issuer',
-      'An ordered, auditable registry of chain events',
+      'A record of issuance, labelling, activation, lookup, signals and closure',
       'Public verification from the browser, with no installation or account',
       'Rules, brand and context configurable per tenant',
-      'Discrepancy reports with minimal data',
+      'Downloadable reports to hand over through an organization’s channel',
     ],
   },
 
   multisector: {
     title: 'Adaptable to different sectors',
     body:
-      'Adaptability does not come from industry-specific modules, but from the same layer: unit-level identity, chain events, public verification and rules configurable per tenant. Each sector defines which data describes a unit, which events matter and who can consult them.',
+      'The proposal shares unit-level identity, lifecycle events and public lookup. Each deployment agrees its data, permissions and rules: issuance, labelling, activation, lookup, signals and closure.',
     sectors: [
-      'Food and beverages',
+      'Medicines and health products',
       'Pharmaceutical',
       'Agribusiness',
       'Spare parts and components',
@@ -88,7 +88,7 @@ export const solutions: SolutionsContent = {
   cta: {
     title: 'Let’s talk about your case',
     body:
-      'If your organization controls, produces or distributes products that need a verifiable identity, we can talk about a well-scoped pilot.',
+      'If your organization controls, manufactures or imports products that need a verifiable identity, we can talk about a well-scoped pilot.',
     primaryCta: { label: 'Contact the team', key: 'company', variant: 'primary' },
     secondaryCta: { label: 'Verify a product', key: 'verify', variant: 'secondary' },
   },
@@ -145,7 +145,7 @@ export const solutionsGovernment: SectorPageContent = {
   approach: {
     title: 'Our approach',
     intro:
-      'An identity and registry layer governed by the institution, with open public verification and field inspection as part of the deployment.',
+      'We propose an identity and registry layer with institutional rules, public lookup and inspection. Integrations and permissions are agreed and validated for each deployment.',
     items: [
       {
         title: 'Signed unit-level identity',
@@ -154,7 +154,7 @@ export const solutionsGovernment: SectorPageContent = {
       },
       {
         title: 'Auditable registry',
-        body: 'Chain events are kept in order, with responsible party and date, and can be exported for audit.',
+        body: 'The design provides for recording issuance, labelling, activation, lookups, signals and closure, with the responsible party and date for audit.',
         icon: 'list',
       },
       {
@@ -169,7 +169,7 @@ export const solutionsGovernment: SectorPageContent = {
       },
       {
         title: 'Public verification',
-        body: 'Anyone checks a unit from the browser and can report discrepancies that reach the registry.',
+        body: 'Anyone can query a unit and prepare and download a local report. This website does not send it or change the registry; it must be handed to the responsible organization.',
         icon: 'scan',
       },
     ],
@@ -193,20 +193,20 @@ export const solutionsGovernment: SectorPageContent = {
       },
       {
         label: '03',
-        title: 'Record the chain',
-        body: 'The issuer reports the lifecycle events: labelling, press proof and activation of the lot record.',
+        title: 'Label and activate',
+        body: 'The issuer confirms printing and, once production has finished and the record is complete, activates the codes of the units produced.',
         icon: 'link',
       },
       {
         label: '04',
         title: 'Open public verification',
-        body: 'The public verifies from the browser, with the institution’s brand if so approved, and reports discrepancies.',
+        body: 'The public queries from the browser, under the institutional brand if approved. On this website they can download a local report to hand over through an organization’s channel.',
         icon: 'scan',
       },
       {
         label: '05',
         title: 'Inspect and act',
-        body: 'The institution follows anomalies and reports, prioritizes field inspections and records the action taken.',
+        body: 'The proposed deployment provides for reviewing signals, recording actions and closing cases. Reports downloaded on this website do not automatically enter that view.',
         icon: 'search',
       },
     ],
@@ -218,7 +218,7 @@ export const solutionsGovernment: SectorPageContent = {
     items: [
       'Per-unit visibility over what circulates in the regulated market',
       'Better-targeted field inspections thanks to signals from the registry',
-      'A public channel for verification and reporting that requires no installation or account',
+      'Public lookup and local report preparation with no installation or account',
       'An auditable registry that supports control and accountability',
       'An institutional brand present at the moment of verification',
     ],
@@ -232,7 +232,7 @@ export const solutionsGovernment: SectorPageContent = {
         key: 'institutional',
         tag: 'For oversight',
         title: 'Institutional view',
-        body: 'Consult the registry as a control agency would: units, anomalies, discrepancies and field inspection.',
+        body: 'Explore sample units, signals and inspections. This view illustrates oversight work; it does not receive reports downloaded from public lookup.',
         cta: { label: 'Open the institutional view', key: 'institutional', variant: 'primary' },
         icon: 'chart',
       },
@@ -240,30 +240,30 @@ export const solutionsGovernment: SectorPageContent = {
         key: 'verify',
         tag: 'For the public',
         title: 'Public verification',
-        body: 'See what the public would see when verifying a unit, with the co-brand example from the spirits use case.',
-        cta: { label: 'Verify with the sample tenant', key: 'verify', suffix: '?t=licores', variant: 'secondary' },
+        body: 'See what the public would see when verifying a unit, with the co-brand example from the medicines use case.',
+        cta: { label: 'Verify with the sample tenant', key: 'verify', suffix: '?t=medicamentos', variant: 'secondary' },
         icon: 'scan',
       },
       {
         key: 'journey',
-        tag: 'For the chain',
-        title: 'Product journey',
+        tag: 'For the record',
+        title: 'Unit lifecycle',
         body: 'Follow a unit from its issuance through its lookups and see which events are recorded.',
-        cta: { label: 'See the journey', key: 'journey', variant: 'secondary' },
+        cta: { label: 'See the lifecycle', key: 'journey', variant: 'secondary' },
         icon: 'link',
       },
     ],
   },
 
   disclaimer:
-    'Nothing above claims a relationship with governments or agencies, certifications or measured results. The spirits use case is a pilot proposal.',
+    'Nothing above claims a relationship with governments or agencies, certifications or measured results. The medicines use case is a pilot proposal.',
 
   cta: {
     title: 'Let’s talk about a well-scoped pilot',
     body:
       'A pilot starts with one product, one framework of rules and a small group of actors. We can help define it.',
     primaryCta: { label: 'Contact the team', key: 'company', variant: 'primary' },
-    secondaryCta: { label: 'Learn about the spirits use case', key: 'caseSpirits', variant: 'secondary' },
+    secondaryCta: { label: 'Learn about the medicines use case', key: 'caseMedicines', variant: 'secondary' },
   },
 };
 
@@ -275,22 +275,22 @@ export const solutionsIndustry: SectorPageContent = {
   meta: {
     title: 'Industry: unit-level identity and brand protection',
     description:
-      'Unit-level identity, traceability and brand protection for manufacturers, importers and distributors, integrated with the systems already running today.',
+      'Unit-level identity for manufacturers and importers: issuance, labelling, activation and public lookup, with proposed integrations for production systems.',
   },
   key: 'industry',
 
   hero: {
     eyebrow: 'Solutions · Industry',
-    title: 'Identity per unit, chain visibility and brand protection',
+    title: 'Identity per unit and evidence of its lifecycle',
     subtitle:
-      'For manufacturers, importers and distributors who want to know where their units are, detect diversions and give the public a way to check them.',
+      'For manufacturers and importers who want to connect production, activation and lookups, review inconsistencies and give the public a way to compare each unit with its record.',
     icon: 'industry',
   },
 
   challenges: {
     title: 'Common challenges',
     intro:
-      'Whoever places a product on the market is accountable for it long after it left the warehouse. These are the most frequent problems.',
+      'Manufacturers and importers need to connect each unit to its lot, label and record. These are the problems the proposal seeks to address.',
     items: [
       {
         title: 'Copies and diversions that damage the brand',
@@ -298,13 +298,13 @@ export const solutionsIndustry: SectorPageContent = {
         icon: 'alert',
       },
       {
-        title: 'Little visibility beyond the warehouse',
-        body: 'Once dispatched, the unit disappears from the company’s own systems: there is no way to know whether it arrived, whether anyone checked it, or whether its code is turning up where it should not.',
+        title: 'Little visibility after production',
+        body: 'Without a per-unit record, production, activation and public lookups are hard to connect, and a code queried before activation is hard to review.',
         icon: 'eye',
       },
       {
         title: 'Data in separate systems',
-        body: 'Production, warehouse and logistics already generate useful data, but in systems that do not talk to each other.',
+        body: 'Production and quality control generate product, lot and expiry data, but those fields are not always linked to a publicly queryable unit identity.',
         icon: 'database',
       },
       {
@@ -318,16 +318,16 @@ export const solutionsIndustry: SectorPageContent = {
   approach: {
     title: 'Our approach',
     intro:
-      'Issue the identity from the processes that already exist, record the chain with the data already generated and open verification to the public under your own brand.',
+      'The proposal connects issuance, printing, activation after production finishes and public lookup. Connectors and controls are agreed and validated with each organization.',
     items: [
       {
         title: 'Identity per unit, not just per lot',
-        body: 'Each unit receives an identifier signed with the manufacturer’s or importer’s keys when it leaves production or enters through customs.',
+        body: 'Each unit receives a signed identifier from a manufacturer or importer order before it is printed on the packaging.',
         icon: 'fingerprint',
       },
       {
-        title: 'Chain events from your own systems',
-        body: 'Management and warehouse systems (ERP, WMS) report events through documented interfaces, without duplicating work.',
+        title: 'Lifecycle events from your own systems',
+        body: 'The issuer’s systems provide order, lot, expiry and production closure through agreed interfaces. Transport, distribution and sales are outside the scope.',
         icon: 'plug',
       },
       {
@@ -342,7 +342,7 @@ export const solutionsIndustry: SectorPageContent = {
       },
       {
         title: 'Brand protection',
-        body: 'The registry records which units the brand issued; reported discrepancies reach whoever can act on them.',
+        body: 'The registry identifies issued units. Anyone spotting a discrepancy can download their report and hand it to the organization; this website does not send it or confirm receipt.',
         icon: 'shield',
       },
     ],
@@ -372,14 +372,14 @@ export const solutionsIndustry: SectorPageContent = {
       },
       {
         label: '04',
-        title: 'Move and record',
-        body: 'Every public lookup completes the unit’s history: when the first one happened, how many there have been, and from where.',
-        icon: 'truck',
+        title: 'Activate when production closes',
+        body: 'The owner confirms the produced units and completes their record. Used codes are activated; the remainder are voided when the issuance closes.',
+        icon: 'history',
       },
       {
         label: '05',
-        title: 'Verify and listen',
-        body: 'The public verifies and reports; the brand receives the signals and decides where to act.',
+        title: 'Query and review signals',
+        body: 'The public queries and prepares local reports. In an agreed deployment, the organization reviews signals and documents actions and closure; downloads from this website are not sent automatically.',
         icon: 'scan',
       },
     ],
@@ -390,7 +390,7 @@ export const solutionsIndustry: SectorPageContent = {
     intro: 'What a deployment of this kind sets out to achieve, expressed without figures.',
     items: [
       'The ability to prove which units the brand issued and which it did not',
-      'Visibility over what happens after dispatch, with data that used to be lost',
+      'Visibility of issuance, activation and public lookups linked to each unit',
       'Early signals of diversions and copies from the registry',
       'A public verification experience carrying the brand’s visual identity',
       'Integration with current systems without duplicating processes',
@@ -403,10 +403,10 @@ export const solutionsIndustry: SectorPageContent = {
     items: [
       {
         key: 'journey',
-        tag: 'For the chain',
-        title: 'Product journey',
+        tag: 'For the record',
+        title: 'Unit lifecycle',
         body: 'Follow a unit from its issuance through its lookups and see how each event completes its history.',
-        cta: { label: 'See the journey', key: 'journey', variant: 'primary' },
+        cta: { label: 'See the lifecycle', key: 'journey', variant: 'primary' },
         icon: 'link',
       },
       {
@@ -421,7 +421,7 @@ export const solutionsIndustry: SectorPageContent = {
         key: 'institutional',
         tag: 'For oversight',
         title: 'Institutional view',
-        body: 'Consult the registry, anomalies and reported discrepancies from the organization’s point of view.',
+        body: 'Explore sample records and signals from the organization’s point of view. This view does not receive reports prepared and downloaded on this website.',
         cta: { label: 'Open the institutional view', key: 'institutional', variant: 'secondary' },
         icon: 'chart',
       },
@@ -434,7 +434,7 @@ export const solutionsIndustry: SectorPageContent = {
   cta: {
     title: 'Start with one product line',
     body:
-      'An industrial pilot usually starts with one product, one packaging line and one distribution channel. We can help scope it.',
+      'An industrial pilot can start with one medicine, one packaging line and people responsible for issuance, activation and oversight. We can help scope it.',
     primaryCta: { label: 'Contact the team', key: 'company', variant: 'primary' },
     secondaryCta: { label: 'Learn about the platform', key: 'platform', variant: 'secondary' },
   },
@@ -448,15 +448,15 @@ export const solutionsCitizens: SectorPageContent = {
   meta: {
     title: 'Citizens: verify a product before you buy it',
     description:
-      'Verify a product at the point of sale from the browser, with nothing to install and no account to create, with clear results and discrepancy reporting.',
+      'Look up a product in your browser, compare its data and prepare a downloadable local report to hand to the responsible organization, with no account needed.',
   },
   key: 'citizens',
 
   hero: {
-    eyebrow: 'Solutions · Citizens',
-    title: 'Check what you buy, on the spot and without complications',
+    eyebrow: 'Product lookup',
+    title: 'Scan. Compare. Understand.',
     subtitle:
-      'For anyone who wants to know whether a product is what it claims to be: scan, read a clear result and flag it if something does not match.',
+      'Compare a medicine with its record: scan, read the result and download a report if something does not match. The lookup does not certify physical authenticity.',
     icon: 'citizen',
   },
 
@@ -493,7 +493,7 @@ export const solutionsCitizens: SectorPageContent = {
     items: [
       {
         title: 'From the browser',
-        body: 'Just scan the code with your phone’s camera or type it on the verification page.',
+        body: 'Read the QR with the camera, select an image or type the code on the verification page.',
         icon: 'phone',
       },
       {
@@ -508,7 +508,7 @@ export const solutionsCitizens: SectorPageContent = {
       },
       {
         title: 'Discrepancy reporting',
-        body: 'If what you see does not match the registry, you can report it in a few steps with minimal, optional data.',
+        body: 'Prepare a description without personal data and download the report on this device. It is not sent and does not change the registry; hand it to the responsible organization for review.',
         icon: 'flag',
       },
     ],
@@ -521,25 +521,25 @@ export const solutionsCitizens: SectorPageContent = {
       {
         label: '01',
         title: 'Scan or type the code',
-        body: 'Point the camera at the code on the label or type the identifier on the verification page.',
+        body: 'Point the camera at the label’s QR, select a saved image or type the identifier.',
         icon: 'qr',
       },
       {
         label: '02',
         title: 'Read the result',
-        body: 'The page shows what was checked: signature, registry status, data match and anomalies.',
+        body: 'The result explains the identity status, registry data and signals. Sample codes illustrate these checks; they do not certify the physical object.',
         icon: 'eye',
       },
       {
         label: '03',
         title: 'Compare with the product',
-        body: 'Check the registry data — product, presentation, lot, destination — against what you hold in your hand.',
+        body: 'Compare the record’s product, presentation, concentration, lot and expiry with the medicine label.',
         icon: 'compare',
       },
       {
         label: '04',
-        title: 'Report if something does not match',
-        body: 'Send a discrepancy report. It reaches whoever can review it and helps protect other people.',
+        title: 'Prepare a report if something does not match',
+        body: 'Describe the discrepancy and download the report. Review it before handing it over through the responsible organization’s channel; this website does not send it or confirm receipt.',
         icon: 'flag',
       },
     ],
@@ -552,7 +552,7 @@ export const solutionsCitizens: SectorPageContent = {
       'A clear answer before paying, with nothing to install and no sign-up',
       'Knowing exactly what was checked and what was not',
       'A concrete next step when the result is not favorable',
-      'A channel to report discrepancies that reaches the registry',
+      'A local copy of the discrepancy to hand to the responsible organization',
       'No personal data in exchange for verifying',
     ],
     note: 'Benefits are qualitative. No figures or measured results are presented.',
@@ -571,10 +571,10 @@ export const solutionsCitizens: SectorPageContent = {
       },
       {
         key: 'journey',
-        tag: 'For the chain',
-        title: 'Product journey',
-        body: 'Discover what lies behind the code: the path a unit travels before reaching your hands.',
-        cta: { label: 'See the journey', key: 'journey', variant: 'secondary' },
+        tag: 'For the record',
+        title: 'Unit lifecycle',
+        body: 'Explore a 120 ml oral-solution example: issuance, labelling, activation after production finishes, lookup, signals and closure.',
+        cta: { label: 'See the lifecycle', key: 'journey', variant: 'secondary' },
         icon: 'link',
       },
     ],

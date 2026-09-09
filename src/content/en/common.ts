@@ -22,9 +22,6 @@ export const common: CommonContent = {
   nav: {
     ariaLabel: 'Main navigation',
     items: [
-      { key: 'home', label: 'Home' },
-      { key: 'platform', label: 'Platform' },
-      { key: 'howItWorks', label: 'How it works' },
       {
         key: 'solutions',
         label: 'Solutions',
@@ -32,22 +29,28 @@ export const common: CommonContent = {
           { key: 'solutionsGovernment', label: 'Government and regulators' },
           { key: 'solutionsIndustry', label: 'Industry' },
           { key: 'solutionsCitizens', label: 'Citizens' },
-          { key: 'caseSpirits', label: 'Use case: spirits' },
+          { key: 'caseMedicines', label: 'Use case: medicines' },
         ],
       },
+      { key: 'platform', label: 'Platform' },
       {
-        key: 'security',
-        label: 'Technology',
+        key: 'howItWorks',
+        label: 'Resources',
         children: [
-          { key: 'security', label: 'Security and trust' },
+          { key: 'howItWorks', label: 'How it works' },
           { key: 'codeSpec', label: 'The label and the code' },
           { key: 'integration', label: 'Integration' },
+          { key: 'security', label: 'Security and trust' },
           { key: 'rationale', label: 'Why this design' },
         ],
       },
       { key: 'company', label: 'Company' },
     ],
-    cta: { label: 'Verify', key: 'verify', variant: 'primary' },
+    publicItems: [
+      { key: 'verify', label: 'Verify a product' },
+      { key: 'howItWorks', label: 'Help' },
+    ],
+    cta: { label: 'Request a walkthrough', key: 'company', suffix: '#contact-title', variant: 'primary' },
     menuOpen: 'Open the menu',
     menuClose: 'Close the menu',
     homeLinkLabel: 'traza — go to home',
@@ -62,30 +65,26 @@ export const common: CommonContent = {
   footer: {
     columns: [
       {
-        title: 'The platform at work',
+        title: 'Main links',
         links: [
+          { label: 'Home', key: 'home' },
+          { label: 'Solutions', key: 'solutions' },
+          { label: 'Platform', key: 'platform' },
           { label: 'Public verification', key: 'verify' },
-          { label: 'Product journey', key: 'journey' },
-          { label: 'Institutional view', key: 'institutional' },
+          { label: 'Company and contact', key: 'company' },
         ],
       },
       {
-        title: 'Platform',
+        title: 'Resources and tools',
         links: [
-          { label: 'Platform', key: 'platform' },
           { label: 'How it works', key: 'howItWorks' },
-          { label: 'Solutions', key: 'solutions' },
-          { label: 'Use case: spirits', key: 'caseSpirits' },
+          { label: 'Use case: medicines', key: 'caseMedicines' },
           { label: 'Security and trust', key: 'security' },
           { label: 'The label and the code', key: 'codeSpec' },
           { label: 'Integration', key: 'integration' },
           { label: 'Why this design', key: 'rationale' },
-        ],
-      },
-      {
-        title: 'Company',
-        links: [
-          { label: 'Company and contact', key: 'company' },
+          { label: 'Unit lifecycle', key: 'journey' },
+          { label: 'Institutional view', key: 'institutional' },
           { label: 'Privacy notice', key: 'privacy' },
           { label: 'Instagram', href: 'https://www.instagram.com/traza.technology/', external: true, rel: 'me' },
         ],
@@ -93,7 +92,7 @@ export const common: CommonContent = {
     ],
     legal: '© 2026 traza. All rights reserved.',
     disclaimer:
-      'This site does not claim any relationship with governments, regulators or certifications. The spirits use case is presented as a pilot proposal; it does not constitute an official implementation.',
+      'This site does not claim any relationship with governments, regulators or certifications. The medicines use case is presented as a pilot proposal; it does not constitute an official implementation.',
     privacyLabel: 'Privacy',
     contactLabel: 'Contact',
     languageLabel: 'Language',

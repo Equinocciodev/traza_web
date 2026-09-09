@@ -15,7 +15,7 @@ export const solutions: SolutionsContent = {
     eyebrow: 'Soluciones',
     title: 'Una capa común, tres puntos de vista',
     subtitle:
-      'Gobiernos y reguladores, industria y ciudadanos usan la misma plataforma con necesidades distintas. Aquí explicamos qué aporta a cada uno.',
+      'Traza propone una base común para instituciones, industria y público. Esta web permite consultar unidades de ejemplo y preparar reportes locales; las integraciones se acuerdan por despliegue.',
   },
 
   cards: [
@@ -34,11 +34,11 @@ export const solutions: SolutionsContent = {
     {
       key: 'industry',
       title: 'Industria',
-      body: 'Proteger la marca, ganar visibilidad sobre la cadena y dar al público una forma de comprobar cada unidad.',
+      body: 'Relacionar emisión, etiquetado, activación y consultas para revisar la identidad de cada unidad.',
       bullets: [
         'Identidad emitida desde la producción o la importación',
-        'Integración con sistemas de gestión y almacén',
-        'Alertas ante anomalías en la cadena',
+        'Integración propuesta con gestión, producción y etiquetado',
+        'Señales de inconsistencias en el registro de la unidad',
       ],
       cta: { label: 'Ver soluciones para industria', key: 'solutionsIndustry', variant: 'secondary' },
       icon: 'industry',
@@ -46,11 +46,11 @@ export const solutions: SolutionsContent = {
     {
       key: 'citizens',
       title: 'Ciudadanos',
-      body: 'Comprobar un producto en el punto de venta, entender el resultado y avisar si algo no coincide.',
+      body: 'Comparar un producto con su registro, entender el resultado y preparar una copia local si algo no coincide.',
       bullets: [
         'Sin instalar nada ni crear una cuenta',
         'Resultado explicado en lenguaje claro',
-        'Reporte de discrepancias en pocos pasos',
+        'Preparación y descarga local de un reporte',
       ],
       cta: { label: 'Ver soluciones para ciudadanos', key: 'solutionsCitizens', variant: 'secondary' },
       icon: 'citizen',
@@ -63,19 +63,19 @@ export const solutions: SolutionsContent = {
       'No hay tres productos distintos, sino una plataforma con vistas y reglas diferentes para cada actor. Esto permite que un regulador, un fabricante y una persona en una tienda miren el mismo registro con el nivel de detalle que les corresponde.',
     bullets: [
       'Identidad digital unitaria firmada por el emisor',
-      'Registro de eventos de cadena, ordenado y auditable',
+      'Registro de emisión, etiquetado, activación, consulta, señales y cierre',
       'Verificación pública desde el navegador, sin instalación ni cuenta',
       'Reglas, marca y contexto configurables por tenant',
-      'Reporte de discrepancias con datos mínimos',
+      'Reportes descargables para entregar por un canal de la organización',
     ],
   },
 
   multisector: {
     title: 'Adaptable a distintos sectores',
     body:
-      'La adaptabilidad no viene de módulos por industria, sino de la misma capa: identidad unitaria, eventos de cadena, verificación pública y reglas configurables por tenant. Cada sector define qué datos describen una unidad, qué eventos importan y quién puede consultarlos.',
+      'La propuesta comparte identidad unitaria, eventos del ciclo de vida y consulta pública. Cada despliegue acuerda los datos, permisos y reglas: emisión, etiquetado, activación, consulta, señales y cierre.',
     sectors: [
-      'Bebidas y alimentos',
+      'Medicamentos y productos de salud',
       'Farmacéutico',
       'Agroindustria',
       'Repuestos y partes',
@@ -88,7 +88,7 @@ export const solutions: SolutionsContent = {
   cta: {
     title: 'Hablemos de su caso',
     body:
-      'Si su organización controla, produce o distribuye productos que necesitan una identidad verificable, podemos conversar sobre un piloto acotado.',
+      'Si su organización controla, fabrica o importa productos que necesitan una identidad verificable, podemos conversar sobre un piloto acotado.',
     primaryCta: { label: 'Contactar al equipo', key: 'company', variant: 'primary' },
     secondaryCta: { label: 'Verificar un producto', key: 'verify', variant: 'secondary' },
   },
@@ -102,7 +102,7 @@ export const solutionsGovernment: SectorPageContent = {
   meta: {
     title: 'Gobierno y reguladores: control por unidad',
     description:
-      'Identidad unitaria por producto, inspección de campo integrada, registro auditable de cada evento y despliegues co-brand por país o por programa fiscal.',
+      'Identidad unitaria por producto, inspección de campo integrada, registro auditable de cada evento y despliegues co-brand por país o por programa de control.',
   },
   key: 'government',
 
@@ -145,7 +145,7 @@ export const solutionsGovernment: SectorPageContent = {
   approach: {
     title: 'Nuestro enfoque',
     intro:
-      'Una capa de identidad y registro que la institución gobierna, con verificación pública abierta e inspección de campo como parte del despliegue.',
+      'Proponemos una capa de identidad y registro con reglas institucionales, consulta pública e inspección. Sus integraciones y permisos se acuerdan y validan en cada despliegue.',
     items: [
       {
         title: 'Identidad unitaria firmada',
@@ -154,7 +154,7 @@ export const solutionsGovernment: SectorPageContent = {
       },
       {
         title: 'Registro auditable',
-        body: 'Los eventos de cadena se conservan en orden, con responsable y fecha, y pueden exportarse para auditoría.',
+        body: 'El diseño contempla registrar emisión, etiquetado, activación, consultas, señales y cierre, con responsable y fecha para su auditoría.',
         icon: 'list',
       },
       {
@@ -169,7 +169,7 @@ export const solutionsGovernment: SectorPageContent = {
       },
       {
         title: 'Verificación pública',
-        body: 'Cualquier persona comprueba una unidad desde el navegador y puede reportar discrepancias que llegan al registro.',
+        body: 'Cualquier persona consulta una unidad y puede preparar y descargar un reporte local. Esta web no lo envía ni modifica el registro; debe entregarse a la organización responsable.',
         icon: 'scan',
       },
     ],
@@ -193,20 +193,20 @@ export const solutionsGovernment: SectorPageContent = {
       },
       {
         label: '03',
-        title: 'Registrar la cadena',
-        body: 'El emisor reporta los eventos del ciclo de vida: etiquetado, prueba de imprenta y activación de la ficha del lote.',
+        title: 'Etiquetar y activar',
+        body: 'El emisor confirma la impresión y, al finalizar la producción y completar la ficha, activa los códigos de las unidades producidas.',
         icon: 'link',
       },
       {
         label: '04',
         title: 'Abrir la verificación pública',
-        body: 'El público verifica desde el navegador, con la marca de la institución si así se aprueba, y reporta discrepancias.',
+        body: 'El público consulta desde el navegador, con la marca institucional si se aprueba. En esta web puede descargar un reporte local para entregarlo por un canal de la organización.',
         icon: 'scan',
       },
       {
         label: '05',
         title: 'Inspeccionar y actuar',
-        body: 'La institución sigue anomalías y reportes, prioriza inspecciones de campo y deja constancia de lo actuado.',
+        body: 'El despliegue propuesto contempla revisar señales, registrar acciones y cerrar casos. Los reportes descargados en esta web no se incorporan automáticamente a esa vista.',
         icon: 'search',
       },
     ],
@@ -218,7 +218,7 @@ export const solutionsGovernment: SectorPageContent = {
     items: [
       'Visibilidad por unidad sobre lo que circula en el mercado regulado',
       'Inspecciones de campo mejor dirigidas gracias a las señales del registro',
-      'Un canal público de verificación y reporte que no exige instalación ni cuenta',
+      'Consulta pública y preparación local de reportes sin instalación ni cuenta',
       'Un registro auditable que facilita el control y la rendición de cuentas',
       'Una marca institucional presente en el momento de la verificación',
     ],
@@ -232,7 +232,7 @@ export const solutionsGovernment: SectorPageContent = {
         key: 'institutional',
         tag: 'Para el control',
         title: 'Vista institucional',
-        body: 'Consulte el registro como lo haría una agencia de control: unidades, anomalías, discrepancias e inspección de campo.',
+        body: 'Explore unidades, señales e inspecciones de ejemplo. Esta vista ilustra el trabajo de control; no recibe los reportes descargados desde la consulta pública.',
         cta: { label: 'Abrir la vista institucional', key: 'institutional', variant: 'primary' },
         icon: 'chart',
       },
@@ -240,30 +240,30 @@ export const solutionsGovernment: SectorPageContent = {
         key: 'verify',
         tag: 'Para el público',
         title: 'Verificación pública',
-        body: 'Vea lo que vería el público al verificar una unidad, con el ejemplo de co-brand del caso de uso de licores.',
-        cta: { label: 'Verificar con el tenant de ejemplo', key: 'verify', suffix: '?t=licores', variant: 'secondary' },
+        body: 'Vea lo que vería el público al verificar una unidad, con el ejemplo de co-brand del caso de uso de medicamentos.',
+        cta: { label: 'Verificar con el tenant de ejemplo', key: 'verify', suffix: '?t=medicamentos', variant: 'secondary' },
         icon: 'scan',
       },
       {
         key: 'journey',
-        tag: 'Para la cadena',
-        title: 'Recorrido del producto',
+        tag: 'Para el registro',
+        title: 'Ciclo de vida de la unidad',
         body: 'Siga una unidad desde su emisión hasta sus consultas y vea qué eventos quedan registrados.',
-        cta: { label: 'Ver el recorrido', key: 'journey', variant: 'secondary' },
+        cta: { label: 'Ver el ciclo de vida', key: 'journey', variant: 'secondary' },
         icon: 'link',
       },
     ],
   },
 
   disclaimer:
-    'Nada de lo anterior afirma relación con gobiernos o agencias, certificaciones ni resultados medidos. El caso de uso de licores es una propuesta de piloto.',
+    'Nada de lo anterior afirma relación con gobiernos o agencias, certificaciones ni resultados medidos. El caso de uso de medicamentos es una propuesta de piloto.',
 
   cta: {
     title: 'Conversemos sobre un piloto acotado',
     body:
       'Un piloto empieza por un producto, un marco de reglas y un grupo reducido de actores. Podemos ayudar a definirlo.',
     primaryCta: { label: 'Contactar al equipo', key: 'company', variant: 'primary' },
-    secondaryCta: { label: 'Conocer el caso de uso de licores', key: 'caseSpirits', variant: 'secondary' },
+    secondaryCta: { label: 'Conocer el caso de uso de medicamentos', key: 'caseMedicines', variant: 'secondary' },
   },
 };
 
@@ -275,22 +275,22 @@ export const solutionsIndustry: SectorPageContent = {
   meta: {
     title: 'Industria: identidad unitaria y marca protegida',
     description:
-      'Identidad unitaria, trazabilidad y protección de marca para fabricantes, importadores y distribuidores, integradas con los sistemas que ya usa la planta.',
+      'Identidad por unidad para fabricantes e importadores: emisión, etiquetado, activación y consulta, con integraciones propuestas para los sistemas de planta.',
   },
   key: 'industry',
 
   hero: {
     eyebrow: 'Soluciones · Industria',
-    title: 'Identidad por unidad, visibilidad de la cadena y protección de marca',
+    title: 'Identidad por unidad y evidencia de su ciclo de vida',
     subtitle:
-      'Para fabricantes, importadores y distribuidores que quieren saber dónde están sus unidades, detectar desvíos y dar al público una forma de comprobarlas.',
+      'Para fabricantes e importadores que quieren relacionar producción, activación y consultas, revisar inconsistencias y dar al público una forma de comparar cada unidad con su registro.',
     icon: 'industry',
   },
 
   challenges: {
     title: 'Retos habituales',
     intro:
-      'Quien pone un producto en el mercado responde por él mucho después de que salió del almacén. Estos son los problemas más frecuentes.',
+      'Quien fabrica o importa un producto necesita relacionar cada unidad con su lote, etiqueta y ficha. Estos son los problemas que busca abordar la propuesta.',
     items: [
       {
         title: 'Copias y desvíos que dañan la marca',
@@ -298,13 +298,13 @@ export const solutionsIndustry: SectorPageContent = {
         icon: 'alert',
       },
       {
-        title: 'Poca visibilidad más allá del almacén',
-        body: 'Una vez despachada, la unidad desaparece de los sistemas propios: no se sabe si llegó, si alguien la comprobó ni si su código aparece donde no debería.',
+        title: 'Poca visibilidad después de la producción',
+        body: 'Sin un registro por unidad, resulta difícil relacionar producción, activación y consultas públicas, o revisar si un código se consulta antes de activarse.',
         icon: 'eye',
       },
       {
         title: 'Datos en sistemas separados',
-        body: 'Producción, almacén y logística ya generan datos útiles, pero en sistemas que no se hablan entre sí.',
+        body: 'Producción y control de calidad generan producto, lote y vencimiento, pero esos datos no siempre están vinculados a una identidad consultable por unidad.',
         icon: 'database',
       },
       {
@@ -318,16 +318,16 @@ export const solutionsIndustry: SectorPageContent = {
   approach: {
     title: 'Nuestro enfoque',
     intro:
-      'Emitir la identidad desde los procesos que ya existen, registrar la cadena con los datos que ya se generan y abrir la verificación al público con la marca propia.',
+      'La propuesta integra emisión, impresión, activación al finalizar la producción y consulta pública. Los conectores y controles se acuerdan y validan con cada organización.',
     items: [
       {
         title: 'Identidad por unidad, no solo por lote',
-        body: 'Cada unidad recibe un identificador firmado con las claves del fabricante o importador, al salir de producción o al ingresar por aduana.',
+        body: 'Cada unidad recibe un identificador firmado a partir de una orden del fabricante o importador, antes de imprimirlo en su envase.',
         icon: 'fingerprint',
       },
       {
-        title: 'Eventos de cadena desde sus propios sistemas',
-        body: 'Los sistemas de gestión y almacén (ERP, WMS) reportan eventos mediante interfaces documentadas, sin duplicar el trabajo.',
+        title: 'Ciclo de vida desde sus propios sistemas',
+        body: 'Los sistemas del emisor aportan orden, lote, vencimiento y cierre de producción mediante interfaces acordadas. El alcance no incluye transporte, distribución ni ventas.',
         icon: 'plug',
       },
       {
@@ -342,7 +342,7 @@ export const solutionsIndustry: SectorPageContent = {
       },
       {
         title: 'Protección de marca',
-        body: 'El registro deja constancia de qué unidades emitió la marca; las discrepancias reportadas llegan a quien puede actuar.',
+        body: 'El registro identifica las unidades emitidas. Quien detecta una discrepancia puede descargar su reporte y entregarlo a la organización; esta web no lo envía ni confirma recepción.',
         icon: 'shield',
       },
     ],
@@ -372,14 +372,14 @@ export const solutionsIndustry: SectorPageContent = {
       },
       {
         label: '04',
-        title: 'Mover y registrar',
-        body: 'Cada consulta pública completa la historia de la unidad: cuándo fue la primera, cuántas van y desde dónde.',
-        icon: 'truck',
+        title: 'Activar al cerrar producción',
+        body: 'El responsable confirma las unidades producidas y completa su ficha. Los códigos utilizados se activan; los restantes se anulan al cerrar la emisión.',
+        icon: 'history',
       },
       {
         label: '05',
-        title: 'Verificar y escuchar',
-        body: 'El público verifica y reporta; la marca recibe las señales y decide dónde actuar.',
+        title: 'Consultar y revisar señales',
+        body: 'El público consulta y prepara reportes locales. En un despliegue acordado, la organización revisa señales y documenta acciones y cierre; las descargas de esta web no se envían automáticamente.',
         icon: 'scan',
       },
     ],
@@ -390,7 +390,7 @@ export const solutionsIndustry: SectorPageContent = {
     intro: 'Lo que un despliegue de este tipo busca conseguir, expresado sin cifras.',
     items: [
       'Capacidad de demostrar qué unidades emitió la marca y cuáles no',
-      'Visibilidad sobre lo que ocurre después del despacho, con datos que antes se perdían',
+      'Visibilidad de emisión, activación y consultas públicas vinculadas a cada unidad',
       'Señales tempranas de desvíos y copias a partir del registro',
       'Una experiencia de verificación pública con la identidad visual de la marca',
       'Integración con los sistemas actuales sin duplicar procesos',
@@ -403,10 +403,10 @@ export const solutionsIndustry: SectorPageContent = {
     items: [
       {
         key: 'journey',
-        tag: 'Para la cadena',
-        title: 'Recorrido del producto',
+        tag: 'Para el registro',
+        title: 'Ciclo de vida de la unidad',
         body: 'Siga una unidad desde su emisión hasta sus consultas y vea cómo cada evento completa su historia.',
-        cta: { label: 'Ver el recorrido', key: 'journey', variant: 'primary' },
+        cta: { label: 'Ver el ciclo de vida', key: 'journey', variant: 'primary' },
         icon: 'link',
       },
       {
@@ -421,7 +421,7 @@ export const solutionsIndustry: SectorPageContent = {
         key: 'institutional',
         tag: 'Para el control',
         title: 'Vista institucional',
-        body: 'Consulte el registro, las anomalías y las discrepancias reportadas desde el punto de vista de la organización.',
+        body: 'Explore registros y señales de ejemplo desde el punto de vista de la organización. Esta vista no recibe los reportes que se preparan y descargan en esta web.',
         cta: { label: 'Abrir la vista institucional', key: 'institutional', variant: 'secondary' },
         icon: 'chart',
       },
@@ -434,7 +434,7 @@ export const solutionsIndustry: SectorPageContent = {
   cta: {
     title: 'Empiece por una línea de producto',
     body:
-      'Un piloto industrial suele empezar por un producto, una línea de envasado y un canal de distribución. Podemos ayudar a acotarlo.',
+      'Un piloto industrial puede empezar por un medicamento, una línea de envasado y responsables de emisión, activación y control. Podemos ayudar a acotarlo.',
     primaryCta: { label: 'Contactar al equipo', key: 'company', variant: 'primary' },
     secondaryCta: { label: 'Conocer la plataforma', key: 'platform', variant: 'secondary' },
   },
@@ -448,15 +448,15 @@ export const solutionsCitizens: SectorPageContent = {
   meta: {
     title: 'Ciudadanos: verificar un producto al comprarlo',
     description:
-      'Verificar un producto en el punto de venta desde el navegador, sin instalar nada ni crear una cuenta, con resultados claros y reporte de discrepancias.',
+      'Consulte un producto desde el navegador, compare sus datos y prepare un reporte local descargable para entregarlo a la organización responsable, sin cuenta.',
   },
   key: 'citizens',
 
   hero: {
-    eyebrow: 'Soluciones · Ciudadanos',
-    title: 'Comprobar lo que se compra, en el momento y sin complicaciones',
+    eyebrow: 'Consulta del producto',
+    title: 'Escanea. Compara. Comprende.',
     subtitle:
-      'Para cualquier persona que quiera saber si un producto es el que dice ser: escanear, leer un resultado claro y avisar si algo no coincide.',
+      'Para comparar un medicamento con su registro: escanear, leer el resultado y descargar un reporte si algo no coincide. La consulta no certifica autenticidad física.',
     icon: 'citizen',
   },
 
@@ -493,7 +493,7 @@ export const solutionsCitizens: SectorPageContent = {
     items: [
       {
         title: 'Desde el navegador',
-        body: 'Basta con escanear el código con la cámara del teléfono o escribirlo en la página de verificación.',
+        body: 'Puede leer el QR con la cámara, seleccionar una imagen o escribir el código en la página de verificación.',
         icon: 'phone',
       },
       {
@@ -508,7 +508,7 @@ export const solutionsCitizens: SectorPageContent = {
       },
       {
         title: 'Reporte de discrepancias',
-        body: 'Si lo que ve no coincide con el registro, puede reportarlo en pocos pasos y con datos mínimos y opcionales.',
+        body: 'Prepare una descripción sin datos personales y descargue el reporte en este dispositivo. No se envía ni cambia el registro; entréguelo a la organización responsable para su revisión.',
         icon: 'flag',
       },
     ],
@@ -521,25 +521,25 @@ export const solutionsCitizens: SectorPageContent = {
       {
         label: '01',
         title: 'Escanear o escribir el código',
-        body: 'Apunte la cámara al código de la etiqueta o escriba el identificador en la página de verificación.',
+        body: 'Apunte la cámara al QR de la etiqueta, seleccione una imagen guardada o escriba el identificador.',
         icon: 'qr',
       },
       {
         label: '02',
         title: 'Leer el resultado',
-        body: 'La página muestra qué se comprobó: firma, estado en el registro, coincidencia de datos y anomalías.',
+        body: 'El resultado explica el estado de la identidad, los datos del registro y sus señales. Los códigos de ejemplo ilustran estas comprobaciones; no certifican el objeto físico.',
         icon: 'eye',
       },
       {
         label: '03',
         title: 'Comparar con el producto',
-        body: 'Contraste los datos del registro —producto, presentación, lote, destino— con lo que tiene en la mano.',
+        body: 'Contraste producto, presentación, concentración, lote y vencimiento del registro con la etiqueta del medicamento.',
         icon: 'compare',
       },
       {
         label: '04',
-        title: 'Reportar si algo no coincide',
-        body: 'Envíe un reporte de discrepancia. Llega a quien puede revisarlo y ayuda a proteger a otras personas.',
+        title: 'Preparar un reporte si algo no coincide',
+        body: 'Describa la discrepancia y descargue el reporte. Revíselo antes de entregarlo por un canal de la organización responsable; esta web no lo envía ni confirma su recepción.',
         icon: 'flag',
       },
     ],
@@ -552,7 +552,7 @@ export const solutionsCitizens: SectorPageContent = {
       'Una respuesta clara antes de pagar, sin instalar nada ni registrarse',
       'Saber exactamente qué se comprobó y qué no',
       'Un siguiente paso concreto cuando el resultado no es favorable',
-      'Un canal para reportar discrepancias que llega al registro',
+      'Una copia local de la discrepancia para entregar a la organización responsable',
       'Ningún dato personal a cambio de verificar',
     ],
     note: 'Beneficios de carácter cualitativo. No se presentan cifras ni resultados medidos.',
@@ -571,10 +571,10 @@ export const solutionsCitizens: SectorPageContent = {
       },
       {
         key: 'journey',
-        tag: 'Para la cadena',
-        title: 'Recorrido del producto',
-        body: 'Descubra qué hay detrás del código: el camino que una unidad recorre antes de llegar a sus manos.',
-        cta: { label: 'Ver el recorrido', key: 'journey', variant: 'secondary' },
+        tag: 'Para el registro',
+        title: 'Ciclo de vida de la unidad',
+        body: 'Explore el ejemplo de una solución oral de 120 ml: emisión, etiquetado, activación al finalizar producción, consulta, señales y cierre.',
+        cta: { label: 'Ver el ciclo de vida', key: 'journey', variant: 'secondary' },
         icon: 'link',
       },
     ],

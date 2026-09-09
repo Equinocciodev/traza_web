@@ -2,60 +2,60 @@ import type { HowItWorksContent } from '../types';
 
 export const howItWorks: HowItWorksContent = {
   meta: {
-    title: 'How it works: from identity to public lookup',
+    title: 'How it works: from printing to public lookup',
     description:
-      'Step by step: how an identity is issued and signed, applied to the label, recorded as chain events, and explained by public verification, signal by signal.',
+      'How each medicine QR is created: issuance, printing and activation after production, followed by public lookup and field control with explained results.',
   },
 
   hero: {
     eyebrow: 'How it works',
-    title: 'From the code on the label to the result on screen',
+    title: 'From medicine to record, step by step',
     subtitle:
-      'Traza follows a simple principle: each unit has a signed identity, each moment of its lifecycle leaves an event and anyone can check both. This is how it happens, step by step.',
+      'Every medicine bottle has its own identity. The QR is printed during production and activated when production ends and the owner completes its record. A later lookup lets the person compare the unit with that record.',
   },
 
   steps: {
     title: 'Five steps',
     intro:
-      'From the moment a unit receives its identity until someone checks it in front of a shelf, the process passes through five moments.',
+      'The process connects the production order with packaging, activation and public lookup. It records the identifier’s lifecycle without requiring transport, distribution or sales events.',
     items: [
       {
         label: '01',
         title: 'Identity issuance',
-        body: 'The manufacturer or importer requests an issuance and the platform derives and signs a unique identifier per unit, with the keys in its custody. That identifier carries the four fields of the story: who issues it, what the product is, which lot it came from and when it expires.',
+        body: 'The manufacturer or importer requests an issuance linked to its order. A different signed identifier is generated for each unit. The record is linked to the product; lot and expiry are completed after production, before activation.',
         icon: 'key',
       },
       {
         label: '02',
-        title: 'Labeling',
-        body: 'The signed identifier is printed as a code on the label, using the plant’s own infrastructure and after a press proof is approved. From then on, the physical unit and its digital identity travel together.',
+        title: 'Printing per unit',
+        body: 'The QR and readable identifier are printed on each medicine carton, label or seal. A press proof checks readability, contrast and quiet zone. Printing alone does not activate the code.',
         icon: 'label',
       },
       {
         label: '03',
-        title: 'Event recording',
-        body: 'When the lot closes, the issuer completes the record — lot and expiry date, or serial — and at that moment the codes become active. A code that is looked up before activation does not say “verified”: it says “under review”.',
+        title: 'Activation after production',
+        body: 'When the run ends, the owner completes lot and expiry and confirms the produced units. Used codes are activated; unused ones are voided when issuance closes. A lookup before activation remains under review.',
         icon: 'history',
       },
       {
         label: '04',
         title: 'Public verification',
-        body: 'Whoever has the unit in front of them scans the code or types it on the verification page. The service evaluates four signals and returns an explained result.',
+        body: 'The person scans the QR or types the identifier. The lookup separates signature, registry, data and signals; the person compares name, 120 ml presentation, concentration, health registration, lot and expiry with the package.',
         icon: 'scan',
       },
       {
         label: '05',
         title: 'Control and inspection',
-        body: 'Regulators and companies follow anomalies and discrepancy reports, prioritize field inspections and record what is observed on site.',
+        body: 'The responsible organisation reviews signals and discrepancies to guide field inspection. This website lets people prepare and download a report; delivery and follow-up use the organisation’s own channel.',
         icon: 'search',
       },
     ],
   },
 
   chain: {
-    title: 'The chain, node by node',
+    title: 'The lifecycle, node by node',
     intro:
-      'The history of a unit is built from the events at these nodes. Not every deployment uses all of them; each tenant defines the ones that matter to it.',
+      'These stages organise what the registry knows. Issuance, printing and activation precede lookup; signals and closure record reviews or withdrawal where applicable. They do not describe a logistics route.',
     nodes: [
       {
         id: 'issuance',
@@ -65,14 +65,14 @@ export const howItWorks: HowItWorksContent = {
       },
       {
         id: 'labeling',
-        label: 'Labelling',
-        description: 'The signed code is printed and applied to the unit, using the plant’s own infrastructure.',
+        label: 'Printing',
+        description: 'The unique QR is printed on the packaging and its readability is checked before activation.',
         icon: 'label',
       },
       {
         id: 'activation',
         label: 'Activation',
-        description: 'When the lot closes, the record is completed — lot and expiry, or serial — and the codes become active.',
+        description: 'After production, lot and expiry are completed and the used codes are confirmed; only then do they become active.',
         icon: 'check',
       },
       {
@@ -84,13 +84,13 @@ export const howItWorks: HowItWorksContent = {
       {
         id: 'signals',
         label: 'Signals',
-        description: 'Every lookup adds context: when the first one happened, how many there have been, and whether the pattern is impossible for a single unit.',
+        description: 'Every lookup adds context: when the first one happened, how many there have been and which patterns need review. A signal does not prove a copy.',
         icon: 'chart',
       },
       {
         id: 'closure',
         label: 'Closure',
-        description: 'When activation ends, the sequence numbers that were never used are voided by range.',
+        description: 'Closure preserves the history and records voided or withdrawn identifiers. It does not record a sale.',
         icon: 'lock',
       },
     ],
@@ -117,7 +117,7 @@ export const howItWorks: HowItWorksContent = {
       {
         key: 'match',
         title: 'Data match',
-        body: 'Compares the data on the label with the data in the registry: product, presentation, lot and expiry date.',
+        body: 'Shows the recorded data for the person to compare with the packaging. This site does not inspect the label or physical contents.',
         icon: 'compare',
       },
       {
@@ -130,13 +130,13 @@ export const howItWorks: HowItWorksContent = {
     outcomes: [
       {
         status: 'valid',
-        title: 'Signature issued and data match',
-        body: 'The identity was issued by the expected issuer, is active in the registry, its data matches the label and there are no anomalies. It is a solid signal; checking against the physical unit remains the complement.',
+        title: 'Record without alerts',
+        body: 'The registry declares a valid signature, an active identity and no alerts. The person must compare the data with the package: the result does not certify its contents or confirm that the label is not a copy.',
       },
       {
         status: 'warning',
         title: 'With warnings',
-        body: 'The signature is valid, but the registry shows something worth reviewing: for example, the same code looked up from places a single unit cannot travel between in that time. The next step is to check against the unit and, if appropriate, report.',
+        body: 'The registry declares a valid signature and a signal that needs review, such as repeated lookups or a code awaiting activation. Compare the unit and, where appropriate, prepare a report for the responsible organisation.',
       },
       {
         status: 'invalid',
@@ -150,7 +150,7 @@ export const howItWorks: HowItWorksContent = {
       },
     ],
     caution:
-      'A valid signature indicates that the identity was issued; it does not describe the physical content or prevent a label from being copied. That is why the result always explains what was checked, how much confidence it provides and what the next step is.',
+      'A valid signature does not certify the physical contents or prevent copying the label. Physical anti-copy measures and tax validation are planned for phase 2. Validating payments depends on integration with and authorisation from the competent authority; this feature is not available in the example.',
   },
 
   requirements: {

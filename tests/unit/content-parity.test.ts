@@ -84,7 +84,7 @@ const PAGE_KEYS = [
   'solutionsIndustry',
   'solutionsCitizens',
   'howItWorks',
-  'caseSpirits',
+  'caseMedicines',
   'codeSpec',
   'integration',
   'rationale',

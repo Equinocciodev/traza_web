@@ -27,6 +27,13 @@ export default defineConfig({
     // CSS siempre como archivos externos: permite `style-src 'self'` sin hashes.
     inlineStylesheets: 'never',
   },
+  vite: {
+    build: {
+      // Astro también inserta scripts pequeños por debajo de este umbral.
+      // Mantenerlos externos permite que el menú funcione con script-src 'self'.
+      assetsInlineLimit: 0,
+    },
+  },
   i18n: {
     defaultLocale: 'es',
     locales: ['es', 'en'],
@@ -41,7 +48,7 @@ export default defineConfig({
         defaultLocale: 'es',
         locales: { es: 'es', en: 'en' },
       },
-      filter: (page) => !page.includes('/404'),
+      filter: (page) => !['/404', '/casos/licores', '/en/cases/spirits'].some((legacy) => new URL(page).pathname.includes(legacy)),
     }),
   ],
   env: {

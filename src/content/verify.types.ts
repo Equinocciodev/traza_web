@@ -67,14 +67,37 @@ export interface VerifyContent {
     idle: string;
     /** Texto mientras el haz recorre el código de ejemplo. */
     simulatingHint: string;
+    /** Solicitud de permiso de cámara en curso. */
+    startingHint: string;
     /** Cámara activa con decodificador. */
     activeHint: string;
-    /** Cámara activa sin BarcodeDetector. */
+    /** Alternativas cuando no se puede leer desde la cámara. */
     noDetectorHint: string;
     denied: TitledText;
     unavailable: TitledText;
     unreadable: TitledText;
     privacyNote: string;
+    /** QR de ejemplo que puede leerse desde una imagen o desde otro dispositivo. */
+    example: {
+      title: string;
+      body: string;
+      read: string;
+      download: string;
+      alt: string;
+    };
+    /** Lectura local de una imagen elegida por la persona. */
+    image: {
+      label: string;
+      hint: string;
+      reading: string;
+      success: string;
+      noQr: string;
+      invalidFile: string;
+      tooLarge: string;
+      unavailable: string;
+      cancelled: string;
+      timeout: string;
+    };
   };
 
   manual: {
@@ -166,6 +189,9 @@ export interface VerifyContent {
     title: string;
     product: string;
     presentation: string;
+    dosageForm: string;
+    concentration: string;
+    healthRegistration: string;
     brand: string;
     category: string;
     issuer: string;
@@ -221,6 +247,8 @@ export interface VerifyContent {
     cancel: string;
     errors: { kind: string; descriptionShort: string; descriptionLong: string; email: string };
     success: {
+      downloadLabel: string;
+      downloadHint: string;
       title: string;
       folioLabel: string;
       receivedAtLabel: string;

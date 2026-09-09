@@ -1,6 +1,6 @@
 ---
 /**
- * Panel de ejemplo de co-brand del tenant `licores` (propuesta de piloto — co-brand condicional).
+ * Panel de ejemplo de co-brand del tenant `medicamentos` (propuesta de piloto — co-brand condicional).
  * Solo se renderiza si `env.showCobrandExample` es true. Siempre acompañado del aviso de co-brand
  * del tenant y del aviso común del sitio. Sin emblemas oficiales: lockup tipográfico.
  */
@@ -17,7 +17,7 @@ interface Props {
   size?: 'md' | 'lg';
   class?: string;
 }
-const { locale, tenant = 'licores', size = 'lg', class: className } = Astro.props;
+const { locale, tenant = 'medicamentos', size = 'lg', class: className } = Astro.props;
 const t = TENANTS[tenant];
 const { common } = getContent(locale);
 const show = env.showCobrandExample && !!t.lockup;

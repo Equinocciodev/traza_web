@@ -2,60 +2,60 @@ import type { HowItWorksContent } from '../types';
 
 export const howItWorks: HowItWorksContent = {
   meta: {
-    title: 'Cómo funciona: de la identidad a la consulta',
+    title: 'Cómo funciona: del QR a la consulta de la unidad',
     description:
-      'Paso a paso: emisión de la identidad, etiquetado, eventos de la cadena y verificación pública por señales separadas, con cada resultado y sus límites.',
+      'Cómo nace el QR de cada medicamento: emisión, impresión y activación al cerrar producción, seguidas de consulta pública y control con resultados explicados.',
   },
 
   hero: {
     eyebrow: 'Cómo funciona',
-    title: 'Del código en la etiqueta al resultado en pantalla',
+    title: 'Del medicamento al registro, paso a paso',
     subtitle:
-      'Traza sigue un principio sencillo: cada unidad tiene una identidad firmada, cada momento de su ciclo de vida deja un evento y cualquier persona puede comprobar ambos. Así ocurre, paso a paso.',
+      'Cada frasco de medicamento tiene su propia identidad. El QR se imprime durante la producción y se activa al finalizarla, cuando el responsable completa la ficha. Después, la consulta permite comparar la unidad con su registro.',
   },
 
   steps: {
     title: 'Cinco pasos',
     intro:
-      'Desde que una unidad recibe su identidad hasta que alguien la comprueba frente a un anaquel, el proceso pasa por cinco momentos.',
+      'El recorrido conecta la orden de producción con el envase, su activación y la consulta pública. Registra el ciclo de vida del identificador, sin requerir eventos de transporte, distribución o venta.',
     items: [
       {
         label: '01',
         title: 'Emisión de la identidad',
-        body: 'El fabricante o importador solicita una emisión y la plataforma deriva y firma un identificador único por unidad, con las claves bajo su custodia. Ese identificador recoge los cuatro campos de la historia: quién emite, qué es el producto, de qué lote viene y cuándo vence.',
+        body: 'El fabricante o importador solicita una emisión asociada a su orden. Se genera un identificador firmado y diferente para cada unidad. La ficha se vincula al producto; lote y vencimiento se completan al terminar la producción, antes de activar.',
         icon: 'key',
       },
       {
         label: '02',
-        title: 'Etiquetado',
-        body: 'El identificador firmado se imprime como código en la etiqueta, con la infraestructura de la propia planta y tras aprobar una prueba de imprenta. A partir de ahí, la unidad física y su identidad digital viajan juntas.',
+        title: 'Impresión por unidad',
+        body: 'El QR y su identificador legible se imprimen en la caja, etiqueta o precinto de cada medicamento. Una prueba de imprenta comprueba lectura, contraste y zona libre. La impresión por sí sola no activa el código.',
         icon: 'label',
       },
       {
         label: '03',
-        title: 'Registro de eventos',
-        body: 'Al cerrar el lote, el emisor completa la ficha —lote y fecha de vencimiento, o serial— y en ese momento los códigos quedan activados. Un código emitido que se consulta sin estar activado no dice «verificado»: dice «en revisión».',
+        title: 'Activación al finalizar producción',
+        body: 'Al finalizar la corrida, el responsable completa lote y vencimiento y confirma las unidades producidas. Se activan los códigos utilizados; los sobrantes se anulan al cerrar la emisión. Una consulta anterior a la activación queda en revisión.',
         icon: 'history',
       },
       {
         label: '04',
         title: 'Verificación pública',
-        body: 'Quien tiene la unidad delante escanea el código o lo escribe en la página de verificación. El servicio evalúa cuatro señales y devuelve un resultado explicado.',
+        body: 'La persona escanea el QR o escribe el identificador. La consulta separa firma, registro, datos y señales; la persona compara nombre, presentación de 120 ml, concentración, registro sanitario, lote y vencimiento con el envase.',
         icon: 'scan',
       },
       {
         label: '05',
         title: 'Control e inspección',
-        body: 'Reguladores y empresas siguen anomalías y reportes de discrepancia, priorizan inspecciones de campo y registran lo observado en sitio.',
+        body: 'La organización responsable revisa señales y discrepancias para orientar la inspección de campo. En esta web se puede preparar y descargar un reporte; su entrega y seguimiento se realizan por el canal de la organización.',
         icon: 'search',
       },
     ],
   },
 
   chain: {
-    title: 'La cadena, nodo a nodo',
+    title: 'El ciclo de vida, nodo a nodo',
     intro:
-      'La historia de una unidad se construye con los eventos de estos nodos. No todos los despliegues usan los mismos; cada tenant define los que le importan.',
+      'Estas etapas ordenan lo que sabe el registro. Emisión, impresión y activación preceden a la consulta; señales y cierre documentan la revisión o la retirada cuando corresponda. No representan una ruta logística.',
     nodes: [
       {
         id: 'issuance',
@@ -65,14 +65,14 @@ export const howItWorks: HowItWorksContent = {
       },
       {
         id: 'labeling',
-        label: 'Etiquetado',
-        description: 'El código firmado se imprime y se aplica a la unidad, con la infraestructura de la propia planta.',
+        label: 'Impresión',
+        description: 'El QR único se imprime en el envase y se comprueba su lectura antes de la activación.',
         icon: 'label',
       },
       {
         id: 'activation',
         label: 'Activación',
-        description: 'Al cerrar el lote se completa la ficha —lote y vencimiento, o serial— y los códigos quedan activados.',
+        description: 'Al finalizar producción se completan lote y vencimiento y se confirman los códigos utilizados; solo entonces quedan activos.',
         icon: 'check',
       },
       {
@@ -84,13 +84,13 @@ export const howItWorks: HowItWorksContent = {
       {
         id: 'signals',
         label: 'Señales',
-        description: 'Cada consulta suma contexto: cuándo fue la primera, cuántas van y si el patrón es imposible para una sola unidad.',
+        description: 'Cada consulta suma contexto: cuándo fue la primera, cuántas van y qué patrones requieren revisión. Una señal no prueba una copia.',
         icon: 'chart',
       },
       {
         id: 'closure',
         label: 'Cierre',
-        description: 'Al terminar la activación, los correlativos que no se usaron se anulan por rango.',
+        description: 'El cierre conserva la historia y documenta los identificadores anulados o retirados. No equivale al registro de una venta.',
         icon: 'lock',
       },
     ],
@@ -117,7 +117,7 @@ export const howItWorks: HowItWorksContent = {
       {
         key: 'match',
         title: 'Coincidencia de datos',
-        body: 'Contrasta los datos de la etiqueta con los del registro: producto, presentación, lote y fecha de vencimiento.',
+        body: 'Muestra los datos registrados para que la persona los contraste con el envase. El sitio no inspecciona la etiqueta ni el contenido físico.',
         icon: 'compare',
       },
       {
@@ -130,13 +130,13 @@ export const howItWorks: HowItWorksContent = {
     outcomes: [
       {
         status: 'valid',
-        title: 'Firma emitida y datos coincidentes',
-        body: 'La identidad fue emitida por el emisor esperado, está activa en el registro, sus datos coinciden con la etiqueta y no hay anomalías. Es una señal sólida; contrastar con la unidad física sigue siendo el complemento.',
+        title: 'Registro sin alertas',
+        body: 'El registro declara firma válida, identidad activa y ninguna alerta. La persona debe contrastar los datos con el envase: el resultado no certifica su contenido ni confirma que la etiqueta no sea una copia.',
       },
       {
         status: 'warning',
         title: 'Con advertencias',
-        body: 'La firma es válida, pero el registro muestra algo que conviene revisar: por ejemplo, el mismo código consultado desde lugares que una sola unidad no puede recorrer en ese tiempo. El siguiente paso es contrastar con la unidad y, si procede, reportar.',
+        body: 'El registro declara una firma válida y una señal que requiere revisión: por ejemplo, consultas repetidas o un código aún sin activar. Se compara la unidad y, si procede, se prepara un reporte para la organización responsable.',
       },
       {
         status: 'invalid',
@@ -150,7 +150,7 @@ export const howItWorks: HowItWorksContent = {
       },
     ],
     caution:
-      'Una firma válida indica que la identidad fue emitida; no describe el contenido físico ni impide que una etiqueta se copie. Por eso el resultado siempre explica qué se comprobó, qué confianza aporta y cuál es el siguiente paso.',
+      'Una firma válida no certifica el contenido físico ni impide copiar la etiqueta. Las medidas físicas anticopia y la validación tributaria se contemplan en fase 2. Validar pagos depende de la integración y autorización de la autoridad competente; esta función no está disponible en el ejemplo.',
   },
 
   requirements: {

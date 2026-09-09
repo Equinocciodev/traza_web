@@ -1,0 +1,9 @@
+<p class="eyebrow"><span aria-hidden="true"></span><slot /></p>
+<style>
+
+.eyebrow{display:flex;align-items:center;gap:.8rem;margin:0 0 1.2rem;font-size:var(--text-xs);font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--color-navy-700)}
+.eyebrow::before{display:none}
+.eyebrow span{width:24px;height:2px;background:var(--color-cobalt-600);flex:none}
+:global(.on-dark) .eyebrow{color:var(--color-cyan-300)}:global(.on-dark) .eyebrow span{box-shadow:0 0 9px var(--color-cyan-400)}
+
+</style>

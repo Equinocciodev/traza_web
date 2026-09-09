@@ -3,7 +3,7 @@
  *
  * Reglas de contenido (ver docs/03-matriz-fuente-afirmacion.md y docs/04-supuestos-contradicciones.md):
  * - Nada se afirma como hecho si no está respaldado por una fuente aprobada. Las cantidades y la
- *   arquitectura de seguridad del caso licores se presentan como "propuesta de piloto" o "arquitectura objetivo".
+ *   arquitectura de seguridad del caso medicamentos se presentan como "propuesta de piloto" o "arquitectura objetivo".
  * - Ninguna relación con gobiernos, agencias, clientes, certificaciones, escala, uptime o impacto económico
  *   se presenta como hecho.
  * - Nunca se llama "auténtico" a un producto solo porque una firma sea sintácticamente válida.
@@ -74,7 +74,7 @@ export interface Cta {
   /** Ruta interna por clave (preferida) o enlace externo/ancla en `href`. */
   key?: RouteKey;
   href?: string;
-  /** Sufijo opcional para la ruta (por ejemplo `?t=licores` o `#historia`). */
+  /** Sufijo opcional para la ruta (por ejemplo `?t=medicamentos` o `#historia`). */
   suffix?: string;
   variant?: 'primary' | 'secondary' | 'ghost' | 'link';
   external?: boolean;
@@ -182,6 +182,7 @@ export interface CommonContent {
   nav: {
     ariaLabel: string;
     items: NavItem[];
+    publicItems: NavItem[];
     cta: Cta;
     menuOpen: string;
     menuClose: string;
@@ -332,40 +333,28 @@ export interface HomeContent {
 
 export interface PlatformContent {
   meta: PageMeta;
-  hero: { eyebrow: string; title: string; subtitle: string };
-  capabilities: { title: string; intro: string; items: Feature[] };
+  hero: { eyebrow: string; title: string; titleLines: string[]; subtitle: string; cta: Cta };
+  capabilities: { eyebrow: string; title: string; intro: string; items: (Feature & { key?: RouteKey; href?: string })[] };
   identity: {
-    title: string;
-    body: string;
-    /** Campos de la historia de la unidad: fabricante/importador, producto/presentación, origen/lote, movimientos/destino. */
+    title: string; body: string;
     fields: { label: string; description: string; icon: IconName }[];
     example: { caption: string; code: string; rows: { label: string; value: string }[] };
   };
-  architecture: {
-    title: string;
-    intro: string;
-    layers: { name: string; body: string; icon: IconName }[];
-    /** Aclaración: arquitectura objetivo, no implementación auditada. */
-    note: string;
+  architecture: { title: string; intro: string; layers: { name: string; body: string; icon: IconName }[]; note: string };
+  productView: {
+    eyebrow: string; title: string; intro: string; tabsLabel: string;
+    tabs: { href: string; label: string }[];
+    passport: { kicker: string; exampleLabel: string; title: string; presentation: string; status: string; codeLabel: string; code: string; rows: { label: string; value: string }[]; note: string; cta: Cta };
+    history: { kicker: string; exampleLabel: string; title: string; items: { tone: 'success' | 'neutral'; title: string; source: string; status: string }[] };
+    gaps: { title: string; body: string };
   };
-  verificationModel: {
-    title: string;
-    intro: string;
-    signals: Signal[];
-    caution: string;
-  };
-  tenancy: {
-    title: string;
-    body: string;
-    bullets: string[];
-    /** Descripción del ejemplo de co-brand que se muestra (sin afirmar relación). */
-    exampleNote: string;
-  };
+  roles: { eyebrow: string; title: string; intro: string; items: { title: string; who: string; body: string }[]; mockCaption: string };
+  verificationModel: { title: string; intro: string; signals: Signal[]; caution: string };
+  tenancy: { eyebrow: string; title: string; body: string; bullets: string[]; exampleNote: string };
   integration: {
-    title: string;
-    body: string;
-    bullets: string[];
-    note: string;
+    eyebrow: string; title: string; body: string; intro: string; bullets: string[]; note: string;
+    diagramAlt: string; diagramLabel: string; nodes: { name: string; body: string }[];
+    scope: { eyebrow: string; title: string; steps: Step[] }; cta: Cta;
   };
   cta: { title: string; body: string; primaryCta: Cta; secondaryCta: Cta };
 }
@@ -409,7 +398,7 @@ export interface HowItWorksContent {
   cta: { title: string; body: string; primaryCta: Cta; secondaryCta: Cta };
 }
 
-export interface CaseSpiritsContent {
+export interface CaseMedicinesContent {
   meta: PageMeta;
   hero: {
     eyebrow: string;
@@ -462,6 +451,7 @@ export interface CompanyContent {
   contact: {
     title: string;
     intro: string;
+    formTitle: string;
     form: {
       name: string;
       email: string;
@@ -570,7 +560,7 @@ export interface SiteContent {
   solutionsIndustry: SectorPageContent;
   solutionsCitizens: SectorPageContent;
   howItWorks: HowItWorksContent;
-  caseSpirits: CaseSpiritsContent;
+  caseMedicines: CaseMedicinesContent;
   codeSpec: ReferencePageContent;
   integration: ReferencePageContent;
   rationale: ReferencePageContent;

@@ -213,10 +213,9 @@ th {
 }
 
 .container {
-  width: 100%;
-  max-width: var(--container-max);
+  width: min(90%, 81.25rem);
   margin-inline: auto;
-  padding-inline: var(--container-padding);
+  padding-inline: 0;
 }
 
 .container--narrow {
@@ -376,3 +375,6 @@ th {
     display: none !important;
   }
 }
+
+/* A single cyan trace connects section labels to the shared visual language. */
+.eyebrow::before { content: ''; display: inline-block; width: 1.75rem; height: 5px; margin-right: .65rem; vertical-align: .16em; background: radial-gradient(circle at 2.5px 2.5px, var(--color-cyan-500) 2px, transparent 2.5px), linear-gradient(var(--color-cyan-500), var(--color-cyan-500)) 5px center / calc(100% - 5px) 1px no-repeat; }

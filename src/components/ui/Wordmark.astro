@@ -1,62 +1,24 @@
 ---
-/**
- * Wordmark "traza®" — versión tipográfica geométrica en minúsculas con subrayado cian [P].
- * Reemplazable por el SVG oficial cuando esté disponible (mantener el mismo tamaño y `alt`).
- */
+import { WORDMARK } from '@/brand/wordmark.mjs';
 interface Props {
   size?: 'sm' | 'md' | 'lg';
   alt?: string;
   class?: string;
 }
-const { size = 'md', alt = 'traza®', class: className } = Astro.props;
+const { size = 'md', alt = WORDMARK.label, class: className } = Astro.props;
 ---
-
 <span class:list={['wordmark', `wordmark--${size}`, className]} role="img" aria-label={alt}>
-  <span class="wordmark__text" aria-hidden="true">traza<sup class="wordmark__reg">®</sup></span>
-  <span class="wordmark__underline" aria-hidden="true"></span>
+  <svg viewBox={WORDMARK.viewBox} width={WORDMARK.width} height={WORDMARK.height} aria-hidden="true" focusable="false">
+    {WORDMARK.paths.map((d: string) => <path d={d} />)}
+    <path d={WORDMARK.registered} />
+    <rect class="wordmark__underline" x={WORDMARK.underline.x} y={WORDMARK.underline.y} width={WORDMARK.underline.width} height={WORDMARK.underline.height} />
+  </svg>
 </span>
-
 <style>
-  .wordmark {
-    display: inline-flex;
-    flex-direction: column;
-    align-items: flex-start;
-    line-height: 1;
-    color: var(--color-heading);
-  }
-  .wordmark__text {
-    font-family: 'Poppins', var(--font-heading);
-    font-weight: var(--weight-bold);
-    letter-spacing: -0.04em;
-    font-size: var(--wm-size, 1.5rem);
-  }
-  .wordmark__reg {
-    font-size: 0.42em;
-    font-weight: var(--weight-semibold);
-    letter-spacing: 0;
-    vertical-align: top;
-    margin-left: 0.15em;
-    position: relative;
-    top: 0.1em;
-  }
-  .wordmark__underline {
-    display: block;
-    width: 1.05em;
-    height: 0.14em;
-    margin-top: 0.12em;
-    align-self: flex-end;
-    margin-right: 0.12em;
-    border-radius: 1px;
-    background: var(--color-cyan-400);
-    font-size: var(--wm-size, 1.5rem);
-  }
-  .wordmark--sm {
-    --wm-size: 1.25rem;
-  }
-  .wordmark--md {
-    --wm-size: 1.5rem;
-  }
-  .wordmark--lg {
-    --wm-size: 2.25rem;
-  }
+  .wordmark { display: inline-flex; width: calc(var(--wm-size, 1.5rem) * 3.15); flex: 0 0 auto; color: var(--color-heading); line-height: 1; }
+  .wordmark svg { display: block; width: 100%; height: auto; overflow: visible; fill: currentColor; }
+  .wordmark__underline { fill: var(--color-brand-accent, var(--color-cyan-400)); }
+  .wordmark--sm { --wm-size: 1.25rem; }
+  .wordmark--md { --wm-size: 1.5rem; }
+  .wordmark--lg { --wm-size: 2.25rem; }
 </style>

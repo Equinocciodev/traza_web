@@ -34,18 +34,30 @@ const inspectorCases = CASES.filter((c) => c.inspectorId === INSPECTOR_ID);
 const inspectorInspections = INSPECTIONS.filter((i) => i.inspectorId === INSPECTOR_ID);
 
 test.describe('carga y roles', () => {
-  test('carga simulada, KPIs derivados de los fixtures y rotulados como simulados', async ({ page }) => {
+  test('carga, cuatro KPIs derivados de los fixtures y alcance local visible', async ({ page }) => {
     const console = collectConsoleErrors(page);
     await open(page, '/institucional/');
     await expect(root(page)).toHaveAttribute('data-load', /^(loading|ready)$/);
     await expect(root(page)).toHaveAttribute('data-load', 'ready', { timeout: 10_000 });
     await expect(page.getByTestId('inst-live')).toHaveText(es.island.live.loaded);
-    await expect(kpi(page, 'alertsOpen')).toHaveAttribute('data-count', String(KPIS.alertsOpen));
-    await expect(kpi(page, 'casesInProgress')).toHaveAttribute('data-count', String(KPIS.casesInProgress));
-    await expect(kpi(page, 'unitsRegistered')).toHaveAttribute('data-count', String(KPIS.unitsRegistered));
-    await expect(page.getByTestId('kpis').locator('.meta-tag')).toHaveCount(4);
-    await expect(page.getByTestId('institutional-banner').or(page.locator('.inst-banner, [data-banner]')).first()).toBeVisible();
-    await expect(page.locator('body')).toContainText(es.banner.title);
+    const cards = page.getByTestId('kpis').locator('[data-kpi]');
+    await expect(cards).toHaveCount(es.summary.kpis.length);
+    for (const item of es.summary.kpis) {
+      const card = page.getByTestId('kpis').locator(`[data-kpi="${item.key}"]`);
+      await expect(card).toBeVisible();
+      await expect(card.locator('.kpi__label')).toBeVisible();
+      await expect(card.locator('.kpi__label')).toHaveText(item.label);
+      await expect(card.locator('.kpi__hint')).toBeVisible();
+      await expect(card.locator('.kpi__hint')).toHaveText(item.hint);
+      await expect(kpi(page, item.key)).toBeVisible();
+      await expect(kpi(page, item.key)).toHaveAttribute('data-count', String(KPIS[item.key]));
+    }
+    const banner = page.getByTestId('institutional-banner');
+    await expect(banner).toBeVisible();
+    await expect(banner.getByRole('note')).toBeVisible();
+    for (const text of [es.banner.title, es.banner.body, es.banner.readOnly]) {
+      await expect(banner.getByText(text, { exact: true })).toBeVisible();
+    }
     await expect(alertRows(page)).toHaveCount(ALERTS.length);
     await expect(visibleAlerts(page)).toHaveCount(ALERTS.length);
     await expectNoAuthenticClaim(page);

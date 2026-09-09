@@ -9,6 +9,8 @@ import Callout from '@/components/ui/Callout.astro';
 import CheckList from '@/components/ui/CheckList.astro';
 import CtaBand from '@/components/ui/CtaBand.astro';
 import FeatureGrid from '@/components/ui/FeatureGrid.astro';
+import EditorialRows from '@/components/ui/EditorialRows.astro';
+import ShieldNeon from '@/components/ui/ShieldNeon.astro';
 import Icon from '@/components/ui/Icon.astro';
 import SectionHeader from '@/components/ui/SectionHeader.astro';
 import { getContent } from '@/content';
@@ -22,12 +24,14 @@ const { security } = getContent(locale);
 ---
 
 <Base locale={locale} routeKey="security" title={security.meta.title} description={security.meta.description}>
-  <PageHero eyebrow={security.hero.eyebrow} title={security.hero.title} subtitle={security.hero.subtitle} icon="shield-check" />
+  <PageHero eyebrow={security.hero.eyebrow} title={security.hero.title} subtitle={security.hero.subtitle} class="security-hero">
+    <ShieldNeon slot="aside" />
+  </PageHero>
 
   <section class="section" aria-labelledby="principles-title" data-reveal>
     <div class="container">
       <SectionHeader title={security.principles.title} intro={security.principles.intro} id="principles-title" />
-      <FeatureGrid items={security.principles.items} columns={3} />
+      <EditorialRows items={security.principles.items} />
     </div>
   </section>
 
@@ -117,6 +121,8 @@ const { security } = getContent(locale);
 </Base>
 
 <style>
+  /* El escudo ya incluye órbitas: retiramos el motivo duplicado solo en esta portada. */
+  :global(.hero.security-hero .hero__motif) { display: none; }
   .section__note {
     max-width: 62ch;
     margin-top: var(--space-8);

@@ -1,16 +1,17 @@
 ---
 /**
- * Cómo funciona: cinco pasos, la cadena nodo a nodo, señales y resultados de la verificación,
+ * Cómo funciona: cinco pasos, el ciclo de vida nodo a nodo, señales y resultados de la verificación,
  * requisitos para verificar y cierre.
  */
 import Base from '@/layouts/Base.astro';
+import QrBirth from '@/components/brand/QrBirth.astro';
 import PageHero from '@/components/ui/PageHero.astro';
 import Button from '@/components/ui/Button.astro';
 import Callout from '@/components/ui/Callout.astro';
 import ChainDiagram from '@/components/ui/ChainDiagram.astro';
 import CtaBand from '@/components/ui/CtaBand.astro';
 import FeatureGrid from '@/components/ui/FeatureGrid.astro';
-import OutcomeGrid from '@/components/ui/OutcomeGrid.astro';
+import StatusList from '@/components/ui/StatusList.astro';
 import SectionHeader from '@/components/ui/SectionHeader.astro';
 import SignalList from '@/components/ui/SignalList.astro';
 import StepList from '@/components/ui/StepList.astro';
@@ -23,10 +24,13 @@ interface Props {
 }
 const { locale } = Astro.props;
 const { howItWorks } = getContent(locale);
+const outcomeTones = { valid: 'success', warning: 'warning', invalid: 'danger', unverifiable: 'info' } as const;
 ---
 
 <Base locale={locale} routeKey="howItWorks" title={howItWorks.meta.title} description={howItWorks.meta.description}>
   <PageHero eyebrow={howItWorks.hero.eyebrow} title={howItWorks.hero.title} subtitle={howItWorks.hero.subtitle} />
+
+  <QrBirth locale={locale} />
 
   <section class="section" aria-labelledby="steps-title" data-reveal>
     <div class="container steps">
@@ -52,7 +56,14 @@ const { howItWorks } = getContent(locale);
       <SectionHeader title={howItWorks.verification.title} intro={howItWorks.verification.intro} id="verification-title" />
       <SignalList signals={howItWorks.verification.signals} />
       <div class="verification__outcomes">
-        <OutcomeGrid outcomes={howItWorks.verification.outcomes} />
+        <StatusList
+          items={howItWorks.verification.outcomes.map(outcome => ({
+            title: outcome.title,
+            body: outcome.body,
+            tone: outcomeTones[outcome.status],
+          }))}
+          headingLevel={3}
+        />
       </div>
       <div class="section__note">
         <Callout tone="warning">{howItWorks.verification.caution}</Callout>

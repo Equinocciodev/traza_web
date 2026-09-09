@@ -1,0 +1,38 @@
+---
+import { MOCK_UI } from '@/content/mock-ui';
+import { route, type Locale } from '@/i18n';
+import Wordmark from './Wordmark.astro';
+import Button from './Button.astro';
+interface Props { locale: Locale; headingLevel?: 2 | 3; class?: string }
+const { locale, headingLevel = 3, class: className } = Astro.props;
+const Heading = `h${headingLevel}` as 'h2' | 'h3';
+const c = MOCK_UI[locale];
+---
+<article class:list={['phone-screen', className]}>
+  <header><Wordmark size="sm" /><p class="phone-screen__example">{c.exampleLabel}</p></header>
+  <Heading>{c.phone.title}</Heading><p class="phone-screen__intro">{c.phone.intro}</p>
+  <dl>{c.phone.rows.map(row => <div><dt>{row.label}</dt><dd>{row.value}</dd></div>)}</dl>
+  <p class="phone-screen__code"><span>{c.phone.codeLabel}</span><strong>{c.unit.code}</strong></p>
+  <Button href={`${route(locale, 'verify')}?t=medicamentos&c=${c.unit.code}`} variant="pill" icon="arrow-right">{c.phone.cta}</Button>
+  <p class="phone-screen__note">{c.phone.note}</p>
+</article>
+<style>
+  .phone-screen { --color-text-secondary: var(--color-neutral-600); --color-border: var(--color-neutral-200); --color-border-strong: var(--color-neutral-300); --color-heading: var(--color-navy-950); --color-primary: var(--color-cobalt-600); --color-on-primary: var(--color-white); position: relative; width: 100%; max-width: 22.5rem; margin-inline: auto; padding: 2rem 1.25rem 2.25rem; border: 5px solid var(--color-navy-950); border-radius: 1.75rem; background: var(--color-white); color: var(--color-navy-950); box-shadow: 0 12px 36px #07152b18; }
+  /* Marco de teléfono: la ficha conserva su HTML legible y sus enlaces funcionales. */
+  .phone-screen::before, .phone-screen::after { content: ''; position: absolute; left: 50%; transform: translateX(-50%); height: 4px; border-radius: 999px; background: var(--color-navy-950); pointer-events: none; }
+  .phone-screen::before { top: 7px; width: 4.5rem; }
+  .phone-screen::after { bottom: 7px; width: 3.5rem; }
+  .phone-screen header { display: grid; gap: 1rem; margin-bottom: 1.25rem; }
+  .phone-screen :global(.wordmark) { --color-heading: var(--color-navy-950); }
+  .phone-screen__example { justify-self: start; padding: .375rem .5rem; margin: 0; background: var(--color-cobalt-50); color: var(--color-cobalt-700); font: 500 .625rem/1.5 var(--font-mono); text-transform: uppercase; }
+  .phone-screen h2, .phone-screen h3 { margin: 0 0 .75rem; font-size: 1.75rem; line-height: 1.1; color: var(--color-navy-950); }
+  .phone-screen__intro { margin: 0 0 1.5rem; font-size: .875rem; line-height: 1.6; color: var(--color-text-secondary); }
+  .phone-screen dl { margin: 0; border-top: 1px solid var(--color-border); }
+  .phone-screen dl > div { display: grid; grid-template-columns: minmax(0, .85fr) minmax(0, 1.15fr); gap: .875rem; padding-block: .875rem; border-bottom: 1px solid var(--color-border); }
+  .phone-screen dt { font-size: .8125rem; font-weight: 500; }
+  .phone-screen dd { margin: 0; font-size: .8125rem; color: var(--color-text-secondary); overflow-wrap: anywhere; }
+  .phone-screen__code { margin: 1.25rem 0; display: grid; gap: .375rem; font-size: .75rem; }
+  .phone-screen__code strong { font: 500 .8125rem var(--font-mono); overflow-wrap: anywhere; }
+  .phone-screen :global(.btn) { width: 100%; font-size: .8125rem; }
+  .phone-screen__note { margin: 1rem 0 0; color: var(--color-text-secondary); font-size: .75rem; line-height: 1.6; }
+</style>

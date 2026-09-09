@@ -1,0 +1,164 @@
+---
+import { STAMP } from '@/content/stamp';
+import { UNIT_QR_URL, UNIT_QR_PATH, UNIT_QR_SIZE, STAMP_PRINT_BARCODE } from '@/brand/unit-qr';
+import { route, type Locale } from '@/i18n';
+import Wordmark from './Wordmark.astro';
+import SectionHeader from './SectionHeader.astro';
+interface Props { locale: Locale; id?: string; class?: string; }
+const { locale, id = 'medicine-stamp', class: className } = Astro.props;
+const c = STAMP[locale];
+const href = `${route(locale, 'verify')}${new URL(UNIT_QR_URL).search}`;
+---
+<section class:list={['medicine-stamp', className]} aria-labelledby={`${id}-title`}>
+  <SectionHeader eyebrow={c.eyebrow} title={c.title} intro={c.intro} id={`${id}-title`} />
+  <div class="medicine-stamp__anatomy">
+    <figure class="medicine-stamp__figure" aria-label={c.labelName}>
+      <div class="medicine-stamp__paper">
+        <div class="medicine-stamp__lockup">
+          <span class="medicine-stamp__organization">{c.company}</span>
+          <span class="medicine-stamp__brand"><Wordmark size="md" /></span>
+          <span class="medicine-stamp__example">{c.example}</span>
+        </div>
+        <div class="medicine-stamp__body">
+          <img class="medicine-stamp__stock" src={`${import.meta.env.BASE_URL}images/brand/stamp-stock-v3.webp`} width="2172" height="724" alt="" aria-hidden="true" loading="lazy" decoding="async" />
+          <div class="medicine-stamp__qr-field" data-stamp-field="1">
+            <span class="medicine-stamp__label"><b class="medicine-stamp__number" aria-hidden="true">01</b><span class="medicine-stamp__label-text">{c.labels.qr}</span></span>
+            <a class="medicine-stamp__qr-link" href={href}>
+              <svg viewBox={`0 0 ${UNIT_QR_SIZE} ${UNIT_QR_SIZE}`} width="164" height="164" role="img" aria-label={c.qrLabel} shape-rendering="crispEdges"><rect width={UNIT_QR_SIZE} height={UNIT_QR_SIZE} fill="#fff"/><path d={UNIT_QR_PATH} fill="#0b1f3f"/></svg>
+              <span>{c.scan}</span>
+            </a>
+          </div>
+          <div class="medicine-stamp__product-fields">
+            <div class="medicine-stamp__field" data-stamp-field="2">
+              <span class="medicine-stamp__label"><b class="medicine-stamp__number" aria-hidden="true">02</b><span class="medicine-stamp__label-text">{c.labels.identifier}</span></span>
+              <strong class="medicine-stamp__serial">{c.serial}</strong>
+            </div>
+            <div class="medicine-stamp__field" data-stamp-field="3">
+              <span class="medicine-stamp__label"><b class="medicine-stamp__number" aria-hidden="true">03</b><span class="medicine-stamp__label-text">{c.labels.territory}</span></span>
+              <span class="medicine-stamp__territory">{c.territory}</span>
+            </div>
+            <div class="medicine-stamp__field" data-stamp-field="8">
+              <span class="medicine-stamp__label"><b class="medicine-stamp__number" aria-hidden="true">08</b><span class="medicine-stamp__label-text">{c.labels.product}</span></span>
+              <strong class="medicine-stamp__name">{c.product}</strong>
+            </div>
+            <div class="medicine-stamp__medicine-row">
+              <div class="medicine-stamp__field" data-stamp-field="7">
+                <span class="medicine-stamp__label"><b class="medicine-stamp__number" aria-hidden="true">07</b><span class="medicine-stamp__label-text">{c.labels.volume}</span></span>
+                <strong class="medicine-stamp__volume">{c.volume}</strong>
+              </div>
+              <div class="medicine-stamp__field" data-stamp-field="9">
+                <span class="medicine-stamp__label"><b class="medicine-stamp__number" aria-hidden="true">09</b><span class="medicine-stamp__label-text">{c.labels.medicine}</span></span>
+                <span>{c.form}<br /><strong>{c.concentration}</strong></span>
+              </div>
+            </div>
+            <div class="medicine-stamp__field medicine-stamp__responsible" data-stamp-field="10">
+              <span class="medicine-stamp__label"><b class="medicine-stamp__number" aria-hidden="true">10</b><span class="medicine-stamp__label-text">{c.labels.responsible}</span></span>
+              <span>{c.manufacturer}<br /><span class="medicine-stamp__mono">{c.registration}</span></span>
+            </div>
+          </div>
+          <div class="medicine-stamp__print-fields">
+            <div class="medicine-stamp__field" data-stamp-field="4">
+              <span class="medicine-stamp__label"><b class="medicine-stamp__number" aria-hidden="true">04</b><span class="medicine-stamp__label-text">{c.labels.domain}</span></span>
+              <a class="medicine-stamp__domain" href={href}>{c.domain}</a>
+            </div>
+            <div class="medicine-stamp__field" data-stamp-field="5">
+              <span class="medicine-stamp__label"><b class="medicine-stamp__number" aria-hidden="true">05</b><span class="medicine-stamp__label-text">{c.labels.sequence}</span></span>
+              <strong class="medicine-stamp__sequence">{c.sequence}</strong>
+              <span class="medicine-stamp__example-note">{c.sequenceNote}</span>
+            </div>
+            <div class="medicine-stamp__field medicine-stamp__barcode-field" data-stamp-field="6">
+              <span class="medicine-stamp__label"><b class="medicine-stamp__number" aria-hidden="true">06</b><span class="medicine-stamp__label-text">{c.labels.barcode}</span><span class="medicine-stamp__format">{c.barcodeName}</span></span>
+              <svg class="medicine-stamp__barcode" viewBox={`0 0 ${STAMP_PRINT_BARCODE.width} ${STAMP_PRINT_BARCODE.height}`} width="264" height="80" preserveAspectRatio="none" role="img" aria-label={c.barcodeLabel} shape-rendering="crispEdges"><rect width={STAMP_PRINT_BARCODE.width} height={STAMP_PRINT_BARCODE.height} fill="#fff"/><path d={STAMP_PRINT_BARCODE.path} fill="#0b1f3f"/></svg>
+            </div>
+            <div class="medicine-stamp__field" data-stamp-field="11">
+              <span class="medicine-stamp__label"><b class="medicine-stamp__number" aria-hidden="true">11</b><span class="medicine-stamp__label-text">{c.labels.issuedAt}</span></span>
+              <time datetime={c.issuedAt} class="medicine-stamp__mono">{c.issuedAt}</time>
+            </div>
+            <div class="medicine-stamp__field" data-stamp-field="12">
+              <span class="medicine-stamp__label"><b class="medicine-stamp__number" aria-hidden="true">12</b><span class="medicine-stamp__label-text">{c.labels.batch}</span></span>
+              <strong class="medicine-stamp__mono">{c.batch}</strong>
+            </div>
+          </div>
+        </div>
+      </div>
+      <figcaption class="medicine-stamp__note">{c.note}</figcaption>
+    </figure>
+    <ol class="medicine-stamp__features medicine-stamp__features--first" role="list">{c.features.slice(0, 6).map((feature, i) => <li><span class="medicine-stamp__feature-number" aria-hidden="true">{String(i + 1).padStart(2, '0')}</span><div><h3>{feature.title}</h3><p>{feature.body}</p></div></li>)}</ol>
+    <ol start="7" class="medicine-stamp__features" role="list">{c.features.slice(6).map((feature, i) => <li><span class="medicine-stamp__feature-number" aria-hidden="true">{String(i + 7).padStart(2, '0')}</span><div><h3>{feature.title}</h3><p>{feature.body}</p></div></li>)}</ol>
+  </div>
+</section>
+<style>
+  .medicine-stamp { --stamp-ink: var(--color-navy-900); --stamp-line: #a1dff3; }
+  .medicine-stamp__anatomy { display: flex; flex-direction: column; gap: 1.75rem; }
+  .medicine-stamp__figure { margin: 0; min-width: 0; }
+  .medicine-stamp__paper { border: 2px solid var(--stamp-line); border-radius: .75rem; overflow: hidden; color: var(--stamp-ink); background: #fff; box-shadow: 0 12px 32px rgba(11,31,63,.07); }
+  .medicine-stamp__lockup { display: flex; align-items: center; flex-wrap: wrap; gap: .75rem 1rem; padding: 1rem 1.25rem; background: var(--color-navy-900); color: #fff; border-bottom: 3px solid var(--color-cyan-400); }
+  .medicine-stamp__organization { flex: 0 1 20ch; font: 500 .6875rem/1.5 var(--font-mono); letter-spacing: .04em; }
+  .medicine-stamp__brand { display: flex; align-items: center; border-left: 1px solid var(--color-cyan-300); padding-left: 1rem; }
+  .medicine-stamp__brand :global(.wordmark) { color: #fff; }
+  .medicine-stamp__example { margin-left: auto; padding: .25rem .5rem; border: 1px solid #a1dff3; border-radius: 3px; font: 500 .6875rem/1.4 var(--font-mono); letter-spacing: .08em; }
+  .medicine-stamp__body { position: relative; isolation: isolate; display: grid; gap: 1.5rem; padding: 1.25rem; }
+  .medicine-stamp__stock { position: absolute; z-index: -1; inset: 0; width: 100%; height: 24rem; object-fit: cover; object-position: center; opacity: .35; pointer-events: none; }
+  .medicine-stamp__field { display: flex; min-width: 0; flex-direction: column; gap: .375rem; font-size: .875rem; line-height: 1.45; }
+  .medicine-stamp__label { display: flex; align-items: center; gap: .375rem; color: #475569; font-size: .6875rem; font-weight: 500; line-height: 1.4; }
+  .medicine-stamp__number { display: inline-flex; flex: 0 0 1.375rem; align-items: center; justify-content: center; width: 1.375rem; height: 1.375rem; border: 1px solid #087da3; border-radius: 50%; font: 500 .625rem/1 var(--font-mono); color: #065c7a; background: #e4f8fe; }
+  .medicine-stamp__qr-field { display: flex; flex-direction: column; align-items: center; gap: .5rem; }
+  .medicine-stamp__qr-link { display: flex; flex-direction: column; align-items: center; gap: .5rem; font-size: .8125rem; color: #1a3fb0; text-underline-offset: .2em; }
+  .medicine-stamp__qr-link svg { display: block; width: 164px; height: 164px; flex: 0 0 auto; background: #fff; }
+  .medicine-stamp__product-fields, .medicine-stamp__print-fields { display: flex; flex-direction: column; gap: 1rem; min-width: 0; }
+  .medicine-stamp__serial { font: 600 .875rem/1.5 var(--font-mono); overflow-wrap: anywhere; }
+  .medicine-stamp__territory { font-size: .8125rem; }
+  .medicine-stamp__name { font: 700 clamp(1.25rem, 2.2vw, 1.625rem)/1.25 var(--font-heading); }
+  .medicine-stamp__medicine-row { display: grid; grid-template-columns: minmax(0, .85fr) minmax(0, 1.15fr); gap: 1rem; }
+  .medicine-stamp__volume { font: 600 1.75rem/1.2 var(--font-heading); }
+  .medicine-stamp__responsible { padding-top: 1rem; border-top: 1px solid #dce4ee; }
+  .medicine-stamp__mono { font-family: var(--font-mono); font-size: .8125rem; overflow-wrap: anywhere; }
+  .medicine-stamp__print-fields { padding-top: 1.25rem; border-top: 1px solid #dce4ee; }
+  .medicine-stamp__domain { display: inline-flex; align-items: center; width: fit-content; min-width: 44px; min-height: 44px; max-width: 100%; font-weight: 600; font-size: 1rem; color: #1a3fb0; text-underline-offset: .2em; overflow-wrap: anywhere; }
+  .medicine-stamp__sequence { font: 600 1rem/1.2 var(--font-mono); }
+  .medicine-stamp__example-note { color: #475569; font-size: .6875rem; }
+  .medicine-stamp__barcode { display: block; width: 264px; max-width: 100%; height: 80px; background: #fff; }
+  .medicine-stamp__format { margin-left: auto; font: 400 .625rem/1.4 var(--font-mono); white-space: nowrap; }
+  .medicine-stamp__note { margin: 1rem 0 0; max-width: 100ch; color: var(--color-text-secondary); font-size: .75rem; line-height: 1.65; }
+  .medicine-stamp__features { display: grid; grid-template-columns: minmax(0, 1fr); gap: 1rem; list-style: none; padding: 0; margin: 0; }
+  .medicine-stamp__features li { display: flex; align-items: flex-start; gap: .625rem; min-width: 0; border-top: 1px solid var(--color-border); padding-top: .875rem; }
+  .medicine-stamp__feature-number { flex: 0 0 1.5rem; color: var(--color-link); font: 500 .75rem/1.6 var(--font-mono); }
+  .medicine-stamp__features h3 { font-size: .875rem; margin: 0 0 .375rem; line-height: 1.35; }
+  .medicine-stamp__features p { margin: 0; font-size: .8125rem; line-height: 1.5; color: var(--color-text-secondary); }
+  @media (min-width: 40em) {
+    .medicine-stamp__body { grid-template-columns: 164px minmax(0, 1fr); gap: 1.5rem; }
+    .medicine-stamp__print-fields { grid-column: 1 / -1; display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); align-items: start; }
+    .medicine-stamp__barcode-field { grid-column: 1 / -1; }
+    .medicine-stamp__features { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  }
+  @media (min-width: 64em) {
+    .medicine-stamp__lockup { padding-block: .75rem; }
+    .medicine-stamp__body { grid-template-columns: 164px minmax(0, 1.1fr) minmax(0, 1fr); align-items: start; padding: 1.125rem 1.5rem; gap: 1.5rem; }
+    .medicine-stamp__stock { height: 100%; opacity: .6; }
+    .medicine-stamp__qr-field { padding-top: .25rem; }
+    .medicine-stamp__product-fields, .medicine-stamp__print-fields { gap: .625rem; }
+    .medicine-stamp__product-fields .medicine-stamp__field, .medicine-stamp__print-fields .medicine-stamp__field { position: relative; padding-left: 1.875rem; gap: .25rem; }
+    .medicine-stamp__product-fields .medicine-stamp__label, .medicine-stamp__print-fields .medicine-stamp__label { height: 0; }
+    .medicine-stamp__product-fields .medicine-stamp__number, .medicine-stamp__print-fields .medicine-stamp__number { position: absolute; left: 0; top: .125rem; }
+    .medicine-stamp__product-fields .medicine-stamp__label-text, .medicine-stamp__print-fields .medicine-stamp__label-text { position: absolute; width: 1px; height: 1px; padding: 0; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }
+    .medicine-stamp__responsible { border: 0; padding-top: 0; }
+    .medicine-stamp__format { position: absolute; right: 0; top: -.875rem; }
+    .medicine-stamp__barcode-field { margin-top: .875rem; }
+    .medicine-stamp__barcode { height: 64px; }
+    .medicine-stamp__print-fields { grid-column: auto; display: flex; border-top: 0; border-left: 1px solid #dce4ee; padding: 0 0 0 1.5rem; }
+    .medicine-stamp__features { grid-template-columns: repeat(6, minmax(0, 1fr)); gap: 1rem; }
+    .medicine-stamp__features--first { order: -1; }
+    .medicine-stamp__features li { display: block; }
+    .medicine-stamp__feature-number { display: block; margin-bottom: .375rem; }
+    .medicine-stamp__features h3 { font-size: .8125rem; }
+    .medicine-stamp__features p { font-size: .75rem; }
+  }
+  @media (max-width: 23em) {
+    .medicine-stamp__lockup { gap: .75rem; padding: .875rem; }
+    .medicine-stamp__organization { flex-basis: 18ch; font-size: .625rem; }
+    .medicine-stamp__brand { padding-left: .75rem; }
+    .medicine-stamp__brand :global(.wordmark) { --wm-size: 1.125rem; }
+    .medicine-stamp__example { font-size: .625rem; }
+    .medicine-stamp__body { padding: 1rem; }
+  }
+</style>

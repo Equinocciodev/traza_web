@@ -3,8 +3,8 @@
  * Banda de cierre con título, texto y dos CTA sobre azul marino, con motivo QR discreto.
  */
 import Button from './Button.astro';
-import QrMotif from './QrMotif.astro';
-import { ctaHref, ctaVariant } from './cta';
+import NeonTrace from './NeonTrace.astro';
+import { ctaHref } from './cta';
 import type { Cta } from '@/content/types';
 import type { Locale } from '@/i18n';
 
@@ -23,19 +23,19 @@ const { locale, title, body, primaryCta, secondaryCta, id = 'cta-title', class: 
 <!-- Motion: el revelado va en el contenedor interior (copia y acciones escalonadas); el fondo azul y el motivo QR
      decorativo quedan siempre pintados, así un scroll rápido nunca deja un hueco blanco antes del pie. -->
 <section class:list={['cta-band', 'on-dark', className]} aria-labelledby={id}>
-  <div class="cta-band__motif" aria-hidden="true"><QrMotif /></div>
+  <div class="cta-band__motif" aria-hidden="true"><NeonTrace variant="loop" /></div>
   <div class="container cta-band__inner" data-reveal data-reveal-stagger>
     <div class="cta-band__copy">
       <h2 id={id} class="cta-band__title">{title}</h2>
       {body && <p class="cta-band__body">{body}</p>}
     </div>
     <div class="cta-band__actions cluster">
-      <Button href={ctaHref(locale, primaryCta)} variant={ctaVariant(primaryCta, 'primary')} size="lg" icon="arrow-right">
+      <Button href={ctaHref(locale, primaryCta)} variant="pill" tone="onDark" size="lg" icon="arrow-right">
         {primaryCta.label}
       </Button>
       {
         secondaryCta && (
-          <Button href={ctaHref(locale, secondaryCta)} variant={ctaVariant(secondaryCta, 'secondary')} size="lg">
+          <Button href={ctaHref(locale, secondaryCta)} variant="pill" tone="outline" size="lg">
             {secondaryCta.label}
           </Button>
         )
@@ -50,15 +50,16 @@ const { locale, title, body, primaryCta, secondaryCta, id = 'cta-title', class: 
     overflow: hidden;
     isolation: isolate;
     padding-block: clamp(3rem, 6vw, 5rem);
-    background: var(--color-navy-900);
+    background: var(--color-navy-950);
+    border-top: 1px solid rgba(25, 200, 255, .35);
   }
   .cta-band__motif {
     position: absolute;
     z-index: -1;
-    right: -9rem;
-    top: -10rem;
-    width: 20rem;
-    height: 20rem;
+    right: -2rem;
+    top: -4rem;
+    width: 32rem;
+    height: 30rem;
     color: var(--color-white);
     opacity: 0.8;
     pointer-events: none;
@@ -83,7 +84,7 @@ const { locale, title, body, primaryCta, secondaryCta, id = 'cta-title', class: 
   }
   .cta-band__title {
     color: var(--color-white);
-    font-size: var(--text-2xl);
+    font-size: clamp(2rem,3.6vw,3.25rem);
     margin-bottom: var(--space-3);
   }
   .cta-band__body {

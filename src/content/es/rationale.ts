@@ -139,8 +139,8 @@ export const rationale: ReferencePageContent = {
 
   cta: {
     title: 'Dónde sigue esto',
-    body: 'Las capas que trabajan contra la copia, la custodia de las claves y lo que el sistema no promete están en Seguridad y confianza. La propuesta concreta para un regulador de licores está en el caso de uso.',
+    body: 'Las capas que trabajan contra la copia, la custodia de las claves y lo que el sistema no promete están en Seguridad y confianza. La propuesta concreta para un regulador de medicamentos está en el caso de uso.',
     primaryCta: { label: 'Seguridad y confianza', key: 'security', variant: 'primary' },
-    secondaryCta: { label: 'Ver el caso de uso', key: 'caseSpirits', variant: 'secondary' },
+    secondaryCta: { label: 'Ver el caso de uso', key: 'caseMedicines', variant: 'secondary' },
   },
 };

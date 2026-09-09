@@ -1,0 +1,21 @@
+---
+import ArrowUpRight from './ArrowUpRight.astro';
+interface Props { items: { title: string; body: string; href?: string }[]; headingLevel?: 2 | 3 | 4; class?: string }
+const { items, headingLevel = 3, class: className } = Astro.props;
+const Heading = `h${headingLevel}` as 'h2' | 'h3' | 'h4';
+---
+<ol class:list={['editorial-rows', className]}>
+  {items.map((item, i) => <li><span class="editorial-rows__number" aria-hidden="true">{String(i + 1).padStart(2, '0')}</span><Heading>{item.href ? <a href={item.href}>{item.title}</a> : item.title}</Heading><p>{item.body}</p>{item.href && <span class="editorial-rows__arrow" aria-hidden="true"><ArrowUpRight size={24} /></span>}</li>)}
+</ol>
+<style>
+  .editorial-rows { list-style: none; padding: 0; margin: 0; border-bottom: 1px solid var(--color-border); }
+  .editorial-rows li { display: grid; grid-template-columns: 2rem minmax(0, 1fr) auto; align-items: start; gap: .75rem; padding: 1.5rem 0; border-top: 1px solid var(--color-border); }
+  .editorial-rows__number { font: 500 .8125rem/1.8 var(--font-mono); color: var(--color-cobalt-600); }
+  .editorial-rows h2, .editorial-rows h3, .editorial-rows h4 { margin: 0; font: 500 clamp(1.25rem, 2vw, 1.5rem)/1.3 var(--font-heading); color: var(--color-navy-950); }
+  .editorial-rows p { grid-column: 2; margin: 0; color: var(--color-text-secondary); line-height: 1.65; }
+  .editorial-rows a { display: inline-flex; align-items: center; min-height: 44px; margin-top: -.45rem; text-decoration: none; color: inherit; }
+  .editorial-rows a:hover { color: var(--color-cobalt-600); }
+  .editorial-rows a:focus-visible { outline: 2px solid var(--color-cobalt-600); outline-offset: 4px; }
+  .editorial-rows__arrow { grid-column: 3; grid-row: 1; color: var(--color-cobalt-600); }
+  @media (min-width: 50em) { .editorial-rows li { grid-template-columns: 3rem minmax(0, 1fr) minmax(0, 1.2fr) 2rem; gap: 1.5rem; padding-block: 2rem; } .editorial-rows p { grid-column: 3; } .editorial-rows__arrow { grid-column: 4; } }
+</style>

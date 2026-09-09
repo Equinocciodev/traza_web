@@ -3,7 +3,7 @@
 
   Origen (ver docs/01-hito-evidencia-y-plan.md §9):
   - Descripciones verificadas [F]: azul marino y blanco como base institucional; acentos azul, rojo,
-    amarillo y verde (caso de uso licores); cobalto y cian eléctrico (marca corporativa en Instagram);
+    amarillo y verde (paleta semántica); cobalto y cian eléctrico (marca corporativa en Instagram);
     Space Grotesk para títulos, Roboto para texto y Roboto Mono para seriales (PDF Rev. B).
   - Valores hexadecimales [I/P]: derivados de las descripciones; ajustar aquí al cotejar con el PDF.
   Todos los pares texto/fondo semánticos cumplen contraste AA (≥ 4,5:1) sobre su fondo asignado.
@@ -28,6 +28,7 @@
   --color-cyan-400: #19c8ff;
   --color-cyan-300: #5edbff;
   --color-cyan-100: #ddf6ff;
+  --color-mint-100: #e6fbf4;
 
   /* ---- Neutros fríos ---- */
   --color-white: #ffffff;
@@ -42,7 +43,7 @@
   --color-neutral-800: #1e293b;
   --color-neutral-900: #0f172a;
 
-  /* ---- Acentos del caso de uso licores (PDF): azul, rojo, amarillo, verde ---- */
+  /* ---- Acentos semánticos auxiliares ---- */
   --color-accent-blue: #1d4ed8;
   --color-accent-red: #c81e1e;
   --color-accent-yellow: #f5b700; /* decorativo o fondo con texto oscuro; nunca como texto sobre blanco */
@@ -197,13 +198,13 @@
   background-color: var(--color-bg);
 }
 
-/* Tenant de ejemplo: caso de uso licores (propuesta de piloto). Acentos azul, rojo, amarillo y verde. */
-[data-tenant='licores'] {
+/* Tenant de ejemplo: medicamentos. Mantiene la paleta navy, cobalto y cian de Traza. */
+[data-tenant='medicamentos'] {
   --tenant-primary: var(--color-navy-900);
-  --tenant-accent: var(--color-accent-blue);
-  --tenant-accent-2: var(--color-accent-red);
-  --tenant-accent-3: var(--color-accent-yellow);
-  --tenant-accent-4: var(--color-accent-green);
+  --tenant-accent: var(--color-cyan-400);
+  --tenant-accent-2: var(--color-cobalt-600);
+  --tenant-accent-3: var(--color-cobalt-500);
+  --tenant-accent-4: var(--color-cyan-300);
 }
 
 @media (prefers-reduced-motion: reduce) {

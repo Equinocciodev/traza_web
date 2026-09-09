@@ -9,7 +9,8 @@ import type { IconName } from '@/content/types';
 
 interface Props {
   href?: string;
-  variant?: 'primary' | 'secondary' | 'ghost' | 'link';
+  variant?: 'primary' | 'secondary' | 'ghost' | 'link' | 'pill';
+  tone?: 'onDark' | 'outline';
   size?: 'md' | 'lg' | 'sm';
   type?: 'button' | 'submit' | 'reset';
   icon?: IconName;
@@ -23,6 +24,7 @@ interface Props {
 const {
   href,
   variant = 'primary',
+  tone,
   size = 'md',
   type = 'button',
   icon,
@@ -33,7 +35,7 @@ const {
   ...rest
 } = Astro.props;
 
-const classes = ['btn', `btn--${variant}`, `btn--${size}`, className];
+const classes = ['btn', `btn--${variant}`, `btn--${size}`, tone && `btn--${tone}`, className];
 const Tag = href ? 'a' : 'button';
 const attrs: Record<string, unknown> = href
   ? { href, ...(external ? { target: '_blank', rel: 'noopener noreferrer' } : {}), ...(disabled ? { 'aria-disabled': 'true', tabindex: -1 } : {}) }
@@ -81,6 +83,13 @@ const attrs: Record<string, unknown> = href
   .btn:active {
     transform: translateY(1px);
   }
+  .btn--pill { border-radius: 999px; min-height: 48px; padding-inline: 1.6rem; }
+  .btn--onDark { --btn-bg: var(--color-cyan-400); --btn-fg: var(--color-navy-950); --btn-border: var(--color-cyan-400); }
+  .btn--onDark:hover { --btn-bg: var(--color-cyan-300); --btn-border: var(--color-cyan-300); }
+  .btn--outline { --btn-bg: transparent; --btn-fg: var(--color-navy-950); --btn-border: currentColor; }
+  .btn--outline:hover { --btn-bg: var(--color-cyan-100); }
+  :global(.on-dark) .btn--outline { --btn-fg: white; }
+  :global(.on-dark) .btn--outline:hover { --btn-bg: var(--color-navy-700); --btn-border: white; }
   .btn--lg {
     padding: 0.875rem 1.5rem;
     font-size: var(--text-lg);

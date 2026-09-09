@@ -1,0 +1,112 @@
+---
+import { route, withBase, type Locale } from '@/i18n';
+import { QR_BIRTH } from '@/content/qr-birth';
+import Eyebrow from '../ui/Eyebrow.astro';
+import StepFlow from '../ui/StepFlow.astro';
+import Wordmark from '../ui/Wordmark.astro';
+import Icon from '../ui/Icon.astro';
+interface Props { locale: Locale; variant?: 'full' | 'compact'; id?: string }
+const { locale, variant = 'full', id = 'qr-birth' } = Astro.props;
+const c = QR_BIRTH[locale];
+const titleId = `${id}-title`;
+const phaseTitleId = `${id}-phase-title`;
+const verifyHref = `${route(locale, 'verify')}?t=medicamentos&c=${c.unitCode}`;
+---
+<section class:list={['birth', 'on-dark', `birth--${variant}`]} aria-labelledby={titleId}>
+  <div class="birth__container">
+    <div class="birth__main">
+      <div class="birth__copy">
+        <Wordmark size="lg" />
+        <Eyebrow>{c.eyebrow}</Eyebrow>
+        <h2 id={titleId}>{c.title}</h2>
+        <p class="birth__intro">{c.body}</p>
+        <a class="birth__unit" href={verifyHref}>
+          <img src={withBase('/images/qr/ejemplo-traza.png')} alt="" width="600" height="600" loading="lazy" decoding="async" />
+          <span><span class="birth__unit-label">{c.unitCta}</span><strong>{c.unitCode}</strong><Icon name="arrow-right" size={20} /></span>
+        </a>
+      </div>
+      <figure class="birth__product">
+        <img src={withBase('/images/brand/qr-birth-product.webp')} alt={c.image.alt} width="1254" height="1254" loading="lazy" decoding="async" />
+        <figcaption>{c.image.caption}</figcaption>
+      </figure>
+      <aside class="birth__phase" aria-labelledby={phaseTitleId}>
+        <p class="birth__phase-label">{c.phase.label}</p>
+        <h3 id={phaseTitleId}>{c.phase.title}</h3>
+        <ul>{c.phase.items.map(item => <li><span class="birth__phase-icon"><Icon name={item.icon} size={27} /></span><div><h4>{item.title}</h4><p>{item.body}</p></div></li>)}</ul>
+        <p class="birth__phase-note">{c.phase.note}</p>
+      </aside>
+    </div>
+    <div class="birth__steps"><StepFlow items={c.steps} columns={3} /></div>
+    <footer class="birth__footer">
+      <ol class="birth__lifecycle" aria-label={c.lifecycleLabel}>{c.lifecycle.map((stage, i) => <li>{stage}{i < c.lifecycle.length - 1 && <Icon name="arrow-right" size={22} />}</li>)}</ol>
+      <div class="birth__closing"><p class="birth__tagline">{c.tagline.map(part => <span>{part}</span>)}</p><p class="birth__note">{c.note}</p></div>
+    </footer>
+  </div>
+</section>
+<style>
+  .birth { padding-block: clamp(3rem, 6vw, 6rem); background: var(--color-navy-950); color: var(--color-white); }
+  .birth__container { width: min(90%, 81.25rem); margin-inline: auto; }
+  .birth__main { display: grid; gap: 2rem; align-items: center; }
+  .birth__copy, .birth__product, .birth__phase { min-width: 0; }
+  .birth__copy :global(.wordmark) { --color-heading: var(--color-white); margin-bottom: 1.75rem; }
+  .birth__copy :global(.eyebrow) { margin-bottom: 1rem; }
+  .birth h2 { color: var(--color-white); max-width: 14ch; margin: 0; font-size: clamp(2.1rem, 3.8vw, 3.5rem); line-height: 1.08; letter-spacing: -.035em; }
+  .birth__intro { font-size: 1rem; line-height: 1.65; max-width: 42ch; color: var(--color-neutral-200); margin: 1.25rem 0 1.5rem; }
+  .birth__unit { display: grid; grid-template-columns: 104px minmax(0, 1fr); gap: 1rem; align-items: center; max-width: 25rem; min-height: 44px; text-decoration: none; color: var(--color-white); }
+  .birth__unit > img { display: block; width: 104px; height: 104px; background: var(--color-white); }
+  .birth__unit > span { display: grid; justify-items: start; gap: .5rem; min-width: 0; }
+  .birth__unit-label { font-size: .875rem; line-height: 1.4; color: var(--color-cyan-100); }
+  .birth__unit strong { font: 500 .75rem/1.6 var(--font-mono); overflow-wrap: anywhere; }
+  .birth__unit :global(.icon) { color: var(--color-cyan-400); }
+  .birth__unit:hover .birth__unit-label { text-decoration: underline; text-underline-offset: .2em; }
+  .birth__unit:focus-visible { outline: 2px solid var(--color-cyan-400); outline-offset: 6px; border-radius: 4px; }
+  .birth__product { margin: 0; align-self: center; }
+  .birth__product > img {
+    display: block; width: 100%; height: auto; object-fit: contain;
+    -webkit-mask-image: linear-gradient(to right, transparent, #000 10%, #000 90%, transparent), linear-gradient(to bottom, transparent, #000 10%, #000 86%, transparent);
+    mask-image: linear-gradient(to right, transparent, #000 10%, #000 90%, transparent), linear-gradient(to bottom, transparent, #000 10%, #000 86%, transparent);
+    -webkit-mask-composite: source-in;
+    mask-composite: intersect;
+  }
+  .birth__product figcaption { margin: .75rem auto 0; max-width: 50ch; color: var(--color-neutral-200); font-size: .75rem; line-height: 1.6; }
+  .birth__phase { border-top: 1px solid var(--color-cyan-400); padding-top: 1rem; }
+  .birth__phase-label { font: 500 .75rem/1.5 var(--font-mono); text-transform: uppercase; letter-spacing: .08em; color: var(--color-cyan-100); margin: 0 0 .75rem; }
+  .birth__phase h3 { margin: 0 0 1.5rem; color: var(--color-white); font-size: 1.375rem; line-height: 1.25; }
+  .birth__phase ul { display: grid; gap: 1.5rem; padding: 0; margin: 0; list-style: none; }
+  .birth__phase li { display: grid; grid-template-columns: 34px minmax(0, 1fr); gap: .75rem; }
+  .birth__phase-icon { color: var(--color-cyan-400); }
+  .birth__phase h4 { margin: 0 0 .625rem; color: var(--color-white); font-size: 1rem; line-height: 1.35; }
+  .birth__phase li p { margin: 0; color: var(--color-neutral-200); font-size: .875rem; line-height: 1.6; }
+  .birth__phase-note { margin: 1.25rem 0 0; padding-top: 1rem; border-top: 1px solid var(--color-border); color: var(--color-neutral-200); font-size: .75rem; line-height: 1.6; }
+  .birth__steps { margin-top: 2.5rem; }
+  .birth__steps :global(.flow h3) { font-size: 1.0625rem; }
+  .birth__steps :global(.flow p) { font-size: .875rem; line-height: 1.6; }
+  .birth__footer { margin-top: 2.5rem; border-top: 1px solid var(--color-cyan-400); padding-top: 1.25rem; }
+  .birth__lifecycle { display: grid; gap: 1rem; list-style: none; padding: 0; margin: 0; }
+  .birth__lifecycle li { display: flex; align-items: center; gap: 1rem; font-size: .9375rem; line-height: 1.5; }
+  .birth__lifecycle :global(.icon) { color: var(--color-cyan-400); flex: none; }
+  .birth__closing { display: grid; gap: 1rem; margin-top: 1.5rem; align-items: end; }
+  .birth__tagline { display: flex; flex-wrap: wrap; gap: 0 .3em; margin: 0; font: 600 clamp(1.625rem, 3vw, 2.5rem)/1.15 var(--font-heading); color: var(--color-white); }
+  .birth__note { margin: 0; max-width: 65ch; color: var(--color-neutral-200); font-size: .8125rem; line-height: 1.6; }
+  @media (min-width: 48em) {
+    .birth__main { grid-template-columns: minmax(0, 1fr) minmax(0, 1.2fr); }
+    .birth__phase { grid-column: 1 / -1; }
+    .birth__phase ul { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 2rem; }
+    .birth__lifecycle { grid-template-columns: 1fr 1.6fr 1fr; align-items: center; }
+    .birth__lifecycle li { justify-content: space-between; }
+    .birth__closing { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 2rem; }
+  }
+  @media (min-width: 68em) {
+    .birth--full .birth__main { grid-template-columns: minmax(0, 1fr) minmax(0, 1.35fr) minmax(0, .9fr); gap: 1.75rem; }
+    .birth--full .birth__phase { grid-column: auto; align-self: center; }
+    .birth--full .birth__phase ul { grid-template-columns: 1fr; }
+    .birth--full .birth__phase h3 { font-size: 1.25rem; }
+    .birth--full .birth__phase li { grid-template-columns: 27px minmax(0, 1fr); gap: .625rem; }
+  }
+  .birth--compact { padding-block: clamp(2.5rem, 4.5vw, 4.5rem); }
+  .birth--compact .birth__copy :global(.wordmark) { --wm-size: 1.5rem; margin-bottom: 1rem; }
+  .birth--compact h2 { font-size: clamp(2rem, 3.2vw, 3rem); }
+  .birth--compact .birth__product { max-width: 30rem; justify-self: center; }
+  .birth--compact .birth__steps, .birth--compact .birth__footer { margin-top: 2rem; }
+  @media (max-width: 47.99em) { .birth__lifecycle li:not(:last-child) :global(.icon) { transform: rotate(90deg); } }
+</style>

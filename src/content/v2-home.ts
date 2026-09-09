@@ -19,22 +19,22 @@ export const V2_HOME: Record<Locale, HomeV2Content> = {
   es: {
     meta: { title: 'El origen importa. La evidencia conecta.', description: 'Traza conecta productos, industria e instituciones: una identidad firmada por unidad, el registro de su ciclo de vida y una consulta que cualquiera puede hacer.' },
     nav: [
-      { label: 'Plataforma', key: 'platform' },
-      { label: 'Cómo funciona', key: 'home', anchor: '#historia' },
       { label: 'Soluciones', key: 'solutions' },
+      { label: 'Plataforma', key: 'platform' },
+      { label: 'Recursos', key: 'howItWorks' },
       { label: 'Empresa', key: 'company' },
     ],
     hero: {
       badge: 'Identidad digital para productos reales', title: ['El origen importa', 'La evidencia conecta'],
-      intro: 'Tecnología de trazabilidad para conectar productos, industria e instituciones.',
+      intro: 'Identidad digital para medicamentos: un QR por unidad, desde la producción hasta la consulta pública.',
       primaryAction: 'Conocer el proceso', secondaryAction: 'Probar verificación',
-      imageAlt: 'Una botella ámbar cuya etiqueta lleva un código QR y el identificador TRZ-7F2K-4K7Q-92FA, junto a una caja y una bolsa sin marca.',
-      relationship: 'La botella representa una unidad vinculada a su registro. La relación de datos no certifica el objeto físico ni corresponde a los otros envases.',
+      imageAlt: 'Un frasco ámbar de solución oral de 120 ml cuya etiqueta lleva un código QR y el identificador TRZ-7F2K-4K7Q-92FA, junto a una caja de medicamento y un blíster.',
+      relationship: 'El frasco representa una unidad vinculada a su registro. La relación de datos no certifica el objeto físico ni corresponde a los otros envases.',
     },
-    record: { title: 'Registro de la unidad', productLabel: 'Producto', product: 'Ron · 750 ml', lotLabel: 'Lote', eventLabel: 'Último evento', event: 'Consulta pública', disclaimer: 'La consulta no certifica autenticidad física.', action: 'Explorar el registro' },
+    record: { title: 'Registro de la unidad', productLabel: 'Producto', product: 'Solución oral · 120 ml', lotLabel: 'Lote', eventLabel: 'Último evento', event: 'Consulta pública', disclaimer: 'La consulta no certifica autenticidad física.', action: 'Explorar el registro' },
     perspectives: {
       eyebrow: 'La plataforma, en acción', title: 'Un registro. Tres perspectivas.',
-      intro: 'Prueba qué puede consultar una persona, cómo se organiza una cadena y qué información revisa un equipo de control.',
+      intro: 'Prueba qué puede consultar una persona, cómo se registra el ciclo de vida y qué información revisa un equipo de control.',
       items: [
         { title: 'Consulta pública', body: 'Compara el producto con su registro y entiende cada resultado, incluidos sus límites.', action: 'Probar la consulta', key: 'verify', icon: 'scan' },
         { title: 'Recorrido de la unidad', body: 'Sigue los eventos de una unidad: quién los aporta, cuándo ocurren y qué información contienen.', action: 'Explorar el recorrido', key: 'journey', icon: 'history' },
@@ -46,7 +46,7 @@ export const V2_HOME: Record<Locale, HomeV2Content> = {
       eyebrow: 'Una propuesta multisector', title: 'Una base común. Distintas necesidades.',
       body: 'Cada industria tiene sus productos y cada programa, sus reglas. Traza propone conectar identidades, eventos y consultas con un alcance y unas responsabilidades definidos para cada implementación.',
       links: [{ label: 'Para la industria', key: 'solutionsIndustry' }, { label: 'Para instituciones', key: 'solutionsGovernment' }, { label: 'Para las personas', key: 'solutionsCitizens' }],
-      note: 'Bebidas y alimentos son ejemplos de uso. Integraciones, permisos y operación se acuerdan y validan en cada programa.',
+      note: 'Medicamentos es el caso de uso de esta web. Integraciones, permisos y operación se acuerdan y validan en cada programa.',
     },
     company: {
       eyebrow: 'Conoce Traza', title: 'Tecnología privada. Vocación de servicio.',
@@ -57,20 +57,20 @@ export const V2_HOME: Record<Locale, HomeV2Content> = {
   en: {
     meta: { title: 'Origin matters. Evidence connects.', description: 'Traza connects products, industry and institutions: a signed identity per unit, the record of its lifecycle, and a public lookup anyone can run from a browser.' },
     nav: [
-      { label: 'Platform', key: 'platform' }, { label: 'How it works', key: 'home', anchor: '#historia' },
-      { label: 'Solutions', key: 'solutions' }, { label: 'Company', key: 'company' },
+      { label: 'Solutions', key: 'solutions' }, { label: 'Platform', key: 'platform' },
+      { label: 'Resources', key: 'howItWorks' }, { label: 'Company', key: 'company' },
     ],
     hero: {
       badge: 'Digital identity for real products', title: ['Origin matters', 'Evidence connects'],
-      intro: 'Traceability technology connecting products, industry and institutions.',
+      intro: 'Digital identity for medicines: one QR per unit, from production to public lookup.',
       primaryAction: 'Discover the process', secondaryAction: 'Try verification',
-      imageAlt: 'An amber bottle whose label carries a QR code and the identifier TRZ-7F2K-4K7Q-92FA, next to a carton and an unbranded pouch.',
+      imageAlt: 'A 120 ml amber oral-solution bottle whose label carries a QR code and the identifier TRZ-7F2K-4K7Q-92FA, next to a medicine carton and a blister pack.',
       relationship: 'The bottle represents a unit linked to its record. This data relationship does not certify the physical object or apply to the other packages.',
     },
-    record: { title: 'Unit record', productLabel: 'Product', product: 'Rum · 750 ml', lotLabel: 'Lot', eventLabel: 'Latest event', event: 'Public query', disclaimer: 'The lookup does not certify physical authenticity.', action: 'Explore the record' },
+    record: { title: 'Unit record', productLabel: 'Product', product: 'Oral solution · 120 ml', lotLabel: 'Lot', eventLabel: 'Latest event', event: 'Public query', disclaimer: 'The lookup does not certify physical authenticity.', action: 'Explore the record' },
     perspectives: {
       eyebrow: 'The platform, in action', title: 'One record. Three perspectives.',
-      intro: 'Try what a person can query, how a supply chain is organized and what information a control team reviews.',
+      intro: 'Try what a person can query, how a unit’s lifecycle is recorded and what information a control team reviews.',
       items: [
         { title: 'Public query', body: 'Compare the product with its record and understand each result, including its limits.', action: 'Try a query', key: 'verify', icon: 'scan' },
         { title: 'Unit journey', body: 'Follow a unit’s events: who reports them, when they happen and what information they contain.', action: 'Explore the journey', key: 'journey', icon: 'history' },
@@ -82,7 +82,7 @@ export const V2_HOME: Record<Locale, HomeV2Content> = {
       eyebrow: 'A multisector proposal', title: 'A shared foundation. Different needs.',
       body: 'Every industry has its products and every program has its rules. Traza proposes connecting identities, events and queries with a scope and responsibilities defined for each implementation.',
       links: [{ label: 'For industry', key: 'solutionsIndustry' }, { label: 'For institutions', key: 'solutionsGovernment' }, { label: 'For people', key: 'solutionsCitizens' }],
-      note: 'Beverages and food are example use cases. Integrations, permissions and operations are agreed and validated for each program.',
+      note: 'Medicines are the use case featured on this website. Integrations, permissions and operations are agreed and validated for each program.',
     },
     company: {
       eyebrow: 'Meet Traza', title: 'Private technology. A commitment to service.',

@@ -11,6 +11,11 @@ import CtaBand from '@/components/ui/CtaBand.astro';
 import FeatureGrid from '@/components/ui/FeatureGrid.astro';
 import SectionHeader from '@/components/ui/SectionHeader.astro';
 import StepList from '@/components/ui/StepList.astro';
+import StepFlow from '@/components/ui/StepFlow.astro';
+import MockPhone from '@/components/ui/MockPhone.astro';
+import Button from '@/components/ui/Button.astro';
+import Eyebrow from '@/components/ui/Eyebrow.astro';
+import { ctaHref } from '@/components/ui/cta';
 import PerspectiveGrid from '@/components/site/PerspectiveGrid.astro';
 import { getContent } from '@/content';
 import type { Locale, RouteKey } from '@/i18n';
@@ -22,6 +27,7 @@ interface Props {
   sector: SectorKey;
 }
 const { locale, sector } = Astro.props;
+const isCitizens = sector === 'citizens';
 const content = getContent(locale);
 const ROUTE_KEYS: Record<SectorKey, RouteKey> = {
   government: 'solutionsGovernment',
@@ -36,7 +42,32 @@ const page = {
 ---
 
 <Base locale={locale} routeKey={ROUTE_KEYS[sector]} title={page.meta.title} description={page.meta.description}>
-  <PageHero eyebrow={page.hero.eyebrow} title={page.hero.title} subtitle={page.hero.subtitle} icon={page.hero.icon} />
+  {isCitizens ? (
+    <section class="citizens-hero" aria-labelledby="page-title">
+      <div class="container citizens-hero__inner">
+        <div class="citizens-hero__copy">
+          <Eyebrow>{page.hero.eyebrow}</Eyebrow>
+          <h1 id="page-title">{page.hero.title.split(/(?<=\.)\s+/).map((line) => <span>{line}{' '}</span>)}</h1>
+          <p class="lede citizens-hero__intro">{page.hero.subtitle}</p>
+          <Button href={ctaHref(locale, page.cta.primaryCta)} variant="pill" icon="arrow-right">
+            {page.cta.primaryCta.label}
+          </Button>
+        </div>
+        <div class="citizens-hero__phone"><MockPhone locale={locale} headingLevel={2} /></div>
+      </div>
+    </section>
+  ) : (
+    <PageHero eyebrow={page.hero.eyebrow} title={page.hero.title} subtitle={page.hero.subtitle} icon={page.hero.icon} />
+  )}
+
+  {isCitizens && (
+    <section class="section" aria-labelledby="flow-title" data-reveal>
+      <div class="container citizens-flow">
+        <SectionHeader title={page.flow.title} intro={page.flow.intro} id="flow-title" />
+        <StepFlow items={page.flow.steps} columns={4} />
+      </div>
+    </section>
+  )}
 
   <section class="section" aria-labelledby="challenges-title" data-reveal>
     <div class="container">
@@ -52,14 +83,14 @@ const page = {
     </div>
   </section>
 
-  <section class="section" aria-labelledby="flow-title" data-reveal>
+  {!isCitizens && <section class="section" aria-labelledby="flow-title" data-reveal>
     <div class="container flow">
       <SectionHeader title={page.flow.title} intro={page.flow.intro} id="flow-title" class="flow__header" />
       <div class="flow__steps">
         <StepList steps={page.flow.steps} />
       </div>
     </div>
-  </section>
+  </section>}
 
   <section class="section section--subtle" aria-labelledby="outcomes-title" data-reveal>
     <div class="container outcomes">
@@ -85,6 +116,33 @@ const page = {
 </Base>
 
 <style>
+  .citizens-hero {
+    background: #e6fbf4;
+    color: var(--color-navy-950);
+    padding-block: clamp(3rem, 6vw, 5.5rem);
+  }
+  .citizens-hero__inner {
+    display: grid;
+    gap: 3rem;
+    align-items: center;
+  }
+  .citizens-hero__copy { min-width: 0; max-width: 42rem; }
+  .citizens-hero h1 {
+    max-width: 20ch;
+    margin: 0 0 1.5rem;
+    color: var(--color-navy-950);
+    font-size: clamp(2.25rem, 4.2vw, 3.75rem);
+    line-height: 1.1;
+    letter-spacing: -0.035em;
+    text-wrap: balance;
+  }
+  .citizens-hero h1 span { display: block; }
+  .citizens-hero__intro { max-width: 48ch; margin: 0 0 2rem; color: var(--color-text-secondary); }
+  .citizens-hero__phone { display: flex; justify-content: center; min-width: 0; width: 100%; }
+  .citizens-flow { display: grid; gap: 1rem; }
+  @media (min-width: 60em) {
+    .citizens-hero__inner { grid-template-columns: minmax(0, 7fr) minmax(0, 5fr); gap: 4rem; }
+  }
   .section__note {
     max-width: 62ch;
     margin-top: var(--space-8);

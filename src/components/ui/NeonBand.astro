@@ -1,0 +1,9 @@
+---
+import NeonTrace from './NeonTrace.astro';
+interface Props { title: string; subtitle: string; id: string }
+const {title, subtitle, id} = Astro.props;
+---
+<section class="band on-dark" aria-labelledby={id}><div class="band__neon"><NeonTrace /></div><div class="container band__inner"><div><h2 id={id}>{title}</h2><p>{subtitle}</p></div><div class="band__actions"><slot name="actions" /></div></div></section>
+<style>
+.band{position:relative;isolation:isolate;overflow:hidden;background:var(--color-navy-950);padding:clamp(4rem,7vw,7rem) 0}.band__neon{position:absolute;width:55rem;right:-25rem;top:-20rem;z-index:-1;opacity:.65}.band__inner{display:flex;align-items:center;justify-content:space-between;gap:3rem;flex-wrap:wrap}.band h2{color:white;max-width:22ch;font-size:clamp(2rem,3.3vw,3rem);line-height:1.08}.band p{max-width:54ch;color:var(--color-neutral-200)}.band__actions{display:flex;gap:1rem;flex-wrap:wrap}
+</style>

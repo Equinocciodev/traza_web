@@ -12,7 +12,7 @@ export const codeSpec: ReferencePageContent = {
     eyebrow: 'Technical reference',
     title: 'A short code, signed and checkable at a glance',
     subtitle:
-      'A unit’s identifier has to survive a small label, a mediocre camera and somebody typing it by hand. This is what is required of it and how it is built.',
+      'This page distinguishes the working website lookup code from the target production format. The twenty-byte scheme requires implementation and cryptographic audit; the example lookup does not validate real signatures.',
   },
 
   contentsLabel: 'On this page',
@@ -22,7 +22,8 @@ export const codeSpec: ReferencePageContent = {
       id: 'requisitos',
       title: 'Five requirements that settle the design',
       intro:
-        'The format is not an aesthetic choice: each requirement rules alternatives out. Together the five leave very few options open.',
+        'The working example uses the TRZ-XXXX-XXXX-XXXX format and a local record. The requirements below belong to the target design; they do not describe cryptographic checks performed by this website.',
+      code: { caption: 'Working lookup code on this website · example data', lines: ['TRZ-7F2K-4K7Q-92FA', 'https://traza.technology/en/verify/?c=TRZ-7F2K-4K7Q-92FA&t=medicamentos'] },
       items: [
         {
           title: 'Unique at scale, with no central coordination',
@@ -36,7 +37,7 @@ export const codeSpec: ReferencePageContent = {
         },
         {
           title: 'Checkable without consulting the database',
-          body: 'The signature validates on its own. An invented code is discarded in microseconds of CPU, and the registry only serves codes that exist.',
+          body: 'The goal is to validate the signature before querying the registry. The scheme, keys, security and performance must be checked during implementation; this website does not perform that validation.',
           icon: 'signature',
         },
         {
@@ -55,23 +56,23 @@ export const codeSpec: ReferencePageContent = {
       id: 'anatomia',
       title: 'Anatomy of the identifier',
       intro:
-        'What travels inside the code is twenty bytes in four parts. Each one answers one of the requirements above.',
+        'The target format reserves twenty bytes in four parts. It is a design proposal awaiting validation, not the twelve-character format of codes that can be queried on this website.',
       diagram: 'payload',
       specs: [
         { label: 'Version', value: '1 byte', note: 'Lets the format change later without invalidating what is already printed.' },
         { label: 'Key epoch', value: '1 byte', note: 'Addresses the key it was signed with. Rotating keys does not invalidate history.' },
         { label: 'Unique id', value: '10 bytes', note: 'The issuance and the position within it, enciphered so they reveal neither order nor volume.' },
-        { label: 'Truncated signature', value: '8 bytes', note: 'What stops an invented code from passing the first filter.' },
+        { label: 'Truncated signature', value: '8 bytes', note: 'Field intended for an authenticator. The cryptographic scheme and its security require independent validation.' },
       ],
-      note: 'The signature protects against inventing codes, not against copying one: a copied code is valid. Other layers work against copying, and they are explained under Security and trust.',
+      note: 'The byte layout does not establish security or constitute a verified ECDSA signature. A copy preserves the same identifier and does not create another unit. The final format and anti-copy measures require validation in each deployment.',
     },
     {
       id: 'representacion',
       title: 'From twenty bytes to something you can read and type',
       intro:
-        'The text uses Base32 Crockford, an alphabet that avoids the characters people confuse and that brings its own check digit.',
+        'The target representation proposes Base32 Crockford with a typing-error check. The following block is illustrative: it is not a cryptographic test vector or a code recognised by this website’s registry.',
       code: {
-        caption: 'Textual form, grouped for manual reading',
+        caption: 'Illustrative target format · not queryable on this website',
         lines: [
           'TRZ-9FXK-2M4Q-J8TV-QH3N-7WPD-BL5R-XCK',
           '',
@@ -80,7 +81,7 @@ export const codeSpec: ReferencePageContent = {
         ],
       },
       paragraphs: [
-        'The check digit is validated in the browser, before any service is called: a typing mistake is flagged instantly and does not spend a lookup.',
+        'In the target format, the check digit would be checked before a service lookup. This website’s reader checks the example identifier format; it does not implement that algorithm or validate a cryptographic signature.',
         'The URL is uppercase on purpose. A QR’s alphanumeric mode encodes more information per module than byte mode, so the same content fits in a QR one or two versions smaller: it scans sooner and tolerates more damage. Scheme and domain are case-insensitive, and the server accepts the path in uppercase.',
         'A short domain matters too: fewer characters mean fewer modules, and fewer modules let you print smaller at the same level of error correction.',
       ],
@@ -88,7 +89,7 @@ export const codeSpec: ReferencePageContent = {
     {
       id: 'indice',
       title: 'The code is its own index',
-      intro: 'This is where the performance comes from, and it is the part of the design that departs most from the usual.',
+      intro: 'The target architecture proposes addressing the record from the identifier. The described benefits require implementation and measurement; they are not results established by this website.',
       paragraphs: [
         'The epoch addresses the key, so no keys have to be tried. The signature discards junk without touching storage. The embedded issuance points straight at the single record holding the passport. And the position within the issuance is the exact key of the row.',
         'Nothing searches; everything addresses. That is the difference between a random identifier — which forces a database lookup even to discard junk — and a signed one, which decides valid or invented before asking anything.',
@@ -106,7 +107,7 @@ export const codeSpec: ReferencePageContent = {
         { label: 'Error correction', value: 'Level M minimum, Q recommended', note: 'Tolerates scuffs and dirt and still decodes.' },
         { label: 'Module size', value: '≥ 0.33 mm', note: 'Below that, lower-end cameras start to fail.' },
         { label: 'Quiet zone', value: '4 modules', note: 'The white margin is part of the code, not decoration.' },
-        { label: 'Printed size', value: '≥ 22 × 22 mm', note: 'Enough for a bottle; it forces the content to stay short.' },
+        { label: 'Printed size', value: '≥ 22 × 22 mm', note: 'A reference for a medicine bottle; validate it on the selected package and substrate.' },
         { label: 'Contrast', value: '≥ 40 %', note: 'Measured on the real substrate, not on the designer’s screen.' },
         { label: 'Next to the code', value: 'Last characters in plain text', note: 'The fallback for when the camera will not cooperate.' },
       ],
@@ -145,7 +146,7 @@ export const codeSpec: ReferencePageContent = {
 
   cta: {
     title: 'What comes next',
-    body: 'If you want to know how an issuance is requested and activated from your own systems, the integration reference walks through it endpoint by endpoint. If you would rather see it working, public verification is open.',
+    body: 'The integration reference describes the target API. Public lookup lets you explore this website’s available example codes, with their results and limits explained.',
     primaryCta: { label: 'See the integration', key: 'integration', variant: 'primary' },
     secondaryCta: { label: 'Try a lookup', key: 'verify', variant: 'secondary' },
   },

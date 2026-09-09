@@ -107,8 +107,12 @@ export interface Anomaly {
 export interface UnitProduct {
   /** Nombre comercial. */
   name: string;
-  /** Presentación: "Botella 750 ml · 40 % vol." */
+  /** Presentación: "Frasco 120 ml · 10 mg/ml" */
   presentation: string;
+  /** Datos de ejemplo del medicamento; nunca una autorización sanitaria real. */
+  dosageForm?: LocalizedText;
+  concentration?: string;
+  healthRegistration?: string;
   /** Categoría genérica. */
   category: LocalizedText;
   /** Marca ficticia. */

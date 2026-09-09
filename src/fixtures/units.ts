@@ -9,46 +9,55 @@ const PLACES = {
   customsPuertoClaro: { site: 'Aduana de Puerto Claro', region: 'Región Costa' },
   labelingPuertoClaro: { site: 'Centro de etiquetado Puerto Claro', region: 'Región Costa' },
   hubSierraVerde: { site: 'Centro de distribución Sierra Verde', region: 'Región Norte' },
-  storeElFaro: { site: 'Licorería El Faro', region: 'Región Norte' },
-  storeLaPlaza: { site: 'Supermercado La Plaza', region: 'Región Centro' },
-  storeDelValle: { site: 'Bodega Del Valle', region: 'Región Sur' },
-  cafeMonteAzul: { site: 'Beneficio Monte Azul', region: 'Región Montaña' },
+  storeElFaro: { site: 'Farmacia El Faro', region: 'Región Norte' },
+  storeLaPlaza: { site: 'Farmacia La Plaza', region: 'Región Centro' },
+  storeDelValle: { site: 'Farmacia Del Valle', region: 'Región Sur' },
+  cafeMonteAzul: { site: 'Planta Monte Azul', region: 'Región Montaña' },
   hubPuertoClaro: { site: 'Centro de distribución Puerto Claro', region: 'Región Costa' },
-  marketSanMarcelo: { site: 'Mercado San Marcelo', region: 'Región Costa' },
+  marketSanMarcelo: { site: 'Farmacia San Marcelo', region: 'Región Costa' },
 } satisfies Record<string, Place>;
 
 const ORGS = {
-  distillery: 'Destilería Cerro Alto',
+  distillery: 'Laboratorio Cerro Alto',
   importer: 'Importadora Bahía Norte',
   labeler: 'Servicios de Etiquetado Puerto Claro',
   carrier: 'Transportes Ruta Andina',
   hub: 'Distribuidora Sierra Verde',
-  storeFaro: 'Licorería El Faro',
-  storePlaza: 'Supermercado La Plaza',
-  storeValle: 'Bodega Del Valle',
-  coffee: 'Cafetalera Monte Azul',
+  storeFaro: 'Farmacia El Faro',
+  storePlaza: 'Farmacia La Plaza',
+  storeValle: 'Farmacia Del Valle',
+  coffee: 'Laboratorio Monte Azul',
   inspection: 'Inspección de campo del piloto',
   consumer: 'Verificación pública (persona anónima)',
 };
 
-const RON: Unit['product'] = {
-  name: 'Ron Añejo Cerro Alto 7 años',
-  presentation: 'Botella 750 ml · 40 % vol.',
-  category: { es: 'Bebidas alcohólicas · ron', en: 'Alcoholic beverages · rum' },
+const ORAL_SOLUTION: Unit['product'] = {
+  name: 'Solución oral Cerro Alto',
+  presentation: 'Frasco 120 ml · 10 mg/ml',
+  dosageForm: { es: 'Solución oral', en: 'Oral solution' },
+  concentration: '10 mg/ml · EJEMPLO',
+  healthRegistration: 'RS-EJEMPLO',
+  category: { es: 'Medicamentos · solución oral', en: 'Medicines · oral solution' },
   brand: 'Cerro Alto',
 };
 
-const WHISKY: Unit['product'] = {
-  name: 'Whisky Bahía Norte Reserva',
-  presentation: 'Botella 700 ml · 40 % vol.',
-  category: { es: 'Bebidas alcohólicas · whisky importado', en: 'Alcoholic beverages · imported whisky' },
+const IMPORTED_SOLUTION: Unit['product'] = {
+  name: 'Solución oral Bahía Norte',
+  presentation: 'Frasco 120 ml · 10 mg/ml',
+  dosageForm: { es: 'Solución oral', en: 'Oral solution' },
+  concentration: '10 mg/ml · EJEMPLO',
+  healthRegistration: 'RS-EJEMPLO',
+  category: { es: 'Medicamentos · solución oral importada', en: 'Medicines · imported oral solution' },
   brand: 'Bahía Norte',
 };
 
-const CAFE: Unit['product'] = {
-  name: 'Café Monte Azul · tueste medio',
-  presentation: 'Bolsa 500 g · grano entero',
-  category: { es: 'Alimentos · café', en: 'Food · coffee' },
+const MASTER_SOLUTION: Unit['product'] = {
+  name: 'Solución oral Monte Azul',
+  presentation: 'Frasco 120 ml · 10 mg/ml',
+  dosageForm: { es: 'Solución oral', en: 'Oral solution' },
+  concentration: '10 mg/ml · EJEMPLO',
+  healthRegistration: 'RS-EJEMPLO',
+  category: { es: 'Medicamentos · solución oral', en: 'Medicines · oral solution' },
   brand: 'Monte Azul',
 };
 
@@ -99,7 +108,7 @@ function domesticLifecycle(
       at: d(startDay, 16),
       actor: ORGS.distillery,
       place: PLACES.plantValleSereno,
-      note: { es: 'Etiqueta con el código aplicada en la línea de envasado.', en: 'Coded label applied on the bottling line.' },
+      note: { es: 'Etiqueta con el código aplicada en la línea de envasado.', en: 'Coded label applied on the packaging line.' },
     },
     {
       id: `${prefix}-04`,
@@ -190,8 +199,8 @@ function importedLifecycle(prefix: string, startDay: number, upTo: number): Unit
       actor: ORGS.importer,
       place: PLACES.labelingPuertoClaro,
       note: {
-        es: 'Ficha completada con lote y vencimiento de la mercancía recibida.',
-        en: 'Record completed with the lot and expiry of the goods received.',
+        es: 'Ficha completada con lote y vencimiento de la producto acondicionado.',
+        en: 'Record completed with the lot and expiry of the packaged product.',
       },
     },
     {
@@ -229,8 +238,8 @@ export const UNITS: Unit[] = [
   // 1 · Válida: firma emitida, registro activo, datos coinciden, sin anomalías.
   {
     code: 'TRZ-7F2K-4K7Q-92FA',
-    tenant: 'licores',
-    product: RON,
+    tenant: 'medicamentos',
+    product: ORAL_SOLUTION,
     issuer: { name: ORGS.distillery, role: 'manufacturer' },
     origin: { place: PLACES.plantValleSereno, lot: 'LOTE-VS-26-012', producedAt: '2026-07-12' },
     signature: { status: 'valid', algorithm: 'ECDSA P-256', issuedAt: '2026-07-12T13:00:00Z', keyId: 'DCA-2026-K03' },
@@ -245,8 +254,8 @@ export const UNITS: Unit[] = [
   // 2 · Advertencia: duplicado — el mismo código escaneado muchas veces en regiones distintas.
   {
     code: 'TRZ-7F2K-7H2M-31LC',
-    tenant: 'licores',
-    product: RON,
+    tenant: 'medicamentos',
+    product: ORAL_SOLUTION,
     issuer: { name: ORGS.distillery, role: 'manufacturer' },
     origin: { place: PLACES.plantValleSereno, lot: 'LOTE-VS-26-012', producedAt: '2026-07-12' },
     signature: { status: 'valid', algorithm: 'ECDSA P-256', issuedAt: '2026-07-12T13:00:00Z', keyId: 'DCA-2026-K03' },
@@ -258,7 +267,7 @@ export const UNITS: Unit[] = [
         severity: 'warning',
         detectedAt: '2026-08-29T20:10:00Z',
         detail: {
-          es: 'Este código se ha verificado 14 veces en 3 regiones distintas durante las últimas 48 horas. Una misma botella no suele moverse así.',
+          es: 'Este código se ha verificado 14 veces en 3 regiones distintas durante las últimas 48 horas. Un mismo frasco no suele moverse así.',
           en: 'This code has been verified 14 times across 3 regions in the last 48 hours. A single bottle does not usually move like that.',
         },
       },
@@ -267,8 +276,8 @@ export const UNITS: Unit[] = [
         severity: 'warning',
         detectedAt: '2026-08-29T20:10:00Z',
         detail: {
-          es: 'Las verificaciones provienen de regiones distintas a la del comercio de destino registrado.',
-          en: 'Verifications come from regions other than the registered destination retailer.',
+          es: 'Las verificaciones provienen de regiones distintas a la del lugar de la primera consulta registrada.',
+          en: 'Verifications come from regions other than the first recorded lookup location.',
         },
       },
     ],
@@ -294,16 +303,16 @@ export const UNITS: Unit[] = [
   // 3 · Advertencia: coincidencia parcial — la presentación impresa no coincide con el registro.
   {
     code: 'TRZ-7F2K-9P4T-55RD',
-    tenant: 'licores',
-    product: RON,
+    tenant: 'medicamentos',
+    product: ORAL_SOLUTION,
     issuer: { name: ORGS.distillery, role: 'manufacturer' },
     origin: { place: PLACES.plantValleSereno, lot: 'LOTE-VS-26-015', producedAt: '2026-07-15' },
     signature: { status: 'valid', algorithm: 'ECDSA P-256', issuedAt: '2026-07-15T13:00:00Z', keyId: 'DCA-2026-K03' },
     registry: { status: 'active', registeredAt: '2026-07-15T13:00:03Z' },
     dataMatch: 'partial',
     dataMatchDetail: {
-      es: 'La etiqueta escaneada indica "1 L"; el registro indica "750 ml" para este identificador.',
-      en: 'The scanned label reads "1 L"; the registry lists "750 ml" for this identifier.',
+      es: 'La etiqueta escaneada indica "150 ml"; el registro indica "120 ml" para este identificador.',
+      en: 'The scanned label reads "150 ml"; the registry lists "120 ml" for this identifier.',
     },
     anomalies: [],
     scans: { total: 2, distinctRegions: 1, lastAt: '2026-08-30T11:02:00Z' },
@@ -313,8 +322,8 @@ export const UNITS: Unit[] = [
   // 4 · Inválida: firma no válida (el contenido del código no corresponde a la firma).
   {
     code: 'TRZ-7F2K-2B8X-40NE',
-    tenant: 'licores',
-    product: RON,
+    tenant: 'medicamentos',
+    product: ORAL_SOLUTION,
     issuer: { name: ORGS.distillery, role: 'manufacturer' },
     origin: { place: PLACES.plantValleSereno, lot: 'LOTE-VS-26-012', producedAt: '2026-07-12' },
     signature: { status: 'invalid', algorithm: 'ECDSA P-256', issuedAt: '2026-07-12T13:00:00Z', keyId: 'DCA-2026-K03' },
@@ -328,8 +337,8 @@ export const UNITS: Unit[] = [
   // 5 · Inválida: no reconocida — la firma es sintácticamente válida pero el registro no la conoce.
   {
     code: 'TRZ-7F2K-6W3S-18KV',
-    tenant: 'licores',
-    product: RON,
+    tenant: 'medicamentos',
+    product: ORAL_SOLUTION,
     issuer: { name: ORGS.distillery, role: 'manufacturer' },
     origin: { place: PLACES.plantValleSereno, lot: 'LOTE-VS-26-013', producedAt: '2026-07-13' },
     signature: { status: 'unknown_key', algorithm: 'ECDSA P-256', issuedAt: '2026-07-13T13:00:00Z', keyId: 'XX-2026-K99' },
@@ -343,8 +352,8 @@ export const UNITS: Unit[] = [
   // 6 · Revocada: lote retirado por el emisor.
   {
     code: 'TRZ-7F2K-5R9C-77MQ',
-    tenant: 'licores',
-    product: RON,
+    tenant: 'medicamentos',
+    product: ORAL_SOLUTION,
     issuer: { name: ORGS.distillery, role: 'manufacturer' },
     origin: { place: PLACES.plantValleSereno, lot: 'LOTE-VS-26-009', producedAt: '2026-07-09' },
     signature: { status: 'valid', algorithm: 'ECDSA P-256', issuedAt: '2026-07-09T13:00:00Z', keyId: 'DCA-2026-K02' },
@@ -385,8 +394,8 @@ export const UNITS: Unit[] = [
   // 7 · Anomalía crítica: reportada y con caso de inspección abierto.
   {
     code: 'TRZ-7F2K-3N6D-09ZB',
-    tenant: 'licores',
-    product: WHISKY,
+    tenant: 'medicamentos',
+    product: IMPORTED_SOLUTION,
     issuer: { name: ORGS.importer, role: 'importer' },
     origin: { place: PLACES.customsPuertoClaro, lot: 'IMP-BN-26-031', producedAt: '2026-05-30' },
     signature: { status: 'valid', algorithm: 'ECDSA P-256', issuedAt: '2026-08-03T12:00:00Z', keyId: 'IBN-2026-K01' },
@@ -430,11 +439,11 @@ export const UNITS: Unit[] = [
       },
     ],
   },
-  // 8 · Advertencia: brecha de cadena — la unidad aún figura en distribución pero se verifica en comercio.
+  // 8 · Advertencia: consulta pública anterior a la activación de la unidad.
   {
     code: 'TRZ-7F2K-8L1F-63HW',
-    tenant: 'licores',
-    product: WHISKY,
+    tenant: 'medicamentos',
+    product: IMPORTED_SOLUTION,
     issuer: { name: ORGS.importer, role: 'importer' },
     origin: { place: PLACES.customsPuertoClaro, lot: 'IMP-BN-26-034', producedAt: '2026-06-02' },
     signature: { status: 'valid', algorithm: 'ECDSA P-256', issuedAt: '2026-08-18T12:00:00Z', keyId: 'IBN-2026-K01' },
@@ -458,8 +467,8 @@ export const UNITS: Unit[] = [
   // 9 · Suspendida: registro en revisión (advertencia).
   {
     code: 'TRZ-7F2K-1V5J-26PT',
-    tenant: 'licores',
-    product: WHISKY,
+    tenant: 'medicamentos',
+    product: IMPORTED_SOLUTION,
     issuer: { name: ORGS.importer, role: 'importer' },
     origin: { place: PLACES.customsPuertoClaro, lot: 'IMP-BN-26-031', producedAt: '2026-05-30' },
     signature: { status: 'valid', algorithm: 'ECDSA P-256', issuedAt: '2026-08-03T12:00:00Z', keyId: 'IBN-2026-K01' },
@@ -471,11 +480,11 @@ export const UNITS: Unit[] = [
     lastLookupPlace: PLACES.storeLaPlaza,
     events: importedLifecycle('U9', 3, 6),
   },
-  // 10 · Válida en el tenant maestro (otro sector): café.
+  // 10 · Válida en el tenant maestro: medicamento de otro registro.
   {
     code: 'TRZ-7F2K-6C2A-84MZ',
     tenant: 'traza',
-    product: CAFE,
+    product: MASTER_SOLUTION,
     issuer: { name: ORGS.coffee, role: 'manufacturer' },
     origin: { place: PLACES.cafeMonteAzul, lot: 'COS-MA-26-07', producedAt: '2026-06-20' },
     signature: { status: 'valid', algorithm: 'ECDSA P-256', issuedAt: '2026-06-21T14:00:00Z', keyId: 'CMA-2026-K01' },
@@ -494,7 +503,7 @@ export const UNITS: Unit[] = [
         actor: ORGS.coffee,
         place: PLACES.cafeMonteAzul,
         ref: 'COS-MA-26-07',
-        note: { es: 'Identificador emitido para la unidad, dentro de la orden del beneficio.', en: 'Identifier issued for the unit, within the mill’s order.' },
+        note: { es: 'Identificador emitido para la unidad, dentro de la orden del laboratorio.', en: 'Identifier issued for the unit, within the laboratory’s order.' },
       },
       { id: 'U10-02', kind: 'labeled', stage: 'labeling', at: '2026-06-21T16:00:00Z', actor: ORGS.coffee, place: PLACES.cafeMonteAzul },
       {
@@ -505,7 +514,7 @@ export const UNITS: Unit[] = [
         actor: ORGS.coffee,
         place: PLACES.cafeMonteAzul,
         ref: 'COS-MA-26-07',
-        note: { es: 'Ficha completada con el lote de cosecha y la fecha de consumo preferente.', en: 'Record completed with the harvest lot and the best-before date.' },
+        note: { es: 'Ficha completada con el lote de producción y la fecha de vencimiento.', en: 'Record completed with the production lot and expiry date.' },
       },
       { id: 'U10-04', kind: 'activated', stage: 'activation', at: '2026-06-22T09:00:00Z', actor: ORGS.coffee, place: PLACES.cafeMonteAzul },
       { id: 'U10-05', kind: 'verified', stage: 'lookup', at: '2026-08-15T09:12:00Z', actor: ORGS.consumer, place: PLACES.marketSanMarcelo },

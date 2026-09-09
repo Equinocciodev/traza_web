@@ -1,5 +1,20 @@
 ---
-import CaseSpiritsPage from '@/templates/CaseSpiritsPage.astro';
+import { route } from '@/i18n';
+import { getContent } from '@/content';
+const locale = 'en';
+const destination = route(locale, 'caseMedicines');
+const content = getContent(locale).caseMedicines;
+const canonical = new URL(destination, Astro.site ?? Astro.url.origin).href;
 ---
-
-<CaseSpiritsPage locale="en" />
+<!doctype html>
+<html lang={locale}>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="robots" content="noindex,follow" />
+    <meta http-equiv="refresh" content={`0;url=${destination}`} />
+    <link rel="canonical" href={canonical} />
+    <title>{content.meta.title} · Traza®</title>
+  </head>
+  <body><main><a href={destination}>{content.hero.title}</a></main></body>
+</html>

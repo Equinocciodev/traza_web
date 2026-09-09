@@ -1,10 +1,11 @@
 ---
 /**
- * Caso de uso: Licores (propuesta de piloto). Contexto, alcance, actores, arquitectura objetivo,
+ * Caso de uso: Medicamentos (propuesta de piloto). Contexto, alcance, actores, arquitectura objetivo,
  * inspección de campo, co-brand condicional, lo que la propuesta no afirma y cierre.
- * El lockup del tenant `licores` solo aparece aquí (y en el tenant de ejemplo), rotulado como propuesta.
+ * El lockup del tenant `medicamentos` solo aparece aquí (y en el tenant de ejemplo), rotulado como propuesta.
  */
 import Base from '@/layouts/Base.astro';
+import MedicineStamp from '@/components/ui/MedicineStamp.astro';
 import PageHero from '@/components/ui/PageHero.astro';
 import Button from '@/components/ui/Button.astro';
 import Callout from '@/components/ui/Callout.astro';
@@ -23,36 +24,40 @@ interface Props {
   locale: Locale;
 }
 const { locale } = Astro.props;
-const { caseSpirits } = getContent(locale);
+const { caseMedicines } = getContent(locale);
 ---
 
-<Base locale={locale} routeKey="caseSpirits" title={caseSpirits.meta.title} description={caseSpirits.meta.description}>
-  <PageHero eyebrow={caseSpirits.hero.eyebrow} tag={caseSpirits.hero.tag} title={caseSpirits.hero.title} subtitle={caseSpirits.hero.subtitle} icon="bottle">
-    <Callout tone="neutral" class="case-hero__disclaimer">{caseSpirits.hero.disclaimer}</Callout>
+<Base locale={locale} routeKey="caseMedicines" title={caseMedicines.meta.title} description={caseMedicines.meta.description}>
+  <PageHero eyebrow={caseMedicines.hero.eyebrow} tag={caseMedicines.hero.tag} title={caseMedicines.hero.title} subtitle={caseMedicines.hero.subtitle} icon="bottle">
+    <Callout tone="neutral" class="case-hero__disclaimer">{caseMedicines.hero.disclaimer}</Callout>
   </PageHero>
 
   <section class="section" aria-labelledby="context-title" data-reveal>
     <div class="container context">
-      <SectionHeader title={caseSpirits.context.title} id="context-title" class="context__header" />
+      <SectionHeader title={caseMedicines.context.title} id="context-title" class="context__header" />
       <div class="context__text prose">
-        {caseSpirits.context.paragraphs.map((paragraph) => <p>{paragraph}</p>)}
+        {caseMedicines.context.paragraphs.map((paragraph) => <p>{paragraph}</p>)}
       </div>
     </div>
   </section>
 
   <section class="section section--subtle" aria-labelledby="scope-title" data-reveal>
     <div class="container">
-      <SectionHeader title={caseSpirits.scope.title} intro={caseSpirits.scope.intro} id="scope-title" />
-      <FeatureGrid items={caseSpirits.scope.items} columns={3} />
+      <SectionHeader title={caseMedicines.scope.title} intro={caseMedicines.scope.intro} id="scope-title" />
+      <FeatureGrid items={caseMedicines.scope.items} columns={3} />
     </div>
+  </section>
+
+  <section class="section section--subtle">
+    <div class="container"><MedicineStamp locale={locale} /></div>
   </section>
 
   <section class="section" aria-labelledby="actors-title" data-reveal>
     <div class="container">
-      <SectionHeader title={caseSpirits.actors.title} intro={caseSpirits.actors.intro} id="actors-title" />
+      <SectionHeader title={caseMedicines.actors.title} intro={caseMedicines.actors.intro} id="actors-title" />
       <ul class="actors grid grid--3" data-reveal data-reveal-stagger>
         {
-          caseSpirits.actors.items.map((actor) => (
+          caseMedicines.actors.items.map((actor) => (
             <li class="actors__item">
               <Card title={actor.role} icon={actor.icon} tone="subtle">
                 <p>{actor.body}</p>
@@ -66,19 +71,19 @@ const { caseSpirits } = getContent(locale);
 
   <section class="section section--subtle" aria-labelledby="target-title" data-reveal>
     <div class="container">
-      <SectionHeader title={caseSpirits.target.title} intro={caseSpirits.target.intro} id="target-title" />
-      <FeatureGrid items={caseSpirits.target.items} columns={3} numbered />
+      <SectionHeader title={caseMedicines.target.title} intro={caseMedicines.target.intro} id="target-title" />
+      <FeatureGrid items={caseMedicines.target.items} columns={3} numbered />
       <div class="section__note">
-        <Callout tone="info">{caseSpirits.target.note}</Callout>
+        <Callout tone="info">{caseMedicines.target.note}</Callout>
       </div>
     </div>
   </section>
 
   <section class="section" aria-labelledby="inspection-title" data-reveal>
     <div class="container inspection">
-      <SectionHeader title={caseSpirits.fieldInspection.title} intro={caseSpirits.fieldInspection.body} id="inspection-title" class="inspection__header" />
+      <SectionHeader title={caseMedicines.fieldInspection.title} intro={caseMedicines.fieldInspection.body} id="inspection-title" class="inspection__header" />
       <div class="inspection__list">
-        <CheckList items={caseSpirits.fieldInspection.bullets} tone="muted" />
+        <CheckList items={caseMedicines.fieldInspection.bullets} tone="muted" />
       </div>
     </div>
   </section>
@@ -86,11 +91,11 @@ const { caseSpirits } = getContent(locale);
   <section class="section section--subtle" aria-labelledby="cobrand-title" data-reveal>
     <div class="container cobrand-section">
       <div class="cobrand-section__copy">
-        <SectionHeader title={caseSpirits.cobrand.title} intro={caseSpirits.cobrand.body} id="cobrand-title" class="cobrand-section__header" />
-        {env.showCobrandExample && <Callout tone="neutral">{caseSpirits.cobrand.lockupNote}</Callout>}
+        <SectionHeader title={caseMedicines.cobrand.title} intro={caseMedicines.cobrand.body} id="cobrand-title" class="cobrand-section__header" />
+        {env.showCobrandExample && <Callout tone="neutral">{caseMedicines.cobrand.lockupNote}</Callout>}
         <p class="cobrand-section__action">
-          <Button href={ctaHref(locale, caseSpirits.cobrand.cta)} variant={ctaVariant(caseSpirits.cobrand.cta, 'secondary')} icon="arrow-right">
-            {caseSpirits.cobrand.cta.label}
+          <Button href={ctaHref(locale, caseMedicines.cobrand.cta)} variant={ctaVariant(caseMedicines.cobrand.cta, 'secondary')} icon="arrow-right">
+            {caseMedicines.cobrand.cta.label}
           </Button>
         </p>
       </div>
@@ -102,14 +107,14 @@ const { caseSpirits } = getContent(locale);
 
   <section class="section" aria-labelledby="nonclaims-title" data-reveal>
     <div class="container nonclaims">
-      <SectionHeader title={caseSpirits.nonClaims.title} intro={caseSpirits.nonClaims.intro} id="nonclaims-title" class="nonclaims__header" />
+      <SectionHeader title={caseMedicines.nonClaims.title} intro={caseMedicines.nonClaims.intro} id="nonclaims-title" class="nonclaims__header" />
       <div class="nonclaims__list">
-        <CheckList items={caseSpirits.nonClaims.items} marker="square" />
+        <CheckList items={caseMedicines.nonClaims.items} marker="square" />
       </div>
     </div>
   </section>
 
-  <CtaBand locale={locale} title={caseSpirits.cta.title} body={caseSpirits.cta.body} primaryCta={caseSpirits.cta.primaryCta} secondaryCta={caseSpirits.cta.secondaryCta} />
+  <CtaBand locale={locale} title={caseMedicines.cta.title} body={caseMedicines.cta.body} primaryCta={caseMedicines.cta.primaryCta} secondaryCta={caseMedicines.cta.secondaryCta} />
 </Base>
 
 <style>

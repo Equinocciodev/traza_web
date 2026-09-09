@@ -9,10 +9,11 @@ Sitio web corporativo de **Traza Technology, C.A.** (marca **Traza®**): identid
 trazabilidad y verificación pública de productos. Astro estático, español en la raíz e inglés bajo
 `/en/`. Publicado en <https://traza.technology> por GitHub Pages.
 
-**No es un demo.** El sitio se presenta como producto real. Existió una etapa previa en la que cada
-página llevaba el rótulo "Demostración conceptual — datos simulados"; se eliminó por completo, y
-`tests/unit/guardrails.test.ts` impide que ese vocabulario vuelva a entrar. Si necesitas describir
-datos de ejemplo, di "ejemplo", nunca "demo", "simulado" ni "ficticio".
+**Demo pública para presentación, por indicación vigente de Juan (9 septiembre de 2026).**
+No se debe presentar como un producto comercial terminado ni como un lanzamiento. Los flujos usan
+registros y cifras de ejemplo; no acreditan una operación real. En las pantallas se conserva el
+vocabulario «ejemplo» y «propuesta de piloto». La instrucción anterior que lo declaraba producto real
+queda sustituida por esta indicación. No hacer publicidad externa ni desplegar sin autorización.
 
 **El registro es de ciclo de vida, no logístico.** La decisión D9 de las especificaciones retiró
 del alcance la trazabilidad de venta: la plataforma no registra transporte ni distribución. Las
@@ -25,9 +26,9 @@ a escribir «cada actor de la cadena reporta un evento», estás describiendo la
 ```bash
 npm run dev          # servidor de desarrollo en :4321
 npm run check        # astro check — tipos y plantillas (debe quedar en 0 errores)
-npm test             # Vitest: 200 pruebas (motor, API, fixtures, i18n, paridad ES/EN, guardarraíles)
-npm run build        # build estático en dist/ (36 páginas)
-npm run test:e2e     # Playwright sobre astro preview (antes: npx playwright install)
+npm test             # Vitest: pruebas unitarias (motor, API, fixtures, i18n, paridad ES/EN, guardarraíles)
+npm run build        # build estático en dist/ (38 rutas)
+npm run test:e2e     # Playwright sobre astro preview
 npm run verify       # check + test + build + e2e
 npm run og           # regenera la imagen OG y todo el juego de iconos
 ```
@@ -76,8 +77,11 @@ Añadir texto = editar `src/content/`. Añadir una página = plantilla en `src/t
    - "auténtico" solo aparece en la frase que explica por qué no se usa;
    - nada de `blockchain`, `token`, `smart contract`, `SLA`, `uptime`, `99,9 %`, garantías absolutas;
    - ninguna afirmación de clientes, contratos ni certificaciones;
-   - **SENIAT** solo dentro del caso de licores y del tenant de ejemplo, siempre enmarcado como
-     propuesta de piloto y con la negación de relación oficial;
+   - caso de uso y ejemplos centrados en **medicamentos** (solución oral de 120 ml); sin referencias
+     a licores ni a su autoridad anterior en contenido, fixtures o configuración;
+   - co-brand **EMPRESA PÚBLICA Y/O PRIVADA | TRAZA**, siempre condicional y sin afirmar relaciones;
+   - el QR nace con cada unidad: emisión → impresión → activación al finalizar producción → consulta/control;
+   - medidas físicas anticopia y validación tributaria solo como fase 2, pendiente de integración autorizada;
    - sin menciones de jurisdicciones como hecho (Venezuela, Estados Unidos…);
    - sin correos, teléfonos ni documentos de identidad en el contenido: el correo de contacto viaja
      en `PUBLIC_CONTACT_EMAIL`, no en los diccionarios;
@@ -87,9 +91,13 @@ Añadir texto = editar `src/content/`. Añadir una página = plantilla en `src/t
    las islas necesitan en runtime se aplican por CSSOM.
 5. **Códigos de unidad**: formato `TRZ-XXXX-XXXX-XXXX`. Los del registro usan el bloque `7F2K`
    (`TRZ-7F2K-4K7Q-92FA`…). No reintroduzcas el bloque `DEMO`.
-6. **Navegación**: cinco entradas de primer nivel más el CTA. Añadir una página significa
-   colgarla de `Soluciones` o de `Tecnología`, no crear una sexta entrada — y darla de alta en
-   `src/i18n/index.ts`, en el pie y en `PAGE_KEYS` de las pruebas.
+6. **Navegación**: cuatro entradas corporativas: `Soluciones · Plataforma · Recursos · Empresa`,
+   más el selector de idioma y el CTA `Solicitar presentación`. `Recursos` agrupa Cómo funciona,
+   La etiqueta y el código, Integración, Seguridad y confianza y Por qué este diseño.
+   Verificar y Ciudadanos usan la variante pública: `Verificar un producto · Ayuda`, selector
+   de idioma y sin CTA comercial. Añadir una página significa colgarla de `Soluciones` o de
+   `Recursos`, no crear una quinta entrada — y darla de alta en `src/i18n/index.ts`, en el pie
+   y en `PAGE_KEYS` de las pruebas. Mantener las variantes equivalentes en ES y EN.
 
 ## Entorno y despliegue
 
@@ -131,13 +139,12 @@ ajuste de Pages.
   de git ni la enlaces desde el README.
   Nota: sigue estando en el historial de git de los commits anteriores; retirarla de ahí
   exigiría reescribir el historial y un push forzado.
-- **El QR de la etiqueta del hero es real.** `public/images/v2/hero-products.webp` lleva
-  compuesto el QR de `HTTPS://T.EXAMPLE/V/7F2K4K7Q92FA` y decodifica en las tres variantes de
-  ancho. Si reemplazas la fotografía, vuelve a componerlo y vuelve a comprobar que decodifica.
-- **Las pruebas e2e necesitan navegador aparte.** `npx playwright install` descarga unos
-  cientos de megas; en esta máquina falló varias veces por tiempo de espera y por memoria, así
-  que `npm run verify` puede quedarse en el paso e2e sin que haya nada roto en el código. Los
-  200+ tests unitarios, `astro check` y el build no dependen de eso.
+- **El hero de Inicio presenta el software; el QR real está en la sección de producto siguiente.**
+  La fotografía conserva el nombre `public/images/v2/hero-products.webp`; `HomePage.astro`
+  superpone el SVG de `src/brand/hero-qr.ts`, que codifica
+  `https://traza.technology/verificar/?c=TRZ-7F2K-4K7Q-92FA&t=medicamentos`, coherente con el lector y la
+  estampilla. Si cambia la fotografía, el QR o su composición, comprobar la lectura sobre
+  capturas de la página servida a los anchos y DPR correspondientes, no solo sobre el bitmap.
 - **La analítica solo corre en producción.** El proveedor `ga4` (gtag.js) se activa en el
   workflow de despliegue; en local y en las pruebas queda en `none`, que es lo que espera
   `tests/e2e/privacy.spec.ts` al comprobar que no se crean cookies. El identificador de

@@ -62,7 +62,7 @@ const SCENARIO_IDS: ScenarioId[] = [
   'camera_unavailable',
 ];
 
-/** Marcas reales de licores y términos vetados en fixtures (comparación sin distinguir mayúsculas, con límite de palabra). */
+/** Marcas reales de medicamentos y términos vetados en fixtures (comparación sin distinguir mayúsculas, con límite de palabra). */
 const REAL_SPIRITS_BRANDS = [
   'Diplomático',
   'Santa Teresa',
@@ -321,7 +321,7 @@ describe('vista institucional', () => {
 });
 
 describe('guardarraíles de los fixtures', () => {
-  it('ninguna cadena usa "auténtico"/"authentic"/"genuine" ni menciona SENIAT, Venezuela, blockchain o ciudades reales', () => {
+  it('ninguna cadena usa "auténtico"/"authentic"/"genuine" ni menciona EMPRESA PÚBLICA Y/O PRIVADA, Venezuela, blockchain o ciudades reales', () => {
     const hits: string[] = [];
     for (const text of FIXTURE_STRINGS) {
       for (const term of BANNED_FIXTURE_TERMS) if (text.toLowerCase().includes(term.toLowerCase())) hits.push(`${term}: ${text.slice(0, 80)}`);
@@ -329,7 +329,7 @@ describe('guardarraíles de los fixtures', () => {
     expect(hits).toEqual([]);
   });
 
-  it('ningún fixture menciona marcas reales de licores', () => {
+  it('ningún fixture menciona marcas reales de medicamentos', () => {
     const hits: string[] = [];
     for (const text of FIXTURE_STRINGS) {
       for (const brand of REAL_SPIRITS_BRANDS) {
@@ -361,6 +361,20 @@ describe('guardarraíles de los fixtures', () => {
       expect(s.configurable.es.length).toBeGreaterThan(0);
       // "Reglas de garantía" (warranty) es una regla configurable de producto, no una garantía de seguridad.
       for (const text of [...s.configurable.es, ...s.configurable.en]) expect(text).not.toMatch(/certific|cumplimiento|compliance/i);
+    }
+  });
+});
+
+
+describe('ejemplos de medicamentos', () => {
+  it('cada registro usa una solución oral de 120 ml con datos sanitarios identificados como ejemplo', () => {
+    for (const unit of UNITS) {
+      expect(unit.product.presentation).toContain('120 ml');
+      expect(unit.product.dosageForm).toEqual({ es: 'Solución oral', en: 'Oral solution' });
+      expect(unit.product.concentration).toMatch(/mg\/ml.*EJEMPLO/);
+      expect(unit.product.healthRegistration).toBe('RS-EJEMPLO');
+      expect(unit.product.category.es).toMatch(/^Medicamentos/);
+      expect(unit.product.category.en).toMatch(/^Medicines/);
     }
   });
 });

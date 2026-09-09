@@ -1,6 +1,6 @@
 /**
- * Formulario de contacto (/empresa/, /en/company/): validación accesible, éxito simulado, error de servidor
- * ("[error]" en el mensaje), sin conexión real y recuperación.
+ * Formulario de contacto: validación accesible, composición mailto y envío pendiente en la app de correo.
+ * No hay POST, ticket ni palabra mágica de error. Se cubre configuración ausente, offline y ausencia de JS.
  */
 import { expect, test, type Page } from '@playwright/test';
 import { collectConsoleErrors, content, focusedId, open } from './helpers';
@@ -69,46 +69,119 @@ test.describe('validación', () => {
   });
 });
 
-test.describe('envío simulado', () => {
-  test('éxito: estado enviando, panel de éxito con ticket y formulario oculto', async ({ page }) => {
-    await open(page, '/empresa/');
-    await fillValid(page);
-    await page.locator('[data-submit]').click();
-    await expect(form(page)).toHaveAttribute('aria-busy', 'true');
-    await expect(page.locator('[data-submit]')).toBeDisabled();
-    await expect(page.locator('[data-submit]')).toContainText(es.common.form.sending);
-    const success = page.locator('[data-status="success"]');
-    await expect(success).toBeVisible({ timeout: 10_000 });
-    await expect(success).toBeFocused();
-    await expect(success).toContainText(es.company.contact.form.success.title);
-    await expect(success).toContainText(es.company.contact.form.success.body);
-    await expect(page.locator('[data-contact-ticket]')).toHaveText(/^CT-2026-\d{5}$/);
-    await expect(form(page)).toBeHidden();
-    await expect(success.locator('[role="status"]')).toBeVisible();
-  });
+test.describe('preparación local del correo', () => {
+  for (const [path, strings, pendingText] of [
+    ['/empresa/', es, 'Revíselo y envíelo: hasta que lo haga, no nos ha llegado.'],
+    ['/en/company/', en, 'Review it and send it: until you do, it has not reached us.'],
+  ] as const) {
+    test(`${path}: prepara mailto exacto y codificado sin transmitir el formulario`, async ({ page }) => {
+      await open(page, path);
+      const f = strings.company.contact.form;
+      const values = {
+        name: 'María & Equipo + QA',
+        email: 'prueba+qr@example.com',
+        organization: 'Salud & Control / Investigación',
+        sector: f.sectorOptions[0]!,
+        message: 'Consulta [error]: ¿cómo comparar A&B + C?\nLote #12; información para revisión.',
+      };
+      await fillValid(page, values.message);
+      await field(page, 'name').fill(values.name);
+      await field(page, 'email').fill(values.email);
+      await field(page, 'org').fill(values.organization);
+      const recipient = await page.locator('[data-contact]').getAttribute('data-contact-email');
+      expect(recipient, 'el build debe configurar un destinatario para este idioma').toMatch(/^[^\s@]+@[^\s@]+\.[^\s@]+$/);
+      const subject = f.mailSubject.replace('{name}', values.name);
+      const body = [
+        `${f.name}: ${values.name}`,
+        `${f.email}: ${values.email}`,
+        `${f.organization}: ${values.organization}`,
+        `${f.sector}: ${values.sector}`,
+        '',
+        values.message,
+      ].join('\n');
+      const expectedHref = `mailto:${recipient}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+      const requests: { method: string; url: string }[] = [];
+      page.on('request', (request) => requests.push({ method: request.method(), url: request.url() }));
+      // Observa la navegación nativa: no sustituye location ni intercepta la lógica de la aplicación.
+      const session = await page.context().newCDPSession(page);
+      await session.send('Page.enable');
+      const navigations: string[] = [];
+      session.on('Page.frameRequestedNavigation', (event) => navigations.push(event.url));
+      await page.locator('[data-submit]').click();
+      const success = page.locator('[data-status="success"]');
+      await expect(success).toBeVisible();
+      await expect(success).toBeFocused();
+      await expect(success).toContainText(f.success.title);
+      await expect(success).toContainText(f.success.body);
+      await expect(success).toContainText(pendingText);
+      await expect(success.locator('[role="status"]')).toBeVisible();
+      const mailto = page.locator('[data-contact-mailto]');
+      await expect(mailto).toBeVisible();
+      await expect(mailto).toHaveText(recipient!);
+      await expect(mailto).toHaveAttribute('href', expectedHref);
+      const parsed = new URL((await mailto.getAttribute('href'))!);
+      expect(parsed.protocol).toBe('mailto:');
+      expect(parsed.pathname).toBe(recipient);
+      expect([...parsed.searchParams.keys()]).toEqual(['subject', 'body']);
+      expect(parsed.searchParams.get('subject')).toBe(subject);
+      expect(parsed.searchParams.get('body')).toBe(body);
+      await expect.poll(() => navigations).toContain(expectedHref);
+      await expect(form(page)).toBeHidden();
+      await expect(form(page)).toHaveAttribute('aria-busy', 'false');
+      await expect(page.locator('[data-submit]')).toBeEnabled();
+      await expect(page.locator('[data-contact-ticket]')).toHaveCount(0);
+      await expect(page).toHaveURL(new RegExp(`${path}$`));
+      expect(requests.filter((request) => request.method === 'POST')).toEqual([]);
+      expect(requests.filter((request) => /^https?:/.test(request.url))).toEqual([]);
+      await session.detach();
+    });
+  }
 
-  test('"[error]" en el mensaje → error de servidor con reintento que vuelve a fallar', async ({ page }) => {
+  test('sin destinatario configurado: error real, conserva valores y permite reintentar', async ({ page }) => {
+    let recipient = '';
+    // Fixture de respuesta equivalente al HTML de un build sin buzón, antes de ejecutar sus scripts.
+    await page.route('**/empresa/', async (route) => {
+      const response = await route.fetch();
+      const html = await response.text();
+      recipient = html.match(/data-contact-email="([^"]+)"/)?.[1] ?? '';
+      await route.fulfill({ response, body: html.replace(/data-contact-email="[^"]*"/, 'data-contact-email=""') });
+    });
     await open(page, '/empresa/');
-    await fillValid(page, 'Mensaje de prueba con [error] para forzar el fallo del servicio simulado.');
+    const root = page.locator('[data-contact]');
+    expect(recipient).toBeTruthy();
+    await expect(root).toHaveAttribute('data-contact-email', '');
+    await fillValid(page);
+    const requests: string[] = [];
+    page.on('request', (request) => requests.push(`${request.method()} ${request.url()}`));
     await page.locator('[data-submit]').click();
     const error = page.locator('[data-status="error"]');
-    await expect(error).toBeVisible({ timeout: 10_000 });
+    await expect(error).toBeVisible();
     await expect(error).toBeFocused();
     await expect(error.locator('[role="alert"]')).toBeVisible();
     await expect(error).toContainText(es.company.contact.form.error.title);
     await expect(form(page)).toBeVisible();
-    await expect(field(page, 'message')).toHaveValue(/\[error\]/);
+    await expect(field(page, 'email')).toHaveValue('prueba@example.com');
     await expect(page.locator('[data-submit]')).toBeEnabled();
+    await expect(page.locator('[data-status="success"]')).toBeHidden();
+    await expect(page.locator('[data-contact-mailto]')).toBeHidden();
+    await error.locator('[data-retry]').click();
+    await expect(error).toBeVisible();
+    await expect(error).toBeFocused();
+    expect(requests).toEqual([]);
+    // Reconfigura únicamente el dato de esta fixture para comprobar el reintento del mismo formulario.
+    await root.evaluate((element, value) => element.setAttribute('data-contact-email', value), recipient);
     await error.locator('[data-retry]').click();
     await expect(error).toBeHidden();
-    await expect(error).toBeVisible({ timeout: 10_000 });
-    // Corregir el mensaje y reintentar → éxito.
-    await field(page, 'message').fill('Mensaje corregido, sin la palabra clave que fuerza el fallo del servicio.');
-    await error.locator('[data-retry]').click();
-    await expect(page.locator('[data-status="success"]')).toBeVisible({ timeout: 10_000 });
+    await expect(page.locator('[data-status="success"]')).toBeVisible();
+    await expect(page.locator('[data-contact-mailto]')).toHaveText(recipient!);
+    expect(requests.filter((request) => /^(POST|GET) https?:/.test(request))).toEqual([]);
   });
 
-  test('sin conexión real: aviso sin enviar, recuperación y reintento con éxito', async ({ page, context }) => {
+  // Un fallo del gestor mailto externo no es un error de servidor observable por esta web.
+  // Location.href no ofrece un resultado de entrega: la cobertura verifica el intento nativo y el enlace
+  // de respaldo. No fuerza artificialmente el panel error ni afirma que se abrió una app o se envió correo.
+
+  test('sin conexión: aviso, recuperación y reintento que prepara el correo', async ({ page, context }) => {
     await open(page, '/empresa/');
     await fillValid(page);
     await context.setOffline(true);
@@ -117,7 +190,7 @@ test.describe('envío simulado', () => {
     await expect(offline).toBeVisible();
     await expect(offline).toBeFocused();
     await expect(offline).toContainText(es.common.states.offlineTitle);
-    // Sin conexión no se intenta el envío: el formulario no entra en estado ocupado.
+    // Sin conexión no se prepara el correo: el formulario no entra en estado ocupado.
     await expect(form(page)).not.toHaveAttribute('aria-busy', 'true');
     await expect(page.locator('[data-submit]')).toBeEnabled();
     await context.setOffline(false);

@@ -11,16 +11,16 @@ export const security: SecurityContent = {
     eyebrow: 'Seguridad y confianza',
     title: 'Confianza que se explica, no que se promete',
     subtitle:
-      'La seguridad de una plataforma de verificación se mide por lo que comprueba y por la claridad con la que dice lo que no puede comprobar. Estos son nuestros principios y nuestros límites.',
+      'La seguridad de una plataforma de verificación se mide por lo que comprueba y por la claridad con la que dice lo que no puede comprobar. Estos son los principios y límites de la arquitectura objetivo. Esta web consulta datos de ejemplo; no valida firmas reales ni opera los controles descritos.',
   },
 
   principles: {
     title: 'Principios',
-    intro: 'Cinco principios guían el diseño de la plataforma y el lenguaje con el que presenta cada resultado.',
+    intro: 'Cinco principios guían el diseño objetivo de la plataforma. Su descripción no acredita que estos controles estén implementados en esta web.',
     items: [
       {
         title: 'Identidad unitaria firmada',
-        body: 'Cada unidad tiene un identificador propio, firmado con claves que gestiona el emisor. Nadie más puede emitir identidades en su nombre.',
+        body: 'El diseño prevé un identificador por unidad, firmado con claves gestionadas por el emisor, para comprobar el origen de la identidad. Esta web no realiza esa validación criptográfica.',
         icon: 'signature',
       },
       {
@@ -30,7 +30,7 @@ export const security: SecurityContent = {
       },
       {
         title: 'Mínima recolección de datos',
-        body: 'Verificar no exige identificarse. Los reportes piden solo lo necesario y de forma opcional. No se guardan datos personales ni tributarios en las identidades.',
+        body: 'Consultar no exige identificarse. El reporte de discrepancia se prepara en este dispositivo y solo se guarda si se descarga; esta web no lo envía. Las identidades no contienen datos personales ni tributarios.',
         icon: 'lock',
       },
       {
@@ -53,7 +53,7 @@ export const security: SecurityContent = {
     items: [
       {
         title: 'Firmas ECDSA P-256',
-        body: 'Para el caso de uso de licores propuesto a un regulador, las identidades se firmarían con ECDSA sobre la curva P-256, un estándar ampliamente documentado.',
+        body: 'Para el caso de uso de medicamentos propuesto a un regulador, las identidades se firmarían con ECDSA sobre la curva P-256, un estándar ampliamente documentado.',
         icon: 'key',
       },
       {
@@ -77,52 +77,52 @@ export const security: SecurityContent = {
         icon: 'alert',
       },
     ],
-    note: 'Arquitectura objetivo del producto: esta página no implementa ni afirma una certificación de seguridad. Los controles descritos se implementan y auditan en cada despliegue.',
+    note: 'Arquitectura objetivo del producto: esta página no implementa ni afirma una certificación de seguridad. Los controles descritos requerirían implementación y auditoría en cada despliegue.',
   },
 
   antiCloning: {
     title: 'Contra la copia trabajan varias capas, y ninguna basta sola',
     intro:
-      'Conviene decirlo primero: la firma criptográfica no protege contra la copia. Un código copiado es un código válido. Lo que la firma impide es inventar códigos, que es un problema distinto. Contra la copia trabaja otra cosa: capas que se suman, cada una débil por separado.',
+      'La firma criptográfica permite comprobar el origen de una identidad, pero no impide copiar un código válido. Las siguientes capas forman parte del diseño objetivo; esta web no ejecuta analítica anticopia ni comprueba materiales de seguridad.',
     items: [
       {
         title: 'Analítica de duplicados',
-        body: 'El mismo identificador consultado desde lugares que una sola unidad no puede recorrer en el tiempo transcurrido, o con una frecuencia que ninguna botella tiene. El estado se degrada y se abre un caso.',
+        body: 'En la arquitectura objetivo, una frecuencia o un patrón de consultas incompatible con el uso esperado de una unidad podría generar una señal para revisión. Esta web no cambia el estado del registro ni abre un caso operativo.',
         icon: 'chart',
       },
       {
         title: 'Comparación humana',
-        body: 'El pasaporte muestra el lote y la fecha de vencimiento; quien tiene la unidad delante los compara con lo impreso en el envase. Un código copiado sobre otro lote no coincide. Es gratis y es el paso más eficaz.',
+        body: 'Compare el lote, la presentación de 120 ml y la fecha de vencimiento del medicamento con lo impreso en el envase. Una diferencia requiere revisión; una coincidencia no acredita el contenido ni el estado físico de la unidad.',
         icon: 'compare',
       },
       {
         title: 'Vinculación al serial',
-        body: 'En productos durables la etiqueta se vincula uno a uno con el serial del fabricante y el pasaporte lo muestra: quien compra compara con el serial impreso en el equipo.',
+        body: 'Para el medicamento de ejemplo, la etiqueta muestra el identificador unitario y el lote. Compárelos con la consulta; la vinculación entre el identificador y cada unidad física tendría que establecerse durante el etiquetado del despliegue.',
         icon: 'fingerprint',
       },
       {
         title: 'Primera consulta visible',
-        body: 'El pasaporte dice cuándo se consultó por primera vez y cuántas veces va. Una unidad recién comprada con un historial largo huele mal, y eso lo nota cualquiera sin saber nada del sistema.',
+        body: 'El diseño prevé mostrar la primera consulta y su frecuencia para revisar un historial inesperado. Los datos de ejemplo de esta web no constituyen un historial de consultas reales de una unidad física.',
         icon: 'history',
       },
       {
         title: 'Etiqueta destructible',
-        body: 'Un sustrato que se rompe al despegarlo impide trasladar una etiqueta ya aplicada de una unidad a otra, que es el fraude más sencillo de todos.',
+        body: 'En fase 2 se evaluaría un sustrato que se rompa al despegarlo para dificultar el traslado de una etiqueta entre unidades. La estampilla mostrada en esta web no acredita esa propiedad física.',
         icon: 'label',
       },
       {
         title: 'Activación en dos tiempos',
-        body: 'Un identificador emitido y etiquetado pero sin activar que aparece consultado en la calle es una señal de fuga. Por eso el resultado dice «en revisión» y no «verificado».',
+        body: 'En el diseño objetivo, una consulta de un identificador emitido y etiquetado, pero todavía sin activar al finalizar producción, sería una señal para revisión. Esta web explica ese estado con datos de ejemplo; no activa unidades.',
         icon: 'check',
       },
     ],
-    note: 'En fases posteriores se suman elementos que la cámara puede comprobar —un patrón de alta entropía que se degrada de forma medible al fotocopiarlo— y elementos materiales que un clon fotográfico no puede reproducir. Ninguna capa es suficiente; el conjunto es lo que hace caro el fraude.',
+    note: 'La fase 2 contempla evaluar patrones de alta entropía y elementos materiales anticopia, sujetos a validación e integración. La cámara de esta web lee códigos QR; no evalúa esos patrones ni certifica una etiqueta física. Ninguna capa basta por sí sola.',
   },
 
   keyCustody: {
     title: 'Quién puede usar las claves de firma',
     intro:
-      'Las claves con las que se firma un identificador se custodian en un módulo de seguridad de hardware, no en el equipo de quien emite. El objetivo es explícito: que ninguna persona —incluido quien opera la plataforma— pueda usarlas fuera del flujo autorizado.',
+      'La arquitectura objetivo exige custodiar las claves de firma en un módulo de seguridad de hardware y restringir su uso al flujo autorizado. Los requisitos siguientes describen ese diseño; esta web no opera dicho módulo ni acredita su implementación.',
     items: [
       {
         title: 'El material no sale del módulo',
@@ -162,7 +162,7 @@ export const security: SecurityContent = {
   degradation: {
     title: 'Qué tiene que seguir funcionando cuando algo falla',
     intro:
-      'Un sistema fiscal que detiene una línea de producción o una caja de comercio ha causado más daño que el fraude que perseguía. Eso deja de ser una aspiración y pasa a ser una restricción de diseño, con consecuencias concretas.',
+      'Un sistema de identificación que detiene una línea de producción o una caja de comercio ha causado más daño que el fraude que perseguía. Los requisitos siguientes son restricciones de la arquitectura objetivo; no describen servicios operativos de esta web.',
     items: [
       {
         title: 'Imprimir no depende de la conexión',
@@ -181,7 +181,7 @@ export const security: SecurityContent = {
       },
       {
         title: 'Los rechazos son telemetría',
-        body: 'Un intento de enumerar códigos es en sí mismo una señal de fraude: los picos de rechazo por origen y por prefijo alimentan la analítica y abren caso.',
+        body: 'En la arquitectura objetivo, los picos de rechazo por origen y por prefijo alimentarían la analítica y podrían abrir un caso para revisar intentos de enumerar códigos. Esta web no ejecuta ese flujo operativo.',
         icon: 'alert',
       },
     ],
@@ -208,7 +208,7 @@ export const security: SecurityContent = {
     bullets: [
       'Sin cookies publicitarias ni rastreadores de terceros. Las únicas cookies del sitio son las de medición de audiencia, descritas en el aviso de privacidad.',
       'Sin datos personales en la verificación pública: consultar un código no exige identificarse.',
-      'Reportes de discrepancia con datos mínimos y opcionales; quien reporta decide qué comparte.',
+      'Reportes de discrepancia preparados localmente: no se envían ni modifican el registro. Descargue la copia antes de cerrar el reporte y entréguela por separado a la organización responsable.',
       'Las identidades de las unidades no contienen datos personales ni tributarios.',
       'Medición de audiencia agregada, sin identificar a las personas y respetando «Do Not Track».',
     ],
@@ -223,7 +223,7 @@ export const security: SecurityContent = {
       'Niveles de disponibilidad (uptime) ni compromisos de servicio.',
       'Auditorías externas de código, de infraestructura o de procesos.',
       'Clientes, contratos o despliegues en producción.',
-      'Relación con gobiernos, reguladores o agencias: el caso de licores es una propuesta de piloto.',
+      'Relación con gobiernos, reguladores o agencias: el caso de medicamentos es una propuesta de piloto.',
       'Cifras de escala, de impacto económico o de resultados.',
     ],
   },
@@ -231,8 +231,8 @@ export const security: SecurityContent = {
   disclosure: {
     title: 'Reporte responsable de vulnerabilidades',
     body:
-      'Si detecta un problema de seguridad en este sitio o en la plataforma, agradecemos que lo comunique de forma responsable antes de hacerlo público. Nos comprometemos a acusar recibo, a mantener la conversación abierta y a reconocer la contribución si así se desea.',
-    note: 'Los reportes de seguridad se reciben en el correo de contacto de la empresa. Cada despliegue puede definir además su propio canal.',
+      'Si detecta un problema de seguridad en este sitio o en la plataforma, agradecemos que lo comunique de forma responsable antes de hacerlo público. Utilice el canal de contacto de la empresa; la preparación local de un reporte de discrepancia no comunica una vulnerabilidad.',
+    note: 'Compruebe el canal disponible en la página de empresa. Esta página no envía reportes ni confirma su recepción; cada despliegue puede definir su propio canal.',
   },
 
   cta: {

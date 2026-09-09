@@ -25,7 +25,7 @@ const EXPECTED_KEYS: RouteKey[] = [
   'solutionsIndustry',
   'solutionsCitizens',
   'howItWorks',
-  'caseSpirits',
+  'caseMedicines',
   'codeSpec',
   'integration',
   'rationale',
@@ -82,7 +82,7 @@ describe('ROUTES', () => {
       for (const child of ['solutionsGovernment', 'solutionsIndustry', 'solutionsCitizens'] as const) {
         expect(r[child]).toMatch(new RegExp(`^${r.solutions}[a-z-]+/$`));
       }
-      expect(r.caseSpirits).toMatch(/^\/(en\/)?[a-z]+\/[a-z]+\/$/);
+      expect(r.caseMedicines).toMatch(/^\/(en\/)?[a-z]+\/[a-z]+\/$/);
     }
   });
 });
@@ -105,8 +105,8 @@ describe('withBase / route', () => {
   it('route() resuelve clave + idioma + base', () => {
     expect(route('es', 'verify', '/')).toBe('/verificar/');
     expect(route('en', 'verify', '/')).toBe('/en/verify/');
-    expect(route('es', 'caseSpirits', '/demo/')).toBe('/demo/casos/licores/');
-    expect(route('en', 'caseSpirits', '/demo/')).toBe('/demo/en/cases/spirits/');
+    expect(route('es', 'caseMedicines', '/demo/')).toBe('/demo/casos/medicamentos/');
+    expect(route('en', 'caseMedicines', '/demo/')).toBe('/demo/en/cases/medicines/');
     expect(route('es', 'home', '/demo')).toBe('/demo/');
   });
 

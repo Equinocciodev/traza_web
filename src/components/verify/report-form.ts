@@ -1,15 +1,14 @@
 /**
- * Reporte de discrepancia: validación accesible, envío vía getApi().submitReport,
- * estados enviando / enviado / error (offline, servidor, tiempo de espera) con reintento.
+ * Preparación local de un reporte descargable. No envía datos ni modifica el registro.
+ * La copia solo permanece en memoria hasta cerrar el reporte; guardarla exige una descarga explícita.
  */
 import type { TransportErrorKind, VerifyClientStrings } from '@/content/verify.types';
 import type { Tenant } from '@/config/tenants';
-import type { DiscrepancyKind, DiscrepancyReport } from '@/fixtures/types';
 import { formatDateTime, type Locale } from '@/i18n';
-import { ApiError, simulateLatency, type TrazaApi } from '@/lib/api';
+import type { TrazaApi } from '@/lib/api';
 import { track } from '@/lib/analytics';
 import type { VerificationResult } from '@/lib/verify/types';
-import { REPORT_DESCRIPTION_MAX, REPORT_DESCRIPTION_MIN, fill, isPlausibleEmail } from '@/lib/verify/present';
+import { REPORT_DESCRIPTION_MAX, REPORT_DESCRIPTION_MIN, fill } from '@/lib/verify/present';
 import { focusHeading, hide, qs, qsa, setText, show } from './dom';
 
 export interface ReportFormContext {
@@ -31,7 +30,7 @@ export interface ReportFormController {
 }
 
 export function initReportForm(ctx: ReportFormContext): ReportFormController {
-  const { region, strings, locale, api } = ctx;
+  const { region, strings, locale } = ctx;
   const t = strings.report;
   const form = qs<HTMLFormElement>(region, '[data-report-form]');
   const title = qs(region, '[data-report-title]');
@@ -39,8 +38,6 @@ export function initReportForm(ctx: ReportFormContext): ReportFormController {
   const kind = qs<HTMLSelectElement>(region, '[data-report-kind]');
   const description = qs<HTMLTextAreaElement>(region, '[data-report-description]');
   const counter = qs(region, '[data-report-counter]');
-  const location = qs<HTMLInputElement>(region, '[data-report-location]');
-  const email = qs<HTMLInputElement>(region, '[data-report-email]');
   const submit = qs<HTMLButtonElement>(region, '[data-report-submit]');
   const submitLabel = qs(region, '[data-report-submit-label]');
   const errorView = qs(region, '[data-report-view="error"]');
@@ -52,11 +49,12 @@ export function initReportForm(ctx: ReportFormContext): ReportFormController {
   const receivedAt = qs(region, '[data-report-received-at]');
   const successCode = qs(region, '[data-report-success-code]');
   const successHint = qs(region, '[data-report-tenant-hint]');
+  const download = qs<HTMLAnchorElement>(region, '[data-report-download]');
 
   let current: VerificationResult | null = null;
   let sending = false;
   let open = false;
-  let request: AbortController | null = null;
+  let downloadUrl: string | null = null;
 
   const fieldError = (name: string) => qs(region, `[data-field-error="${name}"]`);
 
@@ -89,8 +87,6 @@ export function initReportForm(ctx: ReportFormContext): ReportFormController {
       'description',
       text.length < REPORT_DESCRIPTION_MIN ? t.errors.descriptionShort : text.length > REPORT_DESCRIPTION_MAX ? t.errors.descriptionLong : null,
     );
-    const mail = email.value.trim();
-    mark(email, 'email', mail && !isPlausibleEmail(mail) ? t.errors.email : null);
     return firstInvalid;
   }
 
@@ -112,7 +108,15 @@ export function initReportForm(ctx: ReportFormContext): ReportFormController {
     focusHeading(errorTitle.closest('[data-report-view="error"]') as HTMLElement);
   }
 
-  async function send(): Promise<void> {
+  function clearDownload(): void {
+    if (downloadUrl) URL.revokeObjectURL(downloadUrl);
+    downloadUrl = null;
+    download.removeAttribute('href');
+    download.removeAttribute('download');
+    hide(download);
+  }
+
+  function prepare(): void {
     if (sending || !open || !current) return;
     hide(errorView);
     const firstInvalid = validate();
@@ -122,66 +126,59 @@ export function initReportForm(ctx: ReportFormContext): ReportFormController {
     }
     const tenant = ctx.getTenant();
     const result = current;
-    const report: DiscrepancyReport = {
-      code: result.code,
-      tenant: tenant.id,
-      kind: kind.value as DiscrepancyKind,
-      description: description.value.trim(),
-      verdictAtReport: `${result.verdict}/${result.reason}`,
-    };
-    const loc = location.value.trim();
-    if (loc) report.location = loc;
-    const mail = email.value.trim();
-    if (mail) report.contactEmail = mail;
-
-    const attempt = new AbortController();
-    request = attempt;
-    const { signal } = attempt;
     setSending(true);
     try {
-      if (ctx.isSimulatedOffline()) {
-        await simulateLatency(150, signal);
-        throw new ApiError('offline');
-      }
-      const receipt = await api.submitReport(report, { signal });
-      if (signal.aborted || request !== attempt || !open) return;
-      successView.dataset.folio = receipt.folio;
-      setText(folio, receipt.folio);
-      setText(receivedAt, formatDateTime(receipt.receivedAt, locale));
-      setText(successCode, report.code);
+      const preparedAt = new Date().toISOString();
+      // LOCAL evita presentar el identificador como un recibo del servidor.
+      const localFolio = `RPT-LOCAL-${crypto.randomUUID()}`;
+      const copy = {
+        schema: 'traza-local-report-v1',
+        status: 'prepared-locally-not-sent',
+        folio: localFolio,
+        preparedAt,
+        code: result.code,
+        kind: kind.value,
+        description: description.value.trim(),
+      };
+      const blob = new Blob([JSON.stringify(copy, null, 2) + '\n'], { type: 'application/json;charset=utf-8' });
+      clearDownload();
+      downloadUrl = URL.createObjectURL(blob);
+      download.href = downloadUrl;
+      download.download = `${localFolio}.json`;
+      show(download);
+      successView.dataset.folio = localFolio;
+      setText(folio, localFolio);
+      setText(receivedAt, formatDateTime(preparedAt, locale));
+      setText(successCode, result.code);
       setText(successHint, tenant.nextStepHint[locale]);
       hide(form);
       show(successView);
       focusHeading(successTitle);
-      track('report_submitted', { kind: report.kind, verdict: result.verdict, reason: result.reason, tenant: tenant.id });
-    } catch (error) {
-      if (signal.aborted || request !== attempt || !open) return;
-      const kindOfError: TransportErrorKind = error instanceof ApiError ? error.kind : 'network';
-      if (kindOfError !== 'aborted') showFailure(kindOfError);
+      track('report_submitted', { outcome: 'prepared', kind: copy.kind, verdict: result.verdict, reason: result.reason, tenant: tenant.id });
+    } catch {
+      clearDownload();
+      showFailure('network');
     } finally {
-      if (request === attempt) {
-        request = null;
-        setSending(false);
-      }
+      setSending(false);
     }
   }
 
   form.addEventListener('submit', (event) => {
     event.preventDefault();
-    void send();
+    prepare();
   });
   description.addEventListener('input', () => {
     updateCounter();
     if (description.getAttribute('aria-invalid')) setInvalid(description, 'description', null);
   });
   kind.addEventListener('change', () => setInvalid(kind, 'kind', null));
-  email.addEventListener('input', () => setInvalid(email, 'email', null));
 
   qsa<HTMLButtonElement>(region, '[data-action="report-cancel"], [data-action="report-done"]').forEach((btn) =>
     btn.addEventListener('click', () => controller.close()),
   );
 
   function reset(): void {
+    clearDownload();
     form.reset();
     hide(errorView);
     hide(successView);
@@ -189,7 +186,6 @@ export function initReportForm(ctx: ReportFormContext): ReportFormController {
     for (const [control, name] of [
       [kind, 'kind'],
       [description, 'description'],
-      [email, 'email'],
     ] as const) {
       setInvalid(control, name, null);
     }
@@ -202,8 +198,6 @@ export function initReportForm(ctx: ReportFormContext): ReportFormController {
       return open;
     },
     open(result) {
-      request?.abort();
-      request = null;
       current = result;
       reset();
       setText(codeEl, result.code);
@@ -213,9 +207,9 @@ export function initReportForm(ctx: ReportFormContext): ReportFormController {
     },
     close(silent = false) {
       if (!open) return;
-      request?.abort();
-      request = null;
       current = null;
+      clearDownload();
+      form.reset();
       setSending(false);
       open = false;
       hide(region);

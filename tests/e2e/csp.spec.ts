@@ -18,7 +18,7 @@ const DIST = [process.env.PW_DIST_DIR ?? '.tmp/dist-qa', 'dist'].map((d) => reso
 const HEADERS_FILE = resolve('public/_headers');
 
 const EXPECTED_CSP =
-  "default-src 'none'; script-src 'self'; style-src 'self'; img-src 'self' data:; font-src 'self'; connect-src 'self'; media-src 'self'; manifest-src 'self'; object-src 'none'; base-uri 'none'; form-action 'self'; frame-ancestors 'none'; upgrade-insecure-requests";
+  "default-src 'none'; script-src 'self' https://www.googletagmanager.com; style-src 'self'; img-src 'self' data: blob: https://www.google-analytics.com; font-src 'self'; connect-src 'self' https://*.google-analytics.com https://*.analytics.google.com https://*.googletagmanager.com; media-src 'self'; manifest-src 'self'; object-src 'none'; base-uri 'none'; form-action 'self'; frame-ancestors 'none'; upgrade-insecure-requests";
 
 let server: ChildProcess | undefined;
 
@@ -113,16 +113,24 @@ test.describe('cabeceras de seguridad', () => {
 });
 
 test.describe('las páginas funcionan bajo la CSP estricta', () => {
-  for (const path of ['/', '/plataforma/', '/casos/licores/', '/seguridad/', '/privacidad/', '/en/', '/no-existe/']) {
-    test(`${path}: carga sin violaciones ni errores`, async ({ page }) => {
+  for (const path of ['/', '/plataforma/', '/casos/medicamentos/', '/seguridad/', '/privacidad/', '/en/', '/no-existe/']) {
+    test(`${path}: carga sin violaciones ni errores`, async ({ page }, testInfo) => {
       const console = collectConsoleErrors(page, path === '/no-existe/' ? [/status of 404/] : []);
       await armViolationLog(page);
       await openStrict(page, path);
       await expect(page.locator('h1')).toHaveCount(1);
       // Estilos aplicados (hoja externa cargada) y fuentes propias resueltas.
       const font = await page.evaluate(() => getComputedStyle(document.body).fontFamily);
-      expect(font).toMatch(/Poppins/);
-      await expect(page.locator('aside.demo-strip')).toBeVisible();
+      expect(font).toMatch(/Roboto/);
+      await expect(page.locator('aside.demo-strip')).toHaveCount(0);
+      if ((path === '/' || path === '/en/') && testInfo.project.name === 'mobile') {
+        const trigger = page.locator('[data-nav-toggle]');
+        await trigger.click();
+        await expect(trigger).toHaveAttribute('aria-expanded', 'true');
+        await page.keyboard.press('Escape');
+        await expect(trigger).toHaveAttribute('aria-expanded', 'false');
+        await expect(trigger).toBeFocused();
+      }
       expect(await violations(page)).toEqual([]);
       expect(console.stop()).toEqual([]);
     });
@@ -131,10 +139,10 @@ test.describe('las páginas funcionan bajo la CSP estricta', () => {
   test('verificación: escenarios, cámara denegada y reporte', async ({ page }) => {
     const console = collectConsoleErrors(page);
     await armViolationLog(page);
-    await openStrict(page, `/verificar/?t=licores&c=${SCENARIO_BY_ID.get('valid')!.code}`);
+    await openStrict(page, `/verificar/?t=medicamentos&c=${SCENARIO_BY_ID.get('valid')!.code}`);
     await expect(page.getByTestId('verify-result')).toBeVisible({ timeout: 10_000 });
     await expect(page.getByTestId('verify-result')).toHaveAttribute('data-verdict', 'valid');
-    await expect(page.locator('[data-tenant-lockup="licores"]')).toBeVisible();
+    await expect(page.locator('[data-tenant-lockup="medicamentos"]')).toBeVisible();
     await page.locator('button[data-scenario="duplicate"]').click();
     await expect(page.getByTestId('verify-result')).toHaveAttribute('data-verdict', 'warning', { timeout: 10_000 });
     await page.locator('button[data-scenario="camera_denied"]').click();

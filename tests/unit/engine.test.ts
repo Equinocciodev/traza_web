@@ -6,6 +6,22 @@ import { SCENARIOS } from '@/fixtures/scenarios';
 const registryName = 'Registro de prueba';
 
 describe('parseCode', () => {
+  it('reconoce el QR corto impreso en el hero publicado', () => {
+    expect(parseCode('HTTPS://T.EXAMPLE/V/7F2K4K7Q92FA'))
+      .toEqual({ ok: true, code: 'TRZ-7F2K-4K7Q-92FA' });
+  });
+  it.each([
+    '7F2K4K7Q92FA',
+    'https://other.example/v/7F2K4K7Q92FA',
+    'https://t.example/other/7F2K4K7Q92FA',
+    'https://t.example/v/7F2K4K7Q92FAZ',
+    'https://t.example/v/7F2K4K7Q92FA?c=invalid',
+    'https://t.example/v/7F2K4K7Q92FA#other',
+    'http://t.example/v/7F2K4K7Q92FA',
+    'https://user@t.example/v/7F2K4K7Q92FA',
+  ])('no amplía el formato corto a entradas ajenas o ambiguas: %s', (input) => {
+    expect(parseCode(input)).toEqual({ ok: false, reason: 'unknown_format' });
+  });
   it('normaliza mayúsculas, espacios y guiones', () => {
     expect(normalizeCode('trz 7f2k 4k7q 92fa')).toBe('TRZ-7F2K-4K7Q-92FA');
     expect(normalizeCode('TRZ7F2K4K7Q92FA')).toBe('TRZ-7F2K-4K7Q-92FA');
@@ -27,7 +43,7 @@ describe('parseCode', () => {
     expect(parseCode(input)).toEqual({ ok: false, reason: 'unknown_format' });
   });
   it.each([
-    'https://traza.technology/verificar?c=trz%207f2k%204k7q%2092fa&t=licores',
+    'https://traza.technology/verificar?c=trz%207f2k%204k7q%2092fa&t=medicamentos',
     'https://traza.technology/verificar/trz-7f2k-4k7q-92fa/',
     'https://traza.technology/verificar/TRZ7F2K4K7Q92FA',
   ])('normaliza el código completo dentro de una URL: %s', (input) => {

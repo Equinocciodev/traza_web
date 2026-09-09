@@ -2,7 +2,7 @@ import type { ReferencePageContent } from '../types';
 
 /**
  * Integración (ES). Página para quien va a conectar la plataforma con sus sistemas:
- * qué endpoints existen, qué garantiza cada uno y en qué formatos se entrega el resultado.
+ * endpoints propuestos, reglas de cada operación y formatos previstos de entrega.
  */
 export const integration: ReferencePageContent = {
   meta: {
@@ -13,9 +13,9 @@ export const integration: ReferencePageContent = {
 
   hero: {
     eyebrow: 'Referencia de integración',
-    title: 'La consola y la API son la misma verdad',
+    title: 'Conecta tus sistemas. Conserva el contexto.',
     subtitle:
-      'Todo lo que se puede hacer desde la consola se puede hacer desde la API, y al revés. La consola no es un atajo con privilegios: llama a los mismos endpoints que usted.',
+      'Esta es la arquitectura objetivo de integración: consola y API aplicarían las mismas reglas. Los endpoints descritos no están disponibles en esta web; su implementación y validación se acuerdan en cada despliegue.',
   },
 
   contentsLabel: 'En esta página',
@@ -27,11 +27,11 @@ export const integration: ReferencePageContent = {
       intro:
         'Son dos tiempos porque la fábrica funciona así: los códigos se imprimen mientras se produce, y los datos definitivos del lote solo existen cuando la corrida termina.',
       code: {
-        caption: 'Endpoints del ciclo de emisión',
+        caption: 'Endpoints propuestos del ciclo de emisión',
         lines: [
           'POST /v1/issuances',
-          '     Genera identificadores para un producto. La ficha es opcional:',
-          '     si viene con lote y vencimiento, la emisión nace activada.',
+          '     Genera identificadores para un producto. Activación conjunta solo',
+          '     con producción finalizada, impresión confirmada y ficha completa.',
           '',
           'POST /v1/issuances/{id}/activate',
           '     Completa la ficha, que es lo que activa los códigos. Cuatro modos:',
@@ -45,7 +45,7 @@ export const integration: ReferencePageContent = {
         ],
       },
       paragraphs: [
-        'Los dos tiempos son un derecho, no una obligación: un importador que ya conoce el lote y el vencimiento puede emitir y activar en una sola llamada.',
+        'La operación conjunta de emisión y activación se contempla solo para producto cuya producción ya terminó, con impresión confirmada y ficha completa de lote y vencimiento. Conocer esos datos por adelantado no permite activar unidades antes de terminar la producción.',
         'Emitir exige una cabecera de idempotencia. Un reintento por corte de red no genera una segunda tirada ni consume el saldo dos veces: devuelve exactamente la misma emisión.',
       ],
     },
@@ -72,7 +72,7 @@ export const integration: ReferencePageContent = {
         },
         {
           title: 'Auditoría de muestreo',
-          body: 'Antes de despachar, se escanean unidades al azar de cada palet y se compara la ficha asignada con lo impreso. Un palet mal asignado se detecta antes de salir.',
+          body: 'Como control de cierre de producción, se escanean unidades al azar de cada lote y se compara la ficha asignada con lo impreso. Las diferencias quedan para revisión del responsable.',
           icon: 'compare',
         },
       ],
@@ -86,7 +86,7 @@ export const integration: ReferencePageContent = {
         lines: [
           'GET  /v1/verify/{code}',
           '     Consulta pública: estado y pasaporte. Anónima, con límite de tasa.',
-          '     Pensada también para integradores: cadenas de retail y aduanas.',
+          '     Prevista para integradores: farmacias y equipos de control.',
           '',
           'GET  /v1/labels/{code}',
           '     Consulta una etiqueta propia, con más detalle que la pública.',
@@ -111,7 +111,7 @@ export const integration: ReferencePageContent = {
       specs: [
         { label: 'Recibo de emisión', value: 'Emisión, rango, estado de la ficha, su referencia y una huella del contenido', note: 'La huella permite comprobar la integridad de lo que recibió la imprenta.' },
         { label: 'Su propia referencia', value: 'El número de orden o de corrida que usted use', note: 'Viaja en la emisión y es filtrable: la conciliación con su sistema de gestión es directa.' },
-        { label: 'Descarga', value: 'CSV · XLSX · imágenes · PDF de imposición', note: 'Toda descarga queda en auditoría: las etiquetas son valores fiscales.' },
+        { label: 'Descarga', value: 'CSV · XLSX · imágenes · PDF de imposición', note: 'Toda descarga queda en auditoría: las etiquetas son identidades unitarias.' },
         { label: 'Línea de producción', value: 'Lenguaje nativo de impresora térmica', note: 'Para etiquetar a la velocidad de la máquina, sin pasar por un PDF.' },
         { label: 'Correlativo visible', value: 'Un número por producto', note: 'Internamente el código lleva emisión y posición; en pantalla se habla en un correlativo que no se repite.' },
       ],
@@ -120,11 +120,11 @@ export const integration: ReferencePageContent = {
       id: 'permisos',
       title: 'Identidades y permisos',
       intro:
-        'La cuenta de un emisor autoriza la creación de valores fiscales. La asimetría con el público es deliberada.',
+        'La cuenta de un emisor autoriza la creación de identidades unitarias. La asimetría con el público es deliberada.',
       items: [
         {
           title: 'El público no tiene cuenta',
-          body: 'Consultar y reportar no piden registro. El contacto en un reporte es opcional y solo sirve para dar seguimiento.',
+          body: 'Consultar y preparar un reporte local no piden cuenta. Esta web permite descargar código, tipo y descripción, sin correo ni ubicación. No envía el reporte ni modifica el registro; entréguelo a la organización responsable.',
           icon: 'citizen',
         },
         {
@@ -148,7 +148,7 @@ export const integration: ReferencePageContent = {
       id: 'degradacion',
       title: 'Qué sigue funcionando cuando algo falla',
       intro:
-        'Un sistema fiscal no puede detener la producción ni el comercio. Eso deja de ser una aspiración y se convierte en un requisito de diseño.',
+        'Un sistema de identificación no puede detener la producción ni el comercio. Eso deja de ser una aspiración y se convierte en un requisito de diseño.',
       items: [
         {
           title: 'Imprimir no depende de la conexión',

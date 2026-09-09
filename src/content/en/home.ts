@@ -19,8 +19,8 @@ export const home: HomeContent = {
       caption: 'Identity of a unit',
       code: 'TRZ-7F2K-4K7Q-92FA',
       fields: [
-        { label: 'Manufacturer / importer', value: 'Destilería Cerro Alto' },
-        { label: 'Product / presentation', value: 'Ron Añejo Cerro Alto 7 años · 750 ml bottle' },
+        { label: 'Manufacturer / importer', value: 'Laboratorio Cerro Alto' },
+        { label: 'Product / presentation', value: 'Solución oral Cerro Alto · 120 ml oral solution' },
         { label: 'Lot / expiry', value: 'LOTE-VS-26-012 · expires 03/2031' },
         { label: 'Identifier status', value: 'Activated · lookups recorded' },
       ],
@@ -213,16 +213,16 @@ export const home: HomeContent = {
   useCase: {
     eyebrow: 'First use case',
     tag: 'Pilot proposal',
-    title: 'Spirits: unit-level identity and public verification for a regulator',
+    title: 'Medicines: unit-level identity and public verification for a regulator',
     body:
-      'Traza’s first use case is a pilot proposal addressed to a spirits regulator. It proposes identifying each unit with a digital signature, recording its journey and offering public verification from the browser, with field inspection included in the pilot.',
+      'Traza’s first use case is a pilot proposal addressed to a medicines regulator. It proposes identifying each unit with a digital signature, recording its journey and offering public verification from the browser, with field inspection included in the pilot.',
     bullets: [
       'Signed unit-level identity (target architecture: ECDSA P-256)',
       'Web-based public verification, with no installation or account',
       'Field inspection within the pilot',
       'Conditional co-brand with the regulator',
     ],
-    cta: { label: 'Learn about the use case', key: 'caseSpirits', variant: 'secondary' },
+    cta: { label: 'Learn about the use case', key: 'caseMedicines', variant: 'secondary' },
     disclaimer:
       'Pilot proposal. It does not imply an official implementation, a contractual relationship or the participation of any agency.',
   },
@@ -232,7 +232,7 @@ export const home: HomeContent = {
     body:
       'The platform does not depend on the type of product. It combines unit-level identity, chain events, public verification and rules configurable per tenant; what changes in each sector is the identity data, the relevant events and who can consult them.',
     sectors: [
-      'Food and beverages',
+      'Medicines and health products',
       'Pharmaceutical',
       'Agribusiness',
       'Spare parts and components',

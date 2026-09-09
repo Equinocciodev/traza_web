@@ -37,6 +37,13 @@ export function normalizeCode(input: string): string {
     if (url.protocol === 'https:' || url.protocol === 'http:') {
       const codes = url.searchParams.getAll('c');
       if (codes.length > 1) return value;
+      // El QR de la etiqueta publicada usa esta URL corta con el ID sin prefijo.
+      // Limitar la compatibilidad a ese host/ruta evita aceptar números arbitrarios.
+      const labelCode = url.protocol === 'https:' && url.hostname === 't.example'
+        && !url.port && !url.username && !url.password && !url.search && !url.hash
+        ? /^\/v\/([a-z0-9]{12})\/?$/i.exec(url.pathname)
+        : null;
+      if (labelCode) return normalizeCode(`TRZ${labelCode[1]}`);
       value = codes.length === 1
         ? codes[0]!
         : decodeURIComponent(url.pathname.replace(/\/+$/, '').split('/').pop() ?? '');

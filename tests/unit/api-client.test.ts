@@ -13,11 +13,11 @@ const VALID = 'TRZ-7F2K-4K7Q-92FA';
 const SIGNATURE_INVALID = 'TRZ-7F2K-2B8X-40NE';
 const REVOKED = 'TRZ-7F2K-5R9C-77MQ';
 const UNKNOWN_KNOWN_FORMAT = 'TRZ-ZZZZ-ZZZZ-ZZZZ';
-const CAFE_TRAZA_TENANT = 'TRZ-7F2K-6C2A-84MZ';
+const OTHER_TENANT_UNIT = 'TRZ-7F2K-6C2A-84MZ';
 
 const baseReport: DiscrepancyReport = {
   code: VALID,
-  tenant: 'licores',
+  tenant: 'medicamentos',
   kind: 'seal_damaged',
   description: 'El sello de la botella está roto.',
 };
@@ -50,12 +50,12 @@ describe('createMockApi().verify', () => {
   });
 
   it('código válido → verificación superada, con la unidad pública', async () => {
-    const r = await api.verify(VALID, { tenant: 'licores', locale: 'es', latency: 0 });
+    const r = await api.verify(VALID, { tenant: 'medicamentos', locale: 'es', latency: 0 });
     expect(r.verdict).toBe('valid');
     expect(r.reason).toBe('all_checks_passed');
     expect(r.code).toBe(VALID);
     expect(r.unit?.code).toBe(VALID);
-    expect(r.checks.registry.registryName).toBe(TENANTS.licores.registryName.es);
+    expect(r.checks.registry.registryName).toBe(TENANTS.medicamentos.registryName.es);
     // La unidad pública nunca expone las señales internas de la unidad.
     expect(r.unit).not.toHaveProperty('signature');
     expect(r.unit).not.toHaveProperty('registry');
@@ -64,21 +64,21 @@ describe('createMockApi().verify', () => {
 
   it('normaliza la entrada (minúsculas, espacios, sin guiones, URL) antes de resolver', async () => {
     for (const input of ['trz 7f2k 4k7q 92fa', 'TRZ7F2K4K7Q92FA', ` https://traza.technology/verificar/?c=${VALID} `]) {
-      const r = await api.verify(input, { tenant: 'licores', locale: 'es', latency: 0 });
+      const r = await api.verify(input, { tenant: 'medicamentos', locale: 'es', latency: 0 });
       expect(r.code).toBe(VALID);
       expect(r.verdict).toBe('valid');
     }
   });
 
   it('firma no válida → no válido, sin unidad', async () => {
-    const r = await api.verify(SIGNATURE_INVALID, { tenant: 'licores', locale: 'es', latency: 0 });
+    const r = await api.verify(SIGNATURE_INVALID, { tenant: 'medicamentos', locale: 'es', latency: 0 });
     expect(r.verdict).toBe('invalid');
     expect(r.reason).toBe('signature_invalid');
     expect(r.unit).toBeUndefined();
   });
 
   it('revocado → no válido aunque la firma pase', async () => {
-    const r = await api.verify(REVOKED, { tenant: 'licores', locale: 'es', latency: 0 });
+    const r = await api.verify(REVOKED, { tenant: 'medicamentos', locale: 'es', latency: 0 });
     expect(r.verdict).toBe('invalid');
     expect(r.reason).toBe('revoked');
     expect(r.checks.signature.outcome).toBe('pass');
@@ -95,7 +95,7 @@ describe('createMockApi().verify', () => {
   });
 
   it('formato desconocido → no verificable con el texto en mayúsculas, sin consultar', async () => {
-    const r = await api.verify('  abc-123 ', { tenant: 'licores', locale: 'es', latency: 0 });
+    const r = await api.verify('  abc-123 ', { tenant: 'medicamentos', locale: 'es', latency: 0 });
     expect(r.verdict).toBe('unverifiable');
     expect(r.reason).toBe('unknown_format');
     expect(r.code).toBe('ABC-123');
@@ -104,7 +104,7 @@ describe('createMockApi().verify', () => {
   });
 
   it('la unidad de otro despliegue conserva su tenant y el nombre de su registro', async () => {
-    const r = await api.verify(CAFE_TRAZA_TENANT, { tenant: 'licores', locale: 'es', latency: 0 });
+    const r = await api.verify(OTHER_TENANT_UNIT, { tenant: 'medicamentos', locale: 'es', latency: 0 });
     expect(r.verdict).toBe('valid');
     expect(r.tenant).toBe('traza');
     expect(r.checks.registry.registryName).toBe(TENANTS.traza.registryName.es);
@@ -119,9 +119,9 @@ describe('createMockApi().verify', () => {
   });
 
   it('códigos de transporte → ApiError con el kind correspondiente', async () => {
-    await expectApiError(api.verify(TRANSPORT_CODES.offline, { tenant: 'licores', locale: 'es', latency: 0 }), 'offline');
-    await expectApiError(api.verify(TRANSPORT_CODES.timeout, { tenant: 'licores', locale: 'es', latency: 0 }), 'timeout');
-    const err = await expectApiError(api.verify(TRANSPORT_CODES.serverError, { tenant: 'licores', locale: 'es', latency: 0 }), 'server', 503);
+    await expectApiError(api.verify(TRANSPORT_CODES.offline, { tenant: 'medicamentos', locale: 'es', latency: 0 }), 'offline');
+    await expectApiError(api.verify(TRANSPORT_CODES.timeout, { tenant: 'medicamentos', locale: 'es', latency: 0 }), 'timeout');
+    const err = await expectApiError(api.verify(TRANSPORT_CODES.serverError, { tenant: 'medicamentos', locale: 'es', latency: 0 }), 'server', 503);
     expect(err.message).toBe('registry_error');
   });
 
@@ -134,7 +134,7 @@ describe('createMockApi().verify', () => {
   it('navegador sin conexión → ApiError offline aunque el código sea válido', async () => {
     vi.stubGlobal('navigator', { onLine: false });
     expect(isBrowserOffline()).toBe(true);
-    await expectApiError(api.verify(VALID, { tenant: 'licores', locale: 'es', latency: 0 }), 'offline');
+    await expectApiError(api.verify(VALID, { tenant: 'medicamentos', locale: 'es', latency: 0 }), 'offline');
     await expectApiError(api.submitReport(baseReport, { latency: 0 }), 'offline');
     await expectApiError(api.submitContact({ name: 'A', email: 'a@b.co', message: 'hola' }, { latency: 0 }), 'offline');
   });
@@ -146,14 +146,14 @@ describe('createMockApi().verify', () => {
   it('AbortSignal ya abortado → ApiError aborted sin esperar', async () => {
     const controller = new AbortController();
     controller.abort();
-    await expectApiError(api.verify(VALID, { tenant: 'licores', locale: 'es', latency: 0, signal: controller.signal }), 'aborted');
+    await expectApiError(api.verify(VALID, { tenant: 'medicamentos', locale: 'es', latency: 0, signal: controller.signal }), 'aborted');
   });
 
   it('AbortSignal abortado durante la latencia → ApiError aborted y el temporizador se limpia', async () => {
     vi.useFakeTimers();
     try {
       const controller = new AbortController();
-      const pending = api.verify(VALID, { tenant: 'licores', locale: 'es', latency: 5000, signal: controller.signal });
+      const pending = api.verify(VALID, { tenant: 'medicamentos', locale: 'es', latency: 5000, signal: controller.signal });
       const assertion = expectApiError(pending, 'aborted');
       controller.abort();
       await assertion;
@@ -234,10 +234,10 @@ describe('createApi / createRemoteApi', () => {
     const fetchMock = vi.fn(async () => new Response(JSON.stringify(payload), { status: 200, headers: { 'Content-Type': 'application/json' } }));
     vi.stubGlobal('fetch', fetchMock);
     const api = createRemoteApi('https://api.example');
-    const r = await api.verify(VALID, { tenant: 'licores', locale: 'en' });
+    const r = await api.verify(VALID, { tenant: 'medicamentos', locale: 'en' });
     expect(r).toEqual(payload);
     const [url, init] = fetchMock.mock.calls[0] as unknown as [string, RequestInit];
-    expect(url).toBe(`https://api.example/v1/verify?code=${VALID}&tenant=licores&locale=en`);
+    expect(url).toBe(`https://api.example/v1/verify?code=${VALID}&tenant=medicamentos&locale=en`);
     expect(init.method).toBe('GET');
     expect((init.headers as Record<string, string>).Accept).toBe('application/json');
   });

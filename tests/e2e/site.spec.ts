@@ -68,37 +68,25 @@ test.describe('metadatos y estructura de cada página', () => {
   }
 });
 
-test.describe('SENIAT solo en el caso de uso y en el tenant de ejemplo', () => {
-  /**
-   * Desviación conocida del brief §1 (informe QA, defecto D-02): HomePage.astro:138 y PlatformPage.astro:111 renderizan
-   * CobrandExample fuera del caso de uso. Se lista aquí para que cualquier página NUEVA con el lockup haga fallar la prueba.
-   */
-  const KNOWN_LOCKUP_PAGES = new Set(['home', 'platform']);
+test.describe('medicamentos y co-brand condicional', () => {
   for (const p of INDEXABLE_PAGES) {
-    test(`${p.path}: el lockup solo es visible donde se admite y siempre con su aviso`, async ({ page }) => {
+    test(`${p.path}: sin autoridad anterior y co-brand con aviso`, async ({ page }) => {
       await open(page, p.path);
-      const text = await visibleText(page);
-      if (p.key === 'caseSpirits' || KNOWN_LOCKUP_PAGES.has(p.key)) {
-        expect(text).toContain('SENIAT');
-        // Siempre acompañado de su aviso condicional (propuesta de piloto, sin relación oficial).
-        expect(text).toMatch(/propuesta de piloto|pilot proposal/i);
-        expect(text).toMatch(/no implica|does not imply/i);
-        expect(await page.locator('.lockup__notice:visible').count()).toBeGreaterThan(0);
-      } else {
-        expect(text, `SENIAT visible en ${p.path}`).not.toContain('SENIAT');
+      expect(await visibleText(page)).not.toMatch(/SENIAT|licores|spirits/i);
+      const lockups = page.locator('.lockup:visible');
+      for (const lockup of await lockups.all()) {
+        await expect(lockup.locator('.lockup__notice')).toBeVisible();
+        await expect(lockup).toContainText(/EMPRESA PÚBLICA Y\/O PRIVADA|PUBLIC AND\/OR PRIVATE COMPANY/i);
       }
     });
   }
-
-  test('en la verificación el lockup solo aparece con el tenant de ejemplo (?t=licores) y con su aviso', async ({ page }) => {
-    await open(page, '/verificar/');
-    expect(await visibleText(page)).not.toContain('SENIAT');
-    await open(page, '/verificar/?t=licores');
-    const lockup = page.locator('[data-tenant-lockup="licores"]');
+  test('el tenant medicamentos muestra el co-brand y su condición', async ({ page }) => {
+    await open(page, '/verificar/?t=medicamentos');
+    const lockup = page.locator('[data-tenant-lockup="medicamentos"]');
     await expect(lockup).toBeVisible();
-    await expect(lockup.locator('.lockup__mark')).toHaveAccessibleName(/SENIAT \| TRAZA/);
-    await expect(lockup.locator('.lockup__notice')).toContainText(/no implica relación oficial/i);
-    await expect(lockup).toContainText(/propuesta de piloto/i);
+    await expect(lockup.locator('.lockup__mark')).toHaveAccessibleName(/EMPRESA PÚBLICA Y\/O PRIVADA \| TRAZA/);
+    await expect(lockup.locator('.lockup__notice')).toBeVisible();
+    await expect(lockup).toContainText(/aprobación/i);
   });
 });
 
@@ -198,18 +186,18 @@ test.describe('404, robots y sitemap', () => {
     await expect(page.getByRole('link', { name: nf.primaryCta.label })).toHaveAttribute('href', '/en/');
   });
 
-  test('robots.txt permite el rastreo, excluye /404 y apunta al sitemap', async ({ request }) => {
+  test('robots.txt permite el rastreo y apunta al sitemap', async ({ request }) => {
     const res = await request.get('/robots.txt');
     expect(res.status()).toBe(200);
     expect(res.headers()['content-type']).toMatch(/text\/plain/);
     const body = await res.text();
     expect(body).toContain('User-agent: *');
     expect(body).toContain('Allow: /');
-    expect(body).toContain('Disallow: /404');
+    // Las 404 llevan noindex; deben poder rastrearse para que el buscador lo lea.
     expect(body).toContain(`Sitemap: ${SITE_URL}/sitemap-index.xml`);
   });
 
-  test('sitemap-index.xml enlaza un sitemap con las 28 URL indexables (30 páginas menos las dos 404)', async ({ request }) => {
+  test('sitemap-index.xml incluye todas las rutas indexables y excluye las 404', async ({ request }) => {
     const index = await request.get('/sitemap-index.xml');
     expect(index.status()).toBe(200);
     const indexBody = await index.text();
@@ -224,13 +212,13 @@ test.describe('404, robots y sitemap', () => {
     }
     const expected = new Set(INDEXABLE_PAGES.map((p) => `${SITE_URL}${p.path}`));
     expect([...urls].sort()).toEqual([...expected].sort());
-    expect(urls.size).toBe(28);
+    expect(urls.size).toBe(INDEXABLE_PAGES.length);
     for (const p of PAGES.filter((x) => x.key === 'notFound')) expect(urls.has(`${SITE_URL}${p.path}`)).toBe(false);
   });
 });
 
 test.describe('enlaces internos y controles', () => {
-  test('ningún enlace interno de las 30 páginas está roto (HTTP y archivo en dist)', async ({ page, request }) => {
+  test('ningún enlace interno está roto (HTTP y archivo en dist)', async ({ page, request }) => {
     const links = new Map<string, Set<string>>();
     for (const p of PAGES) {
       await page.goto(p.path);
@@ -238,7 +226,8 @@ test.describe('enlaces internos y controles', () => {
       for (const href of hrefs) {
         if (!href || href.startsWith('#') || /^(mailto|tel|javascript):/.test(href)) continue;
         if (/^https?:\/\//.test(href) && !href.startsWith(SITE_URL)) {
-          expect.soft(href, `enlace externo en ${p.path}`).toBe('');
+          const allowed = content(p.locale).common.footer.columns.flatMap((column) => column.links).filter((link) => link.external).map((link) => link.href);
+          expect.soft(allowed, `enlace externo aprobado en ${p.path}`).toContain(href);
           continue;
         }
         const clean = href.replace(SITE_URL, '').split('#')[0]!.split('?')[0]!;
@@ -263,12 +252,17 @@ test.describe('enlaces internos y controles', () => {
     const valid = new Set(PAGES.map((p) => p.path));
     for (const p of PAGES) {
       await page.goto(p.path);
-      const hrefs = await page.$$eval('main a.btn[href], main a[class*="cta"][href]', (as) => as.map((a) => a.getAttribute('href') ?? ''));
+      const hrefs = await page.locator('main a.btn[href]:visible, main a[class*="cta"][href]:visible').evaluateAll((as) => as.map((a) => a.getAttribute('href') ?? ''));
       for (const href of hrefs) {
         const path = href.split('?')[0]!.split('#')[0]!;
         expect(valid.has(path), `CTA ${href} en ${p.path}`).toBe(true);
         const query = href.includes('?') ? href.split('?')[1]!.split('#')[0] : '';
-        if (query) expect(query).toMatch(/^t=(traza|licores)$/);
+        if (query) {
+          const params = new URLSearchParams(query);
+          expect([...params.keys()].every((key) => ['t', 'c'].includes(key))).toBe(true);
+          if (params.has('t')) expect(params.get('t')).toMatch(/^(traza|medicamentos)$/);
+          if (params.has('c')) expect(params.get('c')).toMatch(/^TRZ-[A-Z0-9]{4}-[A-Z0-9]{4}-[A-Z0-9]{4}$/);
+        }
       }
     }
   });
@@ -344,6 +338,11 @@ test.describe('enlaces internos y controles', () => {
         }));
         const changed = before.url !== after.url || before.html !== after.html || before.attrs !== after.attrs || before.focus !== after.focus;
         if (!changed) dead.push(`${info.id} («${info.name}»)${clickError ? ` — clic fallido: ${clickError}` : ''}`);
+        // Cerrar la navegación tras comprobar su cambio antes de probar controles del contenido.
+        if (info.navToggle && await btn.getAttribute('aria-expanded') === 'true') {
+          await page.keyboard.press('Escape');
+          await expect(btn).toHaveAttribute('aria-expanded', 'false');
+        }
         // Si el botón navegó a otra página, volvemos para seguir con los demás.
         if (before.url !== after.url && new URL(after.url).pathname !== new URL(before.url).pathname) await open(page, p.path);
       }

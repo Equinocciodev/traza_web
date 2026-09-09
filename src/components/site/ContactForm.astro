@@ -80,6 +80,7 @@ const fid = (name: string) => `${id}-${name}`;
     data-label-organization={f.organization}
     data-label-sector={f.sector}
   >
+    <h3 class="contact-form__title">{company.contact.formTitle}</h3>
     <div class="form-summary" data-summary role="alert" tabindex="-1" hidden>
       <div class="form-summary__head">
         <Icon name="alert" size={20} />
@@ -206,7 +207,7 @@ const fid = (name: string) => `${id}-${name}`;
     </p>
 
     <div class="contact-form__actions">
-      <Button type="submit" icon="arrow-right" data-submit disabled>{f.submit}</Button>
+      <Button variant="pill" type="submit" icon="arrow-right" data-submit disabled>{f.submit}</Button>
     </div>
     <p data-contact-inactive>{common.form.noScript}</p>
   </form>
@@ -515,7 +516,7 @@ const fid = (name: string) => `${id}-${name}`;
   }
   @media (min-width: 40em) {
     .contact-form__grid {
-      grid-template-columns: repeat(2, minmax(0, 1fr));
+      grid-template-columns: minmax(0, 1fr);
     }
     .field--full {
       grid-column: 1 / -1;

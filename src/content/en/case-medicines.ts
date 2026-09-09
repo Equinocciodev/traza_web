@@ -1,26 +1,26 @@
-import type { CaseSpiritsContent } from '../types';
+import type { CaseMedicinesContent } from '../types';
 
-export const caseSpirits: CaseSpiritsContent = {
+export const caseMedicines: CaseMedicinesContent = {
   meta: {
-    title: 'Use case: spirits and alcoholic beverages',
+    title: 'Medicines: unit identity and public verification',
     description:
-      'Pilot proposal for a spirits regulator: signed unit-level identity, web-based public verification, and field inspection. No official implementation claimed.',
+      'Digital identity for each medicine unit: QR printing, activation after production, public lookup and field control in a scoped pilot proposal for medicines.',
   },
 
   hero: {
-    eyebrow: 'Use case · Spirits',
+    eyebrow: 'Use case · Medicines',
     tag: 'Pilot proposal',
-    title: 'Unit-level identity and public verification for a regulated spirits market',
+    title: 'The QR is born with the medicine',
     subtitle:
-      'Traza’s first use case proposes giving each bottle a signed identity, recording its lifecycle from issuance through every lookup, and letting anyone verify it from the browser.',
+      'Each 120 ml oral-solution bottle carries a unique QR from its packaging. The identity is issued, printed and activated after production; every subsequent lookup compares the unit with its record.',
     disclaimer:
-      'This case is presented as a pilot proposal addressed to a spirits regulator. It does not describe an official implementation, does not imply a contractual relationship and does not claim the participation of any agency.',
+      'This case is presented as a pilot proposal addressed to a medicines regulator. It does not describe an official implementation, does not imply a contractual relationship and does not claim the participation of any agency.',
   },
 
   context: {
     title: 'The problem it sets out to solve',
     paragraphs: [
-      'In a regulated spirits market, units circulate whose identity cannot be checked. Control usually relies on documents, seals and lots; a carefully copied label passes as legitimate and a diverted unit leaves no trace.',
+      'A lot identifies a group; the Traza QR identifies each unit. Bottle and carton support comparison of product, concentration, dosage form, manufacturer or importer, health registration, lot and expiry. The example data does not refer to an authorised medicine.',
       'Field inspection faces a volume it cannot cover without signals to guide it. Teams go where they can, not necessarily where they are needed, and what they observe is rarely linked to the unit’s registry record.',
       'The public, for its part, has no simple way to verify what it buys. Tools that require installing something or creating an account are not used at the moment of purchase. The proposal starts from that reality: web-based verification, with no installation or account, at the point of sale.',
     ],
@@ -37,13 +37,13 @@ export const caseSpirits: CaseSpiritsContent = {
         icon: 'fingerprint',
       },
       {
-        title: 'Labeling with a verifiable code',
-        body: 'The identifier is added to the label or seal as a code readable by the camera of any phone.',
+        title: 'Direct printing on the packaging',
+        body: 'The QR is printed on the carton, label or seal during packaging. Every unit retains its identifier; one code is not reused for the entire lot.',
         icon: 'label',
       },
       {
-        title: 'Chain event recording',
-        body: 'Issuance, labelling, activation of the lot record and every public lookup are recorded in order.',
+        title: 'Lifecycle event recording',
+        body: 'Issuance → printing → activation after production → lookup and control. Closing the lot record activates only the units actually produced.',
         icon: 'history',
       },
       {
@@ -69,23 +69,23 @@ export const caseSpirits: CaseSpiritsContent = {
     intro: 'The proposal describes six roles. Each one sees the registry with the level of detail that corresponds to it.',
     items: [
       {
-        role: 'Spirits regulator',
+        role: 'Medicines regulator',
         body: 'Defines the framework, governs the registry, follows anomalies and reports, and directs field inspection. In the proposal, this role corresponds to the recipient of the pilot.',
         icon: 'government',
       },
       {
         role: 'Manufacturers and importers',
-        body: 'Issue and sign the identities of their units and report factory dispatch or entry through customs.',
+        body: 'Request identities for their units and complete product, concentration, dosage form, health registration, lot and expiry. They are responsible for the declared data.',
         icon: 'factory',
       },
       {
-        role: 'Carriers and distributors',
-        body: 'Request issuances, apply the labels and close the lot record, which is what activates the codes.',
-        icon: 'truck',
+        role: 'Production and packaging',
+        body: 'Print identifiers on packaging, check readability and close the record when production ends. This confirmation activates the codes used.',
+        icon: 'label',
       },
       {
-        role: 'Points of sale',
-        body: 'Record the arrival of units and make the code available to the public.',
+        role: 'Pharmacies and dispensing points',
+        body: 'Make the code available to the public and compare packaging with its record. The pilot does not record sales, transport or distribution.',
         icon: 'store',
       },
       {
@@ -117,8 +117,8 @@ export const caseSpirits: CaseSpiritsContent = {
         icon: 'globe',
       },
       {
-        title: 'Chain event registry',
-        body: 'An ordered, auditable registry of each unit’s events, with responsible party and date, exportable for audit.',
+        title: 'Lifecycle event registry',
+        body: 'A record of issuance, printing, activation, lookups, signals and closure, with responsible party and date. No logistics movements need to be recorded.',
         icon: 'database',
       },
       {
@@ -131,6 +131,7 @@ export const caseSpirits: CaseSpiritsContent = {
         body: 'A public channel to report differences between the unit and the registry, with minimal, optional data.',
         icon: 'flag',
       },
+      { title: 'Anti-copy and tax validation · phase 2', body: 'Physical anti-copy measures and validation of tax payments would be evaluated in a later phase. Tax validation depends on integration with and authorisation from the competent authority; it is not available in this example. A digital signature alone does not prevent copying a label.', icon: 'shield' },
     ],
     note: 'Target architecture for the proposal: not implemented yet. Its development and audit form part of the scope that would be agreed with the institution.',
   },
@@ -150,10 +151,10 @@ export const caseSpirits: CaseSpiritsContent = {
   cobrand: {
     title: 'Conditional co-brand',
     body:
-      'The proposal envisions public verification showing the regulator’s brand alongside Traza’s. That lockup appears only within this use case and its sample tenant, as an illustration of how a co-brand deployment would look.',
+      'The proposal allows a public and/or private company to present verification alongside Traza. The band and example use the Traza palette; each participant’s brand requires authorisation.',
     lockupNote:
-      'The “SENIAT | TRAZA” lockup is an example of a conditional co-brand included in the pilot proposal. It is shown in typographic form, without any official emblem, and its use depends on the institution’s approval. It does not imply an official relationship, endorsement or approval.',
-    cta: { label: 'See verification with the sample tenant', key: 'verify', suffix: '?t=licores', variant: 'secondary' },
+      'The “EMPRESA PÚBLICA Y/O PRIVADA | TRAZA” lockup is an example of a conditional co-brand included in the pilot proposal. It is shown in typographic form, without any official emblem, and its use depends on the institution’s approval. It does not imply an official relationship, endorsement or approval.',
+    cta: { label: 'See verification with the sample tenant', key: 'verify', suffix: '?t=medicamentos', variant: 'secondary' },
   },
 
   nonClaims: {
@@ -162,7 +163,7 @@ export const caseSpirits: CaseSpiritsContent = {
       'To avoid confusion, we put in writing what this page does not say.',
     items: [
       'It does not claim that an official implementation or a working system exists.',
-      'It does not claim a contractual, commercial or institutional relationship with SENIAT or any other agency; SENIAT is mentioned only as the recipient of a pilot proposal.',
+      'It does not claim a contractual, commercial or institutional relationship with any company, authority or agency.',
       'It does not present pilot figures: quantities, timelines, costs or results.',
       'It does not claim production-grade security: the architecture described is a target whose implementation is audited in each deployment.',
       'It does not offer legal or regulatory conclusions; the proposal does not replace the regulatory analysis that may be required.',
@@ -173,8 +174,8 @@ export const caseSpirits: CaseSpiritsContent = {
   cta: {
     title: 'See the use case in the platform',
     body:
-      'Public verification with the sample tenant, the journey of a bottle and the institutional view show how the pilot would look.',
-    primaryCta: { label: 'Verify with the sample tenant', key: 'verify', suffix: '?t=licores', variant: 'primary' },
+      'Public verification with the sample tenant, the lifecycle of a medicine bottle and the institutional view show how the pilot would look.',
+    primaryCta: { label: 'Verify with the sample tenant', key: 'verify', suffix: '?t=medicamentos', variant: 'primary' },
     secondaryCta: { label: 'Open the institutional view', key: 'institutional', variant: 'secondary' },
   },
 };

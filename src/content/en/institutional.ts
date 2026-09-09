@@ -27,7 +27,7 @@ export const institutional: InstitutionalContent = {
 
   context: {
     tenantLabel: 'Scope',
-    tenantValue: 'Spirits pilot · proposal',
+    tenantValue: 'Medicines pilot · proposal',
     registryLabel: 'Registry queried',
     periodLabel: 'Period',
     periodValue: 'Last 30 days',

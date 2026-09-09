@@ -8,7 +8,7 @@ export const institutional: InstitutionalContent = {
   meta: {
     title: 'Vista institucional: alertas, casos e inspección',
     description:
-      'Cómo ve una entidad de control las alertas de riesgo, los casos con su cronología, las inspecciones de campo y la cronología de auditoría del piloto fiscal.',
+      'Una entidad de control revisa alertas, casos e inspecciones de medicamentos, con cronología de auditoría y permisos por rol en un piloto de alcance definido.',
   },
 
   hero: {
@@ -27,7 +27,7 @@ export const institutional: InstitutionalContent = {
 
   context: {
     tenantLabel: 'Ámbito',
-    tenantValue: 'Piloto de licores · propuesta',
+    tenantValue: 'Piloto de medicamentos · propuesta',
     registryLabel: 'Registro consultado',
     periodLabel: 'Periodo',
     periodValue: 'Últimos 30 días',

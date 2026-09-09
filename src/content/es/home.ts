@@ -19,8 +19,8 @@ export const home: HomeContent = {
       caption: 'Identidad de una unidad',
       code: 'TRZ-7F2K-4K7Q-92FA',
       fields: [
-        { label: 'Fabricante / importador', value: 'Destilería Cerro Alto' },
-        { label: 'Producto / presentación', value: 'Ron Añejo Cerro Alto 7 años · botella 750 ml' },
+        { label: 'Fabricante / importador', value: 'Laboratorio Cerro Alto' },
+        { label: 'Producto / presentación', value: 'Solución oral Cerro Alto · frasco 120 ml' },
         { label: 'Lote / vencimiento', value: 'LOTE-VS-26-012 · vence 03/2031' },
         { label: 'Estado del identificador', value: 'Activado · con consultas registradas' },
       ],
@@ -213,16 +213,16 @@ export const home: HomeContent = {
   useCase: {
     eyebrow: 'Primer caso de uso',
     tag: 'Propuesta de piloto',
-    title: 'Licores: identidad unitaria y verificación pública para un regulador',
+    title: 'Medicamentos: identidad unitaria y verificación pública para un regulador',
     body:
-      'El primer caso de uso de Traza es una propuesta de piloto dirigida a un regulador de licores. Plantea identificar cada unidad con una firma digital, registrar su recorrido y ofrecer verificación pública desde el navegador, con inspección de campo incluida en el piloto.',
+      'El primer caso de uso de Traza es una propuesta de piloto dirigida a un regulador de medicamentos. Plantea identificar cada unidad con una firma digital, registrar su recorrido y ofrecer verificación pública desde el navegador, con inspección de campo incluida en el piloto.',
     bullets: [
       'Identidad unitaria firmada (arquitectura objetivo: ECDSA P-256)',
       'Verificación pública web, sin instalación ni cuenta',
       'Inspección de campo dentro del piloto',
       'Co-brand condicional con el regulador',
     ],
-    cta: { label: 'Conocer el caso de uso', key: 'caseSpirits', variant: 'secondary' },
+    cta: { label: 'Conocer el caso de uso', key: 'caseMedicines', variant: 'secondary' },
     disclaimer:
       'Propuesta de piloto. No implica una implementación oficial, una relación contractual ni la participación de ninguna agencia.',
   },
@@ -232,7 +232,7 @@ export const home: HomeContent = {
     body:
       'La plataforma no depende del tipo de producto. Combina identidad unitaria, eventos de cadena, verificación pública y reglas configurables por tenant; lo que cambia en cada sector son los datos de la identidad, los eventos relevantes y quién puede consultarlos.',
     sectors: [
-      'Bebidas y alimentos',
+      'Medicamentos y productos de salud',
       'Farmacéutico',
       'Agroindustria',
       'Repuestos y partes',

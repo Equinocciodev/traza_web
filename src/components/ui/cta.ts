@@ -1,6 +1,6 @@
 /**
  * Utilidades para resolver los CTA del contenido (`Cta`) a atributos de enlace.
- * Todo enlace interno pasa por `route()`; `suffix` permite `?t=licores` o `#ancla`.
+ * Todo enlace interno pasa por `route()`; `suffix` permite `?t=medicamentos` o `#ancla`.
  */
 import { route, type Locale } from '@/i18n';
 import type { Cta } from '@/content/types';

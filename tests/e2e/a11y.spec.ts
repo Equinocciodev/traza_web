@@ -56,6 +56,17 @@ async function open(page: Page, path: string): Promise<void> {
   await page.waitForSelector('html.motion-ready', { state: 'attached', timeout: 15_000 });
 }
 
+/** Espera el estado final real sin desactivar animaciones ni reglas de axe. Los bucles decorativos
+ * infinitos no tienen final; las transiciones de entrada y animaciones finitas sí deben asentarse. */
+async function settleFiniteMotion(page: Page): Promise<void> {
+  await page.evaluate(() => new Promise<void>(resolve => requestAnimationFrame(() => requestAnimationFrame(() => resolve()))));
+  await expect.poll(() => page.locator('[data-reveal].is-animating').count(), { timeout: 8_000 }).toBe(0);
+  await expect.poll(() => page.evaluate(() => document.getAnimations().filter(animation => {
+    const timing = animation.effect?.getComputedTiming();
+    return timing && Number.isFinite(timing.endTime) && (animation.playState === 'running' || animation.pending);
+  }).length), { timeout: 8_000 }).toBe(0);
+}
+
 /** Recorre la página (scroll instantáneo) para que los bloques `data-reveal` fuera del viewport inicial se revelen. */
 async function revealAll(page: Page): Promise<void> {
   await page.evaluate(async () => {
@@ -71,6 +82,7 @@ async function revealAll(page: Page): Promise<void> {
     await frame();
   });
   await expect.poll(() => page.locator('.reveal-pending').count(), { timeout: 5_000 }).toBe(0);
+  await settleFiniteMotion(page);
 }
 
 function formatViolations(violations: Result[]): string {
@@ -87,6 +99,7 @@ function formatViolations(violations: Result[]): string {
 
 /** Ejecuta axe con las etiquetas acordadas y falla ante cualquier violación. */
 async function expectNoAxeViolations(page: Page, label: string, options: { include?: string } = {}): Promise<AxeResults> {
+  await settleFiniteMotion(page);
   // @axe-core/playwright tipa `page` con el playwright-core de nivel superior (1.63) mientras @playwright/test
   // 1.56 usa su propia copia anidada; en tiempo de ejecución son compatibles (ver problema abierto en docs/09).
   let builder = new AxeBuilder({ page: page as unknown as CorePage }).withTags(TAGS);
@@ -449,7 +462,7 @@ test.describe('teclado · cabecera', () => {
     await expect(links.nth(0)).toBeFocused();
     // El submenú de Soluciones se abre al recibir foco (focus-within) y sus enlaces son alcanzables
     const solutions = page.locator('.site-nav__link[href="/soluciones/"]');
-    const sublinks = page.locator('.site-nav__sublink');
+    const sublinks = solutions.locator('..').locator('.site-nav__sublink');
     await solutions.focus();
     await expect(solutions).toBeFocused();
     await expect(sublinks.first()).toBeVisible();
@@ -459,17 +472,15 @@ test.describe('teclado · cabecera', () => {
     await expect(solutions).toBeFocused();
     await page.keyboard.press('Tab');
     expect(await page.evaluate(() => document.activeElement?.classList.contains('site-nav__sublink'))).toBe(false);
-    // Al volver hacia atrás, el submenú vuelve a estar en el orden de tabulación (el foco ya salió del
-    // elemento): Shift+Tab entra por su último enlace, visible mientras el foco está dentro, y sigue
-    // hasta el enlace de primer nivel. Desde ahí, Tab entra por el primer subenlace.
+    // Al volver desde Plataforma, los hijos aún ocultos quedan fuera del orden de tabulación.
+    // Shift+Tab enfoca Soluciones y focus-within abre sus hijos; Tab entra al primero.
     await page.keyboard.press('Shift+Tab');
-    await expect(sublinks.last()).toBeFocused();
-    await expect(sublinks.last()).toBeVisible();
-    for (let i = 0; i < 4 && !(await solutions.evaluate((el) => el === document.activeElement)); i += 1) {
-      await page.keyboard.press('Shift+Tab');
-    }
     await expect(solutions).toBeFocused();
     await expect(sublinks.first()).toBeVisible();
+    await page.keyboard.press('Tab');
+    await expect(sublinks.first()).toBeFocused();
+    await page.keyboard.press('Shift+Tab');
+    await expect(solutions).toBeFocused();
     await page.keyboard.press('Tab');
     await expect(sublinks.first()).toBeFocused();
     await expect(sublinks.first()).toBeVisible();
@@ -521,8 +532,14 @@ test.describe('teclado · vistas interactivas', () => {
     await expect(page.locator('[data-scanner-status][role="status"]')).toHaveCount(1);
     await expect(page.locator('[data-view="error"][role="alert"]')).toHaveCount(1);
 
+    // Una pulsación real activa el documento recién abierto antes de comprobar foco programático.
+    // Chromium puede actualizar activeElement con .focus() manteniendo document.hasFocus() en false.
+    await page.keyboard.press('Tab');
+    await expect(page.locator('.skip-link')).toBeFocused();
     // Escenario activado con teclado (Enter) → resultado y foco en su título
     const valid = page.locator('[data-scenario="valid"]');
+    await valid.scrollIntoViewIfNeeded();
+    await settleFiniteMotion(page);
     await valid.focus();
     await expect(valid).toBeFocused();
     await page.keyboard.press('Enter');
@@ -639,7 +656,7 @@ test.describe('teclado · vistas interactivas', () => {
 test.describe('targets táctiles (360 px)', () => {
   test.use({ viewport: MOBILE, isMobile: true, hasTouch: true });
 
-  const PAGES = [ROUTES.es.home, ROUTES.es.verify, ROUTES.es.journey, ROUTES.es.institutional, ROUTES.es.company, ROUTES.es.caseSpirits, ROUTES.en.home];
+  const PAGES = [ROUTES.es.home, ROUTES.es.verify, ROUTES.es.journey, ROUTES.es.institutional, ROUTES.es.company, ROUTES.es.caseMedicines, ROUTES.en.home];
   for (const path of PAGES) {
     test(`${path} · a, button, input, select visibles ≥ 44×44 (excepciones listadas)`, async ({ page }) => {
       await open(page, path);
@@ -705,7 +722,7 @@ test.describe('reflow · 320 px sin scroll horizontal', () => {
 test.describe('zoom 200 % (683×450 @2x) sin pérdida de contenido', () => {
   test.use({ viewport: ZOOM_200, deviceScaleFactor: 2 });
 
-  const PAGES = [ROUTES.es.home, ROUTES.es.verify, ROUTES.es.journey, ROUTES.es.institutional, ROUTES.es.howItWorks, ROUTES.en.caseSpirits];
+  const PAGES = [ROUTES.es.home, ROUTES.es.verify, ROUTES.es.journey, ROUTES.es.institutional, ROUTES.es.howItWorks, ROUTES.en.caseMedicines];
   for (const path of PAGES) {
     test(`${path} · sin scroll horizontal, contenido y menú operables`, async ({ page }) => {
       await open(page, path);
@@ -770,9 +787,11 @@ test.describe('nombres accesibles, iconos, etiquetas y errores', () => {
           if (labelled) return labelled.split(/\s+/).map((id) => document.getElementById(id)?.textContent ?? '').join(' ').trim();
           return (el.getAttribute('aria-label') ?? el.getAttribute('title') ?? el.textContent ?? '').trim();
         };
-        // Botones y enlaces (incluidos los ocultos: se nombran en el HTML, no por JS)
+        // Botones y enlaces expuestos. Los placeholders de estados ocultos se comprueban al abrir esos estados.
         for (const el of Array.from(document.querySelectorAll('a[href], button'))) {
-          if (el.closest('template')) continue;
+          if (el.closest('template, [hidden], [inert], [aria-hidden="true"]')) continue;
+          const style = getComputedStyle(el);
+          if (style.display === 'none' || style.visibility !== 'visible' || el.getClientRects().length === 0) continue;
           const name = nameOf(el) || Array.from(el.querySelectorAll('[role="img"][aria-label], svg title')).map((n) => n.getAttribute('aria-label') ?? n.textContent ?? '').join(' ').trim();
           if (!name) problems.push(`sin nombre accesible: ${describe(el)}`);
         }

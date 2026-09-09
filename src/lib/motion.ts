@@ -485,8 +485,10 @@ export function observeTraceLines(root: ParentNode = document): () => void {
   };
 
   const drawTrace = (g: TraceGroup) => {
+    const requestedDuration = Number(g.el.dataset.traceDuration);
+    const duration = Number.isFinite(requestedDuration) && requestedDuration > 0 ? Math.min(requestedDuration, 1500) : TRACE_DURATION;
     g.el.classList.add(DRAWING);
-    g.animations = g.paths.map((path, i) => animateStroke(path, { duration: TRACE_DURATION, delay: i * TRACE_STAGGER, easing: easeOutCubic, length: g.lengths[i] }));
+    g.animations = g.paths.map((path, i) => animateStroke(path, { duration, delay: i * TRACE_STAGGER, easing: easeOutCubic, length: g.lengths[i] }));
     void Promise.all(g.animations.map((a) => a.done)).then(() => finish(g));
   };
 

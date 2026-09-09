@@ -168,8 +168,8 @@ export const ALERTS: readonly InstitutionalAlert[] = [
       en: 'Public lookup of a labelled identifier that is not activated yet.',
     },
     explanation: {
-      es: 'El último evento registrado para esta unidad es la recepción en el Centro de distribución Sierra Verde; no consta el despacho a comercio, pero la verificación pública se hizo desde un punto de venta. Con frecuencia se trata de un retraso en el registro del distribuidor. Confianza como indicio de irregularidad: baja. Siguiente paso: confirmar con el distribuidor si el despacho ocurrió y regularizar el evento.',
-      en: 'The last recorded event for this unit is receipt at the Sierra Verde distribution center; no dispatch to retail is on record, yet the public verification came from a point of sale. This is often a recording delay on the distributor side. Confidence as a sign of irregularity: low. Next step: confirm with the distributor whether the dispatch happened and regularise the event.',
+      es: 'El identificador fue emitido e impreso, pero no consta el cierre de la ficha que activa la unidad. Una consulta pública anterior a la activación requiere revisión: puede indicar un cierre pendiente o uso anticipado del código. Siguiente paso: contrastar la corrida de producción con el emisor y documentar el resultado antes de activar.',
+      en: 'The identifier was issued and printed, but the record closure that activates the unit is missing. A public lookup before activation needs review: it may indicate a pending closure or early code use. Next step: compare the production run with the issuer and document the outcome before activation.',
     },
   },
   {
@@ -200,12 +200,12 @@ export const ALERTS: readonly InstitutionalAlert[] = [
     detectedAt: '2026-08-30T11:02:00Z',
     status: 'open',
     summary: {
-      es: 'La presentación impresa (1 L) no coincide con la registrada (750 ml).',
-      en: 'The printed presentation (1 L) does not match the registered one (750 ml).',
+      es: 'La presentación impresa (150 ml) no coincide con la registrada (120 ml).',
+      en: 'The printed presentation (150 ml) does not match the registered one (120 ml).',
     },
     explanation: {
-      es: 'La etiqueta escaneada indica una presentación de 1 L, pero el registro asocia este identificador a una botella de 750 ml. Firma y registro son correctos, así que el identificador fue emitido; la discrepancia puede deberse a un error de etiquetado o a una etiqueta reutilizada en otro envase. Siguiente paso: comprobar físicamente la unidad en el comercio y contrastarla con el lote LOTE-VS-26-015.',
-      en: 'The scanned label reads 1 L, but the registry links this identifier to a 750 ml bottle. Signature and registry are correct, so the identifier was issued; the discrepancy may come from a labelling error or a label reused on another container. Next step: physically check the unit at the retailer and compare it with lot LOTE-VS-26-015.',
+      es: 'La etiqueta escaneada indica una presentación de 150 ml, pero el registro asocia este identificador a un frasco de 120 ml. Firma y registro son correctos, así que el identificador fue emitido; la discrepancia puede deberse a un error de etiquetado o a una etiqueta reutilizada en otro envase. Siguiente paso: comprobar físicamente la unidad en el comercio y contrastarla con el lote LOTE-VS-26-015.',
+      en: 'The scanned label reads 150 ml, but the registry links this identifier to a 120 ml oral solution. Signature and registry are correct, so the identifier was issued; the discrepancy may come from a labelling error or a label reused on another container. Next step: physically check the unit at the retailer and compare it with lot LOTE-VS-26-015.',
     },
   },
   {
@@ -217,12 +217,12 @@ export const ALERTS: readonly InstitutionalAlert[] = [
     detectedAt: '2026-08-29T20:12:00Z',
     status: 'open',
     summary: {
-      es: 'Verificaciones desde regiones distintas a la del comercio de destino (Región Norte).',
-      en: 'Verifications from regions other than the destination retailer’s (Región Norte).',
+      es: 'Verificaciones desde regiones distintas a la de la primera consulta (Región Norte).',
+      en: 'Verifications from regions other than the first lookup region (Región Norte).',
     },
     explanation: {
-      es: 'El comercio de destino registrado es Licorería El Faro (Región Norte), pero varias verificaciones proceden de la Región Sur y de la Región Centro. Junto con la alerta de verificaciones repetidas, sugiere que el mismo código podría estar impreso en más de una etiqueta. No confirma por sí sola una copia. Siguiente paso: inspección en el punto de destino y en los puntos desde los que se verificó.',
-      en: 'The registered destination retailer is Licorería El Faro (Región Norte), but several verifications come from Región Sur and Región Centro. Together with the repeated-verification alert, it suggests the same code may be printed on more than one label. On its own it does not confirm a copy. Next step: inspection at the destination and at the points where the verifications were made.',
+      es: 'La primera consulta registrada procede de Farmacia El Faro (Región Norte), pero varias verificaciones proceden de la Región Sur y de la Región Centro. Junto con la alerta de verificaciones repetidas, sugiere que el mismo código podría estar impreso en más de una etiqueta. No confirma por sí sola una copia. Siguiente paso: inspección en los puntos desde los que se verificó.',
+      en: 'The first recorded lookup came from Farmacia El Faro (Región Norte), but several verifications come from Región Sur and Región Centro. Together with the repeated-verification alert, it suggests the same code may be printed on more than one label. On its own it does not confirm a copy. Next step: inspection at the points where the verifications were made.',
     },
     caseId: 'CASO-2026-0143',
     assignedTo: 'insp-salcedo',
@@ -240,8 +240,8 @@ export const ALERTS: readonly InstitutionalAlert[] = [
       en: '14 verifications across 3 regions within 48 hours.',
     },
     explanation: {
-      es: 'Un mismo identificador se verificó 14 veces en 3 regiones distintas en menos de 48 horas. La firma es válida y el registro está activo: el identificador fue emitido, pero una sola botella no suele moverse así. Puede tratarse de etiquetas copiadas o de comparaciones repetidas en tienda. Siguiente paso: comprobar la unidad en el comercio de destino y revisar la distribución geográfica de las verificaciones.',
-      en: 'The same identifier was verified 14 times across 3 regions in under 48 hours. The signature is valid and the registry is active: the identifier was issued, but a single bottle does not usually move like that. It may be copied labels or repeated comparisons in store. Next step: check the unit at the destination retailer and review the geographic spread of the verifications.',
+      es: 'Un mismo identificador se verificó 14 veces en 3 regiones distintas en menos de 48 horas. La firma es válida y el registro está activo: el identificador fue emitido, pero un solo frasco no suele moverse así. Puede tratarse de etiquetas copiadas o de comparaciones repetidas en tienda. Siguiente paso: comprobar la unidad en el lugar de consulta y revisar la distribución geográfica de las verificaciones.',
+      en: 'The same identifier was verified 14 times across 3 regions in under 48 hours. The signature is valid and the registry is active: the identifier was issued, but a single bottle does not usually move like that. It may be copied labels or repeated comparisons in store. Next step: check the unit at the lookup location and review the geographic spread of the verifications.',
     },
     caseId: 'CASO-2026-0143',
     assignedTo: 'insp-salcedo',
@@ -259,8 +259,8 @@ export const ALERTS: readonly InstitutionalAlert[] = [
       en: 'Discrepancy report RPT-2026-000418 for a damaged seal.',
     },
     explanation: {
-      es: 'Una persona que verificó la unidad en Supermercado La Plaza envió un reporte de discrepancia por sello dañado. Firma, registro y datos son correctos, de modo que la anomalía se refiere al estado físico del envase, no al identificador. Siguiente paso: inspección de campo dentro del piloto, retención de la unidad y consulta al emisor.',
-      en: 'A person who verified the unit at Supermercado La Plaza submitted a discrepancy report for a damaged seal. Signature, registry and data are correct, so the anomaly concerns the physical state of the container, not the identifier. Next step: field inspection within the pilot, retention of the unit and a query to the issuer.',
+      es: 'Una persona que verificó la unidad en Farmacia La Plaza envió un reporte de discrepancia por sello dañado. Firma, registro y datos son correctos, de modo que la anomalía se refiere al estado físico del envase, no al identificador. Siguiente paso: inspección de campo dentro del piloto, retención de la unidad y consulta al emisor.',
+      en: 'A person who verified the unit at Farmacia La Plaza submitted a discrepancy report for a damaged seal. Signature, registry and data are correct, so the anomaly concerns the physical state of the container, not the identifier. Next step: field inspection within the pilot, retention of the unit and a query to the issuer.',
     },
     caseId: 'CASO-2026-0142',
     assignedTo: 'insp-salcedo',
@@ -307,15 +307,15 @@ export const ALERTS: readonly InstitutionalAlert[] = [
     severity: 'info',
     unitCode: 'TRZ-7F2K-4K7Q-92FA',
     region: 'Región Norte',
-    detectedAt: '2026-07-22T11:05:00Z',
+    detectedAt: '2026-07-13T09:05:00Z',
     status: 'closed',
     summary: {
-      es: 'Recepción en comercio registrada 27 h después del despacho (umbral del piloto: 24 h).',
-      en: 'Retail receipt recorded 27 h after dispatch (pilot threshold: 24 h).',
+      es: 'Consulta anterior a la activación; ficha revisada y alerta cerrada.',
+      en: 'Lookup before activation; record reviewed and alert closed.',
     },
     explanation: {
-      es: 'El comercio registró la recepción con retraso respecto al umbral del piloto. El evento llegó ese mismo día y la cadena quedó completa. Cerrada automáticamente.',
-      en: 'The retailer recorded the receipt later than the pilot threshold. The event arrived the same day and the chain was completed. Closed automatically.',
+      es: 'El emisor completó la ficha del lote y confirmó los códigos utilizados al cerrar la producción. La activación quedó registrada ese día y la alerta se cerró tras la revisión.',
+      en: 'The issuer completed the lot record and confirmed the used codes when production closed. Activation was recorded that day and the alert was closed after review.',
     },
   },
 ];
@@ -392,8 +392,8 @@ export const CASES: readonly InstitutionalCase[] = [
         at: '2026-09-01T14:00:00Z',
         actorId: 'insp-salcedo',
         description: {
-          es: 'Contacto con Licorería El Faro (destino registrado): la unidad está en anaquel con el sello intacto. Las verificaciones de otras regiones no corresponden a esa botella.',
-          en: 'Contacted Licorería El Faro (registered destination): the unit is on the shelf with the seal intact. Verifications from other regions do not correspond to that bottle.',
+          es: 'Contacto con Farmacia El Faro (lugar de consulta registrado): la unidad está en anaquel con el sello intacto. Las verificaciones de otras regiones no corresponden a ese frasco.',
+          en: 'Contacted Farmacia El Faro (recorded lookup location): the unit is on the shelf with the seal intact. Verifications from other regions do not correspond to that bottle.',
         },
       },
       {
@@ -401,8 +401,8 @@ export const CASES: readonly InstitutionalCase[] = [
         at: '2026-09-03T15:10:00Z',
         actorId: 'insp-salcedo',
         description: {
-          es: 'Inspección INS-2026-012 programada en Bodega Del Valle (Región Sur), origen de la mayoría de verificaciones fuera de región.',
-          en: 'Inspection INS-2026-012 scheduled at Bodega Del Valle (Región Sur), where most out-of-region verifications came from.',
+          es: 'Inspección INS-2026-012 programada en Farmacia Del Valle (Región Sur), origen de la mayoría de verificaciones fuera de región.',
+          en: 'Inspection INS-2026-012 scheduled at Farmacia Del Valle (Región Sur), where most out-of-region verifications came from.',
         },
       },
     ],
@@ -410,8 +410,8 @@ export const CASES: readonly InstitutionalCase[] = [
   {
     id: 'CASO-2026-0142',
     title: {
-      es: 'Reporte RPT-2026-000418: sello dañado en Supermercado La Plaza',
-      en: 'Report RPT-2026-000418: damaged seal at Supermercado La Plaza',
+      es: 'Reporte RPT-2026-000418: sello dañado en Farmacia La Plaza',
+      en: 'Report RPT-2026-000418: damaged seal at Farmacia La Plaza',
     },
     status: 'in_review',
     alertIds: ['ALR-2026-030'],
@@ -432,8 +432,8 @@ export const CASES: readonly InstitutionalCase[] = [
         at: '2026-08-29T09:05:00Z',
         actorId: 'insp-salcedo',
         description: {
-          es: 'Inspección de campo INS-2026-011 programada para el 31 de agosto en Supermercado La Plaza.',
-          en: 'Field inspection INS-2026-011 scheduled for 31 August at Supermercado La Plaza.',
+          es: 'Inspección de campo INS-2026-011 programada para el 31 de agosto en Farmacia La Plaza.',
+          en: 'Field inspection INS-2026-011 scheduled for 31 August at Farmacia La Plaza.',
         },
       },
       {
@@ -481,8 +481,8 @@ export const CASES: readonly InstitutionalCase[] = [
         at: '2026-08-20T11:10:00Z',
         actorId: 'insp-ibarra',
         description: {
-          es: 'Inspección INS-2026-009 programada en Bodega Del Valle (Región Sur).',
-          en: 'Inspection INS-2026-009 scheduled at Bodega Del Valle (Región Sur).',
+          es: 'Inspección INS-2026-009 programada en Farmacia Del Valle (Región Sur).',
+          en: 'Inspection INS-2026-009 scheduled at Farmacia Del Valle (Región Sur).',
         },
       },
       {
@@ -531,7 +531,7 @@ export const INSPECTIONS: readonly FieldInspection[] = [
     id: 'INS-2026-012',
     caseId: 'CASO-2026-0143',
     status: 'scheduled',
-    site: 'Bodega Del Valle',
+    site: 'Farmacia Del Valle',
     region: 'Región Sur',
     at: '2026-09-08T14:00:00Z',
     inspectorId: 'insp-salcedo',
@@ -540,7 +540,7 @@ export const INSPECTIONS: readonly FieldInspection[] = [
     id: 'INS-2026-011',
     caseId: 'CASO-2026-0142',
     status: 'done',
-    site: 'Supermercado La Plaza',
+    site: 'Farmacia La Plaza',
     region: 'Región Centro',
     at: '2026-08-31T09:30:00Z',
     inspectorId: 'insp-salcedo',
@@ -553,7 +553,7 @@ export const INSPECTIONS: readonly FieldInspection[] = [
     id: 'INS-2026-009',
     caseId: 'CASO-2026-0139',
     status: 'done',
-    site: 'Bodega Del Valle',
+    site: 'Farmacia Del Valle',
     region: 'Región Sur',
     at: '2026-08-23T10:15:00Z',
     inspectorId: 'insp-ibarra',
@@ -596,7 +596,7 @@ export const AUDIT_LOG: readonly AuditEntry[] = [
     action: 'inspection_scheduled',
     object: 'INS-2026-012',
     result: { es: 'Programada para el 8 sep', en: 'Scheduled for 8 Sep' },
-    description: { es: 'Inspección programada en Bodega Del Valle (caso CASO-2026-0143).', en: 'Inspection scheduled at Bodega Del Valle (case CASO-2026-0143).' },
+    description: { es: 'Inspección programada en Farmacia Del Valle (caso CASO-2026-0143).', en: 'Inspection scheduled at Farmacia Del Valle (case CASO-2026-0143).' },
   },
   {
     id: 'AUD-2026-0224',
@@ -623,7 +623,7 @@ export const AUDIT_LOG: readonly AuditEntry[] = [
     action: 'case_note',
     object: 'CASO-2026-0143',
     result: OK,
-    description: { es: 'Nota añadida: contacto con el comercio de destino; unidad en anaquel con sello intacto.', en: 'Note added: destination retailer contacted; unit on shelf with seal intact.' },
+    description: { es: 'Nota añadida: contacto con el lugar de consulta; unidad en anaquel con sello intacto.', en: 'Note added: lookup location contacted; unit on shelf with seal intact.' },
   },
   {
     id: 'AUD-2026-0221',
@@ -650,7 +650,7 @@ export const AUDIT_LOG: readonly AuditEntry[] = [
     action: 'inspection_completed',
     object: 'INS-2026-011',
     result: { es: 'Sello dañado confirmado', en: 'Damaged seal confirmed' },
-    description: { es: 'Visita realizada en Supermercado La Plaza; unidad retenida y muestra enviada al emisor.', en: 'Visit completed at Supermercado La Plaza; unit retained and sample sent to the issuer.' },
+    description: { es: 'Visita realizada en Farmacia La Plaza; unidad retenida y muestra enviada al emisor.', en: 'Visit completed at Farmacia La Plaza; unit retained and sample sent to the issuer.' },
   },
   {
     id: 'AUD-2026-0218',
@@ -659,7 +659,7 @@ export const AUDIT_LOG: readonly AuditEntry[] = [
     action: 'alert_created',
     object: 'ALR-2026-033',
     result: { es: 'Creada · advertencia', en: 'Created · warning' },
-    description: { es: 'Coincidencia parcial de datos en TRZ-7F2K-9P4T-55RD (1 L frente a 750 ml).', en: 'Partial data match on TRZ-7F2K-9P4T-55RD (1 L vs 750 ml).' },
+    description: { es: 'Coincidencia parcial de datos en TRZ-7F2K-9P4T-55RD (150 ml frente a 120 ml).', en: 'Partial data match on TRZ-7F2K-9P4T-55RD (150 ml vs 120 ml).' },
   },
   {
     id: 'AUD-2026-0217',
@@ -722,7 +722,7 @@ export const AUDIT_LOG: readonly AuditEntry[] = [
     action: 'inspection_scheduled',
     object: 'INS-2026-011',
     result: { es: 'Programada para el 31 ago', en: 'Scheduled for 31 Aug' },
-    description: { es: 'Inspección programada en Supermercado La Plaza (caso CASO-2026-0142).', en: 'Inspection scheduled at Supermercado La Plaza (case CASO-2026-0142).' },
+    description: { es: 'Inspección programada en Farmacia La Plaza (caso CASO-2026-0142).', en: 'Inspection scheduled at Farmacia La Plaza (case CASO-2026-0142).' },
   },
   {
     id: 'AUD-2026-0210',
@@ -776,7 +776,7 @@ export const AUDIT_LOG: readonly AuditEntry[] = [
     action: 'inspection_completed',
     object: 'INS-2026-009',
     result: { es: '3 unidades retiradas', en: '3 units removed' },
-    description: { es: 'Visita realizada en Bodega Del Valle; unidades del lote retiradas del anaquel.', en: 'Visit completed at Bodega Del Valle; lot units removed from the shelf.' },
+    description: { es: 'Visita realizada en Farmacia Del Valle; unidades del lote retiradas del anaquel.', en: 'Visit completed at Farmacia Del Valle; lot units removed from the shelf.' },
   },
   {
     id: 'AUD-2026-0204',
@@ -785,7 +785,7 @@ export const AUDIT_LOG: readonly AuditEntry[] = [
     action: 'inspection_scheduled',
     object: 'INS-2026-009',
     result: { es: 'Programada para el 23 ago', en: 'Scheduled for 23 Aug' },
-    description: { es: 'Inspección programada en Bodega Del Valle (caso CASO-2026-0139).', en: 'Inspection scheduled at Bodega Del Valle (case CASO-2026-0139).' },
+    description: { es: 'Inspección programada en Farmacia Del Valle (caso CASO-2026-0139).', en: 'Inspection scheduled at Farmacia Del Valle (case CASO-2026-0139).' },
   },
   {
     id: 'AUD-2026-0203',

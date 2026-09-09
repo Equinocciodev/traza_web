@@ -1,0 +1,39 @@
+{
+  "payloads": {
+    "valid.png": "TRZ-7F2K-4K7Q-92FA",
+    "rotated-90.png": "TRZ-7F2K-4K7Q-92FA",
+    "inverted.png": "TRZ-7F2K-4K7Q-92FA",
+    "foreign.png": "https://example.invalid/not-a-traza-unit",
+    "panorama-small-qr.png": "https://traza.technology/verificar/?c=TRZ-7F2K-4K7Q-92FA"
+  },
+  "files": {
+    "corrupt.png": {
+      "bytes": 41,
+      "sha256": "f0512890eeeb3e250cf645e4b094c45cdd05799cb014700c6be80c9b649b3d91"
+    },
+    "foreign.png": {
+      "bytes": 768,
+      "sha256": "3c32d0a665bd28ae81daf9e0346d2c857c14e7269d96e132121bbcad40facc9d"
+    },
+    "inverted.png": {
+      "bytes": 438,
+      "sha256": "42f4363416c15eb335e4d3c8569a42e54af93e87bea321394ae920425be1b778"
+    },
+    "no-qr.png": {
+      "bytes": 368,
+      "sha256": "64d23bf35ed7214e88fafa339d500d5b37e1dab11a0c9f12f9373aff4ffb9c80"
+    },
+    "panorama-small-qr.png": {
+      "bytes": 9375,
+      "sha256": "2fa6425e1054fc2e92945e43896a7fb76bb7f22c925dc49a9b26c40a53c04296"
+    },
+    "rotated-90.png": {
+      "bytes": 469,
+      "sha256": "607ceb1d861378f02849ab5e4b99552d7ac3df75c491f9c204cccc89f26c01b9"
+    },
+    "valid.png": {
+      "bytes": 478,
+      "sha256": "9e07758a047ac8b12d11e3b0936fef31c2e1c8ec4e2683d57afddd50f7ec809e"
+    }
+  }
+}

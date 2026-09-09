@@ -1,6 +1,6 @@
 /**
  * Agregador de contenido (es). NO editar la lista de módulos: cada módulo tiene un propietario.
- *  - common, home, platform, solutions, how-it-works, case-spirits, security, company, privacy, not-found → contenido institucional
+ *  - common, home, platform, solutions, how-it-works, case-medicines, security, company, privacy, not-found → contenido institucional
  *  - codeSpec · integration · rationale → páginas de referencia técnica
  *  - verify · journey · institutional
  */
@@ -10,7 +10,7 @@ import { home } from './home';
 import { platform } from './platform';
 import { solutions, solutionsGovernment, solutionsIndustry, solutionsCitizens } from './solutions';
 import { howItWorks } from './how-it-works';
-import { caseSpirits } from './case-spirits';
+import { caseMedicines } from './case-medicines';
 import { codeSpec } from './code-spec';
 import { integration } from './integration';
 import { rationale } from './rationale';
@@ -31,7 +31,7 @@ export const content: SiteContent = {
   solutionsIndustry,
   solutionsCitizens,
   howItWorks,
-  caseSpirits,
+  caseMedicines,
   codeSpec,
   integration,
   rationale,

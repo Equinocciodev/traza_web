@@ -8,6 +8,8 @@ import { UNITS } from '@/fixtures/units';
 import { SCENARIOS } from '@/fixtures/scenarios';
 import { ALERTS, CASES, INSPECTIONS, AUDIT_LOG, PEOPLE } from '@/fixtures/institutional';
 import { TENANTS } from '@/config/tenants';
+import { V2_HOME } from '@/content/v2-home';
+import { getV2Narrative } from '@/content/v2-narrative';
 import { SECTORS } from '@/config/sectors';
 
 interface Entry {
@@ -25,17 +27,18 @@ function walk(value: unknown, path: string, out: Entry[]): Entry[] {
 const CONTENT: Entry[] = [...walk(getContent('es'), 'es', []), ...walk(getContent('en'), 'en', [])];
 const FIXTURES: Entry[] = walk({ UNITS, SCENARIOS, ALERTS, CASES, INSPECTIONS, AUDIT_LOG, PEOPLE }, 'fixtures', []);
 const CONFIG: Entry[] = walk({ TENANTS, SECTORS }, 'config', []);
+const EDITORIAL = walk({ home: V2_HOME, es: getV2Narrative('es'), en: getV2Narrative('en') }, 'editorial', []);
 const ALL: Entry[] = [...CONTENT, ...FIXTURES, ...CONFIG];
 
 /** Páginas corporativas: aquí no se admite ninguna cifra de escala o impacto. */
-const CORPORATE = /^(es|en)\.(common|home|platform|solutions|solutionsGovernment|solutionsIndustry|solutionsCitizens|howItWorks|caseSpirits|security|company|privacy|notFound)\./;
+const CORPORATE = /^(es|en)\.(common|home|platform|solutions|solutionsGovernment|solutionsIndustry|solutionsCitizens|howItWorks|caseMedicines|security|company|privacy|notFound)\./;
 
 /** Frases en las que se explica por qué NO se usa "auténtico" (única mención admitida). */
 const AUTHENTIC_ALLOWED = /(nunca decimos|never say|no equivale a|not the same as|is not «|is not "|no es «|no es ")/i;
 /** Contextos de no-afirmación: negaciones y listas "lo que no afirmamos". */
 const NON_CLAIM = /(no afirma|no se afirma|no afirmamos|no presenta|no describe|no implica|no ofrece|no existe|nada de lo|sin afirmar|\bni\b|\bsin\b|not claim|does not|do not|nothing above|without|neither|\bnor\b|never|no sector-specific|no certifications)/i;
 /** Rutas cuyos elementos son, por construcción, listas de cosas que NO se afirman. */
-const NON_CLAIM_LISTS = /^(es|en)\.(security\.transparency\.items\[\d+\]|caseSpirits\.nonClaims\.items\[\d+\])$/;
+const NON_CLAIM_LISTS = /^(es|en)\.(security\.transparency\.items\[\d+\]|caseMedicines\.nonClaims\.items\[\d+\])$/;
 
 function hits(entries: Entry[], re: RegExp, allow: (e: Entry) => boolean = () => false): string[] {
   return entries.filter((e) => re.test(e.text) && !allow(e)).map((e) => `${e.path}: «${e.text.slice(0, 90)}»`);
@@ -81,17 +84,10 @@ describe('términos vetados', () => {
     expect(hits(ALL, /\bEE\.? ?UU\b|\bU\.S\.|\bUSA\b/)).toEqual([]);
   });
 
-  it('SENIAT solo aparece en el caso de uso y en el tenant de ejemplo, siempre como propuesta/ejemplo', () => {
-    const mentions = ALL.filter((e) => /SENIAT/.test(e.text));
-    expect(mentions.length).toBeGreaterThan(0);
-    for (const m of mentions) {
-      expect(m.path, `SENIAT fuera del caso de uso: ${m.path}`).toMatch(/^(es|en)\.caseSpirits\.|^config\.TENANTS\.licores\./);
-      if (m.path === 'config.TENANTS.licores.lockup.parts[0]') continue; // la parte tipográfica del lockup: su alt lleva el marco
-      expect(m.text, `mención sin marco de propuesta: ${m.path}`).toMatch(/propuesta|proposal|piloto|pilot|ejemplo|example|no afirma|not claim/i);
-    }
-    // El aviso de co-brand del tenant existe y niega la relación oficial.
-    expect(TENANTS.licores.cobrandNotice?.es).toMatch(/no implica/i);
-    expect(TENANTS.licores.cobrandNotice?.en).toMatch(/does not imply/i);
+  it('no quedan referencias al sector anterior ni a su autoridad en contenido, fixtures o configuración', () => {
+    expect(hits([...ALL, ...EDITORIAL], /\bSENIAT\b|\blicores\b|\bspirits\b|750\s?ml|40\s?%\s?vol/i)).toEqual([]);
+    expect(TENANTS.medicamentos.cobrandNotice?.es).toMatch(/no implica/i);
+    expect(TENANTS.medicamentos.cobrandNotice?.en).toMatch(/does not imply/i);
   });
 
   it('no hay garantías absolutas ni promesas de seguridad', () => {
@@ -119,13 +115,14 @@ describe('cifras de escala o impacto', () => {
   it('los números que aparecen en páginas corporativas son de estructura (pasos, campos), no de resultados', () => {
     const numeric = CONTENT.filter((e) => CORPORATE.test(e.path) && /\d/.test(e.text));
     for (const e of numeric) {
-      // Permitido: códigos de ejemplo, fechas del aviso, etiquetas "01", "404", medidas de presentación (750 ml), años, ECDSA P-256, 24 h.
+      // Permitido: códigos de ejemplo, fechas del aviso, etiquetas "01", "404", medidas de presentación (120 ml), años, ECDSA P-256, 24 h.
       const stripped = e.text
         .replace(/TRZ-[A-Z0-9-]+/g, '')
         .replace(/LOTE-[A-Z0-9-]+|COS-[A-Z0-9-]+|IMP-[A-Z0-9-]+/g, '')
         .replace(/P-256/g, '')
+        .replace(/\b(?:fase|phase) [12]\b/gi, '')
         .replace(/\b20\d{2}\b/g, '')
-        .replace(/\b\d{1,4}\s?(ml|g|kg|l|h|años|years|vol)\b/gi, '')
+        .replace(/\b\d{1,4}\s?(ml|mg|g|kg|l|h|años|years|vol)\b/gi, '')
         .replace(/\b0\d\b/g, '')
         .replace(/\b404\b/g, '')
         .replace(/\b\d{1,2} de [a-z]+\b/gi, '')
@@ -189,7 +186,7 @@ describe('no-afirmación institucional y co-brand', () => {
     }
   });
 
-  it('el pie niega relaciones institucionales y rotula el caso de licores como propuesta de piloto', () => {
+  it('el pie niega relaciones institucionales y rotula el caso de medicamentos como propuesta de piloto', () => {
     for (const locale of ['es', 'en'] as const) {
       const d = getContent(locale).common.footer.disclaimer;
       expect(d).toMatch(/gobiernos|governments/i);
@@ -199,16 +196,16 @@ describe('no-afirmación institucional y co-brand', () => {
   });
 
   it('el lockup del tenant de ejemplo es tipográfico y el aviso acompaña siempre', () => {
-    expect(TENANTS.licores.lockup?.parts).toEqual(['SENIAT', 'TRAZA']);
-    expect(TENANTS.licores.statusLabel.es).toMatch(/propuesta de piloto/i);
-    expect(TENANTS.licores.statusLabel.en).toMatch(/pilot proposal/i);
+    expect(TENANTS.medicamentos.lockup?.parts).toEqual(['EMPRESA PÚBLICA Y/O PRIVADA', 'TRAZA']);
+    expect(TENANTS.medicamentos.statusLabel.es).toMatch(/propuesta de piloto/i);
+    expect(TENANTS.medicamentos.statusLabel.en).toMatch(/pilot proposal/i);
     expect(TENANTS.traza.lockup).toBeUndefined();
     expect(TENANTS.traza.cobrandNotice).toBeUndefined();
   });
 
-  it('las cantidades y la arquitectura del caso licores se presentan como propuesta/objetivo', () => {
+  it('las cantidades y la arquitectura del caso medicamentos se presentan como propuesta/objetivo', () => {
     for (const locale of ['es', 'en'] as const) {
-      const c = getContent(locale).caseSpirits;
+      const c = getContent(locale).caseMedicines;
       expect(c.hero.tag).toMatch(/propuesta de piloto|pilot proposal/i);
       expect(c.hero.disclaimer).toMatch(/no describe|does not describe|no implica|does not imply|not claim/i);
       expect(c.target.title).toMatch(/objetivo|target/i);
@@ -232,8 +229,41 @@ describe('no-afirmación institucional y co-brand', () => {
     for (const locale of ['es', 'en'] as const) {
       const c = getContent(locale);
       expect(c.home.hero.subtitle).toMatch(/sin instalar nada ni crear una cuenta|nothing to install and no account/i);
-      expect(c.caseSpirits.fieldInspection.body).toMatch(/desde el inicio|from the (start|outset|beginning)/i);
+      expect(c.caseMedicines.fieldInspection.body).toMatch(/desde el inicio|from the (start|outset|beginning)/i);
       expect(c.home.hero.mantra).toMatch(/^(Escanea\. Verifica\. Confía\.|Scan\. Verify\. Trust\.)$/);
     }
   });
+});
+
+
+describe('alcance del caso de medicamentos', () => {
+  it('sitúa la activación tras la producción y condiciona tributación a integración en fase 2', () => {
+    for (const locale of ['es', 'en'] as const) {
+      const page = getContent(locale).caseMedicines;
+      const scope = JSON.stringify(page.scope);
+      expect(scope).toMatch(locale === 'es' ? /activación al finalizar producción/ : /activation after production/);
+      const phaseTwo = page.target.items.find(item => /fase 2|phase 2/.test(item.title));
+      expect(phaseTwo).toBeDefined();
+      expect(phaseTwo!.body).toMatch(locale === 'es' ? /depende de la integración y autorización/ : /depends on integration with and authorisation/);
+      expect(phaseTwo!.body).toMatch(locale === 'es' ? /no está disponible/ : /not available/);
+    }
+  });
+});
+
+
+describe('proceso y formato objetivo frente a consulta disponible', () => {
+  for (const locale of ['es', 'en'] as const) {
+    it(`${locale}: no activa antes de finalizar producción ni presenta criptografía objetivo como ejecutada en la web`, () => {
+      const content = getContent(locale);
+      expect(content.howItWorks.steps.items[2].title).toMatch(/finalizar producción|after production/);
+      expect(content.howItWorks.verification.caution).toMatch(/fase 2|phase 2/);
+      const issuance = content.integration.sections.find(section => section.id === 'emision')!;
+      expect(issuance.paragraphs![0]).toMatch(/producción ya terminó|production has finished/);
+      expect(issuance.paragraphs![0]).toMatch(/no permite activar|does not permit activating/);
+      expect(content.codeSpec.hero.subtitle).toMatch(/no valida firmas reales|does not validate real signatures/);
+      expect(content.codeSpec.sections[0].code!.lines).toContain('TRZ-7F2K-4K7Q-92FA');
+      expect(content.codeSpec.sections.find(section => section.id === 'representacion')!.code!.caption)
+        .toMatch(/no consultable|not queryable/);
+    });
+  }
 });

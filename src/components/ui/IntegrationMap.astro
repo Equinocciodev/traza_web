@@ -1,0 +1,237 @@
+---
+import Wordmark from './Wordmark.astro';
+import { getContent } from '@/content';
+import type { Locale } from '@/i18n';
+interface Props { locale: Locale }
+const { locale } = Astro.props;
+const { platform } = getContent(locale);
+/* Esquema de integración: rejilla de diseño 1000 × 400 compartida por los nodos (posiciones en %) y las
+   curvas del SVG. Cada curva une el borde interior de un nodo con el borde del bloque central. */
+const INTEG_LINKS = [
+  'M290 100 C 345 100 335 200 390 200',
+  'M290 300 C 345 300 335 200 390 200',
+  'M710 100 C 655 100 665 200 610 200',
+  'M710 300 C 655 300 665 200 610 200',
+];
+const INTEG_NODES: Array<[number, number]> = [
+  [290, 100],
+  [290, 300],
+  [710, 100],
+  [710, 300],
+  [390, 200],
+  [610, 200],
+];
+---
+      <figure class="integ on-dark" aria-labelledby="integ-caption">
+        <p class="visually-hidden">{platform.integration.diagramAlt}</p>
+        <svg class="integ__lines" viewBox="0 0 1000 400" preserveAspectRatio="none" aria-hidden="true" focusable="false">
+          <defs>
+            <filter id="integ-glow" filterUnits="userSpaceOnUse" x="0" y="0" width="1000" height="400" color-interpolation-filters="sRGB">
+              <feGaussianBlur stdDeviation="7"></feGaussianBlur>
+            </filter>
+          </defs>
+          <g class="integ__tube" fill="none" stroke-linecap="round" stroke-linejoin="round">
+            {INTEG_LINKS.map((d) => <path class="integ__halo" d={d} filter="url(#integ-glow)" />)}
+            {INTEG_LINKS.map((d) => <path class="integ__stroke" d={d} />)}
+            {INTEG_LINKS.map((d) => <path class="integ__core-line" d={d} />)}
+          </g>
+          <g class="integ__ends">
+            {INTEG_NODES.map(([cx, cy]) => <circle class="integ__end-ring" cx={cx} cy={cy} r="6" />)}
+            {INTEG_NODES.map(([cx, cy]) => <circle class="integ__end-core" cx={cx} cy={cy} r="2.5" />)}
+          </g>
+        </svg>
+        <ul class="integ__nodes">
+          {
+            platform.integration.nodes.map((node, i) => (
+              <li class:list={['integ__node', `integ__node--${i + 1}`]}>
+                <span class="integ__node-name">{node.name}</span>
+                <span class="integ__node-body">{node.body}</span>
+              </li>
+            ))
+          }
+        </ul>
+        <div class="integ__core">
+          <Wordmark size="lg" class="integ__wordmark" />
+        </div>
+        <figcaption id="integ-caption" class="integ__label mono">{platform.integration.diagramLabel}</figcaption>
+      </figure>
+
+<style>
+  .integ {
+    --integ-node-bg: var(--color-navy-800);
+    --integ-node-border: rgba(255, 255, 255, 0.14);
+    position: relative;
+    container-type: inline-size;
+    margin: 0;
+    padding: 0;
+    border-radius: var(--radius-lg);
+    background: var(--color-navy-950);
+    overflow: hidden;
+    isolation: isolate;
+    font-size: clamp(0.75rem, 1.35cqi, 1.0625rem);
+  }
+  .integ__nodes {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+  .integ__node {
+    display: grid;
+    align-content: center;
+    gap: 0.35em;
+    padding: 1.1em 1.3em;
+    border: var(--border-width) solid var(--integ-node-border);
+    border-radius: 0.75em;
+    background: var(--integ-node-bg);
+    color: var(--color-white);
+  }
+  .integ__node-name {
+    font-family: var(--font-heading);
+    font-size: 1.125em;
+    font-weight: var(--weight-semibold);
+    line-height: 1.2;
+  }
+  .integ__node-body {
+    font-size: 0.85em;
+    color: rgba(255, 255, 255, 0.74);
+  }
+  .integ__core {
+    display: grid;
+    place-items: center;
+    padding: 1.5em 2em;
+    border-radius: 0.9em;
+    background: var(--color-cyan-400);
+    color: var(--color-navy-950);
+    box-shadow: 0 0 28px 2px rgba(25, 200, 255, .3);
+  }
+  .integ__core :global(.integ__wordmark) {
+    --wm-size: clamp(1.75rem, 4.2cqi, 3.25rem);
+    --color-brand-accent: var(--color-navy-950);
+    color: var(--color-navy-950);
+  }
+  .integ__label {
+    margin: 0;
+    font-size: var(--text-xs);
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: rgba(255, 255, 255, 0.74);
+  }
+  /* Tubo de neón de las conexiones: halo desenfocado (un solo filtro), trazo cian y núcleo casi blanco. */
+  .integ__lines {
+    display: none;
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+    width: 100%;
+    height: 100%;
+    overflow: visible;
+    pointer-events: none;
+  }
+  .integ__tube path {
+    vector-effect: non-scaling-stroke;
+  }
+  .integ__halo {
+    stroke: var(--color-cyan-400);
+    stroke-width: 14;
+    opacity: 0.45;
+  }
+  .integ__stroke {
+    stroke: var(--color-cyan-400);
+    stroke-width: 4;
+  }
+  .integ__core-line {
+    stroke: var(--color-cyan-100);
+    stroke-width: 1.5;
+    opacity: 0.95;
+  }
+  .integ__end-ring {
+    fill: var(--color-cyan-400);
+  }
+  .integ__end-core {
+    fill: var(--color-cyan-100);
+  }
+  /* Apilado (menos de 56em): bloque central arriba, hairline vertical y los cuatro nodos debajo. */
+  @media (max-width: 55.99em) {
+    .integ {
+      display: grid;
+      gap: 1.5em;
+      padding: clamp(1.5rem, 4vw, 2.5rem);
+    }
+    .integ__core {
+      order: 1;
+      justify-self: center;
+      position: relative;
+    }
+    .integ__core::after {
+      content: '';
+      position: absolute;
+      left: 50%;
+      top: 100%;
+      width: 2px;
+      height: 1.5em;
+      transform: translateX(-50%);
+      background: linear-gradient(180deg, var(--color-cyan-400), transparent);
+      box-shadow: 0 0 8px 1px rgba(25, 200, 255, .3);
+    }
+    .integ__nodes {
+      order: 2;
+      display: grid;
+      gap: 0.75em;
+    }
+    .integ__label {
+      order: 3;
+    }
+  }
+  @media (min-width: 30em) and (max-width: 55.99em) {
+    .integ__nodes {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+  }
+  /* Esquema completo (56em o más): rejilla de diseño 1000 × 400, nodos y bloque central en porcentajes. */
+  @media (min-width: 56em) {
+    .integ {
+      aspect-ratio: 1000 / 400;
+    }
+    .integ__lines {
+      display: block;
+    }
+    .integ__node {
+      position: absolute;
+      z-index: 1;
+      width: 26%;
+      height: 26%;
+    }
+    .integ__node--1 {
+      left: 3%;
+      top: 12%;
+    }
+    .integ__node--2 {
+      left: 3%;
+      top: 62%;
+    }
+    .integ__node--3 {
+      right: 3%;
+      top: 12%;
+    }
+    .integ__node--4 {
+      right: 3%;
+      top: 62%;
+    }
+    .integ__core {
+      position: absolute;
+      z-index: 1;
+      left: 39%;
+      top: 33%;
+      width: 22%;
+      height: 34%;
+      padding: 0;
+    }
+    .integ__label {
+      position: absolute;
+      z-index: 1;
+      left: 3%;
+      bottom: 5%;
+    }
+  }
+
+</style>

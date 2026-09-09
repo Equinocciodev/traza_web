@@ -1,26 +1,26 @@
-import type { CaseSpiritsContent } from '../types';
+import type { CaseMedicinesContent } from '../types';
 
-export const caseSpirits: CaseSpiritsContent = {
+export const caseMedicines: CaseMedicinesContent = {
   meta: {
-    title: 'Caso de uso: licores y bebidas alcohólicas',
+    title: 'Medicamentos: identidad y verificación por unidad',
     description:
-      'Propuesta de piloto para un regulador de licores: identidad unitaria firmada, verificación pública web e inspección de campo. Sin implementación oficial.',
+      'Identidad digital por unidad de medicamento: impresión del QR, activación al finalizar la producción, consulta pública y control. Propuesta de piloto acotado.',
   },
 
   hero: {
-    eyebrow: 'Caso de uso · Licores',
+    eyebrow: 'Caso de uso · Medicamentos',
     tag: 'Propuesta de piloto',
-    title: 'Identidad unitaria y verificación pública para un mercado regulado de licores',
+    title: 'El QR nace con el medicamento',
     subtitle:
-      'El primer caso de uso de Traza plantea dar a cada botella una identidad firmada, registrar su ciclo de vida desde la emisión hasta cada consulta y permitir que cualquier persona la verifique desde el navegador.',
+      'Cada frasco de solución oral de 120 ml lleva un QR único desde el envase. Se emite la identidad, se imprime y se activa al finalizar la producción; después, cada consulta contrasta la unidad con su registro.',
     disclaimer:
-      'Este caso se presenta como propuesta de piloto dirigida a un regulador de licores. No describe una implementación oficial, no implica relación contractual y no afirma la participación de ninguna agencia.',
+      'Este caso se presenta como propuesta de piloto dirigida a un regulador de medicamentos. No describe una implementación oficial, no implica relación contractual y no afirma la participación de ninguna agencia.',
   },
 
   context: {
     title: 'El problema que se plantea resolver',
     paragraphs: [
-      'En un mercado regulado de licores circulan unidades cuya identidad no se puede comprobar. El control suele apoyarse en documentos, precintos y lotes; una etiqueta copiada con cuidado pasa por legítima y una unidad desviada no deja rastro.',
+      'Un lote identifica un conjunto; el QR de Traza identifica cada unidad. El frasco y su caja permiten contrastar producto, concentración, forma farmacéutica, fabricante o importador, registro sanitario, lote y vencimiento. Los datos del ejemplo no corresponden a un medicamento autorizado.',
       'La inspección de campo se enfrenta a un volumen que no puede cubrir sin señales que la orienten. Los equipos llegan donde pueden, no necesariamente donde hace falta, y lo que observan rara vez queda unido al registro de la unidad.',
       'El público, por su parte, no tiene una forma sencilla de verificar lo que compra. Las herramientas que exigen instalar algo o crear una cuenta no se usan en el momento de la compra. La propuesta parte de esa realidad: verificación web, sin instalación ni cuenta, en el punto de venta.',
     ],
@@ -37,13 +37,13 @@ export const caseSpirits: CaseSpiritsContent = {
         icon: 'fingerprint',
       },
       {
-        title: 'Etiquetado con código verificable',
-        body: 'El identificador se incorpora a la etiqueta o al precinto como código legible por la cámara de cualquier teléfono.',
+        title: 'Impresión directa en el envase',
+        body: 'El QR se imprime en la caja, etiqueta o precinto durante el acondicionamiento. Cada unidad conserva su identificador; no se reutiliza un código para todo el lote.',
         icon: 'label',
       },
       {
-        title: 'Registro de eventos de cadena',
-        body: 'Emisión, etiquetado, activación de la ficha del lote y cada consulta pública quedan registrados en orden.',
+        title: 'Registro del ciclo de vida',
+        body: 'Emisión → impresión → activación al finalizar producción → consulta y control. El cierre de la ficha del lote activa solo las unidades efectivamente producidas.',
         icon: 'history',
       },
       {
@@ -69,23 +69,23 @@ export const caseSpirits: CaseSpiritsContent = {
     intro: 'La propuesta describe seis papeles. Cada uno ve el registro con el nivel de detalle que le corresponde.',
     items: [
       {
-        role: 'Regulador de licores',
+        role: 'Regulador de medicamentos',
         body: 'Define el marco, gobierna el registro, sigue anomalías y reportes, y dirige la inspección de campo. En la propuesta, este papel corresponde al destinatario del piloto.',
         icon: 'government',
       },
       {
         role: 'Fabricantes e importadores',
-        body: 'Emiten y firman las identidades de sus unidades y reportan la salida de fábrica o el ingreso por aduana.',
+        body: 'Solicitan identidades para sus unidades y completan producto, concentración, forma farmacéutica, registro sanitario, lote y vencimiento. Responden por los datos declarados.',
         icon: 'factory',
       },
       {
-        role: 'Transportistas y distribuidores',
-        body: 'Solicitan emisiones, aplican las etiquetas y cierran la ficha del lote, que es lo que activa los códigos.',
-        icon: 'truck',
+        role: 'Producción y acondicionamiento',
+        body: 'Imprimen los identificadores en los envases, comprueban su lectura y cierran la ficha al terminar la producción. Esa confirmación activa los códigos utilizados.',
+        icon: 'label',
       },
       {
-        role: 'Puntos de venta',
-        body: 'Registran la llegada de las unidades y ponen el código a disposición del público.',
+        role: 'Farmacias y puntos de dispensación',
+        body: 'Ponen el código a disposición del público y contrastan el envase con el registro. El piloto no registra ventas, transporte ni distribución.',
         icon: 'store',
       },
       {
@@ -117,8 +117,8 @@ export const caseSpirits: CaseSpiritsContent = {
         icon: 'globe',
       },
       {
-        title: 'Registro de eventos de cadena',
-        body: 'Un registro ordenado y auditable de los eventos de cada unidad, con responsable y fecha, exportable para auditoría.',
+        title: 'Registro del ciclo de vida',
+        body: 'Registro de emisión, impresión, activación, consultas, señales y cierre, con responsable y fecha. No requiere registrar movimientos logísticos.',
         icon: 'database',
       },
       {
@@ -131,6 +131,7 @@ export const caseSpirits: CaseSpiritsContent = {
         body: 'Un canal público para reportar diferencias entre la unidad y el registro, con datos mínimos y opcionales.',
         icon: 'flag',
       },
+      { title: 'Anticopia y validación tributaria · fase 2', body: 'Las medidas físicas anticopia y la validación del pago de tributos se evaluarían en una fase posterior. La validación tributaria depende de la integración y autorización de la autoridad competente; no está disponible en este ejemplo. Una firma digital por sí sola no impide copiar la etiqueta.', icon: 'shield' },
     ],
     note: 'Arquitectura objetivo de la propuesta: no implementada todavía. Su desarrollo y su auditoría forman parte del alcance que se acordaría con la institución.',
   },
@@ -150,10 +151,10 @@ export const caseSpirits: CaseSpiritsContent = {
   cobrand: {
     title: 'Co-brand condicional',
     body:
-      'La propuesta contempla que la verificación pública muestre la marca del regulador junto a la de Traza. Ese lockup aparece únicamente dentro de este caso de uso y de su tenant de ejemplo, como muestra de cómo se vería un despliegue co-brand.',
+      'La propuesta permite que una empresa pública y/o privada presente la verificación junto a Traza. La franja y el ejemplo usan la paleta de Traza; la marca de cada participante requiere autorización.',
     lockupNote:
-      'El lockup «SENIAT | TRAZA» es un ejemplo de co-brand condicional incluido en la propuesta de piloto. Se muestra en versión tipográfica, sin emblema oficial, y su uso depende de la aprobación de la institución. No implica relación oficial, respaldo ni aprobación.',
-    cta: { label: 'Ver la verificación con el tenant de ejemplo', key: 'verify', suffix: '?t=licores', variant: 'secondary' },
+      'El lockup «EMPRESA PÚBLICA Y/O PRIVADA | TRAZA» es un ejemplo de co-brand condicional incluido en la propuesta de piloto. Se muestra en versión tipográfica, sin emblema oficial, y su uso depende de la aprobación de la institución. No implica relación oficial, respaldo ni aprobación.',
+    cta: { label: 'Ver la verificación con el tenant de ejemplo', key: 'verify', suffix: '?t=medicamentos', variant: 'secondary' },
   },
 
   nonClaims: {
@@ -162,7 +163,7 @@ export const caseSpirits: CaseSpiritsContent = {
       'Para evitar confusiones, dejamos por escrito lo que esta página no dice.',
     items: [
       'No afirma que exista una implementación oficial ni un sistema en funcionamiento.',
-      'No afirma una relación contractual, comercial o institucional con SENIAT ni con ninguna otra agencia; SENIAT se menciona solo como destinatario de una propuesta de piloto.',
+      'No afirma una relación contractual, comercial o institucional con ninguna empresa, autoridad o agencia.',
       'No presenta cifras del piloto: cantidades, plazos, costos o resultados.',
       'No afirma seguridad de producción: la arquitectura descrita es un objetivo cuya implementación se audita en cada despliegue.',
       'No ofrece conclusiones legales ni regulatorias; la propuesta no sustituye el análisis normativo que corresponda.',
@@ -173,8 +174,8 @@ export const caseSpirits: CaseSpiritsContent = {
   cta: {
     title: 'Vea el caso de uso en la plataforma',
     body:
-      'La verificación pública con el tenant de ejemplo, el recorrido de una botella y la vista institucional muestran cómo se vería el piloto.',
-    primaryCta: { label: 'Verificar con el tenant de ejemplo', key: 'verify', suffix: '?t=licores', variant: 'primary' },
+      'La verificación pública con el tenant de ejemplo, el ciclo de vida de un frasco y la vista institucional muestran cómo se vería el piloto.',
+    primaryCta: { label: 'Verificar con el tenant de ejemplo', key: 'verify', suffix: '?t=medicamentos', variant: 'primary' },
     secondaryCta: { label: 'Abrir la vista institucional', key: 'institutional', variant: 'secondary' },
   },
 };

@@ -1,272 +1,884 @@
 ---
 /**
- * Plataforma: capacidades, identidad de la unidad (con ejemplo), arquitectura objetivo,
- * modelo de verificación por señales, co-brand por tenant, integración y cierre.
+ * Plataforma (dirección gráfica 03, tramos 04–07): hero navy con el mock de software, seis capacidades en
+ * filas editoriales, vista de producto (pasaporte digital + historial + «Lo que se conoce. Lo que falta.» con
+ * las cuatro señales), «El QR nace con el producto», experiencias por rol, franja menta de marca y permisos
+ * (co-brand), integraciones (esquema conceptual + alcance) y banda de cierre.
+ *
+ * Todo el texto sale de `platform` (src/content). Los titulares de sección se parten por frase en líneas de
+ * bloque («Todo su contexto.» / «A un clic de distancia.»): presentación, no contenido. Sin JavaScript propio:
+ * las «pestañas» son enlaces de ancla y el esquema de integración es HTML + SVG decorativo.
  */
 import Base from '@/layouts/Base.astro';
-import PageHero from '@/components/ui/PageHero.astro';
-import Callout from '@/components/ui/Callout.astro';
-import CheckList from '@/components/ui/CheckList.astro';
-import CtaBand from '@/components/ui/CtaBand.astro';
-import FeatureGrid from '@/components/ui/FeatureGrid.astro';
+import IntegrationMap from '@/components/ui/IntegrationMap.astro';
+import EditorialRows from '@/components/ui/EditorialRows.astro';
+import Button from '@/components/ui/Button.astro';
+import Eyebrow from '@/components/ui/Eyebrow.astro';
 import Icon from '@/components/ui/Icon.astro';
-import SectionHeader from '@/components/ui/SectionHeader.astro';
-import SignalList from '@/components/ui/SignalList.astro';
-import UnitCard from '@/components/ui/UnitCard.astro';
+import MockDashboard from '@/components/ui/MockDashboard.astro';
+import NeonBand from '@/components/ui/NeonBand.astro';
+import NeonTrace from '@/components/ui/NeonTrace.astro';
+import StepFlow from '@/components/ui/StepFlow.astro';
+import QrBirth from '@/components/brand/QrBirth.astro';
 import CobrandExample from '@/components/site/CobrandExample.astro';
+import { ctaHref } from '@/components/ui/cta';
 import { env } from '@/config/env';
 import { getContent } from '@/content';
-import type { Locale } from '@/i18n';
+import { route, type Locale } from '@/i18n';
 
 interface Props {
   locale: Locale;
 }
 const { locale } = Astro.props;
 const { platform } = getContent(locale);
+
+/** Parte un titular en frases («Una frase. Otra frase.») para pintarlas en líneas de bloque. */
+const lines = (title: string): string[] => title.split(/(?<=\.)\s+/).filter(Boolean);
+
+
 ---
 
 <Base locale={locale} routeKey="platform" title={platform.meta.title} description={platform.meta.description}>
-  <PageHero eyebrow={platform.hero.eyebrow} title={platform.hero.title} subtitle={platform.hero.subtitle} />
-
-  <section class="section" aria-labelledby="capabilities-title" data-reveal>
-    <div class="container">
-      <SectionHeader title={platform.capabilities.title} intro={platform.capabilities.intro} id="capabilities-title" />
-      <FeatureGrid items={platform.capabilities.items} columns={3} />
+  {/* ---- Hero navy: eyebrow, titular en dos líneas, pill cian, órbita de neón y el mock de software debajo ---- */}
+  <section class="p-hero on-dark" aria-labelledby="page-title">
+    <div class="p-hero__neon" aria-hidden="true">
+      <NeonTrace variant="orbit" tone="dark" draw="load" duration={1300} />
+    </div>
+    <div class="wrap">
+      <div class="p-hero__top">
+        <div class="p-hero__copy">
+          <Eyebrow>{platform.hero.eyebrow}</Eyebrow>
+          <h1 id="page-title" class="p-hero__title">
+            {platform.hero.titleLines.map((line) => <span class="line">{line}</span>)}
+          </h1>
+          <p class="p-hero__subtitle">{platform.hero.subtitle}</p>
+        </div>
+        <div class="p-hero__actions">
+          <Button href={ctaHref(locale, platform.hero.cta)} variant="pill" tone="onDark">
+            {platform.hero.cta.label}
+          </Button>
+        </div>
+      </div>
+      <div class="p-hero__mock">
+        <MockDashboard locale={locale} navLabelledBy="page-title" />
+      </div>
     </div>
   </section>
 
-  <section class="section section--subtle" aria-labelledby="identity-title" data-reveal>
-    <div class="container identity">
-      <div class="identity__copy">
-        <SectionHeader title={platform.identity.title} intro={platform.identity.body} id="identity-title" class="identity__header" />
-        <dl class="identity__fields" data-reveal data-reveal-stagger>
+  {/* ---- Capacidades: seis filas editoriales con hairlines y enlaces ---- */}
+  <section class="sec" id="capacidades" aria-labelledby="capabilities-title" data-reveal>
+    <div class="wrap">
+      <header class="sec__head">
+        <Eyebrow>{platform.capabilities.eyebrow}</Eyebrow>
+        <h2 id="capabilities-title" class="sec__title">{lines(platform.capabilities.title).map((l) => <span class="line">{l}</span>)}</h2>
+        <p class="sec__intro">{platform.capabilities.intro}</p>
+      </header>
+      <EditorialRows
+        items={platform.capabilities.items.map(item => ({
+          title: item.title,
+          body: item.body,
+          href: item.key ? route(locale, item.key) : item.href,
+        }))}
+        headingLevel={3}
+      />
+    </div>
+  </section>
+
+  {/* ---- Vista de producto: pestañas de ancla, pasaporte digital, historial y la franja «Lo que se conoce» ---- */}
+  <section class="sec sec--soft" id="vista-producto" aria-labelledby="product-title" data-reveal>
+    <div class="wrap">
+      <header class="sec__head">
+        <Eyebrow>{platform.productView.eyebrow}</Eyebrow>
+        <h2 id="product-title" class="sec__title">{lines(platform.productView.title).map((l) => <span class="line">{l}</span>)}</h2>
+        <p class="sec__intro">{platform.productView.intro}</p>
+      </header>
+
+      <nav class="tabs" aria-label={platform.productView.tabsLabel}>
+        <ul class="tabs__list">
           {
-            platform.identity.fields.map((field) => (
-              <div class="identity__field">
-                <dt>
-                  <span class="identity__icon" aria-hidden="true">
-                    <Icon name={field.icon} size={20} />
-                  </span>
-                  <span>{field.label}</span>
-                </dt>
-                <dd>{field.description}</dd>
-              </div>
+            platform.productView.tabs.map((tab) => (
+              <li class="tabs__item">
+                <a class="tabs__link" href={tab.href}>
+                  {tab.label}
+                </a>
+              </li>
             ))
           }
-        </dl>
+        </ul>
+      </nav>
+
+      <div class="pv">
+        <article class="passport" id="pasaporte" aria-labelledby="passport-title">
+          <p class="kicker">
+            <span>{platform.productView.passport.kicker}</span>
+            <span class="kicker__sep" aria-hidden="true">/</span>
+            <span class="kicker__ex">{platform.productView.passport.exampleLabel}</span>
+          </p>
+          <h3 id="passport-title" class="passport__title">{platform.productView.passport.title}</h3>
+          <p class="passport__presentation">{platform.productView.passport.presentation}</p>
+          <p class="passport__status">
+            <span class="dot dot--success" aria-hidden="true"></span>
+            {platform.productView.passport.status}
+          </p>
+          <dl class="passport__rows">
+            <div class="passport__row passport__row--code">
+              <dt>{platform.productView.passport.codeLabel}</dt>
+              <dd class="mono">{platform.productView.passport.code}</dd>
+            </div>
+            {
+              platform.productView.passport.rows.map((row) => (
+                <div class="passport__row">
+                  <dt>{row.label}</dt>
+                  <dd>{row.value}</dd>
+                </div>
+              ))
+            }
+          </dl>
+          <p class="passport__note">{platform.productView.passport.note}</p>
+          <a class="passport__more" href={ctaHref(locale, platform.productView.passport.cta)}>
+            <span>{platform.productView.passport.cta.label}</span>
+            <Icon name="arrow-right" size={18} />
+          </a>
+        </article>
+
+        <section class="history" id="historial" aria-labelledby="history-title">
+          <p class="kicker">
+            <span>{platform.productView.history.kicker}</span>
+            <span class="kicker__sep" aria-hidden="true">/</span>
+            <span class="kicker__ex">{platform.productView.history.exampleLabel}</span>
+          </p>
+          <h3 id="history-title" class="history__title">{lines(platform.productView.history.title).map((l) => <span class="line">{l}</span>)}</h3>
+          <ol class="timeline">
+            {
+              platform.productView.history.items.map((item) => (
+                <li class:list={['timeline__item', `timeline__item--${item.tone}`]}>
+                  <span class="timeline__dot" aria-hidden="true"></span>
+                  <div class="timeline__text">
+                    <p class="timeline__title">{item.title}</p>
+                    <p class="timeline__source">{item.source}</p>
+                  </div>
+                  <span class="timeline__status">{item.status}</span>
+                </li>
+              ))
+            }
+          </ol>
+        </section>
       </div>
-      <div class="identity__example">
-        <UnitCard
-          caption={platform.identity.example.caption}
-          code={platform.identity.example.code}
-          fields={platform.identity.example.rows}
-          class="identity__card"
-        />
-      </div>
+
+      <section class="gaps on-dark" id="senales" aria-labelledby="gaps-title">
+        <div class="gaps__neon" aria-hidden="true">
+          <NeonTrace variant="orbit" tone="dark" draw="view" duration={1100} />
+        </div>
+        <div class="gaps__head">
+          <h3 id="gaps-title" class="gaps__title">{lines(platform.productView.gaps.title).map((l) => <span class="line">{l}</span>)}</h3>
+          <p class="gaps__body">{platform.productView.gaps.body}</p>
+        </div>
+        <div class="gaps__model">
+          <h4 class="gaps__model-title">{platform.verificationModel.title}</h4>
+          <p class="gaps__model-intro">{platform.verificationModel.intro}</p>
+          <ol class="sig">
+            {
+              platform.verificationModel.signals.map((signal, i) => (
+                <li class="sig__item" data-signal={signal.key}>
+                  <span class="sig__num mono" aria-hidden="true">
+                    {String(i + 1).padStart(2, '0')}
+                  </span>
+                  <p class="sig__title">{signal.title}</p>
+                  <p class="sig__body">{signal.body}</p>
+                </li>
+              ))
+            }
+          </ol>
+          <p class="gaps__caution">{platform.verificationModel.caution}</p>
+        </div>
+      </section>
     </div>
   </section>
 
-  <section class="section" aria-labelledby="architecture-title" data-reveal>
-    <div class="container">
-      <SectionHeader title={platform.architecture.title} intro={platform.architecture.intro} id="architecture-title" />
-      <ol class="layers" data-reveal data-reveal-stagger>
+  {/* ---- «El QR nace con el producto.» (recurso de marca, versión completa) ---- */}
+  <QrBirth locale={locale} variant="full" />
+
+  {/* ---- Experiencias por rol: tres roles en pestañas visuales y el mock de la vista de operación ---- */}
+  <section class="sec" id="roles" aria-labelledby="roles-title" data-reveal>
+    <div class="wrap">
+      <header class="sec__head">
+        <Eyebrow>{platform.roles.eyebrow}</Eyebrow>
+        <h2 id="roles-title" class="sec__title">{lines(platform.roles.title).map((l) => <span class="line">{l}</span>)}</h2>
+        <p class="sec__intro">{platform.roles.intro}</p>
+      </header>
+      <ol class="role-tabs">
         {
-          platform.architecture.layers.map((layer, index) => (
-            <li class="layer">
-              <span class="layer__index mono" aria-hidden="true">{String(index + 1).padStart(2, '0')}</span>
-              <span class="layer__icon" aria-hidden="true">
-                <Icon name={layer.icon} size={22} />
-              </span>
-              <div class="layer__text">
-                <h3 class="layer__name">{layer.name}</h3>
-                <p class="layer__body">{layer.body}</p>
-              </div>
+          platform.roles.items.map((role, i) => (
+            <li class:list={['role-tabs__item', { 'role-tabs__item--shown': i === 0 }]}>
+              <h3 class="role-tabs__title">{role.title}</h3>
+              <p class="role-tabs__who">{role.who}</p>
+              <p class="role-tabs__body">{role.body}</p>
             </li>
           ))
         }
       </ol>
-      <div class="section__note">
-        <Callout tone="info">{platform.architecture.note}</Callout>
+      <div class="roles__mock">
+        <MockDashboard locale={locale} navLabelledBy="roles-title" />
+        <p class="roles__caption mono">{platform.roles.mockCaption}</p>
       </div>
     </div>
   </section>
 
-  <section class="section section--subtle" aria-labelledby="verification-title" data-reveal>
-    <div class="container">
-      <SectionHeader title={platform.verificationModel.title} intro={platform.verificationModel.intro} id="verification-title" />
-      <SignalList signals={platform.verificationModel.signals} />
-      <div class="section__note">
-        <Callout tone="warning">{platform.verificationModel.caution}</Callout>
-      </div>
-    </div>
-  </section>
-
-  <section class="section" aria-labelledby="tenancy-title" data-reveal>
-    <div class="container tenancy">
+  {/* ---- Franja menta: marca y permisos por tenant, con el lockup de co-brand de ejemplo y su aviso ---- */}
+  <section class="sec sec--mint" aria-labelledby="tenancy-title" data-reveal>
+    <div class="wrap tenancy">
       <div class="tenancy__copy">
-        <SectionHeader title={platform.tenancy.title} intro={platform.tenancy.body} id="tenancy-title" class="tenancy__header" />
-        <CheckList items={platform.tenancy.bullets} tone="muted" />
+        <Eyebrow>{platform.tenancy.eyebrow}</Eyebrow>
+        <h2 id="tenancy-title" class="sec__title">{lines(platform.tenancy.title).map((l) => <span class="line">{l}</span>)}</h2>
+        <p class="sec__intro">{platform.tenancy.body}</p>
+        <ul class="tenancy__bullets">
+          {platform.tenancy.bullets.map((b) => <li>{b}</li>)}
+        </ul>
       </div>
       <div class="tenancy__aside">
         <CobrandExample locale={locale} />
-        {env.showCobrandExample && <Callout tone="neutral">{platform.tenancy.exampleNote}</Callout>}
+        {env.showCobrandExample && <p class="tenancy__note">{platform.tenancy.exampleNote}</p>}
       </div>
     </div>
   </section>
 
-  <section class="section section--subtle" aria-labelledby="integration-title" data-reveal>
-    <div class="container integration">
-      <SectionHeader title={platform.integration.title} intro={platform.integration.body} id="integration-title" class="integration__header" />
-      <div class="integration__list">
-        <CheckList items={platform.integration.bullets} tone="muted" columns={2} />
-        <Callout tone="info">{platform.integration.note}</Callout>
+  {/* ---- Integraciones: esquema conceptual navy y alcance de la conexión (1-2-3) ---- */}
+  <section class="sec" id="integraciones" aria-labelledby="integration-title" data-reveal>
+    <div class="wrap">
+      <header class="sec__head">
+        <Eyebrow>{platform.integration.eyebrow}</Eyebrow>
+        <h2 id="integration-title" class="sec__title">{lines(platform.integration.title).map((l) => <span class="line">{l}</span>)}</h2>
+        <p class="sec__intro">{platform.integration.intro}</p>
+      </header>
+
+      <IntegrationMap locale={locale} />
+      <p class="integ__note">{platform.integration.note}</p>
+
+      <div class="scope">
+        <Eyebrow>{platform.integration.scope.eyebrow}</Eyebrow>
+        <h3 class="sec__title sec__title--sub">{platform.integration.scope.title}</h3>
+        <StepFlow items={platform.integration.scope.steps} columns={3} headingLevel={4} />
       </div>
+      <p class="integ__cta">
+        <Button href={ctaHref(locale, platform.integration.cta)} variant="pill" tone="outline">
+          {platform.integration.cta.label}
+        </Button>
+      </p>
     </div>
   </section>
 
-  <CtaBand locale={locale} title={platform.cta.title} body={platform.cta.body} primaryCta={platform.cta.primaryCta} secondaryCta={platform.cta.secondaryCta} />
+  <NeonBand title={platform.cta.title} subtitle={platform.cta.body} id="platform-cta-title">
+    <Fragment slot="actions">
+      <Button href={ctaHref(locale, platform.cta.primaryCta)} variant="pill" tone="onDark">
+        {platform.cta.primaryCta.label}
+      </Button>
+      <Button href={ctaHref(locale, platform.cta.secondaryCta)} variant="pill" tone="outline">
+        {platform.cta.secondaryCta.label}
+      </Button>
+    </Fragment>
+  </NeonBand>
 </Base>
 
 <style>
-  .section__note {
-    max-width: 62ch;
-    margin-top: var(--space-8);
+  /* ---- Ritmo y contenedor de la dirección gráfica 03 ---- */
+  .wrap {
+    width: min(90%, 81.25rem);
+    margin-inline: auto;
   }
-
-  .identity {
-    display: grid;
-    gap: var(--space-10);
-    align-items: start;
+  .sec {
+    padding-block: clamp(4rem, 7vw, 7rem);
   }
-  @media (min-width: 60em) {
-    .identity {
-      grid-template-columns: minmax(0, 7fr) minmax(0, 5fr);
-      gap: var(--space-16);
-    }
+  .sec--soft {
+    background: var(--color-neutral-50);
   }
-  .identity :global(.identity__header) {
-    margin-bottom: var(--space-6);
+  .sec--mint {
+    background: var(--color-mint-100);
   }
-  .identity__fields {
-    display: grid;
-    gap: var(--space-3);
+  .sec__head {
+    max-width: 48rem;
+    margin-bottom: clamp(2.5rem, 4vw, 3.5rem);
+  }
+  .sec__title {
+    margin: 0 0 var(--space-5);
+    font-size: clamp(2rem, 3.6vw, 3.25rem);
+    line-height: 1.08;
+    letter-spacing: -0.03em;
+    color: var(--color-navy-950);
+    text-wrap: initial;
+  }
+  .sec__title--sub {
+    font-size: clamp(1.75rem, 2.8vw, 2.5rem);
+    margin-bottom: clamp(2rem, 3vw, 2.5rem);
+  }
+  .line {
+    display: block;
+  }
+  .sec__intro {
+    max-width: 56ch;
     margin: 0;
+    font-size: var(--text-lg);
+    line-height: var(--leading-normal);
+    color: var(--color-neutral-600);
   }
-  .identity__field {
-    --icon-size: 2.5rem;
-    padding: var(--space-3) 0;
-    border-bottom: var(--border-width) solid var(--color-border);
+  .kicker {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    margin: 0 0 var(--space-4);
+    font-size: var(--text-xs);
+    font-weight: var(--weight-semibold);
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--color-neutral-600);
   }
-  .identity__icon {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    flex-shrink: 0;
-    width: var(--icon-size);
-    height: var(--icon-size);
-    border-radius: var(--radius-md);
-    background: var(--color-cobalt-50);
+  .kicker__ex {
     color: var(--color-cobalt-600);
   }
-  .identity__field dt {
-    display: flex;
-    align-items: center;
-    gap: var(--space-4);
-    font-weight: var(--weight-semibold);
-    color: var(--color-heading);
+  .dot {
+    display: inline-block;
+    width: 0.5rem;
+    height: 0.5rem;
+    border-radius: 50%;
+    background: var(--color-neutral-400);
   }
-  .identity__field dd {
-    margin: 0.125rem 0 0;
-    padding-left: calc(var(--icon-size) + var(--space-4));
-    font-size: var(--text-sm);
-    color: var(--color-text-secondary);
-  }
-  .identity__example {
-    display: flex;
-    justify-content: center;
-  }
-  .identity :global(.identity__card) {
-    box-shadow: var(--shadow-sm);
+  .dot--success {
+    background: var(--color-success-solid);
   }
 
-  .layers {
+  /* ---- Hero navy ---- */
+  .p-hero {
+    position: relative;
+    overflow: hidden;
+    isolation: isolate;
+    padding-block: clamp(3.5rem, 6vw, 6rem) clamp(3rem, 5vw, 5rem);
+    background: var(--color-navy-950);
+  }
+  /* Órbita de neón grande a la derecha, apagada por la máscara antes de llegar a la columna de texto. */
+  .p-hero__neon {
+    position: absolute;
+    z-index: -1;
+    top: -18%;
+    right: -8%;
+    width: clamp(22rem, 46vw, 44rem);
+    aspect-ratio: 1;
+    pointer-events: none;
+    -webkit-mask-image: radial-gradient(circle at 60% 45%, #000 0 42%, transparent 72%);
+    mask-image: radial-gradient(circle at 60% 45%, #000 0 42%, transparent 72%);
+  }
+  .p-hero__top {
     display: grid;
+    gap: var(--space-8);
+    align-items: end;
+  }
+  .p-hero__copy {
+    max-width: 40rem;
+    min-width: 0;
+  }
+  .p-hero__title {
+    margin: 0 0 var(--space-6);
+    font-size: clamp(2.4rem, 5vw, 4.25rem);
+    line-height: 1.04;
+    letter-spacing: -0.035em;
+    color: var(--color-white);
+    text-wrap: initial;
+  }
+  .p-hero__subtitle {
+    max-width: 44ch;
+    margin: 0;
+    font-size: var(--text-lg);
+    line-height: var(--leading-normal);
+    color: rgba(255, 255, 255, 0.8);
+  }
+  .p-hero__actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-4);
+  }
+  .p-hero__mock {
+    margin-top: clamp(2.5rem, 5vw, 4rem);
+  }
+  @media (max-width: 59.99em) {
+    /* En pantallas estrechas la órbita se recoge arriba a la derecha, más pequeña, sin cruzar el titular. */
+    .p-hero__neon {
+      top: -6rem;
+      right: -9rem;
+      opacity: .45;
+      width: 20rem;
+      -webkit-mask-image: radial-gradient(circle at 50% 50%, #000 0 38%, transparent 70%);
+      mask-image: radial-gradient(circle at 50% 50%, #000 0 38%, transparent 70%);
+    }
+  }
+  @media (min-width: 60em) {
+    .p-hero__top {
+      grid-template-columns: minmax(0, 1.4fr) minmax(0, 1fr);
+    }
+    .p-hero__actions {
+      justify-content: flex-end;
+      padding-bottom: 0.25rem;
+    }
+  }
+
+  /* ---- Pestañas visuales (enlaces de ancla) ---- */
+  .tabs__list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0 var(--space-2);
+    margin: 0 0 clamp(2rem, 3vw, 2.5rem);
+    padding: 0;
+    list-style: none;
+    border-bottom: var(--border-width) solid var(--color-border-strong);
+  }
+  .tabs__link {
+    display: inline-flex;
+    align-items: center;
+    min-height: 3rem;
+    margin-bottom: -1px;
+    padding: 0 var(--space-4);
+    border-bottom: 2px solid transparent;
+    color: var(--color-navy-900);
+    font-weight: var(--weight-medium);
+    text-decoration: none;
+    white-space: nowrap;
+  }
+  .tabs__item:first-child .tabs__link {
+    padding-left: 0;
+  }
+  .tabs__link:hover,
+  .tabs__link:focus-visible {
+    color: var(--color-cobalt-600);
+    border-bottom-color: var(--color-cobalt-600);
+  }
+  .tabs__link:focus-visible {
+    border-radius: 0;
+  }
+
+  /* ---- Pasaporte digital + historial ---- */
+  .pv {
+    display: grid;
+    gap: var(--space-6);
+    align-items: stretch;
+  }
+  @media (min-width: 60em) {
+    .pv {
+      grid-template-columns: minmax(0, 5fr) minmax(0, 7fr);
+    }
+  }
+  .passport {
+    display: flex;
+    flex-direction: column;
+    padding: clamp(1.5rem, 2.6vw, 2.25rem);
+    border: var(--border-width) solid var(--color-border-strong);
+    border-radius: var(--radius-lg);
+    background: var(--color-white);
+    box-shadow: var(--shadow-md);
+  }
+  .passport__title {
+    margin: 0 0 var(--space-1);
+    font-size: clamp(1.5rem, 2vw, 1.875rem);
+    line-height: var(--leading-snug);
+    color: var(--color-navy-950);
+  }
+  .passport__presentation {
+    margin: 0 0 var(--space-4);
+    font-size: var(--text-sm);
+    color: var(--color-neutral-600);
+  }
+  .passport__status {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    align-self: flex-start;
+    margin: 0 0 var(--space-5);
+    padding: 0.3rem 0.75rem;
+    border-radius: var(--radius-full);
+    background: var(--color-success-bg);
+    color: var(--color-success-text);
+    font-size: var(--text-xs);
+    font-weight: var(--weight-semibold);
+    letter-spacing: 0.02em;
+  }
+  .passport__rows {
+    margin: 0;
+    border-top: var(--border-width) solid var(--color-border);
+  }
+  .passport__row {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1.35fr);
     gap: var(--space-3);
+    padding: 0.8rem 0;
+    border-bottom: var(--border-width) solid var(--color-border);
+  }
+  .passport__row dt {
+    font-size: var(--text-sm);
+    font-weight: var(--weight-medium);
+    color: var(--color-navy-900);
+  }
+  .passport__row dd {
+    margin: 0;
+    font-size: var(--text-sm);
+    color: var(--color-neutral-600);
+    overflow-wrap: anywhere;
+  }
+  .passport__row--code dd {
+    font-weight: var(--weight-medium);
+    color: var(--color-navy-950);
+  }
+  .passport__note {
+    margin: var(--space-5) 0 0;
+    font-size: var(--text-xs);
+    line-height: 1.5;
+    color: var(--color-neutral-600);
+  }
+  .passport__more {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    align-self: flex-start;
+    margin-top: var(--space-4);
+    min-height: var(--tap-min);
+    color: var(--color-cobalt-600);
+    font-weight: var(--weight-medium);
+    text-decoration: none;
+  }
+  .passport__more:hover {
+    text-decoration: underline;
+    text-underline-offset: 0.2em;
+  }
+  @media (max-width: 25em) {
+    .passport__row {
+      grid-template-columns: 1fr;
+      gap: 0.25rem;
+    }
+  }
+
+  .history {
+    padding: clamp(1.5rem, 2.6vw, 2.25rem);
+    border-radius: var(--radius-lg);
+    background: var(--color-white);
+    border: var(--border-width) solid var(--color-border);
+  }
+  .history__title {
+    margin: 0 0 var(--space-6);
+    font-size: clamp(1.5rem, 2.2vw, 2rem);
+    line-height: 1.15;
+    letter-spacing: -0.02em;
+    color: var(--color-navy-950);
+    text-wrap: initial;
+  }
+  .timeline {
+    --tl-dot: 0.875rem;
+    display: grid;
+    gap: var(--space-5);
     margin: 0;
     padding: 0;
     list-style: none;
-    max-width: 52rem;
   }
-  .layer {
+  .timeline__item {
+    --tl-color: var(--color-neutral-400);
+    --tl-status: var(--color-neutral-600);
+    --tl-status-bg: var(--color-neutral-100);
+    position: relative;
     display: grid;
-    grid-template-columns: auto 2.75rem minmax(0, 1fr);
+    grid-template-columns: var(--tl-dot) minmax(0, 1fr) auto;
+    column-gap: var(--space-4);
     align-items: start;
-    gap: var(--space-4);
-    padding: var(--space-4) var(--space-5);
-    border: var(--border-width) solid var(--color-border);
-    border-radius: var(--radius-md);
-    background: var(--color-surface);
   }
-  .layer__index {
-    padding-top: 0.75rem;
-    font-size: var(--text-xs);
-    letter-spacing: 0.08em;
-    color: var(--color-text-secondary);
+  .timeline__item--success {
+    --tl-color: var(--color-success-solid);
+    --tl-status: var(--color-success-text);
+    --tl-status-bg: var(--color-success-bg);
   }
-  .layer__icon {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    width: 2.75rem;
-    height: 2.75rem;
-    border-radius: var(--radius-md);
-    background: var(--color-navy-900);
-    color: var(--color-cyan-300);
+  .timeline__item--info {
+    --tl-color: var(--color-cobalt-600);
+    --tl-status: var(--color-cobalt-700);
+    --tl-status-bg: var(--color-cobalt-50);
   }
-  .layer__name {
-    margin: 0 0 var(--space-1);
-    font-size: var(--text-lg);
+  .timeline__item--warning {
+    --tl-color: var(--color-warning-solid);
+    --tl-status: var(--color-warning-text);
+    --tl-status-bg: var(--color-warning-bg);
   }
-  .layer__body {
+  .timeline__dot {
+    width: var(--tl-dot);
+    height: var(--tl-dot);
+    margin-top: 0.3rem;
+    border-radius: 50%;
+    background: var(--tl-color);
+    box-shadow: 0 0 0 4px var(--color-white);
+  }
+  /* Hairline vertical que une los puntos; el último evento no la continúa. */
+  .timeline__item:not(:last-child)::before {
+    content: '';
+    position: absolute;
+    left: calc(var(--tl-dot) / 2 - 0.5px);
+    top: calc(var(--tl-dot) + 0.4rem);
+    bottom: calc(-1 * var(--space-5));
+    width: 1px;
+    background: var(--color-border-strong);
+  }
+  .timeline__text {
+    min-width: 0;
+  }
+  .timeline__title {
+    margin: 0 0 0.125rem;
+    font-family: var(--font-heading);
+    font-size: 1.125rem;
+    font-weight: var(--weight-semibold);
+    line-height: var(--leading-snug);
+    color: var(--color-navy-950);
+  }
+  .timeline__source {
     margin: 0;
     font-size: var(--text-sm);
-    color: var(--color-text-secondary);
+    color: var(--color-neutral-600);
   }
-  @media (max-width: 30em) {
-    .layer {
-      grid-template-columns: 2.75rem minmax(0, 1fr);
+  .timeline__status {
+    padding: 0.2rem 0.6rem;
+    border-radius: var(--radius-full);
+    background: var(--tl-status-bg);
+    color: var(--tl-status);
+    font-size: var(--text-xs);
+    font-weight: var(--weight-semibold);
+    letter-spacing: 0.02em;
+    white-space: nowrap;
+  }
+  @media (max-width: 25em) {
+    .timeline__item {
+      grid-template-columns: var(--tl-dot) minmax(0, 1fr);
     }
-    .layer__index {
-      display: none;
+    .timeline__status {
+      grid-column: 2;
+      justify-self: start;
+      margin-top: 0.375rem;
     }
   }
 
-  .tenancy,
-  .integration {
+  /* ---- «Lo que se conoce. Lo que falta.» (navy) con las cuatro señales ---- */
+  .gaps {
+    position: relative;
+    overflow: hidden;
+    isolation: isolate;
+    margin-top: var(--space-6);
+    padding: clamp(1.75rem, 3.2vw, 3rem);
+    border-radius: var(--radius-lg);
+    background: var(--color-navy-950);
+  }
+  /* La órbita ocupa la esquina superior derecha, donde no hay texto (la cabecera se limita a 60 %). */
+  .gaps__neon {
+    position: absolute;
+    z-index: -1;
+    top: -34%;
+    right: -6%;
+    width: 34%;
+    aspect-ratio: 1;
+    pointer-events: none;
+    -webkit-mask-image: radial-gradient(circle at 50% 50%, #000 0 40%, transparent 70%);
+    mask-image: radial-gradient(circle at 50% 50%, #000 0 40%, transparent 70%);
+  }
+  @media (max-width: 59.99em) {
+    .gaps__neon {
+      display: none;
+    }
+  }
+  .gaps__head {
+    max-width: 60%;
+    margin-bottom: clamp(2rem, 3.5vw, 3rem);
+  }
+  @media (max-width: 59.99em) {
+    .gaps__head {
+      max-width: none;
+    }
+  }
+  .gaps__title {
+    margin: 0 0 var(--space-3);
+    font-size: clamp(1.625rem, 2.6vw, 2.25rem);
+    line-height: 1.12;
+    letter-spacing: -0.02em;
+    color: var(--color-white);
+    text-wrap: initial;
+  }
+  .gaps__body {
+    margin: 0;
+    max-width: 52ch;
+    font-size: var(--text-base);
+    line-height: var(--leading-normal);
+    color: rgba(255, 255, 255, 0.8);
+  }
+  .gaps__model {
+    padding-top: var(--space-6);
+    border-top: var(--border-width) solid rgba(255, 255, 255, 0.16);
+  }
+  .gaps__model-title {
+    margin: 0 0 var(--space-2);
+    font-size: var(--text-lg);
+    color: var(--color-white);
+  }
+  .gaps__model-intro {
+    margin: 0 0 var(--space-6);
+    max-width: 60ch;
+    font-size: var(--text-sm);
+    color: rgba(255, 255, 255, 0.76);
+  }
+  .sig {
+    display: grid;
+    gap: var(--space-6) var(--space-8);
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+  @media (min-width: 36em) {
+    .sig {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+  }
+  @media (min-width: 64em) {
+    .sig {
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+    }
+  }
+  .sig__item {
+    display: grid;
+    gap: var(--space-2);
+    padding-top: var(--space-3);
+    border-top: 2px solid var(--color-cyan-400);
+  }
+  .sig__num {
+    font-size: var(--text-xs);
+    font-weight: var(--weight-medium);
+    color: var(--color-cyan-300);
+  }
+  .sig__title {
+    margin: 0;
+    font-family: var(--font-heading);
+    font-size: 1.125rem;
+    font-weight: var(--weight-semibold);
+    line-height: var(--leading-snug);
+    color: var(--color-white);
+  }
+  .sig__body {
+    margin: 0;
+    font-size: var(--text-sm);
+    line-height: var(--leading-normal);
+    color: rgba(255, 255, 255, 0.78);
+  }
+  .gaps__caution {
+    margin: var(--space-8) 0 0;
+    padding-top: var(--space-4);
+    border-top: var(--border-width) solid rgba(255, 255, 255, 0.16);
+    max-width: 76ch;
+    font-size: var(--text-sm);
+    line-height: var(--leading-normal);
+    color: rgba(255, 255, 255, 0.76);
+  }
+
+  /* ---- Experiencias por rol ---- */
+  .role-tabs {
+    display: grid;
+    gap: var(--space-4) var(--space-8);
+    margin: 0 0 clamp(2rem, 3.5vw, 3rem);
+    padding: 0;
+    list-style: none;
+  }
+  @media (min-width: 48em) {
+    .role-tabs {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+  }
+  .role-tabs__item {
+    padding-top: var(--space-4);
+    border-top: 2px solid var(--color-border);
+  }
+  .role-tabs__item--shown {
+    border-top-color: var(--color-cobalt-600);
+  }
+  .role-tabs__title {
+    margin: 0 0 var(--space-1);
+    font-size: 1.25rem;
+    line-height: var(--leading-snug);
+    color: var(--color-navy-950);
+  }
+  .role-tabs__who {
+    margin: 0 0 var(--space-2);
+    font-size: var(--text-xs);
+    font-weight: var(--weight-semibold);
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--color-cobalt-600);
+  }
+  .role-tabs__body {
+    margin: 0;
+    font-size: var(--text-sm);
+    line-height: var(--leading-normal);
+    color: var(--color-neutral-600);
+  }
+  .roles__caption {
+    margin: var(--space-4) 0 0;
+    font-size: var(--text-xs);
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--color-neutral-600);
+  }
+
+  /* ---- Franja menta: marca y permisos ---- */
+  .tenancy {
     display: grid;
     gap: var(--space-10);
     align-items: start;
   }
   @media (min-width: 60em) {
     .tenancy {
-      grid-template-columns: minmax(0, 7fr) minmax(0, 5fr);
-      gap: var(--space-16);
-    }
-    .integration {
-      grid-template-columns: minmax(0, 5fr) minmax(0, 7fr);
-      gap: var(--space-16);
+      grid-template-columns: minmax(0, 1.1fr) minmax(0, 1fr);
+      gap: clamp(3rem, 6vw, 6rem);
     }
   }
-  .tenancy :global(.tenancy__header),
-  .integration :global(.integration__header) {
-    margin-bottom: var(--space-6);
+  .tenancy__bullets {
+    display: grid;
+    gap: var(--space-3);
+    margin: var(--space-8) 0 0;
+    padding: 0;
+    list-style: none;
+  }
+  .tenancy__bullets li {
+    position: relative;
+    padding-left: 1.5rem;
+    color: var(--color-navy-900);
+    line-height: var(--leading-normal);
+  }
+  /* Viñeta: punto cian sobre menta (decorativo; la lista sigue siendo una lista). */
+  .tenancy__bullets li::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 0.65em;
+    width: 0.5rem;
+    height: 0.5rem;
+    border-radius: 50%;
+    background: var(--color-cyan-500);
   }
   .tenancy__aside {
     display: grid;
     gap: var(--space-4);
   }
-  .integration__list {
-    display: grid;
-    gap: var(--space-6);
+  .tenancy__note {
+    margin: 0;
+    font-size: var(--text-sm);
+    line-height: var(--leading-normal);
+    color: var(--color-neutral-600);
   }
+
+  /* ---- Integraciones: esquema conceptual ---- */
+  .integ__note {
+    max-width: 64ch;
+    margin: var(--space-5) 0 0;
+    font-size: var(--text-sm);
+    line-height: var(--leading-normal);
+    color: var(--color-neutral-600);
+  }
+  .scope {
+    margin-top: clamp(3.5rem, 6vw, 5.5rem);
+  }
+  .integ__cta {
+    margin: clamp(2.5rem, 4vw, 3.5rem) 0 0;
+  }
+
 </style>

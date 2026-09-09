@@ -54,7 +54,7 @@ const STATIC: { name: string; path: string }[] = [
   { name: 'soluciones-industria', path: ROUTES.es.solutionsIndustry },
   { name: 'soluciones-ciudadanos', path: ROUTES.es.solutionsCitizens },
   { name: 'como-funciona', path: ROUTES.es.howItWorks },
-  { name: 'casos-licores', path: ROUTES.es.caseSpirits },
+  { name: 'casos-medicamentos', path: ROUTES.es.caseMedicines },
   { name: 'verificar', path: ROUTES.es.verify },
   { name: 'recorrido', path: ROUTES.es.journey },
   { name: 'institucional', path: ROUTES.es.institutional },
@@ -125,10 +125,10 @@ for (const w of WIDTHS) {
         await expect(page.locator('[data-testid="verify-error"][data-kind="camera-denied"]')).toBeVisible();
         await shoot(page, 'verificar-camera-denied', w.width);
       });
-      test(`verificar-tenant-licores-${w.width}`, async ({ page }) => {
-        await settle(page, `${ROUTES.es.verify}?t=licores&c=${SCENARIO_BY_ID.get('valid')!.code}`, w);
+      test(`verificar-tenant-medicamentos-${w.width}`, async ({ page }) => {
+        await settle(page, `${ROUTES.es.verify}?t=medicamentos&c=${SCENARIO_BY_ID.get('valid')!.code}`, w);
         await expect(page.getByTestId('verify-result')).toHaveAttribute('data-verdict', 'valid', { timeout: 10_000 });
-        await shoot(page, 'verificar-tenant-licores', w.width);
+        await shoot(page, 'verificar-tenant-medicamentos', w.width);
       });
       test(`verificar-report-success-${w.width}`, async ({ page }) => {
         await settle(page, ROUTES.es.verify, w);
@@ -136,7 +136,7 @@ for (const w of WIDTHS) {
         await expect(page.getByTestId('verify-result')).toBeVisible({ timeout: 10_000 });
         await page.getByTestId('report-button').click();
         await page.getByTestId('report-kind').selectOption('label_mismatch');
-        await page.getByTestId('report-description').fill('La etiqueta indica 1 L y el registro 750 ml.');
+        await page.getByTestId('report-description').fill('La etiqueta indica 100 ml y el registro 120 ml.');
         await shoot(page, 'verificar-report-form', w.width);
         await page.getByTestId('report-submit').click();
         await expect(page.getByTestId('report-success')).toBeVisible({ timeout: 10_000 });

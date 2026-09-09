@@ -13,14 +13,13 @@ import Button from '@/components/ui/Button.astro';
 import StatusPill from '@/components/ui/StatusPill.astro';
 import Callout from '@/components/ui/Callout.astro';
 import Lockup from '@/components/ui/Lockup.astro';
-import QrMotif from '@/components/ui/QrMotif.astro';
 import { getContent } from '@/content';
 import type { VerifyClientStrings } from '@/content/verify.types';
 import { TENANTS } from '@/config/tenants';
 import { env } from '@/config/env';
 import { SCENARIOS } from '@/fixtures/scenarios';
 import { FEATURED_UNIT_CODE } from '@/fixtures/units';
-import { route, type Locale } from '@/i18n';
+import { route, withBase, type Locale } from '@/i18n';
 import { CHECK_ORDER } from '@/lib/verify/engine';
 import { VERDICT_ICON, VERDICT_TONE, OUTCOME_ICON, SEVERITY_TONE } from '@/lib/verify/present';
 import type { Verdict, CheckOutcome } from '@/lib/verify/types';
@@ -30,7 +29,7 @@ interface Props {
   locale: Locale;
 }
 const { locale } = Astro.props;
-const { verify: t, common } = getContent(locale);
+const { verify: t } = getContent(locale);
 
 const defaultTenant = TENANTS[env.defaultTenant];
 const tenants = Object.values(TENANTS);
@@ -63,7 +62,7 @@ const VERDICTS: Verdict[] = ['valid', 'warning', 'invalid', 'unverifiable'];
 const OUTCOMES: CheckOutcome[] = ['pass', 'warn', 'fail', 'skipped'];
 const SEVERITIES: Severity[] = ['info', 'warning', 'critical'];
 const KINDS: DiscrepancyKind[] = ['label_mismatch', 'seal_damaged', 'suspected_copy', 'wrong_location', 'already_scanned', 'other'];
-const UNIT_FIELDS = ['product', 'presentation', 'brand', 'category', 'issuer', 'lot', 'origin', 'producedAt', 'stage', 'lastLookupPlace', 'lastEvent', 'scans', 'lastScan'] as const;
+const UNIT_FIELDS = ['product', 'presentation', 'dosageForm', 'concentration', 'healthRegistration', 'brand', 'category', 'issuer', 'lot', 'origin', 'producedAt', 'stage', 'lastLookupPlace', 'lastEvent', 'scans', 'lastScan'] as const;
 const verifyPath = route(locale, 'verify');
 ---
 
@@ -135,7 +134,7 @@ const verifyPath = route(locale, 'verify');
 
       <div class="scanner__stage">
         <div class="scanner__viewer" data-viewer aria-hidden="true">
-          <div class="scanner__motif"><QrMotif density="mid" /></div>
+          <div class="scanner__motif"><Icon name="camera" size={72} /></div>
           <video class="scanner__video" data-video playsinline muted autoplay hidden></video>
           <span class="scanner__corner scanner__corner--tl"></span>
           <span class="scanner__corner scanner__corner--tr"></span>
@@ -176,10 +175,49 @@ const verifyPath = route(locale, 'verify');
       </div>
 
       <div class="cluster scanner__actions">
-        <Button type="button" icon="scan" iconPosition="start" data-action="simulate" data-testid="simulate-scan">{t.scanner.simulate}</Button>
-        <Button type="button" variant="secondary" icon="camera" iconPosition="start" data-action="camera" data-testid="use-camera">{t.scanner.useCamera}</Button>
+        <Button type="button" icon="camera" iconPosition="start" data-action="camera" data-testid="use-camera">{t.scanner.useCamera}</Button>
         <Button type="button" variant="secondary" icon="x" iconPosition="start" data-action="stop-camera" data-testid="stop-camera" hidden>{t.scanner.stopCamera}</Button>
+        <Button type="button" variant="ghost" icon="scan" iconPosition="start" data-action="simulate" data-testid="simulate-scan">{t.scanner.simulate}</Button>
       </div>
+      <div class="scanner-image" data-image-reader>
+        <div class="scanner-image__picker">
+          <label class="scanner-image__label" for="qr-image-file">
+            <Icon name="qr" size={20} />
+            <span>{t.scanner.image.label}</span>
+          </label>
+          <input
+            class="scanner-image__input"
+            id="qr-image-file"
+            type="file"
+            accept="image/*"
+            aria-describedby="qr-image-hint"
+            data-qr-file
+            data-testid="qr-image-input"
+          />
+        </div>
+        <p class="scanner-image__hint" id="qr-image-hint">{t.scanner.image.hint}</p>
+        <p class="scanner-image__status" role="status" aria-atomic="true" data-image-status hidden></p>
+        <p class="scanner-image__error" role="alert" aria-atomic="true" data-image-error hidden></p>
+      </div>
+
+      <section class="scanner-example" aria-labelledby="qr-example-title">
+        <h3 id="qr-example-title">{t.scanner.example.title}</h3>
+        <p class="scanner-example__intro">{t.scanner.example.body}</p>
+        <img
+          class="scanner-example__image"
+          src={withBase('/images/qr/ejemplo-traza.png')}
+          alt={t.scanner.example.alt}
+          width="600"
+          height="600"
+          decoding="async"
+          data-qr-example
+        />
+        <div class="scanner-example__actions">
+          <Button type="button" variant="secondary" icon="qr" iconPosition="start" data-read-example data-testid="read-example-qr">{t.scanner.example.read}</Button>
+          <a href={withBase('/images/qr/ejemplo-traza.png')} download="traza-qr-ejemplo.png" data-testid="download-example-qr">{t.scanner.example.download}</a>
+        </div>
+      </section>
+
       <p class="scanner__privacy">
         <Icon name="lock" size={14} />
         {t.scanner.privacyNote}
@@ -446,25 +484,6 @@ const verifyPath = route(locale, 'verify');
               <p id="report-description-error" class="field__error" role="alert" data-field-error="description" hidden></p>
             </div>
 
-            <div class="field">
-              <label class="field__label" for="report-location">
-                {t.report.locationLabel}
-                <span class="field__optional">({common.form.optional})</span>
-              </label>
-              <p id="report-location-hint" class="field__hint">{t.report.locationHint}</p>
-              <input id="report-location" class="field__control" name="location" type="text" autocomplete="off" maxlength="120" aria-describedby="report-location-hint" data-report-location data-testid="report-location" />
-            </div>
-
-            <div class="field">
-              <label class="field__label" for="report-email">
-                {t.report.emailLabel}
-                <span class="field__optional">({common.form.optional})</span>
-              </label>
-              <p id="report-email-hint" class="field__hint">{t.report.emailHint}</p>
-              <input id="report-email" class="field__control" name="email" type="email" inputmode="email" autocomplete="email" maxlength="120" aria-describedby="report-email-hint report-email-error" data-report-email data-testid="report-email" />
-              <p id="report-email-error" class="field__error" role="alert" data-field-error="email" hidden>{t.report.errors.email}</p>
-            </div>
-
             <Callout tone="neutral" icon="lock" class="report-form__notes">
               <p>{t.report.dataNote}</p>
             </Callout>
@@ -504,6 +523,8 @@ const verifyPath = route(locale, 'verify');
                 <dd><code class="mono" data-report-success-code></code></dd>
               </div>
             </dl>
+            <p id="report-download-hint">{t.report.success.downloadHint}</p>
+            <Button href="#" data-report-download data-testid="report-download" aria-describedby="report-download-hint" hidden>{t.report.success.downloadLabel}</Button>
             <h3 class="result__section-title">{t.report.success.nextTitle}</h3>
             <ol class="result__steps">
               {t.report.success.next.map((line) => <li>{line}</li>)}
@@ -785,9 +806,9 @@ const verifyPath = route(locale, 'verify');
   .scanner__motif {
     position: absolute;
     inset: 12%;
+    display: grid;
+    place-items: center;
     color: var(--color-white);
-  }
-  .scanner__motif :global(.qr-motif) {
     opacity: 0.55;
   }
   .scanner__video {
@@ -855,6 +876,118 @@ const verifyPath = route(locale, 'verify');
   }
   .scanner__actions {
     margin-bottom: var(--space-3);
+  }
+  .scanner-image {
+    margin-block: var(--space-4);
+    padding-block: var(--space-4);
+    border-block: var(--border-width) solid var(--color-border);
+  }
+  .scanner-image__picker {
+    position: relative;
+    width: fit-content;
+    max-width: 100%;
+    border-radius: var(--radius-md);
+  }
+  .scanner-image__label {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: var(--space-2);
+    min-height: 48px;
+    padding: 0.625rem 1.25rem;
+    border: var(--border-width) solid var(--color-border-strong);
+    border-radius: inherit;
+    background: var(--color-white);
+    color: var(--color-heading);
+    font-weight: var(--weight-semibold);
+    line-height: 1.3;
+    text-align: center;
+    cursor: pointer;
+  }
+  .scanner-image__label :global(.icon) {
+    flex-shrink: 0;
+  }
+  /* El input nativo ocupa todo el control y sigue siendo enfocable por teclado y táctil. */
+  .scanner-image__input {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    margin: 0;
+    opacity: 0;
+    cursor: pointer;
+  }
+  .scanner-image__picker:focus-within {
+    outline: 3px solid var(--focus-ring);
+    outline-offset: 2px;
+    box-shadow: 0 0 0 2px var(--focus-ring-offset);
+  }
+  .scanner-image__picker:hover .scanner-image__label {
+    border-color: var(--color-cobalt-600);
+    background: var(--color-neutral-50);
+  }
+  .scanner-image__hint,
+  .scanner-image__status,
+  .scanner-image__error {
+    margin: var(--space-2) 0 0;
+    font-size: var(--text-sm);
+    line-height: 1.5;
+    overflow-wrap: anywhere;
+  }
+  .scanner-image__hint {
+    color: var(--color-text-secondary);
+  }
+  .scanner-image__status {
+    color: var(--color-info-text);
+  }
+  .scanner-image__error {
+    color: var(--color-danger-text);
+  }
+  .scanner-example {
+    margin-block: var(--space-5);
+    padding-block: var(--space-4);
+    border-bottom: var(--border-width) solid var(--color-border);
+  }
+  .scanner-example h3 {
+    margin: 0 0 var(--space-2);
+    color: var(--color-heading);
+    font-size: var(--text-lg);
+  }
+  .scanner-example__intro {
+    margin: 0 0 var(--space-4);
+    color: var(--color-text-secondary);
+    font-size: var(--text-sm);
+    line-height: 1.5;
+  }
+  .scanner-example__image {
+    display: block;
+    width: min(100%, 240px);
+    min-width: 200px;
+    height: auto;
+    aspect-ratio: 1;
+    object-fit: contain;
+    padding: 12px;
+    background: #fff;
+    border: 1px solid var(--color-border);
+  }
+  .scanner-example__actions {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: var(--space-2) var(--space-4);
+    margin-top: var(--space-3);
+  }
+  .scanner-example__actions :global(.btn),
+  .scanner-example__actions a {
+    min-height: 48px;
+  }
+  .scanner-example__actions a {
+    display: inline-flex;
+    align-items: center;
+    padding-block: var(--space-2);
+    line-height: 1.4;
+    color: var(--color-link);
+    font-size: var(--text-sm);
   }
   .scanner__privacy {
     display: flex;
@@ -1501,6 +1634,7 @@ const verifyPath = route(locale, 'verify');
     gap: var(--space-3);
   }
   .report-success__folio {
+    overflow-wrap: anywhere;
     font-size: var(--text-lg);
     font-weight: var(--weight-medium);
     color: var(--color-heading);

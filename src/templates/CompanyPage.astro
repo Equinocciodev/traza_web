@@ -4,6 +4,7 @@
  */
 import Base from '@/layouts/Base.astro';
 import PageHero from '@/components/ui/PageHero.astro';
+import NeonTrace from '@/components/ui/NeonTrace.astro';
 import Callout from '@/components/ui/Callout.astro';
 import FeatureGrid from '@/components/ui/FeatureGrid.astro';
 import Icon from '@/components/ui/Icon.astro';
@@ -57,8 +58,9 @@ const contactEmail = contactEmailFor(locale).trim();
 
   <section class="section section--subtle" aria-labelledby="contact-title" data-reveal>
     <div class="container contact-section">
-      <div class="contact-section__intro">
+      <div class="contact-section__intro on-dark">
         <SectionHeader title={company.contact.title} intro={company.contact.intro} id="contact-title" class="contact-section__header" />
+        <div class="contact-section__neon"><NeonTrace variant="loop" /></div>
         <div class="contact-section__channel">
           <span class="contact-section__icon" aria-hidden="true"><Icon name="globe" size={20} /></span>
           <div>
@@ -232,4 +234,15 @@ const contactEmail = contactEmailFor(locale).trim();
     margin-top: 0.2em;
     flex-shrink: 0;
   }
+  .contact-section { gap:0; align-items:stretch; }
+  .contact-section__intro { background:var(--color-navy-950); padding:clamp(2rem,4vw,4rem); min-width:0; overflow:hidden; display:flex; flex-direction:column; }
+  .contact-section__intro :global(h2) { scroll-margin-top:4rem; color:#fff; font-size:clamp(2.4rem,4vw,3.6rem); line-height:1.1; max-width:12ch; }
+  .contact-section__intro :global(.lede) { color:var(--color-neutral-200); }
+  .contact-section__neon { height:18rem; margin:0 -4rem 1.5rem; }
+  .contact-section__channel { margin-top:auto; padding:0; border:0; border-radius:0; background:transparent; color:#fff; }
+  .contact-section__label,.contact-section__note,.contact-section__fallback { color:var(--color-neutral-200); }
+  .contact-section__email a { color:var(--color-cyan-300); display:inline-flex; align-items:center; min-height:44px; min-width:44px; }
+  .contact-section__form { padding:clamp(1.25rem,4vw,4rem); background:var(--color-neutral-50); min-width:0; }
+  @media(max-width:59.99em) { .contact-section__neon { height:13rem; margin-inline:-2rem; } }
+  @media(max-width:39.99em) { .contact-section__channel { display:block; } .contact-section__icon { display:none; } .contact-section__email { font-size:1rem; } .contact-section__form { padding:1rem 0; } }
 </style>

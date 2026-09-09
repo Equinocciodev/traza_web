@@ -1,0 +1,26 @@
+---
+import type { IconName } from '@/content/types';
+import type { MockTone } from '@/content/mock-ui';
+import Icon from './Icon.astro';
+interface Props { items: { title: string; body: string; icon?: IconName; tone?: MockTone; action?: { label: string; href: string } }[]; headingLevel?: 2 | 3 | 4; class?: string }
+const { items, headingLevel = 3, class: className } = Astro.props;
+const Heading = `h${headingLevel}` as 'h2' | 'h3' | 'h4';
+const icons: Record<MockTone, IconName> = { success: 'check', warning: 'warning', info: 'info', danger: 'x', neutral: 'info' };
+---
+<ul class:list={['status-list', className]}>
+  {items.map(item => <li class:list={['status-list__row', `status-list__row--${item.tone ?? 'info'}`]}><span class="status-list__symbol"><Icon name={item.icon ?? icons[item.tone ?? 'info']} size={20} /></span><div><Heading>{item.title}</Heading><p>{item.body}</p>{item.action && <a href={item.action.href}>{item.action.label}<Icon name="arrow-right" size={18} /></a>}</div></li>)}
+</ul>
+<style>
+  .status-list { list-style: none; padding: 0; margin: 0; border-bottom: 1px solid var(--color-border); }
+  .status-list__row { --status-fg: var(--color-cobalt-700); --status-bg: var(--color-cobalt-50); display: grid; grid-template-columns: 36px minmax(0, 1fr); gap: 1rem; padding: 1.5rem 0; border-top: 1px solid var(--color-border); }
+  .status-list__row--success { --status-fg: var(--color-success-text); --status-bg: var(--color-success-bg); }
+  .status-list__row--warning { --status-fg: var(--color-warning-text); --status-bg: var(--color-warning-bg); }
+  .status-list__row--danger { --status-fg: var(--color-danger-text); --status-bg: var(--color-danger-bg); }
+  .status-list__row--neutral { --status-fg: var(--color-neutral-700); --status-bg: var(--color-neutral-100); }
+  .status-list__symbol { display: grid; place-items: center; width: 36px; height: 36px; border-radius: 50%; color: var(--status-fg); background: var(--status-bg); }
+  .status-list h2, .status-list h3, .status-list h4 { margin: .2rem 0 .5rem; font-size: 1.25rem; line-height: 1.3; }
+  .status-list p { color: var(--color-text-secondary); margin: 0; line-height: 1.6; }
+  .status-list a { display: inline-flex; gap: .5rem; align-items: center; min-height: 44px; margin-top: .5rem; color: var(--color-cobalt-600); font-weight: 500; text-decoration: none; }
+  .status-list a:hover { text-decoration: underline; }
+  .status-list a:focus-visible { outline: 2px solid var(--color-cobalt-600); outline-offset: 4px; }
+</style>

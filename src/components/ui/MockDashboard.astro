@@ -1,0 +1,146 @@
+---
+import { MOCK_UI } from '@/content/mock-ui';
+import { route, type Locale, type RouteKey } from '@/i18n';
+import Wordmark from './Wordmark.astro';
+import Icon from './Icon.astro';
+interface Props { locale: Locale; compact?: boolean; navLabelledBy?: string }
+const { locale, compact = false, navLabelledBy } = Astro.props;
+const c = MOCK_UI[locale];
+const d = c.dashboard;
+const destination = (key: RouteKey) => `${route(locale, key)}${key === 'verify' ? `?t=medicamentos&c=${c.unit.code}` : ''}`;
+const points = (values: number[], width: number, height: number) => values.map((value, i) => `${8 + i * (width - 16) / Math.max(1, values.length - 1)},${height - 8 - value / Math.max(1, ...values) * (height - 16)}`).join(' ');
+---
+<div class="dashboard-frame">
+<div class:list={['dashboard', { 'dashboard--compact': compact }]}>
+  <aside class="dashboard__sidebar">
+    <Wordmark size="sm" />
+    <nav aria-label={navLabelledBy ? undefined : d.navLabel} aria-labelledby={navLabelledBy}>
+      <ul>{d.nav.map((item, i) => <li><a class:list={{ 'dashboard__nav-first': i === 0 }} href={destination(item.key)}><Icon name={item.icon} size={17} /><span>{item.label}</span></a></li>)}</ul>
+    </nav>
+    <p>{c.exampleLabel}</p>
+  </aside>
+  <div class="dashboard__main">
+    <header class="dashboard__header"><div><p class="dashboard__eyebrow">{d.title}</p><h2>{d.context}</h2></div><span class="dashboard__example">{c.exampleLabel}</span></header>
+    <dl class="dashboard__kpis">
+      {d.kpis.map((kpi, i) => <div class:list={['dashboard__kpi', { 'dashboard__kpi--featured': i === 0 }]}><dt>{kpi.label}</dt><dd><strong>{kpi.value}</strong><span class="dashboard__kpi-hint">{kpi.hint}</span>{kpi.trend && <svg class="dashboard__sparkline" viewBox="0 0 120 48" aria-hidden="true" focusable="false"><polyline points={points(kpi.trend, 120, 48)} /></svg>}</dd></div>)}
+    </dl>
+    <div class="dashboard__charts">
+      <figure class="dashboard__weekly">
+        <figcaption><h3>{d.chart.title}</h3><p class="visually-hidden">{d.chart.description}</p></figcaption>
+        <svg viewBox="0 0 420 150" aria-hidden="true" focusable="false"><g class="dashboard__grid"><path d="M8 20H412M8 60H412M8 100H412M8 142H412" /></g><polyline class="dashboard__line" points={points(d.chart.series.map(point => point.value), 420, 150)} /></svg>
+        <ol class="dashboard__days">{d.chart.series.map(point => <li>{point.label}<span class="visually-hidden">: {point.value}</span></li>)}</ol>
+      </figure>
+      <section class="dashboard__integrity">
+        <h3>{d.integrity.title}</h3>
+        <div class="dashboard__donut"><svg viewBox="0 0 100 100" aria-hidden="true" focusable="false"><circle class="dashboard__ring-track" cx="50" cy="50" r="40" /><circle class="dashboard__ring" cx="50" cy="50" r="40" /></svg><strong>{d.integrity.value}</strong></div>
+        <p>{d.integrity.description}</p>
+      </section>
+    </div>
+    <section class="dashboard__actions"><h3>{d.actionsTitle}</h3><ul>{d.actions.map(action => <li><Icon name={action.icon} size={18} /><div><h4>{action.title}</h4><p>{action.body}</p></div><a href={destination(action.key)}>{action.label}<Icon name="arrow-right" size={16} /></a></li>)}</ul></section>
+    <p class="dashboard__note">{d.note}</p>
+  </div>
+</div>
+</div>
+<style>
+  .dashboard-frame { container: dashboard / inline-size; width: 100%; min-width: 0; }
+  .dashboard { --color-text-secondary: var(--color-neutral-600); --color-border: var(--color-neutral-200); --color-border-strong: var(--color-neutral-300); --color-heading: var(--color-navy-950); --color-primary: var(--color-cobalt-600); --color-on-primary: var(--color-white); display: grid; grid-template-columns: 10rem minmax(0, 1fr); overflow: hidden; border: 1px solid var(--color-border-strong); border-radius: 12px; background: var(--color-white); color: var(--color-navy-950); box-shadow: 0 24px 70px #020b1726; text-align: left; }
+  .dashboard__sidebar { display: flex; flex-direction: column; gap: 2rem; padding: 1.5rem .875rem; background: var(--color-navy-950); color: var(--color-white); }
+  .dashboard__sidebar :global(.wordmark) { --color-heading: var(--color-white); margin-left: .5rem; }
+  .dashboard__sidebar ul { list-style: none; padding: 0; margin: 0; display: grid; gap: .35rem; }
+  .dashboard__sidebar a { min-height: 44px; display: flex; align-items: center; gap: .5rem; padding: .625rem .5rem; border-radius: 5px; color: var(--color-white); font-size: .8125rem; text-decoration: none; }
+  .dashboard__sidebar a:hover, .dashboard__sidebar a:focus-visible, .dashboard__sidebar .dashboard__nav-first { background: var(--color-navy-800); }
+  .dashboard a:focus-visible { outline: 2px solid var(--color-cyan-400); outline-offset: 3px; }
+  .dashboard__sidebar > p { margin: auto .5rem 0; font: 400 .6875rem/1.6 var(--font-mono); color: var(--color-cyan-100); }
+  .dashboard__main { min-width: 0; padding: clamp(1rem, 2.3vw, 2rem); }
+  .dashboard__header { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 1rem; margin-bottom: 1.5rem; }
+  .dashboard__eyebrow { margin: 0 0 .375rem; font-size: .75rem; color: var(--color-text-secondary); }
+  .dashboard h2 { margin: 0; font-size: clamp(1.1rem, 1.6vw, 1.5rem); color: var(--color-navy-950); line-height: 1.25; }
+  .dashboard h3 { margin: 0; color: var(--color-navy-950); font-size: .875rem; line-height: 1.35; }
+  .dashboard__example { color: var(--color-text-secondary); font: 500 .625rem/1.5 var(--font-mono); text-transform: uppercase; letter-spacing: .06em; }
+  .dashboard__kpis { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: .75rem; margin: 0 0 1.25rem; }
+  .dashboard__kpi { position: relative; border: 1px solid var(--color-border); padding: 1rem; border-radius: 7px; background: var(--color-neutral-50); min-width: 0; }
+  .dashboard__kpi dt { font-size: .75rem; line-height: 1.4; }
+  .dashboard__kpi dd { margin: .625rem 0 0; }
+  .dashboard__kpi dd strong { display: block; margin-bottom: .5rem; font: 600 2rem/1 var(--font-heading); }
+  .dashboard__kpi-hint { display: block; font-size: .625rem; color: var(--color-text-secondary); }
+  .dashboard__kpi--featured { background: var(--color-navy-950); color: var(--color-white); border-color: transparent; }
+  .dashboard__kpi--featured .dashboard__kpi-hint { color: var(--color-cyan-100); }
+  .dashboard__sparkline { position: absolute; width: 42%; height: 36px; top: 2.5rem; right: .75rem; color: var(--color-cyan-400); }
+  .dashboard__sparkline polyline { fill: none; stroke: currentColor; stroke-width: 2; }
+  .dashboard__charts { display: grid; grid-template-columns: minmax(0, 1.8fr) minmax(0, 1fr); gap: 1rem; }
+  .dashboard__weekly { margin: 0; padding: 1rem 0; min-width: 0; }
+  .dashboard__weekly > svg { display: block; width: 100%; height: auto; margin-top: 1rem; }
+  .dashboard__grid { stroke: var(--color-border); fill: none; }
+  .dashboard__line { fill: none; stroke: var(--color-cobalt-600); stroke-width: 2.5; stroke-linejoin: round; }
+  .dashboard__days { padding: 0; margin: .25rem 0 0; display: flex; justify-content: space-between; list-style: none; color: var(--color-text-secondary); font: 400 .625rem var(--font-mono); }
+  .dashboard__integrity { padding: 1rem; background: var(--color-mint-100, #e6fbf4); border-radius: 7px; }
+  .dashboard__donut { position: relative; width: 112px; max-width: 100%; margin: .75rem auto; aspect-ratio: 1; }
+  .dashboard__donut svg { display: block; width: 100%; height: 100%; transform: rotate(-90deg); }
+  .dashboard__ring-track, .dashboard__ring { fill: none; stroke-width: 11; }
+  .dashboard__ring-track { stroke: var(--color-white); }
+  .dashboard__ring { stroke: var(--color-cobalt-600); stroke-dasharray: 188 64; stroke-linecap: round; }
+  .dashboard__donut strong { position: absolute; inset: 0; display: grid; place-items: center; font: 600 1.125rem var(--font-heading); }
+  .dashboard__integrity p { margin: 0; color: var(--color-navy-800); font-size: .6875rem; line-height: 1.5; }
+  .dashboard__actions { margin-top: 1.5rem; }
+  .dashboard__actions ul { list-style: none; padding: 0; margin: .5rem 0 0; }
+  .dashboard__actions li { display: grid; grid-template-columns: auto minmax(0, 1fr) auto; align-items: center; gap: .75rem; padding: .75rem 0; border-top: 1px solid var(--color-border); }
+  .dashboard__actions li > :global(.icon) { color: var(--color-cobalt-600); }
+  .dashboard__actions h4 { margin: 0; font-size: .8125rem; color: var(--color-navy-950); }
+  .dashboard__actions p { margin: .25rem 0 0; color: var(--color-text-secondary); font-size: .6875rem; }
+  .dashboard__actions a { display: inline-flex; align-items: center; gap: .375rem; min-height: 44px; color: var(--color-cobalt-600); font-size: .75rem; font-weight: 500; text-decoration: none; }
+  .dashboard__actions a:hover { text-decoration: underline; }
+  .dashboard__note { font-size: .6875rem; color: var(--color-text-secondary); line-height: 1.5; margin: .75rem 0 0; }
+  @container dashboard (max-width: 55em) { .dashboard { grid-template-columns: 1fr; } .dashboard__sidebar { gap: 1rem; } .dashboard__sidebar ul { grid-template-columns: repeat(5, minmax(0, 1fr)); } .dashboard__sidebar > p { margin: 0 .5rem; } .dashboard__sidebar a { flex-wrap: wrap; } }
+  @container dashboard (max-width: 36em) { .dashboard__sidebar ul { grid-template-columns: repeat(2, minmax(0, 1fr)); } .dashboard__kpis, .dashboard__charts { grid-template-columns: 1fr; } .dashboard__sparkline { max-width: 100px; } .dashboard__actions li { grid-template-columns: auto minmax(0, 1fr); } .dashboard__actions a { grid-column: 2; justify-self: start; } }
+  /* La portada dispone de una columna estrecha: se reduce espaciado, nunca se escala ni recorta el contenido. */
+  .dashboard--compact { grid-template-columns: 110px minmax(0, 1fr); }
+  .dashboard--compact .dashboard__sidebar { padding: 16px 8px; gap: 16px; }
+  .dashboard--compact .dashboard__sidebar :global(.wordmark) { margin-left: 4px; }
+  .dashboard--compact .dashboard__sidebar ul { grid-template-columns: 1fr; gap: 4px; }
+  .dashboard--compact .dashboard__sidebar a { padding: 6px 4px; gap: 5px; flex-wrap: nowrap; font-size: .6875rem; }
+  .dashboard--compact .dashboard__sidebar a :global(.icon) { width: 14px; height: 14px; flex: none; }
+  .dashboard--compact .dashboard__sidebar > p { margin: auto 4px 0; font-size: .6875rem; line-height: 1.35; }
+  .dashboard--compact .dashboard__main { padding: 16px; }
+  .dashboard--compact .dashboard__header { gap: 8px; margin-bottom: 8px; }
+  .dashboard--compact .dashboard__header > div { display: flex; align-items: baseline; flex-wrap: wrap; gap: 4px 8px; }
+  .dashboard--compact .dashboard__eyebrow { margin: 0; font-size: .6875rem; line-height: 1.4; }
+  .dashboard--compact h2 { font-size: .875rem; line-height: 1.35; }
+  .dashboard--compact h3 { font-size: .75rem; line-height: 1.3; }
+  .dashboard--compact .dashboard__example { font-size: .6875rem; line-height: 1.35; letter-spacing: 0; }
+  .dashboard--compact .dashboard__kpis { gap: 8px; margin-bottom: 8px; }
+  .dashboard--compact .dashboard__kpi { padding: 8px; }
+  .dashboard--compact .dashboard__kpi dt { font-size: .75rem; line-height: 1.4; }
+  .dashboard--compact .dashboard__kpi dd { margin-top: 5px; }
+  .dashboard--compact .dashboard__kpi dd strong { margin-bottom: 4px; font-size: 1.5rem; }
+  .dashboard--compact .dashboard__kpi-hint { font-size: .6875rem; line-height: 1.3; }
+  .dashboard--compact .dashboard__sparkline { top: 27px; right: 8px; height: 25px; }
+  .dashboard--compact .dashboard__charts { gap: 12px; grid-template-columns: minmax(0, 1.8fr) minmax(0, 1fr); }
+  .dashboard--compact .dashboard__weekly { padding: 4px 0; }
+  .dashboard--compact .dashboard__weekly > svg { height: 104px; margin-top: 8px; }
+  .dashboard--compact .dashboard__days { font-size: .6875rem; margin-top: 4px; }
+  .dashboard--compact .dashboard__integrity { padding: 8px; }
+  .dashboard--compact .dashboard__donut { width: 70px; margin: 4px auto; }
+  .dashboard--compact .dashboard__donut strong { font-size: .8125rem; }
+  .dashboard--compact .dashboard__integrity p { font-size: .6875rem; line-height: 1.3; }
+  .dashboard--compact .dashboard__actions { margin-top: 8px; }
+  .dashboard--compact .dashboard__actions ul { margin-top: 0; }
+  .dashboard--compact .dashboard__actions li { grid-template-columns: 16px minmax(0, 1fr) auto; gap: 8px; padding: 0; }
+  .dashboard--compact .dashboard__actions h4 { font-size: .75rem; line-height: 1.3; }
+  .dashboard--compact .dashboard__actions p { font-size: .6875rem; line-height: 1.3; margin-top: 2px; }
+  .dashboard--compact .dashboard__actions a { grid-column: auto; min-height: 44px; font-size: .6875rem; gap: 4px; }
+  .dashboard--compact .dashboard__note { margin-top: 4px; font-size: .6875rem; line-height: 1.3; }
+  @container dashboard (max-width: 39em) {
+    .dashboard--compact { grid-template-columns: 1fr; }
+    .dashboard--compact .dashboard__sidebar { gap: 12px; }
+    .dashboard--compact .dashboard__sidebar ul { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    .dashboard--compact .dashboard__sidebar > p { margin: 0 4px; }
+    .dashboard--compact .dashboard__sidebar a { font-size: .75rem; }
+    .dashboard--compact .dashboard__header { display: grid; }
+    .dashboard--compact .dashboard__kpis { grid-template-columns: 1fr; }
+    .dashboard--compact .dashboard__charts { grid-template-columns: 1fr; }
+    .dashboard--compact .dashboard__weekly > svg { height: auto; }
+    .dashboard--compact .dashboard__donut { width: 90px; }
+    .dashboard--compact .dashboard__actions li { grid-template-columns: 16px minmax(0, 1fr); padding-block: 8px; }
+    .dashboard--compact .dashboard__actions a { grid-column: 2; justify-self: start; }
+  }
+</style>

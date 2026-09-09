@@ -10,9 +10,9 @@ export const integration: ReferencePageContent = {
 
   hero: {
     eyebrow: 'Integration reference',
-    title: 'The console and the API are the same truth',
+    title: 'Connect your systems. Keep the context.',
     subtitle:
-      'Anything you can do from the console you can do from the API, and the other way round. The console is not a privileged shortcut: it calls the same endpoints you do.',
+      'This is the target integration architecture: console and API would apply the same rules. The endpoints described are not available on this website; their implementation and validation are agreed for each deployment.',
   },
 
   contentsLabel: 'On this page',
@@ -24,11 +24,11 @@ export const integration: ReferencePageContent = {
       intro:
         'There are two steps because a factory works that way: codes are printed while production runs, and the lot’s definitive data only exists once the run ends.',
       code: {
-        caption: 'Endpoints of the issuance cycle',
+        caption: 'Proposed endpoints of the issuance cycle',
         lines: [
           'POST /v1/issuances',
-          '     Generates identifiers for a product. The record is optional:',
-          '     if lot and expiry are supplied, the issuance is born activated.',
+          '     Generates identifiers for a product. Combined activation only',
+          '     with production finished, printing confirmed and a complete record.',
           '',
           'POST /v1/issuances/{id}/activate',
           '     Completes the record, which is what activates the codes. Four modes:',
@@ -42,7 +42,7 @@ export const integration: ReferencePageContent = {
         ],
       },
       paragraphs: [
-        'The two steps are a right, not an obligation: an importer that already knows the lot and the expiry can issue and activate in a single call.',
+        'Combined issuance and activation is contemplated only for a product whose production has finished, with printing confirmed and a complete lot and expiry record. Knowing those fields in advance does not permit activating units before production ends.',
         'Issuing requires an idempotency header. A retry after a dropped connection does not produce a second run or spend the balance twice: it returns exactly the same issuance.',
       ],
     },
@@ -69,7 +69,7 @@ export const integration: ReferencePageContent = {
         },
         {
           title: 'Sampling audit',
-          body: 'Before dispatch, random units from each pallet are scanned and the assigned record is compared with what is printed. A mis-assigned pallet is caught before it leaves.',
+          body: 'As a production-closure check, random units from each lot are scanned and the assigned record is compared with what is printed. Differences are left for the responsible person to review.',
           icon: 'compare',
         },
       ],
@@ -83,7 +83,7 @@ export const integration: ReferencePageContent = {
         lines: [
           'GET  /v1/verify/{code}',
           '     Public lookup: status and passport. Anonymous, rate-limited.',
-          '     Meant for integrators too: retail chains and customs.',
+          '     Planned for integrators: pharmacies and oversight teams.',
           '',
           'GET  /v1/labels/{code}',
           '     Looks up one of your own labels, in more detail than the public one.',
@@ -108,7 +108,7 @@ export const integration: ReferencePageContent = {
       specs: [
         { label: 'Issuance receipt', value: 'Issuance, range, record state, your own reference and a digest of the content', note: 'The digest lets you check the integrity of what the print shop received.' },
         { label: 'Your own reference', value: 'Whatever order or run number you use', note: 'It travels with the issuance and is filterable: reconciling with your management system is direct.' },
-        { label: 'Download', value: 'CSV · XLSX · images · imposition PDF', note: 'Every download stays in the audit trail: labels are fiscal instruments.' },
+        { label: 'Download', value: 'CSV · XLSX · images · imposition PDF', note: 'Every download stays in the audit trail: labels are unit identities.' },
         { label: 'Production line', value: 'Native thermal-printer language', note: 'To label at machine speed, without going through a PDF.' },
         { label: 'Visible sequence', value: 'One running number per product', note: 'Internally the code carries issuance and position; on screen everything speaks in a sequence that never repeats.' },
       ],
@@ -117,11 +117,11 @@ export const integration: ReferencePageContent = {
       id: 'permisos',
       title: 'Identities and permissions',
       intro:
-        'An issuer’s account authorises the creation of fiscal instruments. The asymmetry with the public is deliberate.',
+        'An issuer’s account authorises the creation of unit identities. The asymmetry with the public is deliberate.',
       items: [
         {
           title: 'The public has no account',
-          body: 'Looking up and reporting require no registration. Contact details in a report are optional and only serve to follow it up.',
+          body: 'Looking up and preparing a local report require no account. This website lets you download the code, type and description, without email or location. It does not send the report or change the registry; hand it to the responsible organization.',
           icon: 'citizen',
         },
         {
@@ -145,7 +145,7 @@ export const integration: ReferencePageContent = {
       id: 'degradacion',
       title: 'What keeps working when something fails',
       intro:
-        'A fiscal system cannot stop production or trade. That stops being an aspiration and becomes a design requirement.',
+        'An identification system cannot stop production or trade. That stops being an aspiration and becomes a design requirement.',
       items: [
         {
           title: 'Printing does not depend on the connection',

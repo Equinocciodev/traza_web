@@ -81,9 +81,9 @@ export const company: CompanyContent = {
   },
 
   contact: {
-    title: 'Contact',
-    intro:
-      'If your organization is considering a pilot, an integration or simply wants to understand the platform better, write to us.',
+    title: 'What would you like to improve?',
+    intro: 'A first conversation to understand your operation and consider the next step.',
+    formTitle: 'Let’s start with your context.',
     form: {
       name: 'Name',
       email: 'Email',
@@ -91,7 +91,7 @@ export const company: CompanyContent = {
       sector: 'Sector',
       sectorOptions: [
         'Government or regulator',
-        'Food and beverages',
+        'Medicines and health products',
         'Pharmaceutical and health',
         'Agribusiness',
         'Spare parts and components',
@@ -129,5 +129,5 @@ export const company: CompanyContent = {
   },
 
   disclaimer:
-    'This page does not claim contracts, certifications or a relationship with governments or agencies. The spirits use case is a pilot proposal.',
+    'This page does not claim contracts, certifications or a relationship with governments or agencies. The medicines use case is a pilot proposal.',
 };
