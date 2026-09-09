@@ -8,28 +8,22 @@ interface Props { locale: Locale; id?: string }
 const { locale, id = 'story-player' } = Astro.props;
 const { ui, stories } = getV2Narrative(locale);
 const assetBase = import.meta.env.BASE_URL.replace(/\/$/, '');
-const imageUrl = `${assetBase}/images/v2/story-bottle.webp`;
-/** Se muestra a min(52vw, 640px) en escritorio y ~470 px en móvil: no hace falta servir 1024 px. */
+const imageUrl = `${assetBase}/images/integral-20260909/story.webp`;
+/** La fotografía conserva sus proporciones en una columna separada del relato. */
 const imageSrcset = [384, 512, 768]
-  .map((w) => `${assetBase}/images/v2/story-bottle-${w}.webp ${w}w`)
+  .map((w) => `${assetBase}/images/integral-20260909/story-${w}.webp ${w}w`)
   .concat(`${imageUrl} 1024w`)
   .join(', ');
 ---
 
 <section class="story-player" id={id} data-story-player data-locale={locale}
   data-ui={JSON.stringify(ui)} aria-labelledby={`${id}-heading`}>
+  <div class="story__layout">
   <div class="story__visual" aria-hidden="true">
-    <img class="story__bottle" src={imageUrl} srcset={imageSrcset} sizes="(max-width: 47.99em) 470px, min(52vw, 690px)"
+    <img class="story__bottle" src={imageUrl} srcset={imageSrcset} sizes="(max-width: 56.25em) min(90vw, 384px), min(36vw, 512px)"
       alt={ui.imageAlt} width="1024" height="1536" loading="lazy" decoding="async" />
   </div>
   <div class="story__inner">
-    <!-- Exclusively an informative relation, anchored by measurement to the object and step data. -->
-    <svg class="story__connection" data-story-connection aria-hidden="true" focusable="false" data-hidden="true">
-      <path data-story-connection-path pathLength="1" fill="none" />
-      <circle data-story-connection-start r="4" />
-      <circle data-story-connection-end r="4" />
-    </svg>
-    <span class="story__object-label" data-story-object-label hidden>{ui.illustratedObject}</span>
     <h2 class="story__heading" id={`${id}-heading`} data-story-heading>{ui.heading}</h2>
     <p class="story__sr-only">{ui.imageAlt}</p>
     <div class="story__tabs" role="tablist" aria-label={ui.tabs}>
@@ -123,6 +117,7 @@ const imageSrcset = [384, 512, 768]
       </div>
     ))}
     <p class="story__sr-only" role="status" aria-live="polite" aria-atomic="true" data-story-announcement></p>
+  </div>
   </div>
 </section>
 

@@ -3,7 +3,6 @@
  * Banda de cierre con título, texto y dos CTA sobre azul marino, con motivo QR discreto.
  */
 import Button from './Button.astro';
-import NeonTrace from './NeonTrace.astro';
 import { ctaHref } from './cta';
 import type { Cta } from '@/content/types';
 import type { Locale } from '@/i18n';
@@ -23,7 +22,7 @@ const { locale, title, body, primaryCta, secondaryCta, id = 'cta-title', class: 
 <!-- Motion: el revelado va en el contenedor interior (copia y acciones escalonadas); el fondo azul y el motivo QR
      decorativo quedan siempre pintados, así un scroll rápido nunca deja un hueco blanco antes del pie. -->
 <section class:list={['cta-band', 'on-dark', className]} aria-labelledby={id}>
-  <div class="cta-band__motif" aria-hidden="true"><NeonTrace variant="loop" /></div>
+
   <div class="container cta-band__inner" data-reveal data-reveal-stagger>
     <div class="cta-band__copy">
       <h2 id={id} class="cta-band__title">{title}</h2>
@@ -53,22 +52,7 @@ const { locale, title, body, primaryCta, secondaryCta, id = 'cta-title', class: 
     background: var(--color-navy-950);
     border-top: 1px solid rgba(25, 200, 255, .35);
   }
-  .cta-band__motif {
-    position: absolute;
-    z-index: -1;
-    right: -2rem;
-    top: -4rem;
-    width: 32rem;
-    height: 30rem;
-    color: var(--color-white);
-    opacity: 0.8;
-    pointer-events: none;
-  }
-  @media (max-width: 59.99em) {
-    .cta-band__motif {
-      display: none;
-    }
-  }
+
   .cta-band__inner {
     display: grid;
     gap: var(--space-8);

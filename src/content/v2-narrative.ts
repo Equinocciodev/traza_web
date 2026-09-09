@@ -270,13 +270,12 @@ const UI = {
   limit: copy('Límite de esta lectura', 'Limit of this reading'),
   record: copy('Registro relacionado', 'Related record'),
   recordNote: copy('El relato no modifica este registro.', 'The story does not modify this record.'),
-  imageAlt: copy('Frasco ámbar de medicamento de 120 ml con una banda cian y código QR.', 'A 120 ml amber medicine bottle with a cyan band and QR code.'),
+  imageAlt: copy('Fotografía ilustrativa de un frasco ámbar de solución oral de 120 ml.', 'Illustrative photograph of a 120 ml amber oral-solution bottle.'),
   step: copy('Paso {current} de {total}: {title}', 'Step {current} of {total}: {title}'),
   pausedAway: copy('En pausa al salir de la vista. Puedes continuar cuando quieras.', 'Paused when leaving the view. Resume whenever you are ready.'),
   finished: copy('Recorrido completado. Puedes repetirlo o explorar sus capítulos.', 'Journey completed. Replay it or explore its chapters.'),
   proposal: copy('Ilustración · propuesta', 'Illustration · proposal'),
-  illustratedObject: copy('Objeto ilustrado', 'Illustrated object'),
-  relation: copy('Relación ilustrada entre el producto y los datos de este paso. No es un escaneo ni una comprobación física.', 'Illustrated relationship between the product and this step’s data. This is not a scan or a physical check.'),
+  relation: copy('Los datos de este paso corresponden al registro de ejemplo. La fotografía ilustra el medicamento; no representa un escaneo ni una comprobación física.', 'This step’s data belongs to the sample record. The photograph illustrates the medicine; it does not represent a scan or a physical check.'),
 };
 
 /** Both languages share a clock, sized for the longer visible reading, not for a short film target. */

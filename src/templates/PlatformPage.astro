@@ -41,9 +41,6 @@ const lines = (title: string): string[] => title.split(/(?<=\.)\s+/).filter(Bool
 <Base locale={locale} routeKey="platform" title={platform.meta.title} description={platform.meta.description}>
   {/* ---- Hero navy: eyebrow, titular en dos líneas, pill cian, órbita de neón y el mock de software debajo ---- */}
   <section class="p-hero on-dark" aria-labelledby="page-title">
-    <div class="p-hero__neon" aria-hidden="true">
-      <NeonTrace variant="orbit" tone="dark" draw="load" duration={1300} />
-    </div>
     <div class="wrap">
       <div class="p-hero__top">
         <div class="p-hero__copy">
@@ -59,6 +56,7 @@ const lines = (title: string): string[] => title.split(/(?<=\.)\s+/).filter(Bool
           </Button>
         </div>
       </div>
+      <div class="p-hero__neon" aria-hidden="true"><NeonTrace draw="load" /></div>
       <div class="p-hero__mock">
         <MockDashboard locale={locale} navLabelledBy="page-title" />
       </div>
@@ -166,9 +164,6 @@ const lines = (title: string): string[] => title.split(/(?<=\.)\s+/).filter(Bool
       </div>
 
       <section class="gaps on-dark" id="senales" aria-labelledby="gaps-title">
-        <div class="gaps__neon" aria-hidden="true">
-          <NeonTrace variant="orbit" tone="dark" draw="view" duration={1100} />
-        </div>
         <div class="gaps__head">
           <h3 id="gaps-title" class="gaps__title">{lines(platform.productView.gaps.title).map((l) => <span class="line">{l}</span>)}</h3>
           <p class="gaps__body">{platform.productView.gaps.body}</p>
@@ -354,17 +349,7 @@ const lines = (title: string): string[] => title.split(/(?<=\.)\s+/).filter(Bool
     background: var(--color-navy-950);
   }
   /* Órbita de neón grande a la derecha, apagada por la máscara antes de llegar a la columna de texto. */
-  .p-hero__neon {
-    position: absolute;
-    z-index: -1;
-    top: -18%;
-    right: -8%;
-    width: clamp(22rem, 46vw, 44rem);
-    aspect-ratio: 1;
-    pointer-events: none;
-    -webkit-mask-image: radial-gradient(circle at 60% 45%, #000 0 42%, transparent 72%);
-    mask-image: radial-gradient(circle at 60% 45%, #000 0 42%, transparent 72%);
-  }
+  .p-hero__neon { width: min(100%, 30rem); height: 13rem; margin: 1.5rem auto; pointer-events: none; }
   .p-hero__top {
     display: grid;
     gap: var(--space-8);
@@ -399,14 +384,7 @@ const lines = (title: string): string[] => title.split(/(?<=\.)\s+/).filter(Bool
   }
   @media (max-width: 59.99em) {
     /* En pantallas estrechas la órbita se recoge arriba a la derecha, más pequeña, sin cruzar el titular. */
-    .p-hero__neon {
-      top: -6rem;
-      right: -9rem;
-      opacity: .45;
-      width: 20rem;
-      -webkit-mask-image: radial-gradient(circle at 50% 50%, #000 0 38%, transparent 70%);
-      mask-image: radial-gradient(circle at 50% 50%, #000 0 38%, transparent 70%);
-    }
+    .p-hero__neon { height: 10rem; }
   }
   @media (min-width: 60em) {
     .p-hero__top {
@@ -664,24 +642,12 @@ const lines = (title: string): string[] => title.split(/(?<=\.)\s+/).filter(Bool
     background: var(--color-navy-950);
   }
   /* La órbita ocupa la esquina superior derecha, donde no hay texto (la cabecera se limita a 60 %). */
-  .gaps__neon {
-    position: absolute;
-    z-index: -1;
-    top: -34%;
-    right: -6%;
-    width: 34%;
-    aspect-ratio: 1;
-    pointer-events: none;
-    -webkit-mask-image: radial-gradient(circle at 50% 50%, #000 0 40%, transparent 70%);
-    mask-image: radial-gradient(circle at 50% 50%, #000 0 40%, transparent 70%);
-  }
+
   @media (max-width: 59.99em) {
-    .gaps__neon {
-      display: none;
-    }
+
   }
   .gaps__head {
-    max-width: 60%;
+    max-width: 44rem;
     margin-bottom: clamp(2rem, 3.5vw, 3rem);
   }
   @media (max-width: 59.99em) {

@@ -4,7 +4,7 @@ interface HomeV2Content {
   meta: { title: string; description: string };
   nav: { label: string; key: RouteKey; anchor?: string }[];
   hero: { badge: string; title: [string, string]; intro: string; primaryAction: string; secondaryAction: string; imageAlt: string; relationship: string };
-  record: { title: string; productLabel: string; product: string; lotLabel: string; eventLabel: string; event: string; disclaimer: string; action: string };
+  record: { title: string; productLabel: string; product: string; lotLabel: string; eventLabel: string; event: string; disclaimer: string; action: string; qrLabel: string; qrHint: string };
   perspectives: {
     eyebrow: string; title: string; intro: string;
     items: { title: string; body: string; action: string; key: RouteKey; icon: 'scan' | 'history' | 'eye' }[];
@@ -28,10 +28,10 @@ export const V2_HOME: Record<Locale, HomeV2Content> = {
       badge: 'Identidad digital para productos reales', title: ['El origen importa', 'La evidencia conecta'],
       intro: 'Identidad digital para medicamentos: un QR por unidad, desde la producción hasta la consulta pública.',
       primaryAction: 'Conocer el proceso', secondaryAction: 'Probar verificación',
-      imageAlt: 'Un frasco ámbar de solución oral de 120 ml cuya etiqueta lleva un código QR y el identificador TRZ-7F2K-4K7Q-92FA, junto a una caja de medicamento y un blíster.',
-      relationship: 'El frasco representa una unidad vinculada a su registro. La relación de datos no certifica el objeto físico ni corresponde a los otros envases.',
+      imageAlt: 'Presentación ilustrativa de una solución oral de 120 ml en frasco ámbar junto a su caja.',
+      relationship: 'La fotografía ilustra la presentación del medicamento. El QR de la tarjeta abre un registro de ejemplo; la consulta no certifica el objeto físico.',
     },
-    record: { title: 'Registro de la unidad', productLabel: 'Producto', product: 'Solución oral · 120 ml', lotLabel: 'Lote', eventLabel: 'Último evento', event: 'Consulta pública', disclaimer: 'La consulta no certifica autenticidad física.', action: 'Explorar el registro' },
+    record: { title: 'Registro de la unidad', productLabel: 'Producto', product: 'Solución oral · 120 ml', lotLabel: 'Lote', eventLabel: 'Último evento', event: 'Consulta pública', disclaimer: 'La consulta no certifica autenticidad física.', action: 'Explorar el registro', qrLabel: 'Abrir el registro de ejemplo', qrHint: 'Escanea este QR con otro dispositivo o selecciónalo para consultar la unidad.' },
     perspectives: {
       eyebrow: 'La plataforma, en acción', title: 'Un registro. Tres perspectivas.',
       intro: 'Prueba qué puede consultar una persona, cómo se registra el ciclo de vida y qué información revisa un equipo de control.',
@@ -64,10 +64,10 @@ export const V2_HOME: Record<Locale, HomeV2Content> = {
       badge: 'Digital identity for real products', title: ['Origin matters', 'Evidence connects'],
       intro: 'Digital identity for medicines: one QR per unit, from production to public lookup.',
       primaryAction: 'Discover the process', secondaryAction: 'Try verification',
-      imageAlt: 'A 120 ml amber oral-solution bottle whose label carries a QR code and the identifier TRZ-7F2K-4K7Q-92FA, next to a medicine carton and a blister pack.',
-      relationship: 'The bottle represents a unit linked to its record. This data relationship does not certify the physical object or apply to the other packages.',
+      imageAlt: 'Illustrative presentation of a 120 ml oral solution in an amber bottle beside its carton.',
+      relationship: 'The photograph illustrates the medicine’s presentation. The card’s QR opens a sample record; the lookup does not certify the physical object.',
     },
-    record: { title: 'Unit record', productLabel: 'Product', product: 'Oral solution · 120 ml', lotLabel: 'Lot', eventLabel: 'Latest event', event: 'Public query', disclaimer: 'The lookup does not certify physical authenticity.', action: 'Explore the record' },
+    record: { title: 'Unit record', productLabel: 'Product', product: 'Oral solution · 120 ml', lotLabel: 'Lot', eventLabel: 'Latest event', event: 'Public query', disclaimer: 'The lookup does not certify physical authenticity.', action: 'Explore the record', qrLabel: 'Open the sample record', qrHint: 'Scan this QR with another device or select it to look up the unit.' },
     perspectives: {
       eyebrow: 'The platform, in action', title: 'One record. Three perspectives.',
       intro: 'Try what a person can query, how a unit’s lifecycle is recorded and what information a control team reviews.',

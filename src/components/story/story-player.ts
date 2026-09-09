@@ -12,8 +12,6 @@ export function initStoryPlayers(): void {
     const panels = Array.from(root.querySelectorAll<HTMLElement>('[data-story-panel]'));
     const heading = root.querySelector<HTMLElement>('[data-story-heading]');
     const announcement = root.querySelector<HTMLElement>('[data-story-announcement]');
-    const connection = root.querySelector<SVGSVGElement>('[data-story-connection]');
-    const objectLabel = root.querySelector<HTMLElement>('[data-story-object-label]');
     const reduced = window.matchMedia('(prefers-reduced-motion: reduce)');
     const reducedData = window.matchMedia('(prefers-reduced-data: reduce)');
     let panelIndex = 0;
@@ -25,58 +23,12 @@ export function initStoryPlayers(): void {
     let startedAt = 0;
     let timer: ReturnType<typeof setTimeout> | undefined;
     let inView = true;
-    let pendingConnectionFrame = 0;
-    let connectionShouldAnimate = false;
 
     const panel = () => panels[panelIndex];
     const steps = () => Array.from(panel().querySelectorAll<HTMLElement>('[data-story-step]'));
     const manualOnly = () => reduced.matches || reducedData.matches;
     const button = (key: string) => panel().querySelector<HTMLButtonElement>(`[data-story-${key}]`);
     const say = (text: string) => { if (announcement) announcement.textContent = text; };
-
-    function positionConnection(replay = false): void {
-      connectionShouldAnimate = connectionShouldAnimate || replay;
-      if (pendingConnectionFrame) return;
-      pendingConnectionFrame = requestAnimationFrame(() => {
-        pendingConnectionFrame = 0;
-        const animate = connectionShouldAnimate;
-        connectionShouldAnimate = false;
-        if (!connection || !objectLabel) return;
-        const show = engaged && panel().dataset.storyPanel === 'product' && window.innerWidth > 900;
-        connection.setAttribute('data-hidden', String(!show));
-        objectLabel.hidden = !show;
-        if (!show) return;
-        const frame = steps()[beatIndex];
-        const source = panel().querySelector<HTMLElement>('.story__main');
-        const bottle = root.querySelector<HTMLImageElement>('.story__bottle');
-        const bounds = connection.getBoundingClientRect();
-        if (!source || !bottle || !bounds.width) return;
-        const from = source.getBoundingClientRect();
-        const productBounds = bottle.getBoundingClientRect();
-        const startX = from.right - bounds.left;
-        const startY = frame.getBoundingClientRect().top - bounds.top;
-        // Measured point on the neck band of this exact 1024×1536 image, not a floating endpoint.
-        const endX = productBounds.left - bounds.left + productBounds.width * .55;
-        const endY = productBounds.top - bounds.top + productBounds.height * .74;
-        objectLabel.style.left = `${Math.min(endX + 14, bounds.width * .81)}px`;
-        objectLabel.style.top = `${endY - 20}px`;
-        const elbow = startX + Math.max(20, (endX - startX) * .52);
-        connection.setAttribute('viewBox', `0 0 ${bounds.width} ${bounds.height}`);
-        connection.querySelector('[data-story-connection-path]')?.setAttribute('d',
-          `M ${startX} ${startY} C ${elbow} ${startY}, ${elbow} ${endY}, ${endX} ${endY}`);
-        const start = connection.querySelector('[data-story-connection-start]');
-        start?.setAttribute('cx', String(startX)); start?.setAttribute('cy', String(startY));
-        const end = connection.querySelector('[data-story-connection-end]');
-        end?.setAttribute('cx', String(endX)); end?.setAttribute('cy', String(endY));
-        if (animate) {
-          connection.classList.remove('story__connection--enter');
-          objectLabel.classList.remove('story__object-label--enter');
-          void connection.getBoundingClientRect();
-          connection.classList.add('story__connection--enter');
-          objectLabel.classList.add('story__object-label--enter');
-        }
-      });
-    }
 
     function updateControls(): void {
       const play = button('play');
@@ -96,7 +48,6 @@ export function initStoryPlayers(): void {
       if (restart) restart.disabled = !engaged;
       root.dataset.playing = String(playing);
       root.dataset.engaged = String(engaged);
-      positionConnection();
       panels.forEach((item) => {
         const note = item.querySelector<HTMLElement>('[data-story-reduced]');
         if (note) note.hidden = !manualOnly();
@@ -124,7 +75,6 @@ export function initStoryPlayers(): void {
       remaining = Number(current.dataset.duration) || 10000;
       finished = false;
       updateControls();
-      positionConnection(true);
       if (announce) say(ui.step.replace('{current}', String(beatIndex + 1)).replace('{total}', String(frames.length))
         .replace('{title}', current.querySelector('[data-story-step-title]')?.textContent ?? ''));
     }
@@ -227,12 +177,6 @@ export function initStoryPlayers(): void {
       });
       document.addEventListener('astro:before-swap', () => { stop(); observer.disconnect(); }, { once: true });
     }
-    const resizeObserver = new ResizeObserver(() => positionConnection());
-    resizeObserver.observe(root);
-    document.addEventListener('astro:before-swap', () => {
-      resizeObserver.disconnect(); cancelAnimationFrame(pendingConnectionFrame);
-    }, { once: true });
-
     root.dataset.enhanced = 'true';
     root.querySelectorAll<HTMLButtonElement>('[data-story-tab], [data-story-chapter]').forEach((control) => { control.disabled = false; });
     panels.forEach((item) => {

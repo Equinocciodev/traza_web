@@ -14,6 +14,7 @@ const issuedAt = unit.signature.issuedAt.slice(0, 10);
 const domain = new URL(UNIT_QR_URL).hostname;
 
 interface StampContent {
+  previewAlt: string; previewCaption: string; dataTitle: string;
   eyebrow: string; title: string; intro: string; labelName: string; example: string;
   company: string; product: string; form: string; concentration: string; volume: string;
   manufacturer: string; registration: string; batch: string; serial: string;
@@ -33,6 +34,9 @@ const shared = {
 
 export const STAMP: Record<Locale, StampContent> = {
   es: {
+    previewAlt: 'Etiqueta ilustrativa de solución oral Traza de 120 ml, diseñada como una sola pieza.',
+    previewCaption: 'Concepto visual de etiqueta. El QR funcional y los doce campos se consultan a continuación.',
+    dataTitle: 'Los datos de la unidad, campo por campo',
     ...shared,
     eyebrow: 'Identidad visible. Trazabilidad conectada.',
     title: 'Doce características de la estampilla.',
@@ -44,7 +48,7 @@ export const STAMP: Record<Locale, StampContent> = {
     sequenceNote: 'Consecutivo de ejemplo',
     barcodeLabel: `Código de barras Code 128 del consecutivo de ejemplo ${STAMP_PRINT_BARCODE.value}`,
     scan: 'Consulta esta unidad', qrLabel: `QR de consulta pública de la unidad ${unit.code}`,
-    note: 'Datos de ejemplo; no identifican un medicamento comercial ni una relación institucional existente. El territorio y las condiciones de impresión se definen en cada implementación. El fondo de líneas entrelazadas y el disco iridiscente son tratamientos ilustrativos; no acreditan seguridad física ni validez fiscal. Consultar el QR no certifica el contenido del envase.',
+    note: 'Datos de ejemplo; no identifican un medicamento comercial ni una relación institucional existente. El territorio y las condiciones de impresión se definen en cada implementación. La imagen de etiqueta es un concepto ilustrativo, no una pieza lista para impresión ni una acreditación de seguridad física o validez fiscal. Consultar el QR no certifica el contenido del envase.',
     labels: {
       qr: 'Código QR', identifier: 'Identificador único', territory: 'Territorio de destino', domain: 'Sitio de consulta',
       sequence: 'Consecutivo de impresión', barcode: 'Código de barras', volume: 'Contenido neto', product: 'Nombre del medicamento',
@@ -66,6 +70,9 @@ export const STAMP: Record<Locale, StampContent> = {
     ],
   },
   en: {
+    previewAlt: 'Illustrative Traza 120 ml oral solution label designed as one complete piece.',
+    previewCaption: 'Label design concept. The functional QR and twelve fields are shown below.',
+    dataTitle: 'The unit data, field by field',
     ...shared,
     eyebrow: 'Visible identity. Connected traceability.',
     title: 'Twelve features of the stamp.',
@@ -77,7 +84,7 @@ export const STAMP: Record<Locale, StampContent> = {
     sequenceNote: 'Example print sequence',
     barcodeLabel: `Code 128 barcode for example print sequence ${STAMP_PRINT_BARCODE.value}`,
     scan: 'Look up this unit', qrLabel: `Public lookup QR for unit ${unit.code}`,
-    note: 'Example data does not identify a commercial medicine or an existing institutional relationship. Territory and printing conditions are defined for each implementation. The interlaced-line background and iridescent disc are illustrative treatments; they do not establish physical security or fiscal validity. Looking up the QR does not certify the package contents.',
+    note: 'Example data does not identify a commercial medicine or an existing institutional relationship. Territory and printing conditions are defined for each implementation. The label image is an illustrative concept, not a print-ready label or proof of physical security or fiscal validity. Looking up the QR does not certify the package contents.',
     labels: {
       qr: 'QR code', identifier: 'Unique identifier', territory: 'Destination territory', domain: 'Lookup website',
       sequence: 'Print sequence', barcode: 'Barcode', volume: 'Net contents', product: 'Medicine name',

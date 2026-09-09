@@ -128,9 +128,9 @@ ajuste de Pages.
   puede añadir bloqueos de rastreadores de IA por delante de nuestro `robots.txt`, y su caché puede
   servir HTML antiguo tras un despliegue. Ese comportamiento se configura en el panel, no aquí.
 - **Las imágenes del hero y del relato tienen `srcset`** generado por
-  `scripts/responsive-images.mjs`. Si reemplazas `public/images/v2/*.webp`, vuelve a ejecutarlo y
+  `scripts/responsive-images.mjs`. Si reemplazas `public/images/integral-20260909/*.webp`, vuelve a ejecutarlo y
   revisa los anchos declarados en `sizes`.
-- **`alt=""` en la botella del relato es correcto**: el contenedor es `aria-hidden` y la descripción
+- **La botella del relato tiene un contenedor `aria-hidden`**: la descripción accesible
   la aporta un párrafo `story__sr-only`.
 - **`docs/` ya no se publica.** Es documentación interna de la etapa de demostración y este
   repositorio es público: está en disco pero excluida por `.gitignore`, con copia en
@@ -139,12 +139,16 @@ ajuste de Pages.
   de git ni la enlaces desde el README.
   Nota: sigue estando en el historial de git de los commits anteriores; retirarla de ahí
   exigiría reescribir el historial y un push forzado.
-- **El hero de Inicio presenta el software; el QR real está en la sección de producto siguiente.**
-  La fotografía conserva el nombre `public/images/v2/hero-products.webp`; `HomePage.astro`
-  superpone el SVG de `src/brand/hero-qr.ts`, que codifica
-  `https://traza.technology/verificar/?c=TRZ-7F2K-4K7Q-92FA&t=medicamentos`, coherente con el lector y la
-  estampilla. Si cambia la fotografía, el QR o su composición, comprobar la lectura sobre
-  capturas de la página servida a los anchos y DPR correspondientes, no solo sobre el bitmap.
+- **Las imágenes son composiciones integrales.** Los siete recursos raster vigentes están en
+  `public/images/integral-20260909/`; referencias, prompts y SHA-256 están en
+  `src/brand/asset-provenance.json`. No superponer logos, QR, líneas ni etiquetas sobre fotos.
+  Reconstruir el recurso completo con ImageGen cuando cambie su composición y revisar antes de integrar.
+  Los originales de marca permanecen intactos; el logo conserva su función de identidad en la interfaz.
+- **El QR funcional está en controles de interfaz independientes de las imágenes.** Inicio lo presenta
+  junto al producto, dentro de la ficha de demostración. La estampilla separa el concepto visual
+  ilustrativo de sus datos y códigos legibles. El QR compartido codifica
+  `https://traza.technology/verificar/?c=TRZ-7F2K-4K7Q-92FA&t=medicamentos`.
+  Verificar lectura y navegación desde capturas servidas en escritorio y móvil.
 - **La analítica solo corre en producción.** El proveedor `ga4` (gtag.js) se activa en el
   workflow de despliegue; en local y en las pruebas queda en `none`, que es lo que espera
   `tests/e2e/privacy.spec.ts` al comprobar que no se crean cookies. El identificador de

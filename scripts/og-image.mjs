@@ -1,19 +1,18 @@
 #!/usr/bin/env node
 /**
- * Genera los recursos raster de marca a partir de SVG:
+ * Exporta la composición OG integral y los iconos de identidad:
  *   - public/og/default.png (1200×630): fondo azul marino, wordmark "traza®" con subrayado cian,
- *     tagline "Identidad digital para productos reales", QR público real y neón del asset de marca.
+ *     composición médica ImageGen completa, sin capas añadidas.
  *     Sin texto ni emblemas de agencias.
  *   - public/apple-touch-icon.png (180×180): desde public/favicon.svg, aplanado sobre azul marino.
  *   - public/icon-192.png, icon-512.png y icon-512-maskable.png: iconos del manifiesto (PWA/Android).
  *     El maskable deja el 20 % de margen que exige la máscara de Android.
  *
- * Usa sharp. La marca y el monograma son contornos vectoriales comunes, independientes de fuentes
- * del sistema. Solo el tagline y dominio usan la pila tipográfica indicada más abajo.
+ * Usa sharp únicamente para convertir y redimensionar la composición OG completa.
+ * Los iconos de aplicación derivan de la referencia original 16, conservada intacta.
  *
  * Uso: node scripts/og-image.mjs
  */
-import { WORDMARK } from '../src/brand/wordmark.mjs';
 import { mkdir, readFile, stat, writeFile } from 'node:fs/promises';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
@@ -27,70 +26,18 @@ const OUT_512 = path.join(ROOT, 'public', 'icon-512.png');
 const OUT_MASKABLE = path.join(ROOT, 'public', 'icon-512-maskable.png');
 const FAVICON = path.join(ROOT, 'public', 'favicon.svg');
 
-/* Tokens (mismos valores que src/styles/tokens.css) */
 const NAVY_900 = '#0b1f3f';
-const CYAN_400 = '#19c8ff';
-const CYAN_300 = '#5edbff';
-const WHITE = '#ffffff';
-
 const WIDTH = 1200;
 const HEIGHT = 630;
-const FONT = "'Poppins', 'DejaVu Sans', 'Liberation Sans', Arial, sans-serif";
-
-/** Consume the same canonical QR geometry re-exported by src/brand/unit-qr.ts.
- * Transpile this data-only TS module so npm run og also supports Node 22.12.
- */
-async function loadUnitQr() {
-  const ts = await import('typescript');
-  const source = await readFile(path.join(ROOT, 'src/brand/hero-qr.ts'), 'utf8');
-  const { outputText } = ts.transpileModule(source, { compilerOptions: { module: ts.ModuleKind.ESNext } });
-  const shared = await import(`data:text/javascript;base64,${Buffer.from(outputText).toString('base64')}`);
-  return { path: shared.HERO_QR_PATH, size: shared.HERO_QR_SIZE, url: shared.HERO_QR_URL };
-}
-
-function ogSvg({ domain, neonData, qr }) {
-  const escape = (s) => s.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
-  const code = new URL(qr.url).searchParams.get('c');
-  if (!code || !qr.path || !Number.isInteger(qr.size)) throw new Error('Invalid shared unit QR');
-  // Six pixels per shared QR module, including its four-module quiet zone.
-  const qrPixels = qr.size * 6;
-  const qrCenter = 973;
-  return `<svg xmlns="http://www.w3.org/2000/svg" width="${WIDTH}" height="${HEIGHT}" viewBox="0 0 ${WIDTH} ${HEIGHT}">
-  <rect width="${WIDTH}" height="${HEIGHT}" fill="${NAVY_900}"/>
-  <defs>
-    <linearGradient id="neon-fade" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="black"/><stop offset="0.25" stop-color="white"/></linearGradient>
-    <mask id="neon-mask"><rect x="570" width="945" height="630" fill="url(#neon-fade)"/></mask>
-  </defs>
-  <image href="${neonData}" x="570" y="0" width="945" height="630" opacity="0.8" mask="url(#neon-mask)"/>
-  <g transform="translate(96 138) scale(1.65)" fill="${WHITE}" fill-rule="evenodd">
-    ${WORDMARK.paths.map((d) => `<path d="${d}"/>`).join('')}
-    <path d="${WORDMARK.registered}"/>
-    <rect x="${WORDMARK.underline.x}" y="${WORDMARK.underline.y}" width="${WORDMARK.underline.width}" height="${WORDMARK.underline.height}" fill="${CYAN_400}"/>
-  </g>
-  <text x="96" y="388" font-family="${FONT}" font-size="46" font-weight="500" fill="${WHITE}" opacity="0.94"><tspan x="96">Identidad digital para</tspan><tspan x="96" dy="58">productos reales</tspan></text>
-  <text x="96" y="510" font-family="${FONT}" font-size="26" font-weight="400" fill="${CYAN_300}">${escape(domain)}</text>
-  <svg x="${qrCenter - qrPixels / 2}" y="${408 - qrPixels}" width="${qrPixels}" height="${qrPixels}" viewBox="0 0 ${qr.size} ${qr.size}" shape-rendering="crispEdges">
-    <rect width="${qr.size}" height="${qr.size}" fill="${WHITE}"/>
-    <path d="${qr.path}" fill="#000000"/>
-  </svg>
-  <rect x="815" y="424" width="316" height="42" rx="6" fill="${NAVY_900}"/>
-  <text x="973" y="452" text-anchor="middle" font-family="${FONT}" font-size="21" fill="${WHITE}">${escape(code)}</text>
-</svg>`;
-}
 
 async function main() {
   const { default: sharp } = await import('sharp');
 
-  const qr = await loadUnitQr();
-  const neon = await sharp(path.join(ROOT, 'public/images/brand/neon-loop-reference05.webp')).png().toBuffer();
-  const og = ogSvg({
-    domain: 'traza.technology',
-    neonData: `data:image/png;base64,${neon.toString('base64')}`,
-    qr,
-  });
-
   await mkdir(path.dirname(OUT_OG), { recursive: true });
-  await sharp(Buffer.from(og)).resize(WIDTH, HEIGHT).png({ compressionLevel: 9, palette: true, quality: 90 }).toFile(OUT_OG);
+  // Complete ImageGen composition; only resize/encode, never add logo, QR or line overlays.
+  await sharp(path.join(ROOT, 'public/images/integral-20260909/og.webp'))
+    .resize(WIDTH, HEIGHT, { fit: 'contain', background: '#07152b' })
+    .png({ compressionLevel: 9 }).toFile(OUT_OG);
 
   // The app icon embeds the unmodified original raster supplied by Juan (reference 16).
   const original = await readFile(path.join(ROOT, 'public/images/brand/traza-orbit-original.jpg'));

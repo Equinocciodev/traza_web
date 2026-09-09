@@ -6,7 +6,6 @@ import Eyebrow from '@/components/ui/Eyebrow.astro';
 import Button from '@/components/ui/Button.astro';
 import { getContent } from '@/content';
 import { HERO_QR_SIZE, HERO_QR_PATH } from '@/brand/hero-qr';
-import Wordmark from '@/components/ui/Wordmark.astro';
 import Icon from '@/components/ui/Icon.astro';
 import StoryPlayer from '@/components/story/StoryPlayer.astro';
 import { V2_HOME } from '@/content/v2-home';
@@ -43,10 +42,10 @@ const recordHref = `${route(locale, 'verify')}?c=${encodeURIComponent(featured.c
       <figure class="hero-v2__products">
         <a class="hero-v2__photo-link" href={recordHref} aria-label={t.record.action}>
         <img
-          src={withBase('/images/v2/hero-products.webp')}
+          src={withBase('/images/integral-20260909/product.webp')}
           srcset={[480, 768, 1024]
-            .map((w) => `${withBase(`/images/v2/hero-products-${w}.webp`)} ${w}w`)
-            .concat(`${withBase('/images/v2/hero-products.webp')} 1448w`)
+            .map((w) => `${withBase(`/images/integral-20260909/product-${w}.webp`)} ${w}w`)
+            .concat(`${withBase('/images/integral-20260909/product.webp')} 1448w`)
             .join(', ')}
           sizes="(max-width: 59.99em) 90vw, 50vw"
           width="1448"
@@ -55,16 +54,19 @@ const recordHref = `${route(locale, 'verify')}?c=${encodeURIComponent(featured.c
           loading="lazy"
           decoding="async"
         />
-        <svg class="hero-v2__qr-overlay" viewBox="0 0 1448 1086" aria-hidden="true" focusable="false">
-          <svg x="259" y="586" width="144" height="136" viewBox={`0 0 ${HERO_QR_SIZE} ${HERO_QR_SIZE}`} shape-rendering="crispEdges"><rect width={HERO_QR_SIZE} height={HERO_QR_SIZE} fill="#f8f8f8"/><path d={HERO_QR_PATH} fill="#07152b"/></svg>
-        </svg>
-        <span class="hero-v2__bottle-brand" aria-hidden="true"><Wordmark size="sm" /></span>
-        <span class="hero-v2__carton-brand" aria-hidden="true"><Wordmark size="sm" /></span>
         </a>
-        <figcaption class="visually-hidden">{t.hero.relationship}</figcaption>
+        <figcaption class="product-v3__caption">{t.hero.relationship}</figcaption>
       </figure>
       <aside class="record-v2" aria-labelledby="record-title">
         <h2 id="record-title" class="record-v2__title">{t.record.title}</h2>
+        <a class="record-v2__qr-link" href={recordHref} aria-label={t.record.qrLabel}>
+          <svg class="record-v2__qr" viewBox={`0 0 ${HERO_QR_SIZE} ${HERO_QR_SIZE}`} aria-hidden="true" focusable="false" shape-rendering="crispEdges">
+            <rect width={HERO_QR_SIZE} height={HERO_QR_SIZE} fill="#fff" />
+            <path d={HERO_QR_PATH} fill="#07152b" />
+          </svg>
+          <span>{t.record.qrLabel}</span>
+        </a>
+        <p class="record-v2__qr-hint">{t.record.qrHint}</p>
         <p class="record-v2__code"><code>{featured.code}</code></p>
         <dl class="record-v2__fields">
           <div><dt>{t.record.productLabel}</dt><dd>{t.record.product}</dd></div>
@@ -125,21 +127,21 @@ const recordHref = `${route(locale, 'verify')}?c=${encodeURIComponent(featured.c
   .hero-v3__actions { display:flex; align-items:flex-start; flex-direction:column; gap:1.1rem; margin-top:2.5rem; }
   .hero-v3__secondary { display:inline-flex; align-items:center; gap:.8rem; color:#fff; min-height:48px; font-size:.875rem; text-decoration:none; }
   .hero-v3__secondary:hover { text-decoration:underline; }
-  .hero-v3__visual { position:relative; min-width:0; padding-top:10rem; }
-  .hero-v3__neon { position:absolute; right:-18%; top:-6rem; width:135%; height:26rem; }
-  .hero-v3__dashboard { position:relative; }
+  .hero-v3__visual { display:grid; gap:1.5rem; min-width:0; }
+  .hero-v3__neon { width:min(100%,22rem); aspect-ratio:3 / 2; justify-self:center; }
+  .hero-v3__dashboard { min-width:0; }
   .product-v3 { padding-block:clamp(4rem,7vw,7rem); background:#fff; }
   .product-v3__inner { display:grid; grid-template-columns:minmax(0,1.2fr) minmax(0,1fr); align-items:center; gap:4rem; }
   .hero-v2__products { margin:0; min-width:0; }
-  .hero-v2__photo-link { display:block; position:relative; }
-  .hero-v2__products img { width:100%; height:auto; }
-  .hero-v2__qr-overlay { position:absolute; inset:0; width:100%; height:100%; pointer-events:none; }
-  .hero-v2__bottle-brand, .hero-v2__carton-brand { position:absolute; display:flex; align-items:center; padding:.2%; background:#f5f5f5; }
-  .hero-v2__bottle-brand { left:17.2%; top:47.5%; width:10%; height:6%; }
-  .hero-v2__carton-brand { left:45.4%; top:22.7%; width:12.3%; height:7.1%; }
-  .hero-v2__bottle-brand :global(.wordmark), .hero-v2__carton-brand :global(.wordmark) { width:100%; max-width:100%; color:var(--color-navy-950); }
+  .hero-v2__photo-link { display:block; }
+  .hero-v2__products img { display:block; width:100%; height:auto; object-fit:contain; }
+  .product-v3__caption { margin-top:1rem; color:var(--color-text-secondary); font-size:.875rem; line-height:1.6; }
   .record-v2 { min-width:0; padding:2.2rem; border:1px solid var(--color-border-strong); border-radius:12px; }
   .record-v2__title { margin-bottom:1rem; font-size:clamp(1.6rem,2.5vw,2.2rem); }
+  .record-v2__qr-link { display:flex; flex-direction:column; align-items:flex-start; gap:.75rem; width:fit-content; max-width:100%; margin-block:1.25rem; color:var(--color-cobalt-600); text-decoration:none; }
+  .record-v2__qr-link:hover span { text-decoration:underline; }
+  .record-v2__qr { display:block; width:14rem; max-width:100%; height:auto; aspect-ratio:1; background:#fff; }
+  .record-v2__qr-hint { color:var(--color-text-secondary); font-size:.875rem; line-height:1.6; }
   .record-v2__code { padding-bottom:1rem; border-bottom:1px solid var(--color-border); overflow-wrap:anywhere; }
   .record-v2__fields > div { display:grid; grid-template-columns:1fr 1.6fr; gap:.8rem; padding:1rem 0; border-bottom:1px solid var(--color-border); }
   .record-v2__fields dt, .record-v2__disclaimer { color:var(--color-text-secondary); }
@@ -175,8 +177,7 @@ const recordHref = `${route(locale, 'verify')}?c=${encodeURIComponent(featured.c
   @media(max-width:59.99em) {
     .hero-v3__inner,.product-v3__inner { grid-template-columns:minmax(0,1fr); gap:2rem; }
     .hero-v3 h1 { max-width:18ch; }
-    .hero-v3__visual { padding-top:7rem; }
-    .hero-v3__neon { top:-4rem; height:20rem; }
+    .hero-v3__visual { gap:1rem; }
     .perspective-rows,.v2-split { grid-template-columns:minmax(0,1fr); }
     .v2-split { gap:1.5rem; }
     .record-v2 { padding:1.5rem; }

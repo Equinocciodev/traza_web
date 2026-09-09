@@ -26,7 +26,7 @@ const verifyHref = `${route(locale, 'verify')}?t=medicamentos&c=${c.unitCode}`;
         </a>
       </div>
       <figure class="birth__product">
-        <img src={withBase('/images/brand/qr-birth-product.webp')} alt={c.image.alt} width="1254" height="1254" loading="lazy" decoding="async" />
+        <img src={withBase('/images/integral-20260909/packaging.webp')} alt={c.image.alt} width="1254" height="1254" loading="lazy" decoding="async" />
         <figcaption>{c.image.caption}</figcaption>
       </figure>
       <aside class="birth__phase" aria-labelledby={phaseTitleId}>
@@ -63,10 +63,6 @@ const verifyHref = `${route(locale, 'verify')}?t=medicamentos&c=${c.unitCode}`;
   .birth__product { margin: 0; align-self: center; }
   .birth__product > img {
     display: block; width: 100%; height: auto; object-fit: contain;
-    -webkit-mask-image: linear-gradient(to right, transparent, #000 10%, #000 90%, transparent), linear-gradient(to bottom, transparent, #000 10%, #000 86%, transparent);
-    mask-image: linear-gradient(to right, transparent, #000 10%, #000 90%, transparent), linear-gradient(to bottom, transparent, #000 10%, #000 86%, transparent);
-    -webkit-mask-composite: source-in;
-    mask-composite: intersect;
   }
   .birth__product figcaption { margin: .75rem auto 0; max-width: 50ch; color: var(--color-neutral-200); font-size: .75rem; line-height: 1.6; }
   .birth__phase { border-top: 1px solid var(--color-cyan-400); padding-top: 1rem; }

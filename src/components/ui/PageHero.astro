@@ -31,7 +31,6 @@ const hasExtra = Astro.slots.has('default');
 ---
 
 <section class:list={['hero', 'on-dark', `hero--${size}`, { 'hero--split': hasAside }, className]} aria-labelledby={id}>
-  <div class="hero__motif" aria-hidden="true"><NeonTrace variant="loop" draw="load" /></div>
   <div class="container hero__inner">
     <div class="hero__copy">
       {
@@ -68,6 +67,7 @@ const hasExtra = Astro.slots.has('default');
         </div>
       )
     }
+    {!hasAside && <div class="hero__motif" aria-hidden="true"><NeonTrace variant="loop" draw="load" /></div>}
   </div>
 </section>
 
@@ -82,33 +82,14 @@ const hasExtra = Astro.slots.has('default');
   .hero--lg {
     padding-block: clamp(3.5rem, 8vw, 6.5rem) clamp(3.5rem, 8vw, 6rem);
   }
-  .hero__motif {
-    position: absolute;
-    z-index: -1;
-    top: -2rem;
-    right: -2rem;
-    width: clamp(22rem, 42vw, 40rem);
-    height: 100%;
-    color: var(--color-white);
-    pointer-events: none;
-  }
-  /* En pantallas estrechas el motivo se retira a la esquina inferior para no pisar el titular */
-  @media (max-width: 59.99em) {
-    .hero__motif {
-      top: auto;
-      bottom: -6rem;
-      right: -6rem;
-      width: 14rem;
-      height: 14rem;
-    }
-  }
+  .hero__motif { width: 100%; max-width: 32rem; aspect-ratio: 3 / 2; justify-self: center; pointer-events: none; }
   .hero__inner {
     display: grid;
     gap: var(--space-10);
     align-items: center;
   }
   @media (min-width: 60em) {
-    .hero--split .hero__inner {
+    .hero__inner {
       grid-template-columns: minmax(0, 7fr) minmax(0, 5fr);
       gap: var(--space-12);
     }
@@ -186,8 +167,7 @@ const hasExtra = Astro.slots.has('default');
     white-space: normal;
   }
   @media(min-width:60em) {
-    .hero:not(.hero--split) .hero__copy { max-width:60%; }
-    .hero__motif { right:-3%; top:0; }
+    .hero__copy { max-width: 44rem; }
   }
   @media(max-width:59.99em) { .hero__motif { display:none; } }
 </style>

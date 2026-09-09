@@ -1,19 +1,124 @@
 {
   "date": "2026-09-09",
   "task": "IA-20260908-204940-7B83",
-  "base": "a96a6e641370962c95acee47865703f0ac1eeb74",
+  "base": "6a8bb666d94180e1fff49ceab3c6d1ff8f79495a",
   "assets": [
     {
-      "file": "public/images/brand/traza-orbit-original.jpg",
-      "sha256": "1725a024f3e180e98a60ea62f9fc41a15e51ba6889932179e377a3b78ea456a8",
-      "kind": "Original raster sin cambios",
-      "source": "Referencia 16 de Juan, recuperada de Claude BrandIA"
+      "id": "product",
+      "file": "public/images/integral-20260909/product.webp",
+      "sha256": "28397abbf52a7ee7f31d89b9dd8367cc0a6f0b6998abc33cc6c627581b4b6e09",
+      "generated_file": "exec-ed88c379-22ca-4791-a1e9-297c34611a72.png",
+      "engine": "ImageGen integrado",
+      "prompt": "Use case: product-mockup. Create from scratch one complete premium pharmaceutical studio photograph for the Traza website, landscape 4:3. The attached original is ONLY a brand-style reference; do not paste, collage or overlay any part of it. One amber oral-solution bottle with ribbed black child-resistant cap and one matching slim white carton, both entirely in frame with generous margins, resting on a white seamless studio surface. NO tablets or blister pack: this is exclusively an oral solution. Design the packaging and all its printing naturally as part of the single photographed scene, consistent perspective, curved bottle label, shadows and materials. Precise small navy geometric Traza wordmark inspired by reference, cyan underline under za, naturally printed at top of both labels. Exact label text only: 'traza', 'SOLUCIÓN ORAL', '120 ml', 'EJEMPLO'. Minimal medical design with restrained cyan printed band, credible amber glass and folded paper carton. No QR codes, no barcodes, no certification seal, no claims, no extra text, no label sticker pasted over existing text. Clean crisp photographic output, no mockup window, no UI, no floating logo. Both packages show matching typography and details. White background.",
+      "reference_role": "Solo referencia de identidad/estilo; composición nueva integral",
+      "references": [
+        "Referencia16:1725a024f3e180e98a60ea62f9fc41a15e51ba6889932179e377a3b78ea456a8"
+      ],
+      "decision": "Aceptada tras revisión visual; solo conversión y reducción de tamaño",
+      "replaces": [
+        "public/images/v2/hero-products.webp",
+        "overlays de QR y dos logos en HomePage"
+      ]
     },
     {
-      "file": "public/images/brand/neon-loop-reference05.webp",
-      "sha256": "55c99f4870ac46bda542a3190d49cf7d7ace520cc8effbfc59309e6661db2154",
-      "kind": "Recreación ImageGen, conversión WebP",
-      "source": "Referencia 05 de Juan; línea integrada en lámina raster, sin capa fuente separada"
+      "id": "story",
+      "file": "public/images/integral-20260909/story.webp",
+      "sha256": "5221428ed2c62c454a985277b027cdb1757b36b87472bab6779fb98df1ff7440",
+      "generated_file": "exec-3cc5af1d-45f0-4abb-b60c-6be06cb8046e.png",
+      "engine": "ImageGen integrado",
+      "prompt": "Use case: product-mockup. Create a wholly new single premium photograph, portrait 2:3, for a medical traceability story on a deep uniform navy #07152b background. Attached image is only a reference for the geometric Traza wordmark and cyan palette, never a compositing input. A complete amber glass oral solution bottle, black ribbed child-resistant cap, white pharmaceutical label designed from the start with navy wordmark 'traza' and cyan underline under za, and precise text 'SOLUCIÓN ORAL', '120 ml', 'EJEMPLO'. Bottle centered, full bottle including bottom and cap visible; occupies central 60% width and lower 72% height; generous navy margin above. Label print follows bottle curvature and real lighting. Contemporary sans serif medical typography, not serif beverage packaging. Subtle cyan rim lighting built into the scene, no floating neon lines, no detached icons or added labels, no QR/barcode, no seals, no additional text. Coherent physical materials and natural highlights. One unified final asset from scratch.",
+      "reference_role": "Solo referencia de identidad/estilo; composición nueva integral",
+      "references": [
+        "Referencia16:1725a024f3e180e98a60ea62f9fc41a15e51ba6889932179e377a3b78ea456a8"
+      ],
+      "decision": "Aceptada tras revisión visual; solo conversión y reducción de tamaño",
+      "replaces": [
+        "public/images/v2/story-bottle.webp",
+        "conexión SVG y rótulo sobre foto"
+      ]
+    },
+    {
+      "id": "packaging",
+      "file": "public/images/integral-20260909/packaging.webp",
+      "sha256": "43028ab67451f0924ea6391abc666475b5a5ab1acd5868a537810553a91cfdba",
+      "generated_file": "exec-a7099d49-d0e5-4f81-8c5c-430985e0fcdc.png",
+      "engine": "ImageGen integrado",
+      "prompt": "Use case: product-mockup. Generate a complete new square premium medical packaging photograph from scratch. Input original is reference ONLY for Traza geometric wordmark and navy/cyan palette. A single slim white pharmaceutical carton for 120 ml oral solution seen at elegant three-quarter angle on deep navy #07152b studio table, entire carton visible with 18% breathing room around all edges. All typography and printed graphics are integral to paper and perspective, not pasted overlays. Exact text: 'traza', 'SOLUCIÓN ORAL', '120 ml', 'EJEMPLO'. Navy wordmark with cyan underline under za, cyan curved band across bottom matching a contemporary pharmaceutical family. Beautiful paper creases, soft shadow, natural cyan rim light. One subtle out-of-focus cyan light ribbon physically behind the carton, formed as part of this new scene and not crossing printed faces. No QR, no barcode, no numeric codes, no pills, no certification seals, no extra words. Coherent single exposure, tasteful restrained contrast.",
+      "reference_role": "Solo referencia de identidad/estilo; composición nueva integral",
+      "references": [
+        "Referencia16:1725a024f3e180e98a60ea62f9fc41a15e51ba6889932179e377a3b78ea456a8"
+      ],
+      "decision": "Aceptada tras revisión visual; solo conversión y reducción de tamaño",
+      "replaces": [
+        "public/images/brand/qr-birth-product.webp",
+        "imagen original de marca en tarjeta Empresa"
+      ]
+    },
+    {
+      "id": "label",
+      "file": "public/images/integral-20260909/label.webp",
+      "sha256": "7bbeef6cff41e4363ce07f4a448fae1298da9c56d3328ac13288e570089d3070",
+      "generated_file": "exec-268e572e-4eda-4ada-9553-7a2fa6ed92d7.png",
+      "engine": "ImageGen integrado",
+      "prompt": "Use case: product-mockup. Generate a complete NEW flat medical label proof as ONE integral designed printed object, landscape3:1 composition, isolated on very pale cool gray tabletop. This is an illustrative design, not a scannable or certified label. Reference image only guides the Traza brand and palette; do not paste or superimpose it. Entire horizontal white label visible with wide margin, squared corners, almost straight-on top view with slight realistic paper texture and faint soft shadow. Coherent navy/cyan medical editorial layout, fine cyan lines naturally printed in the paper, small restrained iridescent decorative square on right. Exact LARGE clearly legible text only: 'traza', 'SOLUCIÓN ORAL', '120 ml', 'EJEMPLO', 'traza.technology'. traza has geometric lower-case brand lettering, cyan underline under za. Product name left-center, volume right-center; generous space, avoid tiny illegible copy. No QR-like blocks, no barcode, no country names, no authority logos, no certification language, no fake seals, no extra text. All print and embellishments generated together on the same label, no overlay graphic pieces.",
+      "reference_role": "Solo referencia de identidad/estilo; composición nueva integral",
+      "references": [
+        "Referencia16:1725a024f3e180e98a60ea62f9fc41a15e51ba6889932179e377a3b78ea456a8"
+      ],
+      "decision": "Aceptada tras revisión visual; solo conversión y reducción de tamaño",
+      "replaces": [
+        "public/images/brand/stamp-stock-v3.webp como fondo compuesto"
+      ]
+    },
+    {
+      "id": "neon",
+      "file": "public/images/integral-20260909/neon.webp",
+      "sha256": "cea1447c9891bee2f9c1a9042fb0cab24f64b7fc400d80043fb19a99733feb5b",
+      "generated_file": "exec-7ec0a031-df41-41e7-87f8-8538899ad7b9.png",
+      "engine": "ImageGen integrado",
+      "prompt": "Use case: stylized-concept. Create a completely new single abstract brand environment for Traza web backgrounds, landscape3:2. References only for the restrained navy/cyan lighting style, not images to paste or edit. One elegant continuous blue light ribbon in a loose lowercase e-shaped sweep, white-cyan core and softly feathered cobalt halo, physically luminous in deep uniform navy #07152b atmosphere. Composition: ribbon occupies central area with generous dark margins, no crop through loop, subtle depth and reflection; crisp sophisticated studio light painting, no stock sparkles. This is one complete image including its background, not a cutout to overlay onto photos. No text, no logo, no letters, no interface, no shield, no QR, no product. Aim for clean stable framing suitable for independent decorative image areas.",
+      "reference_role": "Solo referencia de identidad/estilo; composición nueva integral",
+      "references": [
+        "Referencia16:1725a024f3e180e98a60ea62f9fc41a15e51ba6889932179e377a3b78ea456a8",
+        "Referencia05"
+      ],
+      "decision": "Aceptada tras revisión visual; solo conversión y reducción de tamaño",
+      "replaces": [
+        "public/images/brand/neon-loop-reference05.webp"
+      ]
+    },
+    {
+      "id": "security",
+      "file": "public/images/integral-20260909/security.webp",
+      "sha256": "be4971a008497df54666d4e31a4302a58cdc61def065fd205b26b422be72c107",
+      "generated_file": "exec-8ad64969-820f-41cc-b7da-c04877ae64ac.png",
+      "engine": "ImageGen integrado",
+      "prompt": "Use case: stylized-concept. Create a wholly new square coherent high-end medical data illustration: a translucent navy glass protective shield standing on a dark navy studio plinth, with an unbranded amber oral-solution bottle visible softly through the shield. Bottle has a plain white pharmaceutical label and black cap, no lettering. Fine cyan edge light reveals the shield and bottle in the same physical scene, realistic shared reflections and shadows, complete objects centered with generous breathing room. References are ONLY navy/cyan style references, do not paste logos, ellipses, loops or other pieces from them. A single unified composition from scratch. No check mark, no certification emblem, no official seal, no QR, no barcode, no text, no floating separate decorative overlays. Medical verification concept, subtle and credible rather than a guarantee of safety.",
+      "reference_role": "Solo referencia de identidad/estilo; composición nueva integral",
+      "references": [
+        "Referencia16:1725a024f3e180e98a60ea62f9fc41a15e51ba6889932179e377a3b78ea456a8",
+        "Referencia05"
+      ],
+      "decision": "Aceptada tras revisión visual; solo conversión y reducción de tamaño",
+      "replaces": [
+        "public/images/brand/shield-neon-v3.webp"
+      ]
+    },
+    {
+      "id": "og",
+      "file": "public/images/integral-20260909/og.webp",
+      "sha256": "0ea2981997a730e50f7de83944a10cb05486803042a6416b2630918afa228767",
+      "generated_file": "exec-a4b412b8-456f-40f3-8089-84420886b858.png",
+      "engine": "ImageGen integrado",
+      "prompt": "Use case: ads-marketing. Generate a wholly new finished website social preview composition for Traza medical traceability, landscape1200:630 aspect ratio. ONE coherent integrated designed scene from scratch. Original reference is only for geometric navy/cyan brand style; do not paste or overlay any existing logo or photograph. Deep navy #07152b studio background, on the right a complete elegant amber oral solution bottle and matching slim white carton with integral naturally printed pharmaceutical labels: 'traza', 'SOLUCIÓN ORAL', '120 ml', 'EJEMPLO'. Cyan lower band. Left generous editorial area with large exact geometric white brand wordmark 'traza' cyan underline under za, followed by clearly readable title on two lines 'Identidad digital' and 'para medicamentos'. Small 'traza.technology' below. All typography composed within the newly generated asset, matched style, clear hierarchy. Restrained cyan light ribbon in the background connects the scene without crossing label text. Entire products within frame, no cropped top/bottom, 8% safe outer margin. No QR, no barcode, no seals, no extra text or logos, no software UI. Polished coherent single finished image, not a collage or overlay assembly.",
+      "reference_role": "Solo referencia de identidad/estilo; composición nueva integral",
+      "references": [
+        "Referencia16:1725a024f3e180e98a60ea62f9fc41a15e51ba6889932179e377a3b78ea456a8"
+      ],
+      "decision": "Aceptada tras revisión visual; solo conversión y reducción de tamaño",
+      "replaces": [
+        "public/og/default.png compuesto por capas"
+      ]
     }
   ],
   "wordmark": {
@@ -22,5 +127,37 @@
     "script": "scripts/trace-brand-reference.mjs"
   },
   "icons": "Raster original16 incrustado sin alteraciones en favicon.svg; tamañosPNG y margen maskable generados por scripts/og-image.mjs.",
-  "cloud": "Árbol del PR2 y consulta directa en Claude confirman que no se suministró vector oficial ni capa de neón separada. No se aplicó ningún parche/bundleCloud."
+  "cloud": "Árbol del PR2 y consulta directa en Claude confirman que no se suministró vector oficial ni capa de neón separada. No se aplicó ningún parche/bundleCloud.",
+  "previous_snapshot": {
+    "date": "2026-09-09",
+    "task": "IA-20260908-204940-7B83",
+    "base": "a96a6e641370962c95acee47865703f0ac1eeb74",
+    "assets": [
+      {
+        "file": "public/images/brand/traza-orbit-original.jpg",
+        "sha256": "1725a024f3e180e98a60ea62f9fc41a15e51ba6889932179e377a3b78ea456a8",
+        "kind": "Original raster sin cambios",
+        "source": "Referencia 16 de Juan, recuperada de Claude BrandIA"
+      },
+      {
+        "file": "public/images/brand/neon-loop-reference05.webp",
+        "sha256": "55c99f4870ac46bda542a3190d49cf7d7ace520cc8effbfc59309e6661db2154",
+        "kind": "Recreación ImageGen, conversión WebP",
+        "source": "Referencia 05 de Juan; línea integrada en lámina raster, sin capa fuente separada"
+      }
+    ],
+    "wordmark": {
+      "file": "src/brand/wordmark.mjs",
+      "method": "Vectorización automática de contornos blancos del original16; simplificación1,15píxeles fuente. No dibujado a mano ni basado en Poppins. Derivado raster, no SVGoficial suministrado.",
+      "script": "scripts/trace-brand-reference.mjs"
+    },
+    "icons": "Raster original16 incrustado sin alteraciones en favicon.svg; tamañosPNG y margen maskable generados por scripts/og-image.mjs.",
+    "cloud": "Árbol del PR2 y consulta directa en Claude confirman que no se suministró vector oficial ni capa de neón separada. No se aplicó ningún parche/bundleCloud."
+  },
+  "direction": "Composiciones raster integrales nuevas; no se añaden logos, QR ni líneas sobre fotografías. QR funcional independiente, identidad de interfaz conservada.",
+  "preserved": {
+    "originals": "Archivos originales intactos; no usados como collages.",
+    "interface_identity": "Wordmark derivado raster y favicon/iconos originales conservados como identidad de interfaz. No se recibió un SVG oficial.",
+    "functional_codes": "QR PNG y SVG generados determinísticamente; siguen escaneables como controles separados, no imágenes de producto."
+  }
 }
