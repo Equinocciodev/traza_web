@@ -117,13 +117,15 @@ const recordHref = `${route(locale, 'verify')}?c=${encodeURIComponent(featured.c
   </section>
 </Base>
 <style>
+  /* Expanding the story must not anchor scrolling to its transcript or the following section. */
+  :global(body.home-v2) { overflow-anchor:none; }
   .v2-shell { width:min(90%,81.25rem); margin-inline:auto; }
   .hero-v3 { background:var(--color-navy-950); overflow:hidden; }
   .hero-v3__inner { display:grid; grid-template-columns:minmax(0,.9fr) minmax(0,1.1fr); gap:3rem; padding-block:clamp(4rem,7vw,7rem); align-items:start; }
   .hero-v3__copy { position:relative; z-index:1; }
   .hero-v3 h1 { color:#fff; font-size:clamp(2.4rem,5vw,4.25rem); line-height:1.08; letter-spacing:-.045em; margin:1.6rem 0; max-width:12ch; }
   .hero-v3 h1 > span { display:block; }
-  .hero-v3__intro { color:var(--color-neutral-200); font-size:1.125rem; max-width:33ch; line-height:1.65; }
+  .hero-v3__intro { color:#fff; font-size:clamp(1.25rem,1.6vw,1.375rem); font-weight:600; max-width:33ch; line-height:1.65; }
   .hero-v3__actions { display:flex; align-items:flex-start; flex-direction:column; gap:1.1rem; margin-top:2.5rem; }
   .hero-v3__secondary { display:inline-flex; align-items:center; gap:.8rem; color:#fff; min-height:48px; font-size:.875rem; text-decoration:none; }
   .hero-v3__secondary:hover { text-decoration:underline; }

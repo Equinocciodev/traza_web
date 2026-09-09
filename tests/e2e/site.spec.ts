@@ -222,15 +222,20 @@ test.describe('enlaces internos y controles', () => {
     const links = new Map<string, Set<string>>();
     for (const p of PAGES) {
       await page.goto(p.path);
+      // Client-side language links become absolute on the current preview origin.
+      // Compare origins exactly; both local and canonical links still undergo
+      // the same HTTP and dist checks below, while other origins retain the allowlist.
+      const internalOrigins = new Set([new URL(page.url()).origin, new URL(SITE_URL).origin]);
       const hrefs = await page.$$eval('a[href]', (as) => as.map((a) => a.getAttribute('href') ?? ''));
       for (const href of hrefs) {
         if (!href || href.startsWith('#') || /^(mailto|tel|javascript):/.test(href)) continue;
-        if (/^https?:\/\//.test(href) && !href.startsWith(SITE_URL)) {
+        const target = new URL(href, page.url());
+        if (!internalOrigins.has(target.origin)) {
           const allowed = content(p.locale).common.footer.columns.flatMap((column) => column.links).filter((link) => link.external).map((link) => link.href);
           expect.soft(allowed, `enlace externo aprobado en ${p.path}`).toContain(href);
           continue;
         }
-        const clean = href.replace(SITE_URL, '').split('#')[0]!.split('?')[0]!;
+        const clean = target.pathname;
         if (!links.has(clean)) links.set(clean, new Set());
         links.get(clean)!.add(p.path);
       }

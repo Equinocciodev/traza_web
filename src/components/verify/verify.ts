@@ -207,6 +207,14 @@ export function initVerifyApp(root: HTMLElement): void {
     report.close(true);
     if (source !== 'auto') hide(netRecovered);
     setView('loading');
+    // The current request, including a failed/pending one, owns the language links.
+    // Unknown-format examples clear the previous identifier rather than sharing arbitrary input.
+    const lookupUrl = new URL(location.href);
+    if (/^TRZ-[A-Z0-9]{4}-[A-Z0-9]{4}-[A-Z0-9]{4}$/.test(code)) lookupUrl.searchParams.set('c', code);
+    else lookupUrl.searchParams.delete('c');
+    lookupUrl.searchParams.set('t', tenant.id);
+    history.replaceState(null, '', lookupUrl);
+    window.dispatchEvent(new Event('traza:lookup-context'));
     track('verify_start', { mode: source, tenant: tenant.id });
     try {
       if (simulatedOffline) {
@@ -217,14 +225,6 @@ export function initVerifyApp(root: HTMLElement): void {
       if (signal.aborted) return;
       lastResult = result;
       lastError = null;
-      // Preserve the selected lookup across language changes, including manual/photo entry.
-      if (/^TRZ-[A-Z0-9]{4}-[A-Z0-9]{4}-[A-Z0-9]{4}$/.test(result.code)) {
-        const lookupUrl = new URL(location.href);
-        lookupUrl.searchParams.set('c', result.code);
-        lookupUrl.searchParams.set('t', tenant.id);
-        history.replaceState(null, '', lookupUrl);
-        window.dispatchEvent(new Event('traza:lookup-context'));
-      }
       renderResult(resultView, result, { strings, locale, tenant });
       revealResult();
       setView('result');

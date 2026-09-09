@@ -34,11 +34,31 @@ test.describe('escenarios por código (veredicto, motivo y comprobaciones según
       const unit = UNIT_BY_CODE.get(s.code!)!;
       const expected = evaluateUnit(unit, { registryName: TENANTS[unit.tenant].registryName.es });
 
+      // Record the transient loading contract before the real click. Sequential
+      // runner round trips can otherwise arrive after the mock request resolves.
+      await page.evaluate(() => {
+        const target = window as unknown as { __lookupLoadingEvidence: unknown };
+        target.__lookupLoadingEvidence = null;
+        const root = document.querySelector<HTMLElement>('[data-verify-app]')!;
+        const region = root.querySelector('[data-result-region]')!;
+        const loader = root.querySelector<HTMLElement>('[data-testid="verify-loading"]')!;
+        const observer = new MutationObserver(() => {
+          if (root.dataset.state !== 'loading') return;
+          const style = getComputedStyle(loader);
+          target.__lookupLoadingEvidence = {
+            state: root.dataset.state,
+            busy: region.getAttribute('aria-busy'),
+            visible: !loader.hidden && loader.getClientRects().length > 0 && style.display !== 'none' && style.visibility !== 'hidden',
+          };
+          observer.disconnect();
+        });
+        observer.observe(root, { attributes: true, attributeFilter: ['data-state'] });
+      });
       await runScenario(page, s.id);
       // Carga: la región de resultado queda ocupada (aria-busy) y el contenedor en estado loading.
-      await expect(app(page)).toHaveAttribute('data-state', 'loading');
-      await expect(page.locator('[data-result-region]')).toHaveAttribute('aria-busy', 'true');
-      await expect(page.getByTestId('verify-loading')).toBeVisible();
+      await expect.poll(() => page.evaluate(() =>
+        (window as unknown as { __lookupLoadingEvidence: unknown }).__lookupLoadingEvidence,
+      )).toEqual({ state: 'loading', busy: 'true', visible: true });
 
       await expect(result(page)).toBeVisible({ timeout: 10_000 });
       await expect(app(page)).toHaveAttribute('data-state', 'result');

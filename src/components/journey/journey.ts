@@ -383,6 +383,11 @@ export class JourneyController {
     opts: { animate: boolean; reveal: boolean; source: Source; announce?: boolean; duration?: number },
   ): Promise<void> {
     if (this.view !== 'ready' || this.model.lastRecorded < 0) return Promise.resolve();
+    // Manual navigation owns the next step, even before the first viewport notification.
+    if (opts.source === 'user' || opts.source === 'keyboard' || opts.source === 'step') {
+      this.autoplayed = true;
+      this.autoPaused = false;
+    }
     const target = Math.max(0, Math.min(this.model.lastRecorded, index));
     const changed = target !== this.current;
     const forward = target > this.current;

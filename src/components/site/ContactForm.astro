@@ -289,7 +289,7 @@ const fid = (name: string) => `${id}-${name}`;
       if (summaryList) summaryList.replaceChildren();
     };
 
-    const showSummary = (errors: { field: Field; message: string }[]) => {
+    const showSummary = (errors: { field: Field; message: string }[], focus = true) => {
       if (!summary || !summaryList) return;
       summaryList.replaceChildren(
         ...errors.map(({ field, message }) => {
@@ -307,7 +307,7 @@ const fid = (name: string) => `${id}-${name}`;
         }),
       );
       summary.hidden = false;
-      summary.focus();
+      if (focus) summary.focus();
     };
 
     const hidePanels = () => {
@@ -347,8 +347,10 @@ const fid = (name: string) => `${id}-${name}`;
     fields.forEach((field) => {
       const revalidate = () => {
         if (!attempted) return;
-        showFieldError(field, validate(field));
-        if (summary && !summary.hidden && validateAll().length === 0) hideSummary();
+        const errors = validateAll();
+        // Keep the summary consistent with inline errors without moving focus while typing.
+        if (errors.length > 0) showSummary(errors, false);
+        else hideSummary();
       };
       field.addEventListener('input', revalidate);
       field.addEventListener('change', revalidate);

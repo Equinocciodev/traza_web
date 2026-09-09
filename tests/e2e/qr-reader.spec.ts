@@ -157,7 +157,15 @@ test('QR ajeno: formato desconocido sin abrir ni consultar su URL', async ({ pag
   page.on('request', request => { if (new URL(request.url()).origin !== new URL(startingUrl).origin) external.push(request.url()); });
   await expectRead(page, () => page.getByTestId('qr-image-input').setInputFiles(fixture('foreign.png')), null, 'unknown_format');
   await expect(result(page)).toHaveAttribute('data-verdict', 'unverifiable');
-  expect(page.url()).toBe(startingUrl);
+  // Local lookup-context normalization may add t=traza. It must never navigate
+  // to the QR payload or retain a preceding identifier for an unknown format.
+  const currentUrl = new URL(page.url());
+  const beforeUrl = new URL(startingUrl);
+  expect(currentUrl.origin).toBe(beforeUrl.origin);
+  expect(currentUrl.pathname).toBe(beforeUrl.pathname);
+  expect(currentUrl.hash).toBe(beforeUrl.hash);
+  expect(currentUrl.searchParams.get('c')).toBeNull();
+  expect(currentUrl.searchParams.get('t')).toBe('traza');
   expect(popups).toEqual([]);
   expect(external).toEqual([]);
 });

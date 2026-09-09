@@ -500,6 +500,7 @@ export function initInstitutional(root: HTMLElement): void {
 
   /** Abre el detalle. `focus=false` (cambio de rol) refresca el contenido sin revelar el panel en móvil. */
   function openAlert(id: string, focus = true): void {
+    if (state.load !== 'ready') return;
     const a = alertById(id);
     if (!a || !canSeeAlert(a)) return;
     state.selectedAlert = id;
@@ -607,6 +608,7 @@ export function initInstitutional(root: HTMLElement): void {
   }
 
   function openCase(id: string, focus = true): void {
+    if (state.load !== 'ready') return;
     const c = caseById(id);
     if (!c || !canSeeCase(c)) return;
     state.selectedCase = id;
@@ -687,6 +689,8 @@ export function initInstitutional(root: HTMLElement): void {
     loadingText.hidden = load !== 'loading';
     errorBox.hidden = load !== 'error';
     for (const s of sections) s.setAttribute('aria-busy', String(load === 'loading'));
+    // All panels share the same load state, including cross-component case/audit lists.
+    for (const el of qa('[data-loadable]')) el.hidden = load !== 'ready';
     if (load !== 'ready') {
       clearAlertDetail();
       clearCaseDetail();
@@ -899,6 +903,8 @@ export function initInstitutional(root: HTMLElement): void {
     if (!(target instanceof Element)) return;
     const el = target.closest<HTMLElement>('[data-action], [data-alert-open], [data-case-open], [data-filter-severity], [data-filter-status], [data-filter-role]');
     if (!el || !root.contains(el)) return;
+    // A hidden/stale control must not mutate the session while the registry is unavailable.
+    if (state.load !== 'ready' && el.dataset.action !== 'retry' && el.dataset.action !== 'simulate-error') return;
 
     if (el.dataset.alertOpen !== undefined) {
       ev.preventDefault();

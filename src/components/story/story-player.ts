@@ -113,6 +113,7 @@ export function initStoryPlayers(): void {
       });
       if (heading) heading.textContent = panel().dataset.title ?? heading.textContent;
       showStep(0, false);
+      say('');
       if (focus) tabs[index].focus();
     }
 
@@ -150,6 +151,7 @@ export function initStoryPlayers(): void {
         stop();
         engaged = false;
         showStep(0, false);
+        say('');
         button('play')?.focus();
       });
       item.querySelectorAll<HTMLButtonElement>('[data-story-chapter]').forEach((chapter) => {

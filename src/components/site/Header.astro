@@ -132,6 +132,7 @@ function isCurrent(item: NavItem): boolean {
     document.addEventListener('keydown', (event) => {
       if (event.key === 'Escape' && mq.matches) {
         items.forEach((item) => {
+          if (!item.matches(':hover, :focus-within')) return;
           if (item.querySelector('.site-nav__sublist')?.contains(document.activeElement)) {
             item.querySelector<HTMLAnchorElement>('.site-nav__link')?.focus();
           }
