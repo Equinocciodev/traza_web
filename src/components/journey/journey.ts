@@ -388,6 +388,8 @@ export class JourneyController {
     const forward = target > this.current;
     this.current = target;
     this.render({ reveal: opts.reveal && changed && forward });
+    // La navegación manual también cambia si corresponde reproducir o empezar de nuevo.
+    this.updatePlayButton();
     const done = this.setLine(lineProgress(target, this.model.total), opts.animate && changed, opts.duration ?? TIMING.strokeManual);
     if (changed) {
       if (opts.announce !== false) this.announce(stageAnnouncement(this.model, target, this.data));
