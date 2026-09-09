@@ -200,5 +200,26 @@
         }
       ]
     }
-  ]
+  ],
+  "responsive_optimization_20260909": {
+    "source": "public/images/integral-20260909/neon-v2.webp",
+    "method": "Sharp proportional resize and WebP conversion only; composition and transparency unchanged",
+    "variants": [
+      {
+        "path": "public/images/integral-20260909/neon-v2-1024.webp",
+        "bytes": 69462,
+        "sha256": "75aa49805e143ea0551004345d33319bb4c2c5a7ee06346b5d9b567f17793584"
+      },
+      {
+        "path": "public/images/integral-20260909/neon-v2-480.webp",
+        "bytes": 21348,
+        "sha256": "5a6764de5afae7066c25f70a53d2be12782b10e3ee2d09353462e4cb2503a497"
+      },
+      {
+        "path": "public/images/integral-20260909/neon-v2-768.webp",
+        "bytes": 42780,
+        "sha256": "94115a75bb961c48fe4204b4505aa988ac39ef7b01ed0e1e463d32d0c03a27f9"
+      }
+    ]
+  }
 }

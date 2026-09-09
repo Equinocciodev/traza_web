@@ -74,6 +74,7 @@ export const STAMP: Record<Locale, StampContent> = {
     previewCaption: 'Label design concept. The functional QR and twelve fields are shown below.',
     dataTitle: 'The unit data, field by field',
     ...shared,
+    concentration: concentration === 'No indicada' ? 'Not stated' : concentration,
     eyebrow: 'Visible identity. Connected traceability.',
     title: 'Twelve features of the stamp.',
     intro: 'The proposed stamp brings together each unit’s identity and medicine details. The QR opens its lookup; the barcode represents the example print sequence.',

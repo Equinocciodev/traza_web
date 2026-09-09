@@ -371,10 +371,31 @@ describe('ejemplos de medicamentos', () => {
     for (const unit of UNITS) {
       expect(unit.product.presentation).toContain('120 ml');
       expect(unit.product.dosageForm).toEqual({ es: 'Solución oral', en: 'Oral solution' });
-      expect(unit.product.concentration).toMatch(/mg\/ml.*EJEMPLO/);
+      if (unit.product.brand === 'Traza') expect(unit.product.concentration).toBe('No indicada · EJEMPLO');
+      else expect(unit.product.concentration).toMatch(/mg\/ml.*EJEMPLO/);
       expect(unit.product.healthRegistration).toBe('RS-EJEMPLO');
       expect(unit.product.category.es).toMatch(/^Medicamentos/);
       expect(unit.product.category.en).toMatch(/^Medicines/);
+    }
+  });
+});
+
+
+describe('coherencia de la alerta de activación', () => {
+  it('la auditoría abre la alerta en su fecha y la cierra después de la activación registrada', () => {
+    const alert = ALERTS.find(a => a.id === 'ALR-2026-026')!;
+    const entries = AUDIT_LOG.filter(a => a.object === alert.id);
+    const created = entries.find(a => a.action === 'alert_created')!;
+    const closed = entries.find(a => a.action === 'alert_closed')!;
+    const unit = UNIT_BY_CODE.get(alert.unitCode)!;
+    const activation = unit.events.find(e => e.stage === 'activation')!;
+    expect(created.at).toBe(alert.detectedAt);
+    expect(Date.parse(created.at)).toBeLessThan(Date.parse(activation.at));
+    expect(Date.parse(closed.at)).toBeGreaterThan(Date.parse(activation.at));
+    for (const entry of entries) {
+      expect(entry.description.es).toMatch(/activación/i);
+      expect(entry.description.en).toMatch(/activation/i);
+      expect(JSON.stringify(entry.description)).not.toMatch(/retail|comercio|recepción|receipt/i);
     }
   });
 });

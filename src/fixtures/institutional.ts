@@ -816,21 +816,21 @@ export const AUDIT_LOG: readonly AuditEntry[] = [
   },
   {
     id: 'AUD-2026-0188',
-    at: '2026-07-22T17:30:00Z',
+    at: '2026-07-13T10:05:00Z',
     actorId: 'sys-rules',
     action: 'alert_closed',
     object: 'ALR-2026-026',
     result: { es: 'Cerrada automáticamente', en: 'Closed automatically' },
-    description: { es: 'Evento de recepción en comercio recibido; cadena completa.', en: 'Retail receipt event received; chain complete.' },
+    description: { es: 'Activación registrada a las 10:00; ficha revisada y alerta cerrada.', en: 'Activation recorded at 10:00; record reviewed and alert closed.' },
   },
   {
     id: 'AUD-2026-0187',
-    at: '2026-07-22T11:05:00Z',
+    at: '2026-07-13T09:05:00Z',
     actorId: 'sys-rules',
     action: 'alert_created',
     object: 'ALR-2026-026',
     result: { es: 'Creada · informativa', en: 'Created · info' },
-    description: { es: 'Recepción en comercio fuera del umbral de 24 h para TRZ-7F2K-4K7Q-92FA.', en: 'Retail receipt outside the 24 h threshold for TRZ-7F2K-4K7Q-92FA.' },
+    description: { es: 'Consulta anterior a la activación de TRZ-7F2K-4K7Q-92FA; revisión de ficha pendiente.', en: 'Lookup before activation of TRZ-7F2K-4K7Q-92FA; record review pending.' },
   },
 ];
 

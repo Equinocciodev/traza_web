@@ -112,6 +112,7 @@ export interface UnitProduct {
   /** Datos de ejemplo del medicamento; nunca una autorización sanitaria real. */
   dosageForm?: LocalizedText;
   concentration?: string;
+  concentrationLabel?: LocalizedText;
   healthRegistration?: string;
   /** Categoría genérica. */
   category: LocalizedText;

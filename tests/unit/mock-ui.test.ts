@@ -42,7 +42,7 @@ describe('contenido de los ejemplos de interfaz', () => {
       expect(data.unit.lot).toBe(featured.origin.lot);
       expect(data.phone.rows.some(row => row.value === featured.origin.lot)).toBe(true);
       expect(data.phone.rows.some(row => /120 ml/.test(row.value))).toBe(true);
-      expect(data.phone.rows.some(row => /10 mg\/ml/.test(row.value))).toBe(true);
+      expect(data.phone.rows.some(row => /10 mg\/ml|Cerro Alto/.test(row.value))).toBe(false);
     }
     expect(MOCK_UI.es.unit.name).toBe(featured.product.name);
     expect(MOCK_UI.es.unit.presentation).toBe(featured.product.presentation);

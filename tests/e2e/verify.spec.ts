@@ -362,7 +362,7 @@ test.describe('ficha visible de medicamentos', () => {
       await expect(details).toBeVisible();
       const expectedFields = {
         dosageForm: unit.product.dosageForm?.[locale],
-        concentration: unit.product.concentration,
+        concentration: unit.product.concentrationLabel?.[locale] ?? unit.product.concentration,
         healthRegistration: unit.product.healthRegistration,
         lot: unit.origin.lot,
       };

@@ -17,7 +17,7 @@ import { join } from 'node:path';
 const args = Object.fromEntries(process.argv.slice(2).map((a) => (a.startsWith('--') ? a.slice(2).split('=') : [a, true])).map(([k, v]) => [k, v ?? true]));
 const base = args.base ?? 'http://127.0.0.1:4321';
 const out = args.out ?? join('.lighthouse', new Date().toISOString().slice(0, 19).replace(/[:T]/g, '-'));
-const pages = (args.pages ?? '/,/verificar/,/recorrido/,/institucional/,/casos/licores/,/en/').split(',').filter(Boolean);
+const pages = (args.pages ?? '/,/verificar/,/recorrido/,/institucional/,/casos/medicamentos/,/en/').split(',').filter(Boolean);
 const presets = (args.presets ?? 'mobile,desktop').split(',');
 const chrome = process.env.CHROME_PATH ?? (existsSync('/opt/pw-browsers/chromium') ? '/opt/pw-browsers/chromium' : undefined);
 

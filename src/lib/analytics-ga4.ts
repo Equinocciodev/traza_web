@@ -59,7 +59,9 @@ function loadGtag(): Promise<boolean> {
         window.dataLayer?.push(arguments);
       };
       window.gtag('js', new Date());
-      window.gtag('config', id);
+      // Base.astro sends the page_view explicitly. Disable the automatic config hit
+      // to count one view per document (developers.google.com/analytics/devguides/collection/ga4/views).
+      window.gtag('config', id, { send_page_view: false });
 
       const script = document.createElement('script');
       script.async = true;

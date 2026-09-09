@@ -54,7 +54,7 @@ export const MOCK_UI: Record<Locale, MockUiContent> = {
     },
     phone: {
       title: 'Registro encontrado', intro: 'Compara esta información con la etiqueta del producto.', codeLabel: 'Identificador de unidad', cta: 'Verificar esta unidad',
-      rows: [{ label: 'Producto', value: 'Solución oral Cerro Alto' }, { label: 'Presentación', value: 'Frasco 120 ml · 10 mg/ml' }, { label: 'Lote', value: unit.lot }, { label: 'Estado', value: 'Identificador activado' }],
+      rows: [{ label: 'Producto', value: 'Solución oral Traza' }, { label: 'Presentación', value: 'Frasco 120 ml' }, { label: 'Lote', value: unit.lot }, { label: 'Estado', value: 'Identificador activado' }],
       note: 'Encontrar el registro no certifica el contenido del envase. Revisa las señales y compara la unidad física.',
     },
     mini: {
@@ -64,7 +64,7 @@ export const MOCK_UI: Record<Locale, MockUiContent> = {
     },
   },
   en: {
-    exampleLabel: 'Example · Illustrative data', unit: { ...unit, name: 'Cerro Alto oral solution', presentation: '120 ml bottle · 10 mg/ml' },
+    exampleLabel: 'Example · Illustrative data', unit: { ...unit, name: 'Traza oral solution', presentation: '120 ml bottle' },
     dashboard: {
       title: 'Workspace', context: 'Example · Pharmaceutical operations', navLabel: 'Explore the platform',
       note: 'Illustrative view. Links open sections of this website; the figures do not describe a live operation.',
@@ -89,7 +89,7 @@ export const MOCK_UI: Record<Locale, MockUiContent> = {
     },
     phone: {
       title: 'Record found', intro: 'Compare this information with the product label.', codeLabel: 'Unit identifier', cta: 'Verify this unit',
-      rows: [{ label: 'Product', value: 'Cerro Alto oral solution' }, { label: 'Presentation', value: '120 ml bottle · 10 mg/ml' }, { label: 'Lot', value: unit.lot }, { label: 'Status', value: 'Identifier activated' }],
+      rows: [{ label: 'Product', value: 'Traza oral solution' }, { label: 'Presentation', value: '120 ml bottle' }, { label: 'Lot', value: unit.lot }, { label: 'Status', value: 'Identifier activated' }],
       note: 'Finding a record does not certify the contents of the package. Review the signals and compare the physical unit.',
     },
     mini: {

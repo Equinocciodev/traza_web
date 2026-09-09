@@ -432,15 +432,15 @@ export const verify: VerifyContent = {
     },
     failure: {
       offline: {
-        title: 'Offline: the report was not sent',
+        title: 'Offline: the report was not prepared',
         body: 'Your text is kept; when the connection returns, press "Retry".',
       },
       server: {
         title: 'The report could not be prepared',
-        body: 'The service returned an error. Your text is kept; retry in a few seconds.',
+        body: 'Preparation returned an error. Your text is kept; retry in a few seconds.',
       },
       timeout: {
-        title: 'Sending took too long',
+        title: 'Preparation took too long',
         body: 'The request timed out. Your text is kept; retry in a few seconds.',
       },
       network: {
@@ -448,8 +448,8 @@ export const verify: VerifyContent = {
         body: 'The copy could not be prepared on this device. Your text remains on the page; check the information and try again.',
       },
       aborted: {
-        title: 'Sending cancelled',
-        body: 'Sending was interrupted before finishing.',
+        title: 'Preparation cancelled',
+        body: 'Preparation was interrupted before finishing.',
       },
     },
     retry: 'Retry',

@@ -434,15 +434,15 @@ export const verify: VerifyContent = {
     },
     failure: {
       offline: {
-        title: 'Sin conexión: el reporte no se envió',
+        title: 'Sin conexión: el reporte no se preparó',
         body: 'Conserve lo escrito; cuando la conexión vuelva, pulse «Reintentar».',
       },
       server: {
         title: 'No se pudo preparar el reporte',
-        body: 'El servicio devolvió un error. Lo escrito se conserva; reintente en unos segundos.',
+        body: 'La preparación devolvió un error. Lo escrito se conserva; reintente en unos segundos.',
       },
       timeout: {
-        title: 'El envío tardó demasiado',
+        title: 'La preparación tardó demasiado',
         body: 'Se agotó el tiempo de espera. Lo escrito se conserva; reintente en unos segundos.',
       },
       network: {
@@ -450,8 +450,8 @@ export const verify: VerifyContent = {
         body: 'No se pudo preparar la copia en este dispositivo. Lo escrito se conserva en la página; revise los datos y vuelva a intentarlo.',
       },
       aborted: {
-        title: 'Envío cancelado',
-        body: 'El envío se interrumpió antes de terminar.',
+        title: 'Preparación cancelada',
+        body: 'La preparación se interrumpió antes de terminar.',
       },
     },
     retry: 'Reintentar',

@@ -19,6 +19,7 @@ const DIR = path.join(ROOT, 'public', 'images', 'integral-20260909');
 const TARGETS = [
   { file: 'product.webp', widths: [480, 768, 1024] },
   { file: 'story.webp', widths: [384, 512, 768] },
+  { file: 'neon-v2.webp', widths: [480, 768, 1024] },
 ];
 
 async function main() {

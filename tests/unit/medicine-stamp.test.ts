@@ -32,7 +32,7 @@ describe('medicine stamp: reference fields, data and public lookup', () => {
     expect(c.registration).toBe(unit.product.healthRegistration);
     expect(c.batch).toBe(unit.origin.lot);
     expect(unit.product.presentation).toContain(c.volume);
-    expect(c.concentration).toBe('10 mg/ml');
+    expect(c.concentration).toBe(locale === 'es' ? 'No indicada' : 'Not stated');
     expect(c.issuedAt).toBe(unit.signature.issuedAt.slice(0, 10));
     expect(c.sequence).toBe(STAMP_PRINT_BARCODE.value);
     expect(c.sequence).not.toBe(c.serial);

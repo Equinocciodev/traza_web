@@ -101,7 +101,7 @@ export const platform: PlatformContent = {
         },
         {
           "label": "Concentration",
-          "value": "10 mg/ml · EXAMPLE"
+          "value": "Not stated · EXAMPLE"
         },
         {
           "label": "Health registration",
@@ -280,8 +280,8 @@ export const platform: PlatformContent = {
     "passport": {
       "kicker": "Digital passport",
       "exampleLabel": "Example",
-      "title": "Cerro Alto oral solution",
-      "presentation": "120 ml bottle · 10 mg/ml",
+      "title": "Traza oral solution",
+      "presentation": "120 ml bottle",
       "status": "Identifier activated",
       "codeLabel": "Unit identifier",
       "code": "TRZ-7F2K-4K7Q-92FA",
@@ -296,7 +296,7 @@ export const platform: PlatformContent = {
         },
         {
           "label": "Concentration",
-          "value": "10 mg/ml · EXAMPLE"
+          "value": "Not stated · EXAMPLE"
         },
         {
           "label": "Health registration",

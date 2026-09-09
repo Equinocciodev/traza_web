@@ -32,13 +32,14 @@ const ORGS = {
 };
 
 const ORAL_SOLUTION: Unit['product'] = {
-  name: 'Solución oral Cerro Alto',
-  presentation: 'Frasco 120 ml · 10 mg/ml',
+  name: 'Solución oral Traza',
+  presentation: 'Frasco 120 ml',
   dosageForm: { es: 'Solución oral', en: 'Oral solution' },
-  concentration: '10 mg/ml · EJEMPLO',
+  concentration: 'No indicada · EJEMPLO',
+  concentrationLabel: { es: 'No indicada en el envase de ejemplo', en: 'Not stated on the example package' },
   healthRegistration: 'RS-EJEMPLO',
   category: { es: 'Medicamentos · solución oral', en: 'Medicines · oral solution' },
-  brand: 'Cerro Alto',
+  brand: 'Traza',
 };
 
 const IMPORTED_SOLUTION: Unit['product'] = {

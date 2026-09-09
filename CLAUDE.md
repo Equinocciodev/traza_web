@@ -122,8 +122,9 @@ ajuste de Pages.
 ## Cosas que sorprenden
 
 - **`public/_headers` no se aplica.** El archivo lleva la CSP estricta y las cabeceras de seguridad
-  en formato Netlify/Cloudflare Pages, pero GitHub Pages no envía cabeceras propias: hoy el sitio se
-  sirve **sin** esas cabeceras. No asumas que la CSP está activa en producción.
+  en formato Netlify/Cloudflare Pages, pero GitHub Pages no aplica ese archivo. El 9 de septiembre se comprobó que el proxy Cloudflare añade
+  cabeceras propias y una CSP **Report-Only** distinta de este archivo. No asumir que esa
+  política se impone ni que cambiar `_headers` modifica el proxy; véase `CIERRE_DEMO.md`.
 - **Cloudflare está delante del dominio.** El proxy está activo, así que su "managed robots.txt"
   puede añadir bloqueos de rastreadores de IA por delante de nuestro `robots.txt`, y su caché puede
   servir HTML antiguo tras un despliegue. Ese comportamiento se configura en el panel, no aquí.

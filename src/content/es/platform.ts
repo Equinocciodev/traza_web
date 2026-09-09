@@ -101,7 +101,7 @@ export const platform: PlatformContent = {
         },
         {
           "label": "Concentración",
-          "value": "10 mg/ml · EJEMPLO"
+          "value": "No indicada · EJEMPLO"
         },
         {
           "label": "Registro sanitario",
@@ -280,8 +280,8 @@ export const platform: PlatformContent = {
     "passport": {
       "kicker": "Pasaporte digital",
       "exampleLabel": "Ejemplo",
-      "title": "Solución oral Cerro Alto",
-      "presentation": "Frasco 120 ml · 10 mg/ml",
+      "title": "Solución oral Traza",
+      "presentation": "Frasco 120 ml",
       "status": "Identificador activado",
       "codeLabel": "Identificador de unidad",
       "code": "TRZ-7F2K-4K7Q-92FA",
@@ -296,7 +296,7 @@ export const platform: PlatformContent = {
         },
         {
           "label": "Concentración",
-          "value": "10 mg/ml · EJEMPLO"
+          "value": "No indicada · EJEMPLO"
         },
         {
           "label": "Registro sanitario",

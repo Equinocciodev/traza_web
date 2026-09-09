@@ -1,0 +1,46 @@
+import { chromium, expect } from '@playwright/test';
+import { writeFileSync, mkdirSync } from 'node:fs';
+
+const base = process.env.MEASURE_BASE ?? 'https://traza.technology';
+const out = process.env.MEASURE_OUT ?? '.lighthouse/interactions.json';
+const browser = await chromium.launch({ channel: 'chrome', headless: true });
+const rows = [];
+mkdirSync(out.substring(0, out.lastIndexOf('/')), { recursive: true });
+const save = (extra = {}) => writeFileSync(out, JSON.stringify({ base, date: new Date().toISOString(), condition: 'Chrome headless, no throttle, 3 samples each width, Playwright action-to-visible includes polling overhead; journey from observed playing to ended', rows, ...extra }, null, 2));
+for (const width of [1366, 390]) for (let run = 1; run <= 3; run++) {
+  const page = await browser.newPage({ viewport: { width, height: 844 } });
+  await page.goto(base + '/verificar/', { waitUntil: 'load' });
+  await expect(page.locator('[data-verify-app]')).toHaveAttribute('data-enhanced', 'true', { timeout: 15000 });
+  await page.getByTestId('manual-input').fill('TRZ-7F2K-4K7Q-92FA');
+  let started = performance.now();
+  await page.getByTestId('manual-input').press('Enter');
+  await expect(page.getByTestId('verify-result')).toBeVisible();
+  const manualMs = performance.now() - started;
+  await page.getByTestId('read-example-qr').scrollIntoViewIfNeeded();
+  started = performance.now();
+  await page.getByTestId('read-example-qr').click();
+  await expect(page.locator('[data-verify-app]')).toHaveAttribute('data-state', 'loading');
+  await expect(page.getByTestId('verify-result')).toBeVisible();
+  const qrToResultMs = performance.now() - started;
+  await page.goto(base + '/recorrido/', { waitUntil: 'domcontentloaded' });
+  await page.locator('[data-jr-diagram]').scrollIntoViewIfNeeded();
+  await expect(page.getByTestId('journey-play')).toHaveAttribute('data-state', 'playing');
+  started = performance.now();
+  await expect(page.getByTestId('journey-play')).toHaveAttribute('data-state', 'ended', { timeout: 12000 });
+  const journeyMs = performance.now() - started;
+  const finalStage = await page.getByTestId('journey').getAttribute('data-stage-index');
+  rows.push({ width, run, manualMs, qrToResultMs, journeyMs, finalStage });
+  save();
+  console.log(rows.at(-1));
+  await page.close();
+}
+const context = await browser.newContext();
+await context.addInitScript(() => Object.defineProperty(navigator, 'doNotTrack', { value: '1', configurable: true }));
+const page = await context.newPage();
+const requests = [];
+page.on('request', request => requests.push(request.url()));
+await page.goto(base + '/', { waitUntil: 'load' });
+await page.waitForTimeout(1500);
+const dnt = { googleRequests: requests.filter(url => /googletagmanager|google-analytics/.test(url)), cloudflareRequests: requests.filter(url => /cloudflareinsights/.test(url)), cookieNames: (await context.cookies()).map(c => c.name) };
+await browser.close();
+save({ dnt });

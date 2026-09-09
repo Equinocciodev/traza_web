@@ -76,7 +76,7 @@ function isCurrent(item: NavItem): boolean {
       <div class="site-nav__actions">
         {/* Accesibilidad (WCAG 2.5.3): el texto visible forma parte del nombre accesible; la descripción
             del diccionario se añade oculta y en el idioma de la página (el visible lleva su propio lang). */}
-        <a class="lang-switch" href={switchHref} hreflang={LOCALE_LABELS[other].htmlLang} data-lang-switch>
+        <a class="lang-switch" href={switchHref} hreflang={LOCALE_LABELS[other].htmlLang} data-lang-switch data-preserve-lookup={routeKey === 'verify' || undefined}>
           <span lang={LOCALE_LABELS[other].htmlLang}>{common.languageSwitch.switchTo}</span>
           <span class="visually-hidden">, {common.languageSwitch.switchAria}</span>
         </a>
@@ -146,7 +146,21 @@ function isCurrent(item: NavItem): boolean {
       });
     });
 
-    header.querySelector('[data-lang-switch]')?.addEventListener('click', () => track('language_switch'));
+    const languageLink = header.querySelector<HTMLAnchorElement>('[data-lang-switch]');
+    function syncLookupLanguage() {
+      if (!languageLink?.hasAttribute('data-preserve-lookup')) return;
+      const target = new URL(languageLink.href);
+      const current = new URL(location.href);
+      for (const key of ['c', 't']) {
+        const value = current.searchParams.get(key);
+        if (value && value.length <= 128) target.searchParams.set(key, value);
+        else target.searchParams.delete(key);
+      }
+      languageLink.href = target.href;
+    }
+    syncLookupLanguage();
+    window.addEventListener('traza:lookup-context', syncLookupLanguage);
+    languageLink?.addEventListener('click', () => { syncLookupLanguage(); track('language_switch'); });
   }
 </script>
 

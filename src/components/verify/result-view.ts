@@ -172,7 +172,7 @@ function renderUnit(section: HTMLElement, unit: PublicUnit, ctx: RenderContext):
   set('product', unit.product.name);
   set('presentation', unit.product.presentation);
   set('dosageForm', unit.product.dosageForm?.[locale] ?? '—');
-  set('concentration', unit.product.concentration ?? '—');
+  set('concentration', unit.product.concentrationLabel?.[locale] ?? unit.product.concentration ?? '—');
   set('healthRegistration', unit.product.healthRegistration ?? '—');
   set('brand', unit.product.brand);
   set('category', unit.product.category[locale]);

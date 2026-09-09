@@ -20,7 +20,7 @@ export const home: HomeContent = {
       code: 'TRZ-7F2K-4K7Q-92FA',
       fields: [
         { label: 'Fabricante / importador', value: 'Laboratorio Cerro Alto' },
-        { label: 'Producto / presentación', value: 'Solución oral Cerro Alto · frasco 120 ml' },
+        { label: 'Producto / presentación', value: 'Solución oral Traza · frasco 120 ml' },
         { label: 'Lote / vencimiento', value: 'LOTE-VS-26-012 · vence 03/2031' },
         { label: 'Estado del identificador', value: 'Activado · con consultas registradas' },
       ],
