@@ -1,13 +1,15 @@
 import { expect, test } from '@playwright/test';
 
 const code = 'TRZ-7F2K-4K7Q-92FA';
-test('QR y consulta manual conservan código y contexto ES ↔ EN', async ({ page }) => {
-  await page.goto(`/verificar/?c=${code}&t=medicamentos`);
+for (const selector of ['[data-lang-switch]', '[data-footer-lang-switch]']) {
+test(`QR y consulta manual conservan código y contexto ES ↔ EN: ${selector}`, async ({ page }) => {
+  await page.goto(`/verificar/?c=${code}&t=medicamentos&irrelevant=discard`);
   await expect(page.getByTestId('verify-result')).toBeVisible();
   for (const path of ['/en/verify/', '/verificar/']) {
-    const link = page.locator('[data-lang-switch]');
+    const link = page.locator(selector);
     if (!(await link.isVisible())) await page.locator('[data-nav-toggle]').click();
     expect(new URL((await link.getAttribute('href'))!, page.url()).searchParams.get('c')).toBe(code);
+    expect(new URL((await link.getAttribute('href'))!, page.url()).searchParams.has('irrelevant')).toBe(false);
     await link.click();
     await expect(page).toHaveURL(new RegExp(path));
     await expect(page.getByTestId('result-code')).toHaveText(code);
@@ -19,8 +21,10 @@ test('QR y consulta manual conservan código y contexto ES ↔ EN', async ({ pag
   await page.getByTestId('manual-input').fill('TRZ-7F2K-8H3M-61PC');
   await page.getByTestId('manual-input').press('Enter');
   await expect(page.getByTestId('result-code')).toHaveText('TRZ-7F2K-8H3M-61PC');
-  if (!(await page.locator('[data-lang-switch]').isVisible())) await page.locator('[data-nav-toggle]').click();
-  await page.locator('[data-lang-switch]').click();
+  if (!(await page.locator(selector).isVisible())) await page.locator('[data-nav-toggle]').click();
+  await page.locator(selector).click();
   await expect(page.getByTestId('result-code')).toHaveText('TRZ-7F2K-8H3M-61PC');
   await expect(page.locator('[data-verify-app]')).toHaveAttribute('data-tenant', 'medicamentos');
 });
+
+}

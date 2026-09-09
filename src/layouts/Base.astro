@@ -211,6 +211,8 @@ const jsonLd = {
 <script>
   import { initMotion } from '@/lib/motion';
   import { track } from '@/lib/analytics';
+  import { initLookupLanguage } from '@/lib/lookup-language';
+  initLookupLanguage();
   initMotion();
   track('page_view');
 </script>

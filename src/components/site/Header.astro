@@ -146,21 +146,7 @@ function isCurrent(item: NavItem): boolean {
       });
     });
 
-    const languageLink = header.querySelector<HTMLAnchorElement>('[data-lang-switch]');
-    function syncLookupLanguage() {
-      if (!languageLink?.hasAttribute('data-preserve-lookup')) return;
-      const target = new URL(languageLink.href);
-      const current = new URL(location.href);
-      for (const key of ['c', 't']) {
-        const value = current.searchParams.get(key);
-        if (value && value.length <= 128) target.searchParams.set(key, value);
-        else target.searchParams.delete(key);
-      }
-      languageLink.href = target.href;
-    }
-    syncLookupLanguage();
-    window.addEventListener('traza:lookup-context', syncLookupLanguage);
-    languageLink?.addEventListener('click', () => { syncLookupLanguage(); track('language_switch'); });
+    header.querySelector('[data-lang-switch]')?.addEventListener('click', () => track('language_switch'));
   }
 </script>
 

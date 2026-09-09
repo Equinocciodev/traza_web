@@ -4,7 +4,7 @@ Corte: 9 de septiembre de 2026. Sitio: https://traza.technology/. Base revisada:
 
 ## Correcciones de esta revisión
 
-1. El cambio ES ↔ EN conserva el código de unidad y el ámbito `t`, tanto desde el QR como después de una entrada manual o lectura de imagen. Solo se conserva un identificador Traza válido; un QR ajeno no se abre ni se añade a la URL.
+1. El cambio ES ↔ EN, tanto en cabecera como en pie mediante una lógica común, conserva el código de unidad y el ámbito `t`, tanto desde el QR como después de una entrada manual o lectura de imagen. Solo se conserva un identificador Traza válido; un QR ajeno no se abre ni se añade a la URL.
 2. La ficha, el teléfono ilustrativo y las vistas de producto usan Solución oral Traza, marca Traza y frasco de 120 ml, en coherencia con el envase aprobado. La concentración no visible se declara **no indicada**, sin inventar un valor impreso. El fabricante y la referencia sanitaria siguen siendo datos de ejemplo del registro, no acreditados por la imagen ni por una autoridad.
 3. La cronología de ALR-2026-026 coincide con su alerta: consulta el 13 de julio a las 09:05 UTC, activación a las 10:00 y cierre a las 10:05. Se retiraron de esa historia las referencias residuales a recepción comercial/logística.
 4. Los errores del reporte hablan de preparación local y conservan el texto para reintento. No anuncian un envío inexistente.
@@ -95,15 +95,32 @@ Medianas de la base pública `7f5e2d6` (36 muestras):
 | 390 | `/empresa/` | 78 ms | 0.648 s | 0.808 s | 0.788 s | 0.0000 | 225.8 KiB | 19.3 KiB |
 | 390 | `/en/` | 80 ms | 0.728 s | 0.768 s | 0.849 s | 0.0000 | 158.6 KiB | 10.7 KiB |
 
-Comparación posterior: pendiente de publicación verificada del candidato. Datos brutos en `.lighthouse/closure-before.json` y `.lighthouse/closure-after.json`, reproducibles con el script versionado. No se presenta reducción de bytes como igual porcentaje de rapidez.
+Candidato funcional publicado: `57c205280d9660821f0209b0dc965e2bf7323dd0`; [Pages 34386440534](https://github.com/Equinocciodev/traza_web/actions/runs/34386440534) completado con éxito. Medición posterior: 18 muestras públicas de tres rutas representativas, con el mismo procedimiento y anchos.
+
+| Ancho | Ruta | TTFB antes → después | LCP antes → después | load antes → después | Imágenes antes → después | JS propio después | CLS después |
+|---|---|---|---|---|---|---|---|
+| 1366 | `/` | 107 → 77 ms | 0.880 → 0.568 s | 1.011 → 0.672 s | 168.1 → 88.5 KiB | 10.9 KiB | 0.0004 |
+| 1366 | `/verificar/` | 94 → 123 ms | 0.816 → 0.836 s | 1.117 → 0.973 s | 2.2 → 2.2 KiB | 28.0 KiB | 0.0004 |
+| 1366 | `/empresa/` | 94 → 104 ms | 1.312 → 0.684 s | 1.501 → 0.816 s | 225.8 → 146.2 KiB | 19.6 KiB | 0.0004 |
+| 390 | `/` | 73 → 122 ms | 0.712 → 0.548 s | 0.807 → 0.677 s | 147.4 → 20.8 KiB | 10.9 KiB | 0.0000 |
+| 390 | `/verificar/` | 99 → 85 ms | 0.652 → 0.540 s | 0.775 → 0.611 s | 2.2 → 2.2 KiB | 28.0 KiB | 0.0000 |
+| 390 | `/empresa/` | 78 → 111 ms | 0.808 → 0.704 s | 0.788 → 0.698 s | 225.8 → 99.2 KiB | 19.6 KiB | 0.0000 |
+
+El neón seleccionado fue 480 px en móvil DPR1 (20,8 KiB frente a 147,4 KiB del original) y 1024 px en escritorio (67,8 KiB). La reducción de bytes está comprobada; los cambios de tiempo mezclan red, CDN, navegador y carga local, por lo que no se atribuyen exclusivamente a esa optimización. No hubo desbordamiento en las 18 muestras. El JS propio inicial sigue alrededor de 11–28 KiB según ruta; el decodificador QR se carga cuando hace falta. Los tamaños de terceros que fallaron DNS no se cuentan como transferencia conocida. Datos brutos en `.lighthouse/closure-before.json` y `.lighthouse/closure-after.json`, reproducibles con el script versionado. No se presenta reducción de bytes como igual porcentaje de rapidez.
 
 Interacciones del candidato en servidor estático local, 3 muestras por ancho, sin throttling: consulta manual 0,868 s (1366 px) / 0,868 s (390 px); lectura del QR de ejemplo hasta resultado 0,777 / 1,010 s; recorrido automático 5,874 / 5,883 s hasta la cuarta etapa (última registrada de esta unidad). El cronómetro Playwright incluye acción y espera de visibilidad, no es INP ni latencia de backend. La API local introduce 450–900 ms de espera artificial; el recorrido usa 900 ms de trazo y 700 ms de pausa, hasta unos 9,4 s para seis etapas registradas. Estos tiempos de interacción locales no se mezclan con los tiempos públicos de red.
+
+Interacciones medidas **en el dominio publicado**, tres muestras por ancho, después de que el lector está listo: consulta manual 0,877 s (1366 px) / 0,885 s (390 px); QR de ejemplo hasta resultado 1,301 / 1,260 s; recorrido 5,882 / 5,877 s. Incluyen el control automatizado y su espera de visibilidad; no son INP, datos de campo ni una promesa de latencia de servidor. Los seis recorridos terminaron en la cuarta etapa registrada.
 
 ## Validación del candidato
 
 Astro: cero errores, advertencias e indicaciones. Unitarias: **300/300**. Build: **38 rutas**. Se verificaron las regresiones de idioma, datos de medicamento, coherencia temporal y analítica. Las pruebas de QR conservan lectura real de píxeles, aislamiento de archivos, controles de cámara y registro CSP; las de contacto comprueban `mailto:` sin envío real.
 
 La primera pasada afectada obtuvo 177/182: detectó y permitió corregir la regresión del QR ajeno; el build de prueba carecía de destinatario de contacto y la prueba móvil debía abrir el menú. Se corrigieron la aplicación y esas condiciones, manteniendo las aserciones. La repetición quedó detenida al cambiar de archivo/grupo sin finalizar; se ejecutaron solo los casos pendientes en procesos acotados con salida temporal. No se atribuye ese bloqueo del ejecutor a la web ni se declara una pasada completa inexistente. **Resultado final: 96/96 casos afectados con resultado aprobado, en tandas (45 + 3 de escritorio; 26 + 22 de móvil), sin reintentos automáticos.** Se mantuvo la instrumentación de violaciones CSP; las tandas finales prescindieron del archivo de traza de red. La preparación de correo quedó validada con los mismos destinatarios públicos que el workflow.
+
+La auditoría general anterior sobre `7f5e2d6` cubrió 162 comprobaciones de accesibilidad, además de ocho flujos. Se conserva como antecedente; esta revisión no repitió toda esa batería. Comprobó las rutas afectadas, teclado/menú, QR a 320/390 px, CSP y capturas de inicio a 1366/390 px.
+
+La revisión pública independiente sobre `57c2052` confirmó la ficha y ALR-026, y detectó que el pie todavía perdía la consulta al cambiar idioma. Se unificó la lógica de cabecera y pie con una allowlist de identificador/ámbito. La regresión ahora recorre ambos controles ES ↔ EN y entrada manual; también verifica el rechazo del QR ajeno. **Diez comprobaciones dirigidas aprobadas**: cuatro de idioma, dos de QR ajeno y cuatro de CSP/contacto, en escritorio y móvil. Gates de esta corrección: check cero incidencias, 300 unitarias y build de 38 rutas. Los tiempos anteriores pertenecen a `57c2052`; el ajuste posterior del enlace no cambia imágenes, latencias del ejemplo ni animaciones.
 
 ## Pendientes externos y mínima acción humana
 
