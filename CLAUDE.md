@@ -27,7 +27,7 @@ npm run dev          # servidor de desarrollo en :4321
 npm run check        # astro check — tipos y plantillas (debe quedar en 0 errores)
 npm test             # Vitest: 200 pruebas (motor, API, fixtures, i18n, paridad ES/EN, guardarraíles)
 npm run build        # build estático en dist/ (36 páginas)
-npm run test:e2e     # Playwright sobre astro preview
+npm run test:e2e     # Playwright sobre astro preview (antes: npx playwright install)
 npm run verify       # check + test + build + e2e
 npm run og           # regenera la imagen OG y todo el juego de iconos
 ```
@@ -134,6 +134,10 @@ ajuste de Pages.
 - **El QR de la etiqueta del hero es real.** `public/images/v2/hero-products.webp` lleva
   compuesto el QR de `HTTPS://T.EXAMPLE/V/7F2K4K7Q92FA` y decodifica en las tres variantes de
   ancho. Si reemplazas la fotografía, vuelve a componerlo y vuelve a comprobar que decodifica.
+- **Las pruebas e2e necesitan navegador aparte.** `npx playwright install` descarga unos
+  cientos de megas; en esta máquina falló varias veces por tiempo de espera y por memoria, así
+  que `npm run verify` puede quedarse en el paso e2e sin que haya nada roto en el código. Los
+  200+ tests unitarios, `astro check` y el build no dependen de eso.
 - **La analítica solo corre en producción.** El proveedor `ga4` (gtag.js) se activa en el
   workflow de despliegue; en local y en las pruebas queda en `none`, que es lo que espera
   `tests/e2e/privacy.spec.ts` al comprobar que no se crean cookies. El identificador de
