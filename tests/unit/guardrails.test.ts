@@ -11,6 +11,7 @@ import { TENANTS } from '@/config/tenants';
 import { V2_HOME } from '@/content/v2-home';
 import { getV2Narrative } from '@/content/v2-narrative';
 import { SECTORS } from '@/config/sectors';
+import { GET as getLlms } from '@/pages/llms.txt';
 
 interface Entry {
   path: string;
@@ -88,6 +89,14 @@ describe('términos vetados', () => {
     expect(hits([...ALL, ...EDITORIAL], /\bSENIAT\b|\blicores\b|\bspirits\b|750\s?ml|40\s?%\s?vol/i)).toEqual([]);
     expect(TENANTS.medicamentos.cobrandNotice?.es).toMatch(/no implica/i);
     expect(TENANTS.medicamentos.cobrandNotice?.en).toMatch(/does not imply/i);
+  });
+
+  it('el resumen público llms.txt presenta medicamentos y no recupera el sector anterior', async () => {
+    const response = await getLlms({ site: new URL('https://traza.technology') } as Parameters<typeof getLlms>[0]);
+    const text = await response.text();
+    expect(text).toMatch(/El caso de uso de medicamentos es una \*\*propuesta de piloto\*\*/);
+    expect(text).not.toMatch(/\bSENIAT\b|\blicores\b|\bspirits\b|750\s?ml|40\s?%\s?vol/i);
+    expect(text).toContain('/casos/medicamentos/');
   });
 
   it('no hay garantías absolutas ni promesas de seguridad', () => {

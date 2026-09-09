@@ -1,0 +1,26 @@
+{
+  "date": "2026-09-09",
+  "task": "IA-20260908-204940-7B83",
+  "base": "a96a6e641370962c95acee47865703f0ac1eeb74",
+  "assets": [
+    {
+      "file": "public/images/brand/traza-orbit-original.jpg",
+      "sha256": "1725a024f3e180e98a60ea62f9fc41a15e51ba6889932179e377a3b78ea456a8",
+      "kind": "Original raster sin cambios",
+      "source": "Referencia 16 de Juan, recuperada de Claude BrandIA"
+    },
+    {
+      "file": "public/images/brand/neon-loop-reference05.webp",
+      "sha256": "55c99f4870ac46bda542a3190d49cf7d7ace520cc8effbfc59309e6661db2154",
+      "kind": "Recreación ImageGen, conversión WebP",
+      "source": "Referencia 05 de Juan; línea integrada en lámina raster, sin capa fuente separada"
+    }
+  ],
+  "wordmark": {
+    "file": "src/brand/wordmark.mjs",
+    "method": "Vectorización automática de contornos blancos del original16; simplificación1,15píxeles fuente. No dibujado a mano ni basado en Poppins. Derivado raster, no SVGoficial suministrado.",
+    "script": "scripts/trace-brand-reference.mjs"
+  },
+  "icons": "Raster original16 incrustado sin alteraciones en favicon.svg; tamañosPNG y margen maskable generados por scripts/og-image.mjs.",
+  "cloud": "Árbol del PR2 y consulta directa en Claude confirman que no se suministró vector oficial ni capa de neón separada. No se aplicó ningún parche/bundleCloud."
+}

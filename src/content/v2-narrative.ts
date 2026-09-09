@@ -168,7 +168,7 @@ const PROGRAMME: SourceBeat[] = [
     change: copy('Se acuerdan el alcance, los casos de uso y lo que se quiere medir.', 'Scope, use cases and what to measure are agreed.'),
     limit: copy('Ruta propuesta, no receta jurídica universal ni compromiso de despliegue.', 'Proposed route, not a universal legal formula or a deployment commitment.'),
     rows: [
-      { label: copy('Ruta industrial', 'Industry route'), detail: copy('Acuerdo voluntario entre las partes.', 'Voluntary agreement between the parties.') },
+      { label: copy('Ruta de fabricantes e importadores', 'Manufacturer and importer route'), detail: copy('Acuerdo voluntario entre las partes.', 'Voluntary agreement between the parties.') },
       { label: copy('Programa público', 'Public programme'), detail: copy('Decisiones de autoridad y contratación según su jurisdicción.', 'Authority and procurement decisions under its jurisdiction.') },
     ],
   },
@@ -188,7 +188,7 @@ const PROGRAMME: SourceBeat[] = [
     id: 'b2-consultation', chapter: 'rules', seconds: 12, kind: 'events',
     title: copy('Escuchar también se documenta.', 'Listening is documented too.'),
     summary: copy('Consulta, documenta y responde a las observaciones.', 'Consult, document and respond to the comments received.'),
-    actor: copy('Industria, operadores y responsable del programa', 'Industry, operators and programme owner'),
+    actor: copy('Fabricantes, importadores, equipos de salud y responsable del programa', 'Manufacturers, importers, healthcare teams and programme owner'),
     change: copy('Las observaciones reciben una respuesta y quedan trazables.', 'Comments receive a response and remain traceable.'),
     limit: copy('La consulta puede ajustar o confirmar las decisiones; no obliga a cambiar todo.', 'Consultation may adjust or confirm decisions; it does not require changing everything.'),
   },

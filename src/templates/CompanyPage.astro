@@ -9,7 +9,7 @@ import Callout from '@/components/ui/Callout.astro';
 import FeatureGrid from '@/components/ui/FeatureGrid.astro';
 import Icon from '@/components/ui/Icon.astro';
 import SectionHeader from '@/components/ui/SectionHeader.astro';
-import Wordmark from '@/components/ui/Wordmark.astro';
+import { withBase } from '@/i18n';
 import ContactForm from '@/components/site/ContactForm.astro';
 import { contactEmailFor } from '@/config/env';
 import { getContent } from '@/content';
@@ -29,7 +29,7 @@ const contactEmail = contactEmailFor(locale).trim();
   <section class="section" aria-labelledby="mission-title" data-reveal>
     <div class="container mission">
       <div class="mission__brand">
-        <Wordmark size="lg" alt={common.brand.wordmarkAlt} />
+        <img class="mission__original" src={withBase('/images/brand/traza-orbit-original.jpg')} width="1254" height="1254" alt={common.brand.wordmarkAlt} loading="lazy" decoding="async" />
         <p class="mission__tagline">{common.brand.tagline}</p>
         <p class="mission__domain mono">{common.brand.domain}</p>
       </div>
@@ -153,6 +153,7 @@ const contactEmail = contactEmailFor(locale).trim();
     border-radius: var(--radius-lg);
     background: var(--color-bg-subtle);
   }
+  .mission__original { display: block; width: 100%; height: auto; border-radius: var(--radius-md); }
   .mission__tagline {
     margin: var(--space-4) 0 var(--space-1);
     font-weight: var(--weight-medium);

@@ -66,7 +66,7 @@ navegador, sin instalar nada ni crear una cuenta.
   ninguna suficiente por sí sola.
 - El registro guarda el ciclo de vida de la etiqueta —emisión, etiquetado, activación, consultas
   y cierre—, no movimientos logísticos.
-- El caso de uso de licores es una **propuesta de piloto**. El sitio no afirma contratos,
+- El caso de uso de medicamentos es una **propuesta de piloto**. El sitio no afirma contratos,
   certificaciones ni relación con gobiernos, reguladores o agencias.
 - La arquitectura de seguridad descrita es un objetivo del producto; se implementa y se audita en
   cada despliegue.

@@ -83,9 +83,9 @@ describe('medicine stamp: reference fields, data and public lookup', () => {
     const last = bars.at(-1)!;
     expect(STAMP_PRINT_BARCODE.width - Number(last[1]) - Number(last[2])).toBeGreaterThanOrEqual(10);
   });
-  it('aligns the underline only beneath za while retaining the five existing glyph contours', () => {
+  it('aligns the underline beneath za using the five contours of source reference 16', () => {
     expect(WORDMARK.paths).toHaveLength(5);
-    expect(WORDMARK.underline.x).toBe(148.4);
-    expect(WORDMARK.underline.x + WORDMARK.underline.width).toBeCloseTo(254.6);
+    expect(WORDMARK.underline.x).toBeCloseTo((660 - 190) * 289 / 880, 1);
+    expect(WORDMARK.underline.x + WORDMARK.underline.width).toBeCloseTo((1012 - 190) * 289 / 880, 1);
   });
 });

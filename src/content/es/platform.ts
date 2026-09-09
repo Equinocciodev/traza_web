@@ -135,7 +135,7 @@ export const platform: PlatformContent = {
       },
       {
         "name": "Espejo de solo lectura",
-        "body": "La institución que gobierna un despliegue recibe una copia de solo lectura para auditar sin depender del operador. Es el patrón de repositorio primario y secundario del sistema europeo de tabaco.",
+        "body": "La arquitectura propone una copia de solo lectura para el equipo autorizado de auditoría. Permite contrastar los eventos de los medicamentos con el registro principal; su acceso, alcance y sincronización se acuerdan en cada despliegue.",
         "icon": "eye"
       },
       {
@@ -179,11 +179,11 @@ export const platform: PlatformContent = {
   },
   "tenancy": {
     "title": "Tu organización. Una base compartida.",
-    "body": "La marca maestra vive en traza.technology. Cada despliegue —por país, regulador o industria— puede presentarse con su propia identidad visual y su propio contexto de verificación, sobre la misma plataforma.",
+    "body": "La marca maestra vive en traza.technology. Cada programa de medicamentos puede presentarse con la identidad visual de la organización responsable y su propio contexto de consulta, sujeto a aprobación.",
     "bullets": [
       "Lockup de co-brand o marca propia (white-label) en cada despliegue",
       "Colores de acento, textos de contexto y siguiente paso configurables",
-      "Campos de identidad y tipos de evento propios de cada sector",
+      "Datos del medicamento y eventos de su ciclo de vida acordados por programa",
       "Roles y permisos definidos por cada institución",
       "La verificación pública lee el tenant desde la URL y adapta el resultado"
     ],

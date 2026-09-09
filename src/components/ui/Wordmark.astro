@@ -8,14 +8,14 @@ interface Props {
 const { size = 'md', alt = WORDMARK.label, class: className } = Astro.props;
 ---
 <span class:list={['wordmark', `wordmark--${size}`, className]} role="img" aria-label={alt}>
-  <svg viewBox={WORDMARK.viewBox} width={WORDMARK.width} height={WORDMARK.height} aria-hidden="true" focusable="false">
+  <svg fill-rule="evenodd" viewBox={WORDMARK.viewBox} width={WORDMARK.width} height={WORDMARK.height} aria-hidden="true" focusable="false">
     {WORDMARK.paths.map((d: string) => <path d={d} />)}
     <path d={WORDMARK.registered} />
     <rect class="wordmark__underline" x={WORDMARK.underline.x} y={WORDMARK.underline.y} width={WORDMARK.underline.width} height={WORDMARK.underline.height} />
   </svg>
 </span>
 <style>
-  .wordmark { display: inline-flex; width: calc(var(--wm-size, 1.5rem) * 3.15); flex: 0 0 auto; color: var(--color-heading); line-height: 1; }
+  .wordmark { display: inline-flex; width: calc(var(--wm-size, 1.5rem) * 3.44); flex: 0 0 auto; color: var(--color-heading); line-height: 1; }
   .wordmark svg { display: block; width: 100%; height: auto; overflow: visible; fill: currentColor; }
   .wordmark__underline { fill: var(--color-brand-accent, var(--color-cyan-400)); }
   .wordmark--sm { --wm-size: 1.25rem; }

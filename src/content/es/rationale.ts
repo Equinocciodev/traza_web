@@ -1,146 +1,140 @@
 import type { ReferencePageContent } from '../types';
 
-/**
- * Por qué este diseño (ES).
- *
- * Los sistemas de marcaje fiscal llevan décadas funcionando —y fracasando— en varios
- * países. Publicar de qué precedente sale cada decisión es más honesto que presentar el
- * diseño como una ocurrencia propia, y más útil para quien tiene que evaluarlo.
- */
+/** Medicines pilot design criteria; no historical results or institutional relationships are claimed. */
 export const rationale: ReferencePageContent = {
-  meta: {
-    title: 'Por qué este diseño: precedentes y lecciones',
-    description:
-      'De qué sistemas de marcaje fiscal ya existentes sale cada decisión de Traza, qué salió mal en los que se apagaron y los diez principios que hereda de ellos.',
+  "meta": {
+    "title": "Por qué este diseño: criterios para medicamentos",
+    "description": "Los criterios del piloto de medicamentos: identidad por unidad, activación tras producción, auditoría y consulta pública con límites para cada participante."
   },
-
-  hero: {
-    eyebrow: 'Precedentes',
-    title: 'Casi todas estas decisiones ya se probaron en otro sitio',
-    subtitle:
-      'El marcaje fiscal por unidad no es una idea nueva. Hay sistemas nacionales funcionando desde hace años, y hay al menos uno grande que se apagó. Conviene decir de dónde sale cada decisión.',
+  "hero": {
+    "eyebrow": "Criterios de diseño",
+    "title": "Una identidad por medicamento, con responsabilidades claras",
+    "subtitle": "La propuesta parte de una unidad de medicamento y de quienes la identifican, consultan o revisan. Estos criterios explican qué se quiere comprobar y qué límites debe conservar cada piloto."
   },
-
-  contentsLabel: 'En esta página',
-
-  sections: [
+  "contentsLabel": "En esta página",
+  "sections": [
     {
-      id: 'sistemas',
-      title: 'Los sistemas que sirven de referencia',
-      intro:
-        'Se citan por su nombre y por lo que aportan al diseño. Traza no tiene relación con ninguno de ellos ni con las autoridades que los gobiernan: son antecedentes públicos.',
-      items: [
+      "id": "sistemas",
+      "title": "Decisiones para el piloto de medicamentos",
+      "intro": "Son criterios de la propuesta, sujetos a implementación y validación. No acreditan una operación, una relación institucional ni resultados de otros sistemas.",
+      "items": [
         {
-          title: 'Chestny ZNAK',
-          body: 'Marca cada unidad con un código que lleva la firma embebida, y el fabricante pide los códigos por API, imprime, activa y reporta. Valida el modelo híbrido: firma comprobable sin consultar, más estado en el registro.',
-          icon: 'signature',
+          "title": "Identidad vinculada a la unidad",
+          "body": "El fabricante o importador describe el medicamento antes de emitir su identificador. El formato objetivo vincula la identidad firmada con el estado de la unidad en el registro.",
+          "icon": "signature"
         },
         {
-          title: 'Sistema europeo de trazabilidad de tabaco',
-          body: 'Emisores de identificadores independientes de la industria, repositorio primario de la industria y repositorio secundario del regulador. De aquí salen dos ideas: el espejo de auditoría y la caducidad de los códigos que no se aplican.',
-          icon: 'eye',
+          "title": "Auditoría con permisos propios",
+          "body": "La arquitectura propone una copia de solo lectura para el equipo autorizado. El programa debe acordar qué eventos podrá consultar y cómo contrastarlos con el registro principal.",
+          "icon": "eye"
         },
         {
-          title: 'Marcaje fiscal como servicio llave en mano',
-          body: 'Código único, elemento físico de seguridad y activación en línea de producción con conteo independiente. Confirma que el modelo de operador homologado funciona; su riesgo es la dependencia del proveedor.',
-          icon: 'plug',
+          "title": "Emisión, impresión y activación separadas",
+          "body": "Imprimir un QR no activa la unidad. La activación se propone al finalizar producción y completar la ficha de producto, lote y vencimiento.",
+          "icon": "plug"
         },
         {
-          title: 'Programas que empezaron por una categoría',
-          body: 'Arrancar con un solo sector y pocos emisores grandes, en lugar del universo entero. También su límite: la trazabilidad identifica lo ilegal, no lo detiene; hace falta inspección de calle.',
-          icon: 'search',
+          "title": "Empezar por un medicamento",
+          "body": "Un piloto puede acotarse a una presentación, una línea de envasado y responsables definidos. Permite revisar cada etapa antes de ampliar el alcance.",
+          "icon": "search"
         },
         {
-          title: 'Un sistema de bebidas que se apagó',
-          body: 'Llegó a marcar miles de millones de envases con contadores automáticos en planta, y se desactivó por conflicto de costo. La factura electrónica no sustituyó el conteo físico, y la subdeclaración reapareció.',
-          icon: 'warning',
+          "title": "Costes y responsabilidades explícitos",
+          "body": "Antes del piloto se deben acordar emisión, impresión, integración, soporte y revisión. La financiación y las condiciones de participación también deben acordarse.",
+          "icon": "warning"
         },
         {
-          title: 'Estampillas físicas con consulta pública',
-          body: 'Misma identidad en tres portadores —código de barras, QR y texto— sobre una estampilla con elementos de seguridad. Su auditoría enseñó la lección central: la coincidencia digital no prueba la autenticidad física.',
-          icon: 'compare',
+          "title": "Etiqueta y registro deben poder compararse",
+          "body": "El QR y el identificador legible remiten a la misma unidad. La persona compara el medicamento, presentación, lote y vencimiento; la coincidencia digital no certifica el contenido físico.",
+          "icon": "compare"
         },
         {
-          title: 'Estándares abiertos de identificación',
-          body: 'El QR como URL sirve a la vez a la caja registradora, a la persona que compra y a la trazabilidad. Adoptar el formato da interoperabilidad con el comercio sin inventar un esquema propio.',
-          icon: 'qr',
-        },
-      ],
+          "title": "Consulta desde el navegador",
+          "body": "El QR abre una URL de consulta. También se puede escribir el identificador o leer una imagen del código, sin instalar una aplicación ni crear una cuenta.",
+          "icon": "qr"
+        }
+      ]
     },
     {
-      id: 'principios',
-      title: 'Diez principios heredados',
-      intro:
-        'No son valores de marca: son restricciones que salieron de ver qué aguantó y qué no.',
-      items: [
+      "id": "principios",
+      "title": "Diez criterios para acordar el despliegue",
+      "intro": "El piloto debe convertir estos criterios en responsabilidades y comprobaciones concretas. La web permite explorar ejemplos; no acredita su implementación operativa.",
+      "items": [
         {
-          title: 'Empezar por una o dos categorías',
-          body: 'Con pocos emisores grandes que coordinar, no con todo el mercado a la vez.',
-          icon: 'list',
+          "title": "Alcance acotado",
+          "body": "Definir medicamento, presentación, lote y responsables del piloto, con los datos que se podrán consultar.",
+          "icon": "list"
         },
         {
-          title: 'Código firmado más estado en el registro',
-          body: 'La firma impide inventar códigos sin consultar nada; el registro gestiona el ciclo de vida y detecta clones.',
-          icon: 'signature',
+          "title": "Identidad y registro separados",
+          "body": "La arquitectura objetivo combina una firma para comprobar emisor e integridad con un registro que conserva estados y señales. La consulta de esta web usa datos de ejemplo.",
+          "icon": "signature"
         },
         {
-          title: 'Identificadores no secuenciales',
-          body: 'Un correlativo predecible es falsificable y además revela volúmenes a la competencia.',
-          icon: 'lock',
+          "title": "Identificadores no secuenciales",
+          "body": "La propuesta evita que el identificador exponga un contador de producción. El formato definitivo requiere validación; no se atribuye seguridad a su apariencia.",
+          "icon": "lock"
         },
         {
-          title: 'Costo por código bajo y fijado por norma',
-          body: 'Calibrado al valor del producto. Un costo alto sobre un producto popular mata el sistema, y ese es exactamente lo que ocurrió en el caso que se apagó.',
-          icon: 'chart',
+          "title": "Coste acordado antes de operar",
+          "body": "Definir quién asume impresión, integración y soporte, y cómo se evaluarán los costes del piloto. Los importes se acuerdan por programa.",
+          "icon": "chart"
         },
         {
-          title: 'Sin dependencia del proveedor',
-          body: 'Los identificadores, las claves y los datos pertenecen a la institución que encarga el despliegue, no al operador. Con depósito del material criptográfico y especificaciones públicas, aunque la operación sea privada.',
-          icon: 'key',
+          "title": "Custodia y salida definidas",
+          "body": "Acordar titularidad, acceso, custodia de claves y exportación de datos antes del despliegue. No se atribuyen automáticamente al operador ni a una autoridad.",
+          "icon": "key"
         },
         {
-          title: 'Degradación elegante obligatoria',
-          body: 'El sistema nunca puede detener la producción ni el comercio: códigos descargados por adelantado, cola local y reporte diferido.',
-          icon: 'offline',
+          "title": "Continuidad con estados explícitos",
+          "body": "La arquitectura debe definir cómo trabajar ante una interrupción y recuperar eventos pendientes, sin mostrar como activadas unidades cuya ficha no se ha completado.",
+          "icon": "offline"
         },
         {
-          title: 'Caducidad de los códigos sin aplicar',
-          body: 'Evita el acaparamiento y el mercado negro de etiquetas emitidas y nunca usadas.',
-          icon: 'clock',
+          "title": "Cierre de códigos sin utilizar",
+          "body": "Acordar cómo anular los códigos sobrantes al cerrar una emisión y cómo registrar esa decisión sin borrar el historial.",
+          "icon": "clock"
         },
         {
-          title: 'Activación con conteo independiente',
-          body: 'Es lo que de verdad mide: cuenta lo producido, no lo declarado.',
-          icon: 'compare',
+          "title": "Activación tras producción",
+          "body": "Completar producto, lote y vencimiento y confirmar qué códigos se utilizaron antes de activar las unidades. Una impresión por sí sola no acredita la activación.",
+          "icon": "compare"
         },
         {
-          title: 'La verificación ciudadana necesita un motivo',
-          body: 'Donde no hubo incentivo, nadie escaneó. Donde lo hubo, la consulta pública se volvió masiva.',
-          icon: 'citizen',
+          "title": "Consulta útil para las personas",
+          "body": "Mostrar qué comparar con el envase y qué hacer ante una diferencia. En esta web el reporte se prepara y descarga localmente; entregarlo requiere un canal de la organización.",
+          "icon": "citizen"
         },
         {
-          title: 'Blindaje jurídico previo',
-          body: 'Sin una norma que establezca la obligatoriedad, quién paga y las consecuencias de no marcar, el sistema se litiga o se apaga por decreto.',
-          icon: 'document',
-        },
-      ],
+          "title": "Autorización y límites previos",
+          "body": "Definir permisos y responsabilidades del piloto. Los elementos físicos anticopia y la validación tributaria pertenecen a una fase 2 y requieren integración autorizada; no están disponibles aquí.",
+          "icon": "document"
+        }
+      ]
     },
     {
-      id: 'consecuencia',
-      title: 'La lección que más se nota en el producto',
-      paragraphs: [
-        'La auditoría de una estampilla física con consulta pública encontró que los controles impresos y el registro digital no siempre coincidían, y que por una fotografía era imposible determinar cuál de los dos tenía razón.',
-        'De ahí sale la separación que atraviesa todo el diseño: la identidad digital coincide o no coincide, y eso es comprobable; la autenticidad física exige elementos materiales o una activación observada, y eso no se comprueba con una cámara.',
-        'Por eso una consulta no dice «verificado» cuando solo se probó lo primero. Un identificador emitido y etiquetado, pero cuya ficha aún no se ha cerrado, devuelve «en revisión» e invita a reportar dónde se vio. Ese estado no es un hueco del producto: es el resultado de la lección.',
+      "id": "consecuencia",
+      "title": "La diferencia que debe quedar clara al consultar",
+      "paragraphs": [
+        "Una ficha digital describe una unidad declarada. Al consultar un medicamento, la persona debe comparar los datos con el envase; una fotografía o una coincidencia en el registro no prueban su contenido físico.",
+        "El registro propuesto sigue emisión, etiquetado, activación, consulta, señales y cierre. No registra transporte, distribución ni ventas. La activación exige finalizar producción y completar la ficha.",
+        "Un identificador emitido y etiquetado con activación pendiente requiere revisión. Esta web explica el estado con registros de ejemplo y permite preparar un reporte local, sin enviarlo ni modificar el registro."
       ],
-      note: 'Y por eso nunca decimos que un producto sea «auténtico» porque su firma valide: una firma válida dice quién emitió el identificador y que su contenido no se alteró, no que la botella que tiene en la mano sea la que lo llevaba.',
-    },
+      "note": "Nunca decimos que un medicamento sea «auténtico» porque su firma valide: el objetivo de la firma es comprobar emisor e integridad de los datos, no el contenido físico del frasco."
+    }
   ],
-
-  cta: {
-    title: 'Dónde sigue esto',
-    body: 'Las capas que trabajan contra la copia, la custodia de las claves y lo que el sistema no promete están en Seguridad y confianza. La propuesta concreta para un regulador de medicamentos está en el caso de uso.',
-    primaryCta: { label: 'Seguridad y confianza', key: 'security', variant: 'primary' },
-    secondaryCta: { label: 'Ver el caso de uso', key: 'caseMedicines', variant: 'secondary' },
-  },
+  "cta": {
+    "title": "Dónde sigue esto",
+    "body": "Seguridad y confianza explica las capas propuestas, la custodia de claves y sus límites. El caso de medicamentos concreta el alcance del piloto y sus responsabilidades.",
+    "primaryCta": {
+      "label": "Seguridad y confianza",
+      "key": "security",
+      "variant": "primary"
+    },
+    "secondaryCta": {
+      "label": "Ver el caso de uso",
+      "key": "caseMedicines",
+      "variant": "secondary"
+    }
+  }
 };

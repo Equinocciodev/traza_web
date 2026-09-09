@@ -4,22 +4,22 @@ export const company: CompanyContent = {
   meta: {
     title: 'Company: mission, principles and how to reach us',
     description:
-      'Traza Technology, C.A., a private company and multisector platform for unit-level identity, traceability and verification. Mission, principles, contact.',
+      'Traza Technology, C.A.: digital identity and medicines lookup. Explore the mission, principles and contact details of the private company behind this proposal.',
   },
 
   hero: {
     eyebrow: 'Company',
-    title: 'A private company dedicated to trust in products',
+    title: 'A private company dedicated to medicine identity',
     subtitle:
-      'Traza Technology, C.A. is a private company and a multisector technology platform. It provides unit-level digital identity, traceability, verification and control services to public-sector entities and private industries.',
+      'Traza Technology, C.A. is a private company. Its medicines proposal connects unit-level digital identity, lifecycle records and public lookup, with roles and responsibilities defined in each pilot.',
   },
 
   mission: {
     title: 'Mission',
     paragraphs: [
-      'To give real products a digital identity that anyone can check. We believe that trust in what is bought, distributed or regulated should not depend on a label that is hard to imitate, but on a verifiable history that accompanies each unit.',
-      'We design the platform for regulators, control agencies and private industries that need to know which units circulate, where they come from and whether what is sold matches what is registered. And for the public, who deserve a clear answer at the moment of purchase.',
-      'Our master brand lives at traza.technology. Each deployment can carry the brand of the institution or company that governs it, by country, regulator or industry, on the same platform.',
+      'To give each medicine unit a digital identity that anyone can look up. The record lets people compare product, presentation, lot and expiry with the package; it does not certify its physical contents.',
+      'We design the proposal for manufacturers, importers, pharmacies, healthcare facilities, quality teams and health authorities. The public also needs a clear answer when comparing a medicine with its record.',
+      'Our master brand lives at traza.technology. Each medicines pilot may carry the responsible organization’s brand, subject to approval and without claiming an institutional relationship.',
     ],
   },
 
@@ -33,7 +33,7 @@ export const company: CompanyContent = {
       },
       {
         title: 'Traceability',
-        body: 'An ordered, auditable registry of each unit’s events along the chain.',
+        body: 'An ordered record of each unit’s lifecycle: issuance, labelling, activation, lookup, signals and closure.',
         icon: 'link',
       },
       {
@@ -43,12 +43,12 @@ export const company: CompanyContent = {
       },
       {
         title: 'Institutional control',
-        body: 'Views for regulators and companies: anomaly tracking, discrepancy reports and field inspection.',
+        body: 'Sample views for health authorities and quality teams: signals, reports and inspections. Their operation is agreed in each pilot.',
         icon: 'eye',
       },
       {
         title: 'Co-brand and white-label deployments',
-        body: 'The same platform with the brand, rules and context of each institution or company, by country and by sector.',
+        body: 'The same platform with the brand, rules and permissions agreed for each medicines programme.',
         icon: 'layers',
       },
     ],
@@ -88,15 +88,14 @@ export const company: CompanyContent = {
       name: 'Name',
       email: 'Email',
       organization: 'Organization',
-      sector: 'Sector',
+      sector: 'Organization type',
       sectorOptions: [
-        'Government or regulator',
-        'Medicines and health products',
-        'Pharmaceutical and health',
-        'Agribusiness',
-        'Spare parts and components',
-        'Consumer goods',
-        'Documents and certificates',
+        'Medicine manufacturers',
+        'Medicine importers',
+        'Pharmacies',
+        'Healthcare facilities',
+        'Quality teams',
+        'Health authorities',
         'Other',
       ],
       message: 'Message',

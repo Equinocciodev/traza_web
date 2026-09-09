@@ -228,18 +228,18 @@ export const home: HomeContent = {
   },
 
   multisector: {
-    title: 'One layer for different sectors',
+    title: 'One record for people working with medicines',
     body:
-      'The platform does not depend on the type of product. It combines unit-level identity, chain events, public verification and rules configurable per tenant; what changes in each sector is the identity data, the relevant events and who can consult them.',
+      'The proposal shares unit-level identity, lifecycle events and public lookup. Each deployment agrees its data, permissions and rules: issuance, labelling, activation, lookup, signals and closure.',
     sectors: [
-      'Medicines and health products',
-      'Pharmaceutical',
-      'Agribusiness',
-      'Spare parts and components',
-      'Consumer goods',
-      'Documents and certificates',
+      'Medicine manufacturers',
+      'Medicine importers',
+      'Pharmacies',
+      'Healthcare facilities',
+      'Quality teams',
+      'Health authorities',
     ],
-    note: 'Sectors are mentioned only as examples of adaptability. No sector-specific capabilities or certifications are claimed.',
+    note: 'These actors illustrate possible roles in a medicines pilot. The proposal does not claim relationships, participation or certifications of any organization.',
   },
 
   trust: {

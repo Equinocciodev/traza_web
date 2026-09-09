@@ -15,13 +15,13 @@ export const solutions: SolutionsContent = {
     eyebrow: 'Solutions',
     title: 'One shared layer, three points of view',
     subtitle:
-      'Traza proposes a shared foundation for institutions, industry and the public. This website lets you query sample units and prepare local reports; integrations are agreed per deployment.',
+      'Traza proposes a shared foundation for medicine manufacturers, health authorities and the public. This website lets you query sample units and prepare local reports; integrations are agreed per deployment.',
   },
 
   cards: [
     {
       key: 'government',
-      title: 'Government and regulators',
+      title: 'Health authorities',
       body: 'Know which units are on the market, where they come from and whether what is sold matches what is registered.',
       bullets: [
         'An auditable registry per unit',
@@ -33,7 +33,7 @@ export const solutions: SolutionsContent = {
     },
     {
       key: 'industry',
-      title: 'Industry',
+      title: 'Manufacturers and importers',
       body: 'Connect issuance, labelling, activation and lookups to review the identity of each unit.',
       bullets: [
         'Identity issued from production or import',
@@ -60,7 +60,7 @@ export const solutions: SolutionsContent = {
   sharedLayer: {
     title: 'What all solutions share',
     body:
-      'There are not three different products, but one platform with different views and rules for each actor. This lets a regulator, a manufacturer and a person in a store look at the same registry with the level of detail that corresponds to each of them.',
+      'There are not three different products, but one platform with different views and rules for each actor. This lets a health authority, a manufacturer and a person in a pharmacy look at the same registry with the level of detail that corresponds to each of them.',
     bullets: [
       'Unit-level digital identity signed by the issuer',
       'A record of issuance, labelling, activation, lookup, signals and closure',
@@ -71,24 +71,24 @@ export const solutions: SolutionsContent = {
   },
 
   multisector: {
-    title: 'Adaptable to different sectors',
+    title: 'One record for people working with medicines',
     body:
       'The proposal shares unit-level identity, lifecycle events and public lookup. Each deployment agrees its data, permissions and rules: issuance, labelling, activation, lookup, signals and closure.',
     sectors: [
-      'Medicines and health products',
-      'Pharmaceutical',
-      'Agribusiness',
-      'Spare parts and components',
-      'Consumer goods',
-      'Documents and certificates',
+      'Medicine manufacturers',
+      'Medicine importers',
+      'Pharmacies',
+      'Healthcare facilities',
+      'Quality teams',
+      'Health authorities',
     ],
-    note: 'Sectors are mentioned only as examples of adaptability. No sector-specific capabilities or certifications are claimed.',
+    note: 'These actors illustrate possible roles in a medicines pilot. The proposal does not claim relationships, participation or certifications of any organization.',
   },
 
   cta: {
     title: 'Let’s talk about your case',
     body:
-      'If your organization controls, manufactures or imports products that need a verifiable identity, we can talk about a well-scoped pilot.',
+      'If your organization controls, manufactures or imports medicines that need a verifiable identity, we can talk about a well-scoped pilot.',
     primaryCta: { label: 'Contact the team', key: 'company', variant: 'primary' },
     secondaryCta: { label: 'Verify a product', key: 'verify', variant: 'secondary' },
   },

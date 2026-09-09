@@ -62,7 +62,7 @@ function ogSvg({ domain, neonData, qr }) {
     <mask id="neon-mask"><rect x="570" width="945" height="630" fill="url(#neon-fade)"/></mask>
   </defs>
   <image href="${neonData}" x="570" y="0" width="945" height="630" opacity="0.8" mask="url(#neon-mask)"/>
-  <g transform="translate(96 138) scale(1.65)" fill="${WHITE}">
+  <g transform="translate(96 138) scale(1.65)" fill="${WHITE}" fill-rule="evenodd">
     ${WORDMARK.paths.map((d) => `<path d="${d}"/>`).join('')}
     <path d="${WORDMARK.registered}"/>
     <rect x="${WORDMARK.underline.x}" y="${WORDMARK.underline.y}" width="${WORDMARK.underline.width}" height="${WORDMARK.underline.height}" fill="${CYAN_400}"/>
@@ -82,7 +82,7 @@ async function main() {
   const { default: sharp } = await import('sharp');
 
   const qr = await loadUnitQr();
-  const neon = await sharp(path.join(ROOT, 'public/images/brand/neon-loop-v3.webp')).png().toBuffer();
+  const neon = await sharp(path.join(ROOT, 'public/images/brand/neon-loop-reference05.webp')).png().toBuffer();
   const og = ogSvg({
     domain: 'traza.technology',
     neonData: `data:image/png;base64,${neon.toString('base64')}`,
@@ -92,8 +92,9 @@ async function main() {
   await mkdir(path.dirname(OUT_OG), { recursive: true });
   await sharp(Buffer.from(og)).resize(WIDTH, HEIGHT).png({ compressionLevel: 9, palette: true, quality: 90 }).toFile(OUT_OG);
 
-  // Monogram from the same Poppins outline as the wordmark, never a separate font rendering.
-  const favicon = Buffer.from(`<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="64" height="64"><rect width="64" height="64" rx="14" fill="${NAVY_900}"/><g transform="translate(16 -1) scale(.63)" fill="${WHITE}"><path d="${WORDMARK.paths[0]}"/></g><rect x="18" y="55" width="28" height="3" fill="${CYAN_400}"/></svg>`);
+  // The app icon embeds the unmodified original raster supplied by Juan (reference 16).
+  const original = await readFile(path.join(ROOT, 'public/images/brand/traza-orbit-original.jpg'));
+  const favicon = Buffer.from(`<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1254 1254" width="1254" height="1254"><image width="1254" height="1254" href="data:image/jpeg;base64,${original.toString('base64')}"/></svg>`);
   await writeFile(FAVICON, favicon);
   await sharp(favicon, { density: 600 })
     .resize(180, 180, { fit: 'contain', background: NAVY_900 })

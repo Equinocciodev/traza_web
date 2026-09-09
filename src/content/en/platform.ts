@@ -135,7 +135,7 @@ export const platform: PlatformContent = {
       },
       {
         "name": "Read-only mirror",
-        "body": "The institution governing a deployment receives a read-only copy so it can audit without depending on the operator. It is the primary/secondary repository pattern of the European tobacco system.",
+        "body": "The architecture proposes a read-only copy for the authorised audit team. It allows medicine events to be compared with the primary registry; access, scope and synchronisation are agreed in each deployment.",
         "icon": "eye"
       },
       {
@@ -179,11 +179,11 @@ export const platform: PlatformContent = {
   },
   "tenancy": {
     "title": "Your organisation. A shared foundation.",
-    "body": "The master brand lives at traza.technology. Each deployment — by country, regulator or industry — can present its own visual identity and its own verification context, on the same platform.",
+    "body": "The master brand lives at traza.technology. Each medicines programme may present the responsible organization’s visual identity and its own lookup context, subject to approval.",
     "bullets": [
       "Co-brand lockup or own brand (white-label) in each deployment",
       "Configurable accent colors, context texts and next step",
-      "Identity fields and event types specific to each sector",
+      "Medicine data and lifecycle events agreed per programme",
       "Roles and permissions defined by each institution",
       "Public verification reads the tenant from the URL and adapts the result"
     ],

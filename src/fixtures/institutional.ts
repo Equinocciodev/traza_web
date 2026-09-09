@@ -138,7 +138,7 @@ export const PEOPLE: readonly DemoPerson[] = [
   { id: 'insp-salcedo', name: 'Rodrigo Salcedo', role: 'inspector' },
   { id: 'insp-ibarra', name: 'Mariana Ibarra', role: 'inspector' },
   { id: 'sup-montiel', name: 'Andrés Montiel', role: 'supervisor' },
-  { id: 'issuer-cerro-alto', name: ORGANIZATIONS.distillery, role: 'issuer' },
+  { id: 'issuer-cerro-alto', name: ORGANIZATIONS.cerroAltoLab, role: 'issuer' },
   { id: 'issuer-bahia-norte', name: ORGANIZATIONS.importer, role: 'issuer' },
 ] as const;
 

@@ -31,7 +31,7 @@ export const MOCK_UI: Record<Locale, MockUiContent> = {
   es: {
     exampleLabel: 'Ejemplo · Datos ilustrativos', unit,
     dashboard: {
-      title: 'Espacio de trabajo', context: 'Ejemplo · Operación comercial', navLabel: 'Explorar la plataforma',
+      title: 'Espacio de trabajo', context: 'Ejemplo · Operación farmacéutica', navLabel: 'Explorar la plataforma',
       note: 'Vista ilustrativa. Los enlaces abren las secciones de esta web; las cifras no describen una operación real.',
       nav: [
         { label: 'Resumen', key: 'platform', icon: 'chart' },
@@ -66,7 +66,7 @@ export const MOCK_UI: Record<Locale, MockUiContent> = {
   en: {
     exampleLabel: 'Example · Illustrative data', unit: { ...unit, name: 'Cerro Alto oral solution', presentation: '120 ml bottle · 10 mg/ml' },
     dashboard: {
-      title: 'Workspace', context: 'Example · Business operations', navLabel: 'Explore the platform',
+      title: 'Workspace', context: 'Example · Pharmaceutical operations', navLabel: 'Explore the platform',
       note: 'Illustrative view. Links open sections of this website; the figures do not describe a live operation.',
       nav: [
         { label: 'Overview', key: 'platform', icon: 'chart' },

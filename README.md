@@ -102,7 +102,7 @@ Las especificaciones vigentes del producto están en `~/TRAZA`.
 
 ## Licencias de terceros
 
-Astro (MIT), @astrojs/sitemap (MIT), Space Grotesk, Roboto, Roboto Mono y Poppins mediante @fontsource; consultar las licencias incluidas en los paquetes de fuentes. Poppins se limita a los contornos vectoriales del wordmark provisional; títulos, cuerpo y metadatos siguen las familias identificadas en el PDF Rev. B. Vitest (MIT), Playwright (Apache 2.0), axe-core (MPL 2.0, solo en pruebas).
+Astro (MIT), @astrojs/sitemap (MIT), Space Grotesk, Roboto, Roboto Mono y Poppins mediante @fontsource; consultar las licencias incluidas en los paquetes de fuentes. La marca ahora usa contornos vectorizados automáticamente de la referencia raster 16 de Juan; su original orbital se conserva sin modificar. La procedencia y las limitaciones de los recursos están en `src/brand/asset-provenance.json`. Vitest (MIT), Playwright (Apache 2.0), axe-core (MPL 2.0, solo en pruebas).
 
 ## Probar el lector QR
 

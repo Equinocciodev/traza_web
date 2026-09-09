@@ -15,13 +15,13 @@ export const solutions: SolutionsContent = {
     eyebrow: 'Soluciones',
     title: 'Una capa común, tres puntos de vista',
     subtitle:
-      'Traza propone una base común para instituciones, industria y público. Esta web permite consultar unidades de ejemplo y preparar reportes locales; las integraciones se acuerdan por despliegue.',
+      'Traza propone una base común para fabricantes de medicamentos, autoridades sanitarias y público. Esta web permite consultar unidades de ejemplo y preparar reportes locales; las integraciones se acuerdan por despliegue.',
   },
 
   cards: [
     {
       key: 'government',
-      title: 'Gobierno y reguladores',
+      title: 'Autoridades sanitarias',
       body: 'Saber qué unidades están en el mercado, de dónde vienen y si lo que se vende coincide con lo registrado.',
       bullets: [
         'Registro auditable por unidad',
@@ -33,7 +33,7 @@ export const solutions: SolutionsContent = {
     },
     {
       key: 'industry',
-      title: 'Industria',
+      title: 'Fabricantes e importadores',
       body: 'Relacionar emisión, etiquetado, activación y consultas para revisar la identidad de cada unidad.',
       bullets: [
         'Identidad emitida desde la producción o la importación',
@@ -60,7 +60,7 @@ export const solutions: SolutionsContent = {
   sharedLayer: {
     title: 'Lo que comparten todas las soluciones',
     body:
-      'No hay tres productos distintos, sino una plataforma con vistas y reglas diferentes para cada actor. Esto permite que un regulador, un fabricante y una persona en una tienda miren el mismo registro con el nivel de detalle que les corresponde.',
+      'No hay tres productos distintos, sino una plataforma con vistas y reglas diferentes para cada actor. Esto permite que una autoridad sanitaria, un fabricante y una persona en una farmacia miren el mismo registro con el nivel de detalle que les corresponde.',
     bullets: [
       'Identidad digital unitaria firmada por el emisor',
       'Registro de emisión, etiquetado, activación, consulta, señales y cierre',
@@ -71,24 +71,24 @@ export const solutions: SolutionsContent = {
   },
 
   multisector: {
-    title: 'Adaptable a distintos sectores',
+    title: 'Un registro para quienes trabajan con medicamentos',
     body:
       'La propuesta comparte identidad unitaria, eventos del ciclo de vida y consulta pública. Cada despliegue acuerda los datos, permisos y reglas: emisión, etiquetado, activación, consulta, señales y cierre.',
     sectors: [
-      'Medicamentos y productos de salud',
-      'Farmacéutico',
-      'Agroindustria',
-      'Repuestos y partes',
-      'Bienes de consumo',
-      'Documentos y certificados',
+      'Fabricantes de medicamentos',
+      'Importadores de medicamentos',
+      'Farmacias',
+      'Establecimientos de salud',
+      'Equipos de calidad',
+      'Autoridades sanitarias',
     ],
-    note: 'Los sectores se mencionan solo como ejemplos de adaptabilidad. No se afirman capacidades ni certificaciones sectoriales específicas.',
+    note: 'Estos actores ilustran los roles posibles de un piloto de medicamentos. No se afirman relaciones, participación ni certificaciones de ninguna organización.',
   },
 
   cta: {
     title: 'Hablemos de su caso',
     body:
-      'Si su organización controla, fabrica o importa productos que necesitan una identidad verificable, podemos conversar sobre un piloto acotado.',
+      'Si su organización controla, fabrica o importa medicamentos que necesitan una identidad verificable, podemos conversar sobre un piloto acotado.',
     primaryCta: { label: 'Contactar al equipo', key: 'company', variant: 'primary' },
     secondaryCta: { label: 'Verificar un producto', key: 'verify', variant: 'secondary' },
   },

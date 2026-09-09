@@ -4,22 +4,22 @@ export const company: CompanyContent = {
   meta: {
     title: 'Empresa: misión, principios y contacto del equipo',
     description:
-      'Traza Technology, C.A., empresa privada y plataforma multisector de identidad unitaria, trazabilidad y verificación. Misión, principios y contacto del equipo.',
+      'Traza Technology, C.A.: identidad digital y consulta de medicamentos. Conoce la misión, principios y el contacto de la empresa privada detrás de la propuesta.',
   },
 
   hero: {
     eyebrow: 'Empresa',
-    title: 'Una empresa privada al servicio de la confianza en los productos',
+    title: 'Una empresa privada al servicio de la identidad de los medicamentos',
     subtitle:
-      'Traza Technology, C.A. es una empresa privada y una plataforma tecnológica multisector. Presta servicios de identidad digital unitaria, trazabilidad, verificación y control a entidades del sector público y a industrias privadas.',
+      'Traza Technology, C.A. es una empresa privada. Su propuesta para medicamentos conecta identidad digital unitaria, registro del ciclo de vida y consulta pública, con roles y responsabilidades definidos en cada piloto.',
   },
 
   mission: {
     title: 'Misión',
     paragraphs: [
-      'Dar a los productos reales una identidad digital que cualquier persona pueda comprobar. Creemos que la confianza en lo que se compra, se distribuye o se regula no debería depender de una etiqueta difícil de imitar, sino de una historia verificable que acompaña a cada unidad.',
-      'Diseñamos la plataforma para reguladores, agencias de control e industrias privadas que necesitan saber qué unidades circulan, de dónde vienen y si lo que se vende coincide con lo registrado. Y para el público, que merece una respuesta clara en el momento de la compra.',
-      'Nuestra marca maestra vive en traza.technology. Cada despliegue puede llevar la marca de la institución o la empresa que lo gobierna, por país, regulador o industria, sobre la misma plataforma.',
+      'Dar a cada unidad de medicamento una identidad digital que cualquier persona pueda consultar. La ficha permite comparar producto, presentación, lote y vencimiento con el envase; no certifica su contenido físico.',
+      'Diseñamos la propuesta para fabricantes, importadores, farmacias, establecimientos de salud, equipos de calidad y autoridades sanitarias. El público también necesita una respuesta clara al comparar un medicamento con su registro.',
+      'Nuestra marca maestra vive en traza.technology. Cada piloto de medicamentos puede llevar la marca de la organización responsable, sujeto a aprobación y sin afirmar una relación institucional.',
     ],
   },
 
@@ -33,7 +33,7 @@ export const company: CompanyContent = {
       },
       {
         title: 'Trazabilidad',
-        body: 'Un registro ordenado y auditable de los eventos de cada unidad a lo largo de la cadena.',
+        body: 'Un registro ordenado del ciclo de vida de cada unidad: emisión, etiquetado, activación, consulta, señales y cierre.',
         icon: 'link',
       },
       {
@@ -43,12 +43,12 @@ export const company: CompanyContent = {
       },
       {
         title: 'Control institucional',
-        body: 'Vistas para reguladores y empresas: seguimiento de anomalías, reportes de discrepancia e inspección de campo.',
+        body: 'Vistas de ejemplo para autoridades sanitarias y equipos de calidad: señales, reportes e inspecciones. Su operación se acuerda en cada piloto.',
         icon: 'eye',
       },
       {
         title: 'Despliegues co-brand y white-label',
-        body: 'La misma plataforma con la marca, las reglas y el contexto de cada institución o empresa, por país y por sector.',
+        body: 'La misma plataforma con la marca, las reglas y los permisos acordados para cada programa de medicamentos.',
         icon: 'layers',
       },
     ],
@@ -88,15 +88,14 @@ export const company: CompanyContent = {
       name: 'Nombre',
       email: 'Correo electrónico',
       organization: 'Organización',
-      sector: 'Sector',
+      sector: 'Tipo de organización',
       sectorOptions: [
-        'Gobierno o regulador',
-        'Medicamentos y productos de salud',
-        'Farmacéutico y salud',
-        'Agroindustria',
-        'Repuestos y partes',
-        'Bienes de consumo',
-        'Documentos y certificados',
+        'Fabricantes de medicamentos',
+        'Importadores de medicamentos',
+        'Farmacias',
+        'Establecimientos de salud',
+        'Equipos de calidad',
+        'Autoridades sanitarias',
         'Otro',
       ],
       message: 'Mensaje',

@@ -1,139 +1,140 @@
 import type { ReferencePageContent } from '../types';
 
-/** Why this design (EN). Mirrors `es/rationale.ts` field by field. */
+/** Medicines pilot design criteria; no historical results or institutional relationships are claimed. */
 export const rationale: ReferencePageContent = {
-  meta: {
-    title: 'Why this design: the precedents and the lessons',
-    description:
-      'Which existing fiscal-marking systems each Traza decision comes from, what went wrong in those that were switched off, and the ten principles it inherits.',
+  "meta": {
+    "title": "Why this design: criteria for a medicines pilot",
+    "description": "The medicines pilot criteria: unit identity, activation after production, auditing and public lookup with clear limits and responsibilities for participants."
   },
-
-  hero: {
-    eyebrow: 'Precedents',
-    title: 'Almost every one of these decisions was tried somewhere else first',
-    subtitle:
-      'Unit-level fiscal marking is not a new idea. There are national systems that have run for years, and at least one large one that was switched off. It is worth saying where each decision comes from.',
+  "hero": {
+    "eyebrow": "Design criteria",
+    "title": "An identity for each medicine, with clear responsibilities",
+    "subtitle": "The proposal starts with a medicine unit and the people who identify, query or review it. These criteria explain what should be checked and which limits each pilot should preserve."
   },
-
-  contentsLabel: 'On this page',
-
-  sections: [
+  "contentsLabel": "On this page",
+  "sections": [
     {
-      id: 'sistemas',
-      title: 'The systems used as reference',
-      intro:
-        'They are cited by name and by what they contribute to the design. Traza has no relationship with any of them, or with the authorities that govern them: they are public precedents.',
-      items: [
+      "id": "sistemas",
+      "title": "Decisions for the medicines pilot",
+      "intro": "These are proposal criteria, subject to implementation and validation. They do not establish an operation, an institutional relationship or results from other systems.",
+      "items": [
         {
-          title: 'Chestny ZNAK',
-          body: 'Marks each unit with a code carrying an embedded signature, and the manufacturer requests codes over an API, prints, activates and reports. It validates the hybrid model: a signature checkable without a lookup, plus state in the registry.',
-          icon: 'signature',
+          "title": "Identity linked to the unit",
+          "body": "The manufacturer or importer describes the medicine before issuing its identifier. The target format links the signed identity with the unit’s status in the registry.",
+          "icon": "signature"
         },
         {
-          title: 'The European tobacco traceability system',
-          body: 'Identifier issuers independent of the industry, a primary repository held by industry and a secondary repository held by the regulator. Two ideas come from here: the audit mirror and the expiry of codes that are never applied.',
-          icon: 'eye',
+          "title": "Auditing with its own permissions",
+          "body": "The architecture proposes a read-only copy for the authorised team. The programme must agree which events it may consult and how to compare them with the primary registry.",
+          "icon": "eye"
         },
         {
-          title: 'Fiscal marking as a turnkey service',
-          body: 'A unique code, a physical security element and activation on the production line with independent counting. It confirms that the licensed-operator model works; its risk is dependence on the supplier.',
-          icon: 'plug',
+          "title": "Separate issuance, printing and activation",
+          "body": "Printing a QR does not activate the unit. Activation is proposed after production ends and the product, lot and expiry record is complete.",
+          "icon": "plug"
         },
         {
-          title: 'Programmes that started with one category',
-          body: 'Beginning with a single sector and a few large issuers rather than the whole universe. Also their limit: traceability identifies what is illegal, it does not stop it; street inspection is still needed.',
-          icon: 'search',
+          "title": "Start with one medicine",
+          "body": "A pilot can cover one presentation, one packaging line and defined owners. This allows each stage to be reviewed before extending the scope.",
+          "icon": "search"
         },
         {
-          title: 'A beverage system that was switched off',
-          body: 'It reached billions of containers with automatic counters in the plant, and was deactivated over a cost dispute. Electronic invoicing did not replace the physical count, and under-declaration came back.',
-          icon: 'warning',
+          "title": "Explicit costs and responsibilities",
+          "body": "Issuance, printing, integration, support and review must be agreed before the pilot. Funding and participation conditions must also be agreed.",
+          "icon": "warning"
         },
         {
-          title: 'Physical stamps with public lookup',
-          body: 'The same identity in three carriers — barcode, QR and text — on a stamp with security features. Its audit taught the central lesson: a digital match does not prove physical authenticity.',
-          icon: 'compare',
+          "title": "Label and record must be comparable",
+          "body": "The QR and readable identifier refer to the same unit. The person compares medicine, presentation, lot and expiry; a digital match does not certify the physical contents.",
+          "icon": "compare"
         },
         {
-          title: 'Open identification standards',
-          body: 'A QR as a URL serves the checkout, the person buying and traceability at once. Adopting the format gives interoperability with retail without inventing a proprietary scheme.',
-          icon: 'qr',
-        },
-      ],
+          "title": "Lookup from the browser",
+          "body": "The QR opens a lookup URL. People can also type the identifier or read an image of the code, without installing an application or creating an account.",
+          "icon": "qr"
+        }
+      ]
     },
     {
-      id: 'principios',
-      title: 'Ten inherited principles',
-      intro: 'These are not brand values: they are constraints that came from watching what held and what did not.',
-      items: [
+      "id": "principios",
+      "title": "Ten criteria for agreeing a deployment",
+      "intro": "The pilot must turn these criteria into concrete responsibilities and checks. This website lets people explore examples; it does not establish operational implementation.",
+      "items": [
         {
-          title: 'Start with one or two categories',
-          body: 'With a few large issuers to coordinate, not the whole market at once.',
-          icon: 'list',
+          "title": "Limited scope",
+          "body": "Define the medicine, presentation, lot and pilot owners, with the data that people will be able to query.",
+          "icon": "list"
         },
         {
-          title: 'Signed code plus state in the registry',
-          body: 'The signature stops codes being invented without consulting anything; the registry manages the lifecycle and detects clones.',
-          icon: 'signature',
+          "title": "Separate identity and registry",
+          "body": "The target architecture combines a signature to check issuer and integrity with a registry that retains states and signals. Lookups on this website use sample data.",
+          "icon": "signature"
         },
         {
-          title: 'Non-sequential identifiers',
-          body: 'A predictable sequence is forgeable and, on top of that, reveals volumes to competitors.',
-          icon: 'lock',
+          "title": "Non-sequential identifiers",
+          "body": "The proposal avoids exposing a production counter in the identifier. The final format requires validation; its appearance does not establish security.",
+          "icon": "lock"
         },
         {
-          title: 'A low per-code cost, set by regulation',
-          body: 'Calibrated to the value of the product. A high cost on a popular product kills the system, and that is exactly what happened in the case that was switched off.',
-          icon: 'chart',
+          "title": "Costs agreed before operation",
+          "body": "Define who covers printing, integration and support, and how pilot costs will be assessed. Amounts are agreed per programme.",
+          "icon": "chart"
         },
         {
-          title: 'No supplier lock-in',
-          body: 'Identifiers, keys and data belong to the institution commissioning the deployment, not to the operator. With escrow of the cryptographic material and public specifications, even when the operation is private.',
-          icon: 'key',
+          "title": "Defined custody and exit",
+          "body": "Agree ownership, access, key custody and data export before deployment. These are not automatically assigned to the operator or an authority.",
+          "icon": "key"
         },
         {
-          title: 'Graceful degradation is mandatory',
-          body: 'The system can never stop production or trade: codes downloaded in advance, a local queue and deferred reporting.',
-          icon: 'offline',
+          "title": "Continuity with explicit states",
+          "body": "The architecture must define how to work during an interruption and recover pending events, without showing units as activated when their records are incomplete.",
+          "icon": "offline"
         },
         {
-          title: 'Unapplied codes expire',
-          body: 'It prevents hoarding and a grey market in labels that were issued and never used.',
-          icon: 'clock',
+          "title": "Closure of unused codes",
+          "body": "Agree how to void unused codes when an issuance closes and how to record that decision without erasing history.",
+          "icon": "clock"
         },
         {
-          title: 'Activation with independent counting',
-          body: 'That is what actually measures: it counts what was produced, not what was declared.',
-          icon: 'compare',
+          "title": "Activation after production",
+          "body": "Complete product, lot and expiry data and confirm which codes were used before activating units. Printing alone does not establish activation.",
+          "icon": "compare"
         },
         {
-          title: 'Public verification needs a reason',
-          body: 'Where there was no incentive, nobody scanned. Where there was one, public lookups became massive.',
-          icon: 'citizen',
+          "title": "Useful lookup for people",
+          "body": "Show what to compare with the package and what to do about a difference. On this website a report is prepared and downloaded locally; handing it over requires an organization’s channel.",
+          "icon": "citizen"
         },
         {
-          title: 'Legal groundwork first',
-          body: 'Without a rule establishing that marking is mandatory, who pays and what happens if you do not mark, the system gets litigated or switched off by decree.',
-          icon: 'document',
-        },
-      ],
+          "title": "Prior authorisation and limits",
+          "body": "Define pilot permissions and responsibilities. Physical anti-copy features and tax validation belong to phase 2 and require authorised integration; they are not available here.",
+          "icon": "document"
+        }
+      ]
     },
     {
-      id: 'consecuencia',
-      title: 'The lesson you can feel most in the product',
-      paragraphs: [
-        'An audit of a physical stamp with public lookup found that the printed controls and the digital record did not always agree, and that from a photograph it was impossible to tell which of the two was right.',
-        'That is where the separation running through the whole design comes from: a digital identity either matches or does not, and that is checkable; physical authenticity requires material features or an observed activation, and that is not something a camera settles.',
-        'So a lookup does not say “verified” when only the first of those was proved. An identifier that has been issued and labelled, but whose record has not been closed yet, returns “under review” and invites you to report where you saw it. That state is not a gap in the product: it is the lesson made visible.',
+      "id": "consecuencia",
+      "title": "The distinction that a lookup must make clear",
+      "paragraphs": [
+        "A digital record describes a declared unit. When looking up a medicine, the person must compare its data with the package; a photograph or a registry match does not prove its physical contents.",
+        "The proposed registry follows issuance, labelling, activation, lookup, signals and closure. It does not record transport, distribution or sales. Activation requires production to end and the record to be complete.",
+        "An issued and labelled identifier awaiting activation requires review. This website explains the state using sample records and lets people prepare a local report, without sending it or changing the registry."
       ],
-      note: 'And for the same reason we never say a product is “authentic” because its signature validates: a valid signature says who issued the identifier and that its content was not altered — not that the bottle in your hand is the one that carried it.',
-    },
+      "note": "We never say a medicine is “authentic” because its signature validates: the signature’s purpose is to check issuer and data integrity, not the bottle’s physical contents."
+    }
   ],
-
-  cta: {
-    title: 'Where this continues',
-    body: 'The layers that work against copying, the custody of the keys and what the system does not promise are under Security and trust. The concrete proposal for a medicines regulator is in the use case.',
-    primaryCta: { label: 'Security and trust', key: 'security', variant: 'primary' },
-    secondaryCta: { label: 'See the use case', key: 'caseMedicines', variant: 'secondary' },
-  },
+  "cta": {
+    "title": "Where this continues",
+    "body": "Security and trust explains the proposed layers, key custody and their limits. The medicines use case sets out the pilot’s scope and responsibilities.",
+    "primaryCta": {
+      "label": "Security and trust",
+      "key": "security",
+      "variant": "primary"
+    },
+    "secondaryCta": {
+      "label": "See the use case",
+      "key": "caseMedicines",
+      "variant": "secondary"
+    }
+  }
 };

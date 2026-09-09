@@ -228,18 +228,18 @@ export const home: HomeContent = {
   },
 
   multisector: {
-    title: 'Una misma capa para distintos sectores',
+    title: 'Un registro para quienes trabajan con medicamentos',
     body:
-      'La plataforma no depende del tipo de producto. Combina identidad unitaria, eventos de cadena, verificación pública y reglas configurables por tenant; lo que cambia en cada sector son los datos de la identidad, los eventos relevantes y quién puede consultarlos.',
+      'La propuesta comparte identidad unitaria, eventos del ciclo de vida y consulta pública. Cada despliegue acuerda los datos, permisos y reglas: emisión, etiquetado, activación, consulta, señales y cierre.',
     sectors: [
-      'Medicamentos y productos de salud',
-      'Farmacéutico',
-      'Agroindustria',
-      'Repuestos y partes',
-      'Bienes de consumo',
-      'Documentos y certificados',
+      'Fabricantes de medicamentos',
+      'Importadores de medicamentos',
+      'Farmacias',
+      'Establecimientos de salud',
+      'Equipos de calidad',
+      'Autoridades sanitarias',
     ],
-    note: 'Los sectores se mencionan solo como ejemplos de adaptabilidad. No se afirman capacidades ni certificaciones sectoriales específicas.',
+    note: 'Estos actores ilustran los roles posibles de un piloto de medicamentos. No se afirman relaciones, participación ni certificaciones de ninguna organización.',
   },
 
   trust: {

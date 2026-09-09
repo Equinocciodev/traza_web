@@ -1,3 +1,13 @@
+# Actualización del cierre médico y de marca
+
+Continuación autorizada desde `a96a6e6`. Se retiraron las categorías ajenas a medicamentos de las páginas, formulario y configuración; el resumen llms también usa medicamentos. La revisión del texto generado cubrió 38 páginas sin términos de las categorías retiradas.
+
+La referencia raster 16 de Juan se incorpora intacta en Empresa y en los iconos. El wordmark para cabecera, pie y aplicaciones se vectoriza automáticamente desde los píxeles del mismo original (script reproducible y hash verificado); es un derivado de raster, no un vector oficial suministrado. La línea azul se recreó mediante ImageGen a partir de la referencia 05, porque no se recuperó una capa separada. No se incorporaron parches del PR de Cloud ni dibujos SVG manuales para sustituir esos activos. `src/brand/asset-provenance.json` registra archivos, métodos y hashes.
+
+Validación local terminada: 296 unitarias, check de 226 archivos sin incidencias, build de 38 páginas, 190 comprobaciones funcionales y de accesibilidad aprobadas, y 78 capturas responsive (74 iniciales y 4 tras corregir el capturador). Se revisaron composiciones completas y estados de uso. El capturador heredado insertaba estilos bloqueados por CSP; se sustituyó por desplazamiento real y espera acotada de imágenes. Su expectativa antigua del recorrido pendiente se corrigió de etapa 3 a 1, coherente con emisión/etiquetado sin activación. El sitio no requirió cambios de seguridad. Queda publicar y auditar el dominio real antes de declarar completado este cierre. La bitácora IA-20260908-204940-7B83 conserva los resultados de cada publicación. El registro siguiente describe la entrega anterior y se mantiene como historia.
+
+---
+
 # Continuidad de la demo pública de Traza — 9 de septiembre de 2026
 
 ## Alcance de esta entrega

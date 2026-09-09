@@ -19,20 +19,18 @@ mkdirSync(OUT, { recursive: true });
 
 async function shoot(page: Page, name: string, width: number): Promise<void> {
   await page.waitForLoadState('networkidle');
-  // Captura de página completa: la cabecera sticky y la insignia fija quedarían pegadas a la posición de
-  // scroll del momento; se vuelven estáticas solo para la captura (no afecta al sitio).
-  await page.addStyleTag({ content: '.site-header{position:static !important}.demo-badge{display:none !important}' });
-  // La captura no hace scroll: los bloques pendientes de revelado y los trazos sin dibujar se llevan a su
-  // estado final (el mismo que verá quien recorra la página) antes de capturar.
-  await page.evaluate(() => {
-    document.querySelectorAll('.reveal-pending').forEach((el) => {
-      el.classList.remove('reveal-pending');
-      el.classList.add('is-visible');
-    });
-    document.querySelectorAll('.chain--pending').forEach((el) => el.classList.remove('chain--pending'));
-    document.querySelectorAll<SVGGeometryElement>('[data-chain-line], [data-trace-path]').forEach((path) => {
-      path.style.strokeDashoffset = '0';
-    });
+  // Recorrer la página activa las imágenes lazy y las revelaciones reales sin insertar estilos.
+  // Mantener la CSP y la cabecera tal como las recibe el usuario.
+  await page.emulateMedia({ reducedMotion: 'reduce' });
+  await page.evaluate(async () => {
+    for (let top = 0; top < document.documentElement.scrollHeight; top += window.innerHeight * 0.8) {
+      window.scrollTo(0, top);
+      await new Promise((resolve) => setTimeout(resolve, 60));
+    }
+    await Promise.all(Array.from(document.images).filter((img) => img.getBoundingClientRect().width > 0).map((img) =>
+      Promise.race([img.decode().catch(() => undefined), new Promise((resolve) => setTimeout(resolve, 2000))]),
+    ));
+    await document.fonts.ready;
     window.scrollTo(0, 0);
   });
   await page.waitForTimeout(250);
@@ -60,6 +58,9 @@ const STATIC: { name: string; path: string }[] = [
   { name: 'institucional', path: ROUTES.es.institutional },
   { name: 'seguridad', path: ROUTES.es.security },
   { name: 'empresa', path: ROUTES.es.company },
+  { name: 'etiqueta', path: '/etiqueta/' },
+  { name: 'integracion', path: '/integracion/' },
+  { name: 'fundamentos', path: ROUTES.es.rationale },
   { name: 'privacidad', path: ROUTES.es.privacy },
   { name: '404', path: '/pagina-inexistente/' },
   { name: 'en-verify', path: ROUTES.en.verify },
@@ -159,7 +160,8 @@ for (const w of WIDTHS) {
         await settle(page, ROUTES.es.journey, w);
         await page.getByTestId('journey-unit-select').selectOption('TRZ-7F2K-8L1F-63HW');
         await expect(page.getByTestId('journey')).toHaveAttribute('data-view', 'ready', { timeout: 5_000 });
-        await expect(page.getByTestId('journey')).toHaveAttribute('data-stage-index', '3');
+        // Esta unidad solo tiene emisión y etiquetado; aún no se activó.
+        await expect(page.getByTestId('journey')).toHaveAttribute('data-stage-index', '1');
         await shoot(page, 'recorrido-en-curso', w.width);
       });
       test(`recorrido-vacio-${w.width}`, async ({ page }) => {
